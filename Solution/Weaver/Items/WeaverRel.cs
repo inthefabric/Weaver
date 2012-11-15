@@ -61,7 +61,9 @@ namespace Fabric.Domain.Graph.Items {
 		}
 
 		/*--------------------------------------------------------------------------------------------*/
-		public abstract string Label { get; }
+		public virtual string Label {
+			get { return typeof(TFrom).Name+typeof(TType).Name+typeof(TTo).Name; }
+		}
 
 		/*--------------------------------------------------------------------------------------------*/
 		public override string GremlinCode {

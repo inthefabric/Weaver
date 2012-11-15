@@ -5,8 +5,9 @@ using Fabric.Test.Common.RelTypes;
 namespace Fabric.Test.Common.Rels {
 
 	/*================================================================================================*/
-	public class TestPersonLikesCandy : 
-						WeaverRel<IQueryTestPerson, TestPerson, TestLikes, IQueryTestCandy, TestCandy> {
+	public class PersonLikesCandy :
+						WeaverRel<IQueryPerson, Person, Likes, IQueryCandy, Candy>,
+																		IQueryPersonLikesCandy {
 
 		public int TimesEaten { get; set; }
 		public float Enjoyment { get; set; }
@@ -14,10 +15,10 @@ namespace Fabric.Test.Common.Rels {
 
 		////////////////////////////////////////////////////////////////////////////////////////////////
 		/*--------------------------------------------------------------------------------------------*/
-		public TestPersonLikesCandy(WeaverRelConn pConn) : base(pConn) {}
+		public PersonLikesCandy(WeaverRelConn pConn) : base(pConn) {}
 
 		/*--------------------------------------------------------------------------------------------*/
-		public override string Label { get { return "PersonLikesCandy"; } }
+		//public override string Label { get { return "PersonLikesCandy"; } }
 
 	}
 

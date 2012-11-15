@@ -49,20 +49,24 @@
     <Reference Include="System" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Common\Nodes\IQueryTestCandy.cs" />
-    <Compile Include="Common\Nodes\IQueryTestPerson.cs" />
-    <Compile Include="Common\Nodes\IQueryTestRoot.cs" />
-    <Compile Include="Common\Rels\TestRootHasCandy.cs" />
-    <Compile Include="Common\Rels\TestRootHasPerson.cs" />
-    <Compile Include="Common\RelTypes\TestHas.cs" />
-    <Compile Include="Common\Nodes\TestRoot.cs" />
+    <Compile Include="Common\Nodes\IQueryCandy.cs" />
+    <Compile Include="Common\Nodes\IQueryPerson.cs" />
+    <Compile Include="Common\Nodes\IQueryRoot.cs" />
+    <Compile Include="Common\Rels\IQueryPersonKnowsPerson.cs" />
+    <Compile Include="Common\Rels\IQueryPersonLikesCandy.cs" />
+    <Compile Include="Common\Rels\IQueryRootHasCandy.cs" />
+    <Compile Include="Common\Rels\IQueryRootHasPerson.cs" />
+    <Compile Include="Common\Rels\RootHasCandy.cs" />
+    <Compile Include="Common\Rels\RootHasPerson.cs" />
+    <Compile Include="Common\RelTypes\Has.cs" />
+    <Compile Include="Common\Nodes\Root.cs" />
     <Compile Include="Common\Nodes\TestNode.cs" />
-    <Compile Include="Common\RelTypes\TestLikes.cs" />
-    <Compile Include="Common\Nodes\TestCandy.cs" />
-    <Compile Include="Common\Rels\TestPersonLikesCandy.cs" />
-    <Compile Include="Common\Rels\TestPersonKnowsPerson.cs" />
-    <Compile Include="Common\RelTypes\TestKnows.cs" />
-    <Compile Include="Common\Nodes\TestPerson.cs" />
+    <Compile Include="Common\RelTypes\Likes.cs" />
+    <Compile Include="Common\Nodes\Candy.cs" />
+    <Compile Include="Common\Rels\PersonLikesCandy.cs" />
+    <Compile Include="Common\Rels\PersonKnowsPerson.cs" />
+    <Compile Include="Common\RelTypes\Knows.cs" />
+    <Compile Include="Common\Nodes\Person.cs" />
     <Compile Include="Fixtures\Items\TWeaverRel.cs" />
     <Compile Include="Fixtures\Items\TWeaverFunc.cs" />
     <Compile Include="Fixtures\Functions\TWeaverFuncAs.cs" />

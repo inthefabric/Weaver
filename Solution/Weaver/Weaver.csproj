@@ -32,6 +32,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Functions\WeaverFuncHas.cs" />
+    <Compile Include="Interfaces\IWeaverQueryRel.cs" />
     <Compile Include="Interfaces\IWeaverQueryNode.cs" />
     <Compile Include="Interfaces\IWeaverProp.cs" />
     <Compile Include="Functions\WeaverFuncProp.cs" />

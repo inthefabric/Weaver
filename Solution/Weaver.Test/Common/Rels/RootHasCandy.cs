@@ -5,19 +5,17 @@ using Fabric.Test.Common.RelTypes;
 namespace Fabric.Test.Common.Rels {
 
 	/*================================================================================================*/
-	public class TestPersonKnowsPerson : 
-					WeaverRel<IQueryTestPerson, TestPerson, TestKnows, IQueryTestPerson, TestPerson> {
-
-		public string MetOnDate { get; set; }
-		public float Amount { get; set; }
+	public class RootHasCandy :
+							WeaverRel<IQueryRoot, Root, Has, IQueryCandy, Candy>,
+																				IQueryRootHasCandy {
 
 
 		////////////////////////////////////////////////////////////////////////////////////////////////
 		/*--------------------------------------------------------------------------------------------*/
-		public TestPersonKnowsPerson(WeaverRelConn pConn) : base(pConn) {}
+		public RootHasCandy(WeaverRelConn pConn) : base(pConn) {}
 
 		/*--------------------------------------------------------------------------------------------*/
-		public override string Label { get { return "PersonKnowsPerson"; } }
+		//public override string Label { get { return "RootHasCandy"; } }
 
 	}
 

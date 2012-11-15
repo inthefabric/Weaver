@@ -14,7 +14,7 @@ namespace Fabric.Test.Fixtures.Functions {
 		[TestCase("a", "as('a')")]
 		[TestCase("reallyLongLabelText", "as('reallyLongLabelText')")]
 		public void Gremlin(string pLabel, string pExpectGremlin) {
-			var f = new WeaverFuncAs<TestPerson>(new TestPerson(), pLabel);
+			var f = new WeaverFuncAs<Person>(new Person(), pLabel);
 
 			Assert.AreEqual(pLabel, f.Label, "Incorrect Label.");
 			Assert.AreEqual(pExpectGremlin, f.GremlinCode, "Incorrect GremlinCode.");

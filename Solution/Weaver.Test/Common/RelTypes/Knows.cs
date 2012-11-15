@@ -1,18 +1,14 @@
 ﻿using Fabric.Domain.Graph.Interfaces;
-using Fabric.Test.Common.Rels;
 
-namespace Fabric.Test.Common.Nodes {
-
+namespace Fabric.Test.Common.RelTypes {
+	
 	/*================================================================================================*/
-	public interface IQueryTestPerson : IWeaverQueryNode {
+	public class Knows : IWeaverRelType {
 
 
 		////////////////////////////////////////////////////////////////////////////////////////////////
 		/*--------------------------------------------------------------------------------------------*/
-		TestPersonLikesCandy OutLikesCandy { get; }
-		TestPersonKnowsPerson OutKnowsPerson { get; }
-		TestRootHasPerson InRootHas { get; }
-		TestPersonKnowsPerson InPersonKnows { get; }
+		public string Label { get { return "Knows"; } }
 
 	}
 

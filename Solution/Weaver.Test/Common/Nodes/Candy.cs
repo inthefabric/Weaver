@@ -4,29 +4,32 @@ using Fabric.Test.Common.Rels;
 namespace Fabric.Test.Common.Nodes {
 
 	/*================================================================================================*/
-	public class TestRoot : TestNode, IQueryTestRoot {
+	public class Candy : TestNode, IQueryCandy {
+
+		public bool IsChocolate { get; set; }
+		public int Calories { get; set; }
 
 
 		////////////////////////////////////////////////////////////////////////////////////////////////
 		/*--------------------------------------------------------------------------------------------*/
-		public TestRoot() { }
+		public Candy() {}
 
 		/*--------------------------------------------------------------------------------------------*/
-		public TestRoot(bool pIsFromNode, bool pExpectOneNode) :
-															base(true, pIsFromNode, pExpectOneNode) {}
+		public Candy(bool pIsRoot, bool pIsFromNode, bool pExpectOneNode) :
+														base(pIsRoot, pIsFromNode, pExpectOneNode) {}
 
 
 		////////////////////////////////////////////////////////////////////////////////////////////////
 		/*--------------------------------------------------------------------------------------------*/
-		public TestRootHasCandy OutHasCandy {
-			get { return new TestRootHasCandy(WeaverRelConn.OutToManyNodes); }
+		public IQueryRootHasPerson InRootHas {
+			get { return new RootHasPerson(WeaverRelConn.InFromOneNode); }
 		}
 
 		/*--------------------------------------------------------------------------------------------*/
-		public TestRootHasPerson OutHasPerson {
-			get { return new TestRootHasPerson(WeaverRelConn.OutToManyNodes); }
+		public IQueryPersonLikesCandy InPersonLikes {
+			get { return new PersonLikesCandy(WeaverRelConn.InFromManyNodes); }
 		}
-
+		
 	}
 
 }

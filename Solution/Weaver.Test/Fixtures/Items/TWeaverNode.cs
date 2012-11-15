@@ -19,7 +19,7 @@ namespace Fabric.Test.Fixtures.Items {
 		[TestCase(true, true, false, "v(0)")]
 		[TestCase(true, true, true, "v(0)")]
 		public void Gremlin(bool pIsRoot, bool pIsFrom, bool pExpectOne, string pExpectGremlin) {
-			var n = new TestPerson(pIsRoot, pIsFrom, pExpectOne);
+			var n = new Person(pIsRoot, pIsFrom, pExpectOne);
 
 			Assert.AreEqual(pIsRoot, n.IsRoot, "Incorrect IsRoot.");
 			Assert.AreEqual(pIsFrom, n.IsFromNode, "Incorrect IsFromNode.");

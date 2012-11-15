@@ -14,8 +14,8 @@ namespace Fabric.Test.Fixtures.Functions {
 		/*--------------------------------------------------------------------------------------------*/
 		[Test]
 		public void Gremlin() {
-			var f = new WeaverFuncProp<TestPerson>(
-				new TestPerson(), (n => n.ExpectOneNode));
+			var f = new WeaverFuncProp<Person>(
+				new Person(), (n => n.ExpectOneNode));
 
 			Assert.AreEqual("ExpectOneNode", f.PropertyName, "Incorrect PropertyName.");
 			Assert.AreEqual("ExpectOneNode", f.GremlinCode, "Incorrect GremlinCode.");
@@ -25,8 +25,8 @@ namespace Fabric.Test.Fixtures.Functions {
 		[Test]
 		public void GremlinBadExpression() {
 			try {
-				var f = new WeaverFuncProp<TestPerson>(
-					new TestPerson(), (n => (n.ExpectOneNode == false)));
+				var f = new WeaverFuncProp<Person>(
+					new Person(), (n => (n.ExpectOneNode == false)));
 				Assert.Fail("Expected an Exception: "+f);
 			}
 			catch ( Exception e ) {

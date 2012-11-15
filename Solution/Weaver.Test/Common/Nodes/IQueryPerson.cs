@@ -4,13 +4,15 @@ using Fabric.Test.Common.Rels;
 namespace Fabric.Test.Common.Nodes {
 
 	/*================================================================================================*/
-	public interface IQueryTestRoot : IWeaverQueryNode {
+	public interface IQueryPerson : IWeaverQueryNode {
 
 
 		////////////////////////////////////////////////////////////////////////////////////////////////
 		/*--------------------------------------------------------------------------------------------*/
-		TestRootHasCandy OutHasCandy { get; }
-		TestRootHasPerson OutHasPerson { get; }
+		IQueryPersonLikesCandy OutLikesCandy { get; }
+		IQueryPersonKnowsPerson OutKnowsPerson { get; }
+		IQueryRootHasPerson InRootHas { get; }
+		IQueryPersonKnowsPerson InPersonKnows { get; }
 
 	}
 

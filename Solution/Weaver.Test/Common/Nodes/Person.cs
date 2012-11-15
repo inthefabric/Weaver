@@ -4,7 +4,7 @@ using Fabric.Test.Common.Rels;
 namespace Fabric.Test.Common.Nodes {
 
 	/*================================================================================================*/
-	public class TestPerson : TestNode, IQueryTestPerson {
+	public class Person : TestNode, IQueryPerson {
 
 		public bool IsMale { get; set; }
 		public float Age { get; set; }
@@ -12,34 +12,34 @@ namespace Fabric.Test.Common.Nodes {
 
 		////////////////////////////////////////////////////////////////////////////////////////////////
 		/*--------------------------------------------------------------------------------------------*/
-		public TestPerson() { }
+		public Person() { }
 
 		/*--------------------------------------------------------------------------------------------*/
-		public TestPerson(bool pIsRoot, bool pIsFromNode, bool pExpectOneNode) :
+		public Person(bool pIsRoot, bool pIsFromNode, bool pExpectOneNode) :
 			base(pIsRoot, pIsFromNode, pExpectOneNode) { }
 
 
 		////////////////////////////////////////////////////////////////////////////////////////////////
 		/*--------------------------------------------------------------------------------------------*/
-		public TestPersonLikesCandy OutLikesCandy {
-			get { return new TestPersonLikesCandy(WeaverRelConn.OutToManyNodes); }
+		public IQueryPersonLikesCandy OutLikesCandy {
+			get { return new PersonLikesCandy(WeaverRelConn.OutToManyNodes); }
 		}
 
 		/*--------------------------------------------------------------------------------------------*/
-		public TestPersonKnowsPerson OutKnowsPerson {
-			get { return new TestPersonKnowsPerson(WeaverRelConn.OutToManyNodes); }
+		public IQueryPersonKnowsPerson OutKnowsPerson {
+			get { return new PersonKnowsPerson(WeaverRelConn.OutToManyNodes); }
 		}
 
 
 		////////////////////////////////////////////////////////////////////////////////////////////////
 		/*--------------------------------------------------------------------------------------------*/
-		public TestRootHasPerson InRootHas {
-			get { return new TestRootHasPerson(WeaverRelConn.InFromOneNode); }
+		public IQueryRootHasPerson InRootHas {
+			get { return new RootHasPerson(WeaverRelConn.InFromOneNode); }
 		}
 
 		/*--------------------------------------------------------------------------------------------*/
-		public TestPersonKnowsPerson InPersonKnows {
-			get { return new TestPersonKnowsPerson(WeaverRelConn.InFromManyNodes); }
+		public IQueryPersonKnowsPerson InPersonKnows {
+			get { return new PersonKnowsPerson(WeaverRelConn.InFromManyNodes); }
 		}
 
 	}
