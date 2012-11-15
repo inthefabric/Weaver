@@ -1,9 +1,9 @@
-﻿using Fabric.Domain.Graph.Interfaces;
-using Fabric.Domain.Graph.Items;
-using Fabric.Test.Common.Rels;
-using NUnit.Framework;
+﻿using NUnit.Framework;
+using Weaver.Interfaces;
+using Weaver.Items;
+using Weaver.Test.Common.Rels;
 
-namespace Fabric.Test.Fixtures.Items {
+namespace Weaver.Test.Fixtures.Items {
 
 	/*================================================================================================*/
 	[TestFixture]

@@ -1,6 +1,6 @@
-﻿using Fabric.Domain.Graph.Interfaces;
+﻿using Weaver.Interfaces;
 
-namespace Fabric.Domain.Graph.Items {
+namespace Weaver.Items {
 
 	/*================================================================================================*/
 	public abstract class WeaverNode : WeaverItem, IWeaverNode {

@@ -1,6 +1,6 @@
-﻿using Fabric.Domain.Graph.Items;
+﻿using Weaver.Items;
 
-namespace Fabric.Domain.Graph.Interfaces {
+namespace Weaver.Interfaces {
 
 	/*================================================================================================*/
 	public interface IWeaverRel : IWeaverItem {

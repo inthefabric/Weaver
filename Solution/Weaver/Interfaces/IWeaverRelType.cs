@@ -1,4 +1,4 @@
-﻿namespace Fabric.Domain.Graph.Interfaces {
+﻿namespace Weaver.Interfaces {
 
 	/*================================================================================================*/
 	public interface IWeaverRelType {

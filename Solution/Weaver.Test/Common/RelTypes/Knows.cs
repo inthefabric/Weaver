@@ -1,6 +1,6 @@
-﻿using Fabric.Domain.Graph.Interfaces;
+﻿using Weaver.Interfaces;
 
-namespace Fabric.Test.Common.RelTypes {
+namespace Weaver.Test.Common.RelTypes {
 	
 	/*================================================================================================*/
 	public class Knows : IWeaverRelType {

@@ -1,7 +1,7 @@
-﻿using Fabric.Domain.Graph.Interfaces;
-using Fabric.Domain.Graph.Items;
+﻿using Weaver.Interfaces;
+using Weaver.Items;
 
-namespace Fabric.Domain.Graph.Functions {
+namespace Weaver.Functions {
 
 	/*================================================================================================*/
 	public class WeaverFuncAs<TItem> : WeaverFunc<TItem> where TItem : IWeaverItem {

@@ -1,8 +1,8 @@
-﻿using Fabric.Domain.Graph.Items;
-using Fabric.Test.Common.Nodes;
-using Fabric.Test.Common.RelTypes;
+﻿using Weaver.Items;
+using Weaver.Test.Common.Nodes;
+using Weaver.Test.Common.RelTypes;
 
-namespace Fabric.Test.Common.Rels {
+namespace Weaver.Test.Common.Rels {
 
 	/*================================================================================================*/
 	public class RootHasPerson : 

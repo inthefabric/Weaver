@@ -1,9 +1,9 @@
 ﻿using System;
-using Fabric.Domain.Graph.Functions;
-using Fabric.Test.Common.Nodes;
 using NUnit.Framework;
+using Weaver.Functions;
+using Weaver.Test.Common.Nodes;
 
-namespace Fabric.Test.Fixtures.Functions {
+namespace Weaver.Test.Fixtures.Functions {
 
 	/*================================================================================================*/
 	[TestFixture]

@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
-using Fabric.Domain.Graph.Functions;
-using Fabric.Domain.Graph.Interfaces;
+using Weaver.Functions;
+using Weaver.Interfaces;
 
-namespace Fabric.Domain.Graph.Items {
+namespace Weaver.Items {
 
 	/*================================================================================================*/
 	public abstract class WeaverItem : Object, IWeaverItem {

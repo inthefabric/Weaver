@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
-using Fabric.Domain.Graph.Functions;
+using Weaver.Functions;
 
-namespace Fabric.Domain.Graph.Interfaces {
+namespace Weaver.Interfaces {
 
 	/*================================================================================================*/
 	public interface IWeaverItem {

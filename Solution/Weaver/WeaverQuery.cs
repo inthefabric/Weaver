@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
-using Fabric.Domain.Graph.Functions;
-using Fabric.Domain.Graph.Interfaces;
+using Weaver.Functions;
+using Weaver.Interfaces;
 
-namespace Fabric.Domain.Graph {
+namespace Weaver {
 
 	//TODO: indexing, see stackoverflow.com/a/10073156
 

@@ -1,6 +1,6 @@
 ﻿using NUnit.Framework;
 
-namespace Fabric.Test {
+namespace Weaver.Test {
 
 	/*================================================================================================*/
 	public abstract class WeaverTestBase {

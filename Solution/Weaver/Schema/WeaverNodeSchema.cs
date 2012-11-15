@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Fabric.Domain.Graph.Schema {
+namespace Weaver.Schema {
 
 	/*================================================================================================*/
 	public class WeaverNodeSchema {

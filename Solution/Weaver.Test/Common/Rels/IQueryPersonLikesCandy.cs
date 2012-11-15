@@ -1,7 +1,7 @@
-﻿using Fabric.Domain.Graph.Interfaces;
-using Fabric.Test.Common.Nodes;
+﻿using Weaver.Interfaces;
+using Weaver.Test.Common.Nodes;
 
-namespace Fabric.Test.Common.Rels {
+namespace Weaver.Test.Common.Rels {
 
 	/*================================================================================================*/
 	public interface IQueryPersonLikesCandy : IWeaverRel<IQueryPerson, IQueryCandy> {

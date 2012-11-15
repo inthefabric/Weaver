@@ -1,7 +1,7 @@
-﻿using Fabric.Test.Common.Nodes;
-using NUnit.Framework;
+﻿using NUnit.Framework;
+using Weaver.Test.Common.Nodes;
 
-namespace Fabric.Test.Fixtures.Items {
+namespace Weaver.Test.Fixtures.Items {
 
 	/*================================================================================================*/
 	[TestFixture]

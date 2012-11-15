@@ -1,7 +1,7 @@
-﻿using Fabric.Domain.Graph.Items;
-using Fabric.Test.Common.Rels;
+﻿using Weaver.Items;
+using Weaver.Test.Common.Rels;
 
-namespace Fabric.Test.Common.Nodes {
+namespace Weaver.Test.Common.Nodes {
 
 	/*================================================================================================*/
 	public class Person : TestNode, IQueryPerson {

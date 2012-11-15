@@ -1,6 +1,4 @@
-﻿using NUnit.Framework;
-
-namespace Fabric.Test.Fixtures {
+﻿namespace Weaver.Test.Fixtures {
 
 	/*================================================================================================*/
 	//[TestFixture]

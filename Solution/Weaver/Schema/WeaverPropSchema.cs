@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Fabric.Domain.Graph.Schema {
+namespace Weaver.Schema {
 
 	/*================================================================================================*/
 	public class WeaverPropSchema {

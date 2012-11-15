@@ -1,6 +1,6 @@
-﻿using Fabric.Domain.Graph.Items;
+﻿using Weaver.Items;
 
-namespace Fabric.Test.Common.Nodes {
+namespace Weaver.Test.Common.Nodes {
 
 	/*================================================================================================*/
 	public abstract class TestNode : WeaverNode {

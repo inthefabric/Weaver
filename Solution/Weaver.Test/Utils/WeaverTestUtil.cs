@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using NUnit.Framework;
 
-namespace Fabric.Test.Utils {
+namespace Weaver.Test.Utils {
 
 	/*================================================================================================*/
 	public static class WeaverTestUtils {

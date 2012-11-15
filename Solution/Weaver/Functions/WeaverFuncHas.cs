@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
-using Fabric.Domain.Graph.Interfaces;
-using Fabric.Domain.Graph.Items;
+using Weaver.Interfaces;
+using Weaver.Items;
 
-namespace Fabric.Domain.Graph.Functions {
+namespace Weaver.Functions {
 
 	/*================================================================================================*/
 	public enum WeaverFuncHasOp {
