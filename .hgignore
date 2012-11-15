@@ -1,0 +1,11 @@
+syntax: glob
+_Local/*
+*.suo
+*.user
+*/bin/*
+*/obj/*
+*.Publish.xml
+_Publish/*
+VisualizeHg.bat
+_Publish_*/*
+Solution/_ReSharper.*
