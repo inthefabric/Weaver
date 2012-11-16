@@ -1,4 +1,5 @@
-﻿using Weaver.Interfaces;
+﻿using Weaver.Exceptions;
+using Weaver.Interfaces;
 
 namespace Weaver.Items {
 	
@@ -19,43 +20,68 @@ namespace Weaver.Items {
 															where TQueryTo : IWeaverQueryNode
 															where TTo : TQueryTo, IWeaverNode, new() {
 
-		public WeaverRelConn Connection { get; private set; }
+		public long Id { get; set; }
 		public IWeaverRelType RelType { get; private set; }
-		public bool FromManyNodes { get; private set; }
-		public bool ToManyNodes { get; private set; }
-		public bool Outgoing { get; private set; }
+		public bool IsFromManyNodes { get; private set; }
+		public bool IsToManyNodes { get; private set; }
+		public bool IsOutgoing { get; private set; }
+
+		private WeaverRelConn? vConn;
 
 
 		////////////////////////////////////////////////////////////////////////////////////////////////
 		/*--------------------------------------------------------------------------------------------*/
-		protected WeaverRel(WeaverRelConn pConnection) {
+		protected WeaverRel() {
+			Id = -1;
 			RelType = (typeof(TType) as IWeaverRelType);
-
-			Connection = pConnection;
-			FromManyNodes = (Connection == WeaverRelConn.InFromManyNodes);
-			ToManyNodes = (Connection == WeaverRelConn.OutToManyNodes);
-			Outgoing = (Connection == WeaverRelConn.OutToOneNode ||
-				Connection == WeaverRelConn.OutToManyNodes);
 		}
 
 		/*--------------------------------------------------------------------------------------------*/
+		protected WeaverRel(WeaverRelConn pConnection) : this() {
+			Connection = pConnection;
+		}
+
+		/*--------------------------------------------------------------------------------------------*/
+		public WeaverRelConn Connection {
+			get {
+				if ( vConn == null ) {
+					throw new WeaverRelException(this, "Connection has not been set.");
+				}
+
+				return (WeaverRelConn)vConn;
+			}
+			set {
+				if ( vConn != null ) {
+					throw new WeaverRelException(this, "Connection has already been set.");
+				}
+
+				vConn = value;
+				IsFromManyNodes = (vConn == WeaverRelConn.InFromManyNodes);
+				IsToManyNodes = (vConn == WeaverRelConn.OutToManyNodes);
+				IsOutgoing = (vConn == WeaverRelConn.OutToOneNode || vConn==WeaverRelConn.OutToManyNodes);
+			}
+		}
+
+
+		////////////////////////////////////////////////////////////////////////////////////////////////
+		/*--------------------------------------------------------------------------------------------*/
 		public TQueryFrom FromNode {
-			get { 
+			get {
 				return new TFrom {
 					Query = Query,
 					IsFromNode = true,
-					ExpectOneNode = !FromManyNodes
+					ExpectOneNode = !IsFromManyNodes
 				};
 			}
 		}
 
 		/*--------------------------------------------------------------------------------------------*/
 		public TQueryTo ToNode {
-			get { 
+			get {
 				return new TTo {
 					Query = Query,
 					IsFromNode = false,
-					ExpectOneNode = !ToManyNodes
+					ExpectOneNode = !IsToManyNodes
 				};
 			}
 		}
@@ -66,10 +92,15 @@ namespace Weaver.Items {
 		}
 
 		/*--------------------------------------------------------------------------------------------*/
+		public override string ItemIdentifier { get { return Label+"(Id="+Id+")"; } }
+
+
+		////////////////////////////////////////////////////////////////////////////////////////////////
+		/*--------------------------------------------------------------------------------------------*/
 		public override string GremlinCode {
 			get {
-				return (Outgoing ? "out" : "in")+"E('"+Label+"')"+
-					(!FromManyNodes && !ToManyNodes ? "[0]" : "");
+				return (IsOutgoing ? "out" : "in")+"E('"+Label+"')"+
+					(!IsFromManyNodes && !IsToManyNodes ? "[0]" : "");
 			}
 		}
 

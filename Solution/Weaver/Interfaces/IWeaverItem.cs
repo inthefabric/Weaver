@@ -20,17 +20,19 @@ namespace Weaver.Interfaces {
 		IList<IWeaverItem> QueryPathFromThisItem { get; }
 
 		/*--------------------------------------------------------------------------------------------*/
+		string ItemIdentifier { get; }
+
+		/*--------------------------------------------------------------------------------------------*/
 		string GremlinCode { get; }
 		
 
 		////////////////////////////////////////////////////////////////////////////////////////////////
 		/*--------------------------------------------------------------------------------------------*/
-		TItem As<TItem>(string pLabel) where TItem : IWeaverItem;
-		TToItem Back<TToItem>(string pLabel) where TToItem : IWeaverItem;
-		IWeaverProp Prop<TItem>(Expression<Func<TItem, object>> pItemProperty)
-																		where TItem : IWeaverItem;
+		TItem As<TItem>(string pLabel) where TItem : IWeaverQueryItem;
+		TToItem Back<TToItem>(string pLabel) where TToItem : IWeaverQueryItem;
+		IWeaverProp Prop<TItem>(Expression<Func<TItem, object>> pItemProperty) where TItem :IWeaverItem;
 		TItem Has<TItem>(Expression<Func<TItem, object>> pItemProperty,
-						WeaverFuncHasOp pOperation, object pValue) where TItem : IWeaverItem;
+								WeaverFuncHasOp pOperation, object pValue) where TItem : IWeaverItem;
 
 	}
 

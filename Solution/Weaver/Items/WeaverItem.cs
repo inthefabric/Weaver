@@ -52,14 +52,14 @@ namespace Weaver.Items {
 
 		////////////////////////////////////////////////////////////////////////////////////////////////
 		/*--------------------------------------------------------------------------------------------*/
-		public TItem As<TItem>(string pLabel) where TItem : IWeaverItem {
+		public TItem As<TItem>(string pLabel) where TItem : IWeaverQueryItem {
 			var func = new WeaverFuncAs<TItem>(this, pLabel) { Query = Query };
 			return func.CallingItem;
 		}
 
 		/*--------------------------------------------------------------------------------------------*/
-		public TToItem Back<TToItem>(string pLabel) where TToItem : IWeaverItem {
-			TToItem toNode = (TToItem)Query.FindAsNode<TToItem>(pLabel);
+		public TToItem Back<TToItem>(string pLabel) where TToItem : IWeaverQueryItem {
+			TToItem toNode = Query.FindAsNode<TToItem>(pLabel);
 			var func = new WeaverFuncBack<TToItem>(toNode, pLabel) { Query = Query };
 			return func.CallingItem;
 		}
@@ -78,6 +78,11 @@ namespace Weaver.Items {
 				{ Query = Query };
 			return func.CallingItem;
 		}
+
+
+		////////////////////////////////////////////////////////////////////////////////////////////////
+		/*--------------------------------------------------------------------------------------------*/
+		public virtual string ItemIdentifier { get { return this+""; } }
 
 
 		////////////////////////////////////////////////////////////////////////////////////////////////

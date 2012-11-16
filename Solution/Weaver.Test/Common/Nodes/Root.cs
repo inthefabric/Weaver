@@ -9,22 +9,18 @@ namespace Weaver.Test.Common.Nodes {
 
 		////////////////////////////////////////////////////////////////////////////////////////////////
 		/*--------------------------------------------------------------------------------------------*/
-		public Root() { }
-
-		/*--------------------------------------------------------------------------------------------*/
-		public Root(bool pIsFromNode, bool pExpectOneNode) :
-															base(true, pIsFromNode, pExpectOneNode) {}
+		public override bool IsRoot { get { return (QueryPathIndex == 0); } }
 
 
 		////////////////////////////////////////////////////////////////////////////////////////////////
 		/*--------------------------------------------------------------------------------------------*/
 		public IQueryRootHasCandy OutHasCandy {
-			get { return new RootHasCandy(WeaverRelConn.OutToManyNodes); }
+			get { return NewRel<RootHasCandy>(WeaverRelConn.OutToManyNodes); }
 		}
 
 		/*--------------------------------------------------------------------------------------------*/
 		public IQueryRootHasPerson OutHasPerson {
-			get { return new RootHasPerson(WeaverRelConn.OutToManyNodes); }
+			get { return NewRel<RootHasPerson>(WeaverRelConn.OutToManyNodes); }
 		}
 
 	}

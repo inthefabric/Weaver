@@ -38,10 +38,10 @@ namespace Weaver.Functions {
 
 	}
 
+	//TODO: use generic type for Expression return value?
 
 	/*================================================================================================*/
-	public class WeaverFuncHas<TItem> : WeaverFunc<TItem>, IWeaverProp 
-																		where TItem : IWeaverItem {
+	public class WeaverFuncHas<TItem> : WeaverFunc<TItem>, IWeaverProp where TItem : IWeaverItem {
 
 		private readonly Expression<Func<TItem, object>> vProp;
 		private string vPropName;
@@ -64,7 +64,7 @@ namespace Weaver.Functions {
 		public string PropertyName {
 			get {
 				if ( vPropName != null ) { return vPropName; }
-				vPropName = WeaverFuncProp<TItem>.GetPropertyName(vProp);
+				vPropName = WeaverFuncProp<TItem>.GetPropertyName(this, vProp);
 				return vPropName;
 			}
 		}

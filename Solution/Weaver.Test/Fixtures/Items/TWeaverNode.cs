@@ -1,4 +1,5 @@
 ﻿using NUnit.Framework;
+using Weaver.Interfaces;
 using Weaver.Test.Common.Nodes;
 
 namespace Weaver.Test.Fixtures.Items {
@@ -19,11 +20,13 @@ namespace Weaver.Test.Fixtures.Items {
 		[TestCase(true, true, false, "v(0)")]
 		[TestCase(true, true, true, "v(0)")]
 		public void Gremlin(bool pIsRoot, bool pIsFrom, bool pExpectOne, string pExpectGremlin) {
-			var n = new Person(pIsRoot, pIsFrom, pExpectOne);
+			IWeaverNode n;
+			if ( pIsRoot ) { n = new Root { IsFromNode = pIsFrom, ExpectOneNode = pExpectOne }; }
+			else { n = new Person { IsFromNode = pIsFrom, ExpectOneNode = pExpectOne }; }
 
-			Assert.AreEqual(pIsRoot, n.IsRoot, "Incorrect IsRoot.");
+			/*Assert.AreEqual(pIsRoot, n.IsRoot, "Incorrect IsRoot.");
 			Assert.AreEqual(pIsFrom, n.IsFromNode, "Incorrect IsFromNode.");
-			Assert.AreEqual(pExpectOne, n.ExpectOneNode, "Incorrect IsFromNode.");
+			Assert.AreEqual(pExpectOne, n.ExpectOneNode, "Incorrect IsFromNode.");*/
 			Assert.AreEqual(pExpectGremlin, n.GremlinCode, "Incorrect GremlinCode.");
 		}
 

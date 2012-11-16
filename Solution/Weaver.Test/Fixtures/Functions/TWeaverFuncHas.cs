@@ -1,5 +1,5 @@
-﻿using System;
-using NUnit.Framework;
+﻿using NUnit.Framework;
+using Weaver.Exceptions;
 using Weaver.Functions;
 using Weaver.Test.Common.Nodes;
 
@@ -39,7 +39,7 @@ namespace Weaver.Test.Fixtures.Functions {
 					WeaverFuncHasOp.EqualTo, null);
 				Assert.Fail("Expected an Exception: "+f);
 			}
-			catch ( Exception e ) {
+			catch ( WeaverGremlinException e ) {
 				Assert.NotNull(e);
 			}
 		}

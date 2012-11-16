@@ -6,40 +6,32 @@ namespace Weaver.Test.Common.Nodes {
 	/*================================================================================================*/
 	public class Person : TestNode, IQueryPerson {
 
+		public int PersonId { get; set; }
 		public bool IsMale { get; set; }
 		public float Age { get; set; }
 
 
 		////////////////////////////////////////////////////////////////////////////////////////////////
 		/*--------------------------------------------------------------------------------------------*/
-		public Person() { }
-
-		/*--------------------------------------------------------------------------------------------*/
-		public Person(bool pIsRoot, bool pIsFromNode, bool pExpectOneNode) :
-			base(pIsRoot, pIsFromNode, pExpectOneNode) { }
-
-
-		////////////////////////////////////////////////////////////////////////////////////////////////
-		/*--------------------------------------------------------------------------------------------*/
 		public IQueryPersonLikesCandy OutLikesCandy {
-			get { return new PersonLikesCandy(WeaverRelConn.OutToManyNodes); }
+			get { return NewRel<PersonLikesCandy>(WeaverRelConn.OutToManyNodes); }
 		}
 
 		/*--------------------------------------------------------------------------------------------*/
 		public IQueryPersonKnowsPerson OutKnowsPerson {
-			get { return new PersonKnowsPerson(WeaverRelConn.OutToManyNodes); }
+			get { return NewRel<PersonKnowsPerson>(WeaverRelConn.OutToManyNodes); }
 		}
 
 
 		////////////////////////////////////////////////////////////////////////////////////////////////
 		/*--------------------------------------------------------------------------------------------*/
 		public IQueryRootHasPerson InRootHas {
-			get { return new RootHasPerson(WeaverRelConn.InFromOneNode); }
+			get { return NewRel<RootHasPerson>(WeaverRelConn.InFromOneNode); }
 		}
 
 		/*--------------------------------------------------------------------------------------------*/
 		public IQueryPersonKnowsPerson InPersonKnows {
-			get { return new PersonKnowsPerson(WeaverRelConn.InFromManyNodes); }
+			get { return NewRel<PersonKnowsPerson>(WeaverRelConn.InFromManyNodes); }
 		}
 
 	}

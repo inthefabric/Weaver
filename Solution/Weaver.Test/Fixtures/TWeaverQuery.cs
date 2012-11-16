@@ -1,4 +1,10 @@
-﻿namespace Weaver.Test.Fixtures {
+﻿using NUnit.Framework;
+using Weaver.Functions;
+using Weaver.Test.Common;
+using Weaver.Test.Common.Nodes;
+using Weaver.Test.Common.Rels;
+
+namespace Weaver.Test.Fixtures {
 
 	/*================================================================================================*/
 	//[TestFixture]
@@ -13,32 +19,41 @@
 
 
 		////////////////////////////////////////////////////////////////////////////////////////////////
-		/*--------------------------------------------------------------------------------------------* /
+		/*--------------------------------------------------------------------------------------------*/
 		[Test]
-		public void QueryA() {
-			var q = new FabricQuery();
+		public void Gremlin() {
+			var q = new TestQuery();
 			q.Root
-				.OutHasThing.ToThing
-				.As<IQueryableThing>("test")
-				.OutHasArtifact.ToArtifact
-					.Has<Artifact>(a => a.ArtifactId, WeaverFuncHasOp.LessThanOrEqualTo, 5)
-				.InMemberCreates.FromMember
-				.Back<IQueryableThing>("test")
-				.OutHasArtifact.ToArtifact
-				.InMemberCreates.FromMember
-				.OutUsesApp.ToApp.Prop<App>(a => a.AppId);
+				.OutHasPerson.ToNode
+				.InRootHas.FromNode
+				.OutHasPerson.ToNode
+					.As<IQueryPerson>("test")
+				.OutKnowsPerson.ToNode
+					.Has<Person>(p => p.PersonId, WeaverFuncHasOp.LessThanOrEqualTo, 5)
+				.InPersonKnows.FromNode
+					.Back<IQueryPerson>("test")
+				.OutLikesCandy
+					.Has<PersonLikesCandy>(h => h.Enjoyment, WeaverFuncHasOp.GreterThanOrEqualTo, 0.2)
+					.ToNode
+				.InPersonLikes.FromNode
+					.Prop<Person>(p => p.Name);
 
-			Assert.AreEqual("g.v(0)"+
-					".outE('RootHasThing').inV"+
+			const string expect = "g.v(0)"+
+				".outE('RootHasPerson').inV"+
+				".inE('RootHasPerson')[0].outV(0)"+
+				".outE('RootHasPerson').inV"+
 					".as('test')"+
-					".outE('ThingHasArtifact').inV(0)"+
-						".has('ArtifactId', T.lte, 5)"+
-					".inE('MemberCreatesArtifact').outV(0)"+
+				".outE('PersonKnowsPerson').inV"+
+					".has('PersonId', T.lte, 5)"+
+				".inE('PersonKnowsPerson').outV"+
 					".back('test')"+
-					".outE('ThingHasArtifact').inV(0)"+
-					".inE('MemberCreatesArtifact').outV(0)"+
-					".outE('MemberUsesApp').inV(0).AppId", 
-				q.GremlinCode, "Incorrect GrelminCode.");
+				".outE('PersonLikesCandy')"+
+					".has('Enjoyment', T.gte, 0.2)"+
+					".inV"+
+				".inE('PersonLikesCandy').outV"+
+					".Name";
+
+			Assert.AreEqual(expect, q.GremlinCode, "Incorrect GrelminCode.");
 		}
 
 
@@ -46,7 +61,7 @@
 		/*--------------------------------------------------------------------------------------------* /
 		[Test]
 		public void PrevQueryItem() {
-			var q = new FabricQuery();
+			var q = new TestQuery();
 			var n = q.Root.OutHasThing.ToThing;
 			var afterN = n.OutHasArtifact;
 			Assert.AreEqual(n, afterN.PrevQueryItem, "Incorrect PrevQueryItem.");
@@ -55,7 +70,7 @@
 		/*--------------------------------------------------------------------------------------------* /
 		[Test]
 		public void NextQueryItem() {
-			var q = new FabricQuery();
+			var q = new TestQuery();
 			var n = q.Root.OutHasThing.ToThing;
 			var afterN = n.OutHasArtifact;
 			Assert.AreEqual(afterN, n.NextQueryItem, "Incorrect NextQueryItem.");
@@ -64,7 +79,7 @@
 		/*--------------------------------------------------------------------------------------------* /
 		[Test]
 		public void QueryPathToThisItem() {
-			var q = new FabricQuery();
+			var q = new TestQuery();
 			var n = q.Root.OutHasThing.ToThing;
 			int pathCountAtN = q.PathLength();
 			var afterN = n.OutHasArtifact.ToArtifact;
@@ -81,7 +96,7 @@
 		/*--------------------------------------------------------------------------------------------* /
 		[Test]
 		public void QueryPathFromThisItem() {
-			var q = new FabricQuery();
+			var q = new TestQuery();
 			var n = q.Root.OutHasThing.ToThing;
 			int pathCountAtN = q.PathLength();
 			var afterN = n.OutHasArtifact.ToArtifact;

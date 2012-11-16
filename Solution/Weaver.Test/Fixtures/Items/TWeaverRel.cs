@@ -17,7 +17,7 @@ namespace Weaver.Test.Fixtures.Items {
 		[TestCase(WeaverRelConn.OutToOneNode, "outE('RootHasCandy')[0]")]
 		[TestCase(WeaverRelConn.OutToManyNodes, "outE('RootHasCandy')")]
 		public void Gremlin(WeaverRelConn pConn, string pExpectGremlin) {
-			IWeaverRel r = new RootHasCandy(pConn);
+			IWeaverRel r = new RootHasCandy { Connection = pConn };
 
 			/*Assert.AreEqual("RootHasCandy", r.Label, "Incorrect IsRoot.");
 			Assert.AreEqual(pIsFromList, r.FromManyNodes, "Incorrect IsRoot.");

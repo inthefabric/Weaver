@@ -4,7 +4,7 @@ using Weaver.Test.Common.Nodes;
 namespace Weaver.Test.Common.Rels {
 
 	/*================================================================================================*/
-	public interface IQueryRootHasPerson : IWeaverRel<IQueryRoot, IQueryPerson> {
+	public interface IQueryRootHasPerson : IWeaverRel<IQueryRoot, IQueryPerson>, IWeaverQueryRel {
 
 	}
 

@@ -8,16 +8,17 @@ namespace Weaver.Interfaces {
 
 		////////////////////////////////////////////////////////////////////////////////////////////////
 		/*--------------------------------------------------------------------------------------------*/
-		WeaverRelConn Connection { get; }
+		long Id { get; set; }
+		string Label { get; }
+
+		/*--------------------------------------------------------------------------------------------*/
+		WeaverRelConn Connection { get; set; }
 
 		/*--------------------------------------------------------------------------------------------*/
 		IWeaverRelType RelType { get; }
-		bool FromManyNodes { get; }
-		bool ToManyNodes { get; }
-		bool Outgoing { get; }
-
-		/*--------------------------------------------------------------------------------------------*/
-		string Label { get; }
+		bool IsFromManyNodes { get; }
+		bool IsToManyNodes { get; }
+		bool IsOutgoing { get; }
 
 	}
 	

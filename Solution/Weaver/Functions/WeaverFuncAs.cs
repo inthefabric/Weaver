@@ -4,7 +4,7 @@ using Weaver.Items;
 namespace Weaver.Functions {
 
 	/*================================================================================================*/
-	public class WeaverFuncAs<TItem> : WeaverFunc<TItem> where TItem : IWeaverItem {
+	public class WeaverFuncAs<TItem> : WeaverFunc<TItem> where TItem : IWeaverQueryItem {
 
 		private readonly string vLabel;
 

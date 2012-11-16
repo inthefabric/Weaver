@@ -1,13 +1,15 @@
 ﻿using System;
 using System.Linq.Expressions;
+using Weaver.Exceptions;
 using Weaver.Interfaces;
 using Weaver.Items;
 
 namespace Weaver.Functions {
 
+	//TODO: use generic type for Expression return value?
+
 	/*================================================================================================*/
-	public class WeaverFuncProp<TItem> : WeaverFunc<TItem>, IWeaverProp 
-																		where TItem : IWeaverItem {
+	public class WeaverFuncProp<TItem> : WeaverFunc<TItem>, IWeaverProp where TItem : IWeaverItem {
 
 		private readonly Expression<Func<TItem, object>> vProp;
 		private string vPropName;
@@ -25,7 +27,7 @@ namespace Weaver.Functions {
 			get {
 
 				if ( vPropName != null ) { return vPropName; }
-				vPropName = GetPropertyName(vProp);
+				vPropName = GetPropertyName(this, vProp);
 				return vPropName;
 			}
 		}
@@ -40,19 +42,21 @@ namespace Weaver.Functions {
 		/*--------------------------------------------------------------------------------------------*/
 		//stackoverflow.com/questions/12420466/
 		//	unable-to-cast-object-of-type-system-linq-expressions-unaryexpression-to-type
-		public static string GetPropertyName<T>(Expression<Func<T, Object>> pExp) {
-			/*if ( pExp.Body is MemberExpression ) {
-				return ((MemberExpression)pExp.Body).Member.Name;
-			}*/
+		public static string GetPropertyName<T>(IWeaverItem pCaller, Expression<Func<T, Object>> pExp) {
+			var me = (pExp.Body as MemberExpression);
 
-			UnaryExpression body = (pExp.Body as UnaryExpression);
-
-			if ( body == null ) {
-				throw new Exception("Prop() function expected a UnaryExpression.");
+			if ( me != null ) {
+				return (me).Member.Name;
 			}
 
-			var op = ((UnaryExpression)pExp.Body).Operand;
-			return ((MemberExpression)op).Member.Name;
+			var ue = (pExp.Body as UnaryExpression);
+
+			if ( ue != null ) {
+				return ((MemberExpression)ue.Operand).Member.Name;
+			}
+
+			throw new WeaverGremlinException(pCaller, "Item property expression was of type "+
+				pExp.Body.GetType().Name+", but must be of type MemberExpression or UnaryExpression.");
 		}
 
 	}

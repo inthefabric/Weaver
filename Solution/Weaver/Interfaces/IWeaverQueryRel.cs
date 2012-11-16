@@ -1,7 +1,7 @@
 ﻿namespace Weaver.Interfaces {
 
 	/*================================================================================================*/
-	public interface IWeaverQueryRel : IWeaverRel {
+	public interface IWeaverQueryRel : IWeaverQueryItem, IWeaverRel {
 
 	}
 

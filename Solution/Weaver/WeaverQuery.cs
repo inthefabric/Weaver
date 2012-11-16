@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Weaver.Exceptions;
 using Weaver.Functions;
 using Weaver.Interfaces;
 
@@ -70,17 +71,24 @@ namespace Weaver {
 
 		////////////////////////////////////////////////////////////////////////////////////////////////
 		/*--------------------------------------------------------------------------------------------*/
-		public IWeaverItem FindAsNode<TItem>(string pLabel) where TItem : IWeaverItem {
+		public TItem FindAsNode<TItem>(string pLabel) where TItem : IWeaverQueryItem {
 			var n = vQueryPath.Count;
 
 			for ( int i = 1 ; i < n ; ++i ) {
 				IWeaverItem item = vQueryPath[i];
 				WeaverFuncAs<TItem> funcAs = (item as WeaverFuncAs<TItem>);
+				
 				if ( funcAs == null || funcAs.Label != pLabel ) { continue; }
-				return vQueryPath[i-1];
+
+				IWeaverItem prev = vQueryPath[i-1];
+				if ( prev is TItem ) { return (TItem)prev; }
+
+				throw new WeaverQueryException(this, "The 'As' marker with label '"+pLabel
+					+"' uses type "+prev.GetType().Name+", but type "+
+					typeof(TItem).Name+" was expected.");
 			}
 
-			return null;
+			return default(TItem);
 		}
 		
 

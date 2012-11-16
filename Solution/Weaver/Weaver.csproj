@@ -31,7 +31,13 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Exceptions\WeaverGemlinException.cs" />
+    <Compile Include="Exceptions\WeaverQueryException.cs" />
+    <Compile Include="Exceptions\WeaverRelException.cs" />
+    <Compile Include="Exceptions\WeaverException.cs" />
+    <Compile Include="Exceptions\WeaverNodeException.cs" />
     <Compile Include="Functions\WeaverFuncHas.cs" />
+    <Compile Include="Interfaces\IWeaverQueryItem.cs" />
     <Compile Include="Interfaces\IWeaverQueryRel.cs" />
     <Compile Include="Interfaces\IWeaverQueryNode.cs" />
     <Compile Include="Interfaces\IWeaverProp.cs" />
