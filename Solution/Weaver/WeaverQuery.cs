@@ -8,7 +8,7 @@ namespace Weaver {
 	//TODO: indexing, see stackoverflow.com/a/10073156
 
 	/*================================================================================================*/
-	public class WeaverQuery {
+	public class WeaverQuery : IWeaverQuery {
 
 		public IWeaverNode BaseNode { get; private set; }
 		private readonly IList<IWeaverItem> vQueryPath;

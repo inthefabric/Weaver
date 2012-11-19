@@ -14,12 +14,12 @@ namespace Weaver.Test.Common.Nodes {
 		////////////////////////////////////////////////////////////////////////////////////////////////
 		/*--------------------------------------------------------------------------------------------*/
 		public IQueryRootHasPerson InRootHas {
-			get { return NewRel<RootHasPerson>(WeaverRelConn.InFromOneNode); }
+			get { return NewRel<RootHasPerson>(WeaverRelConn.InFromOne); }
 		}
 
 		/*--------------------------------------------------------------------------------------------*/
 		public IQueryPersonLikesCandy InPersonLikes {
-			get { return NewRel<PersonLikesCandy>(WeaverRelConn.InFromManyNodes); }
+			get { return NewRel<PersonLikesCandy>(WeaverRelConn.InFromZeroOrMore); }
 		}
 		
 	}

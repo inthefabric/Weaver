@@ -5,10 +5,17 @@ namespace Weaver.Items {
 	
 	/*================================================================================================*/
 	public enum WeaverRelConn {
-		OutToOneNode = 1,
-		OutToManyNodes,
-		InFromOneNode,
-		InFromManyNodes
+
+		OutToOne = 1,
+		OutToOneOrMore,
+		OutToZeroOrMore,
+		OutToZeroOrOne,
+
+		InFromOne,
+		InFromOneOrMore,
+		InFromZeroOrMore,
+		InFromZeroOrOne
+
 	}
 
 	/*================================================================================================*/
@@ -56,9 +63,18 @@ namespace Weaver.Items {
 				}
 
 				vConn = value;
-				IsFromManyNodes = (vConn == WeaverRelConn.InFromManyNodes);
-				IsToManyNodes = (vConn == WeaverRelConn.OutToManyNodes);
-				IsOutgoing = (vConn == WeaverRelConn.OutToOneNode || vConn==WeaverRelConn.OutToManyNodes);
+				
+				IsFromManyNodes = (
+					vConn == WeaverRelConn.InFromZeroOrMore || 
+					vConn == WeaverRelConn.InFromOneOrMore
+				);
+				
+				IsToManyNodes = (
+					vConn == WeaverRelConn.OutToZeroOrMore ||
+					vConn == WeaverRelConn.OutToOneOrMore
+				);
+				
+				IsOutgoing = WeaverRel.IsConnOutgoing((WeaverRelConn)vConn);
 			}
 		}
 
@@ -102,6 +118,23 @@ namespace Weaver.Items {
 				return (IsOutgoing ? "out" : "in")+"E('"+Label+"')"+
 					(!IsFromManyNodes && !IsToManyNodes ? "[0]" : "");
 			}
+		}
+
+	}
+
+	/*================================================================================================*/
+	public static class WeaverRel {
+
+
+		////////////////////////////////////////////////////////////////////////////////////////////////
+		/*--------------------------------------------------------------------------------------------*/
+		public static bool IsConnOutgoing(WeaverRelConn pConn) {
+			return (
+				pConn == WeaverRelConn.OutToOne || 
+				pConn == WeaverRelConn.OutToOneOrMore ||
+				pConn == WeaverRelConn.OutToZeroOrMore ||
+				pConn == WeaverRelConn.OutToZeroOrOne
+			);
 		}
 
 	}

@@ -1,27 +1,28 @@
-﻿using Weaver.Items;
-using Weaver.Test.Common.Rels;
+﻿using System.Collections.Generic;
 
-namespace Weaver.Test.Common.Nodes {
+namespace Weaver.Interfaces {
 
 	/*================================================================================================*/
-	public class Root : TestNode, IQueryRoot {
+	public interface IWeaverQuery {
 
 
 		////////////////////////////////////////////////////////////////////////////////////////////////
 		/*--------------------------------------------------------------------------------------------*/
-		public override bool IsRoot { get { return (QueryPathIndex == 0); } }
+		void AddQueryItem(IWeaverItem pItem);
+
+		/*--------------------------------------------------------------------------------------------*/
+		int PathLength();
+		IWeaverItem PathAtIndex(int pIndex);
+		IList<IWeaverItem> PathToIndex(int pIndex, bool pInclusive=true);
+		IList<IWeaverItem> PathFromIndex(int pIndex, bool pInclusive=true);
 
 
 		////////////////////////////////////////////////////////////////////////////////////////////////
 		/*--------------------------------------------------------------------------------------------*/
-		public IQueryRootHasCandy OutHasCandy {
-			get { return NewRel<RootHasCandy>(WeaverRelConn.OutToOneOrMore); }
-		}
-
+		TItem FindAsNode<TItem>(string pLabel) where TItem : IWeaverQueryItem;
+		
 		/*--------------------------------------------------------------------------------------------*/
-		public IQueryRootHasPerson OutHasPerson {
-			get { return NewRel<RootHasPerson>(WeaverRelConn.OutToOneOrMore); }
-		}
+		string GremlinCode { get; }
 
 	}
 

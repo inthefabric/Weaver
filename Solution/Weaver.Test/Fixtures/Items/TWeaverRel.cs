@@ -12,10 +12,14 @@ namespace Weaver.Test.Fixtures.Items {
 
 		////////////////////////////////////////////////////////////////////////////////////////////////
 		/*--------------------------------------------------------------------------------------------*/
-		[TestCase(WeaverRelConn.InFromOneNode, "inE('RootHasCandy')[0]")]
-		[TestCase(WeaverRelConn.InFromManyNodes, "inE('RootHasCandy')")]
-		[TestCase(WeaverRelConn.OutToOneNode, "outE('RootHasCandy')[0]")]
-		[TestCase(WeaverRelConn.OutToManyNodes, "outE('RootHasCandy')")]
+		[TestCase(WeaverRelConn.InFromOne, "inE('RootHasCandy')[0]")]
+		[TestCase(WeaverRelConn.InFromZeroOrOne, "inE('RootHasCandy')[0]")]
+		[TestCase(WeaverRelConn.InFromOneOrMore, "inE('RootHasCandy')")]
+		[TestCase(WeaverRelConn.InFromZeroOrMore, "inE('RootHasCandy')")]
+		[TestCase(WeaverRelConn.OutToOne, "outE('RootHasCandy')[0]")]
+		[TestCase(WeaverRelConn.OutToZeroOrOne, "outE('RootHasCandy')[0]")]
+		[TestCase(WeaverRelConn.OutToOneOrMore, "outE('RootHasCandy')")]
+		[TestCase(WeaverRelConn.OutToZeroOrMore, "outE('RootHasCandy')")]
 		public void Gremlin(WeaverRelConn pConn, string pExpectGremlin) {
 			IWeaverRel r = new RootHasCandy { Connection = pConn };
 
