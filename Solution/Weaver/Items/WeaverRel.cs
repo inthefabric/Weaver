@@ -19,13 +19,10 @@ namespace Weaver.Items {
 	}
 
 	/*================================================================================================*/
-	public abstract class WeaverRel<TQueryFrom, TFrom, TType, TQueryTo, TTo> :
-														WeaverItem, IWeaverRel<TQueryFrom, TQueryTo>
-															where TQueryFrom : IWeaverQueryNode
-															where TFrom : TQueryFrom, IWeaverNode, new()
-															where TType : IWeaverRelType
-															where TQueryTo : IWeaverQueryNode
-															where TTo : TQueryTo, IWeaverNode, new() {
+	public abstract class WeaverRel<TFrom, TType, TTo> : WeaverItem, IWeaverRel<TFrom, TTo>
+																	where TFrom : IWeaverNode, new()
+																	where TType : IWeaverRelType
+																	where TTo : IWeaverNode, new() {
 
 		public long Id { get; set; }
 		public IWeaverRelType RelType { get; private set; }
@@ -81,24 +78,20 @@ namespace Weaver.Items {
 
 		////////////////////////////////////////////////////////////////////////////////////////////////
 		/*--------------------------------------------------------------------------------------------*/
-		public TQueryFrom FromNode {
+		public TFrom FromNode {
 			get {
-				return new TFrom {
-					Query = Query,
-					IsFromNode = true,
-					ExpectOneNode = !IsFromManyNodes
-				};
+				var n = new TFrom { IsFromNode = true, ExpectOneNode = !IsFromManyNodes };
+				Path.AddItem(n);
+				return n;
 			}
 		}
 
 		/*--------------------------------------------------------------------------------------------*/
-		public TQueryTo ToNode {
+		public TTo ToNode {
 			get {
-				return new TTo {
-					Query = Query,
-					IsFromNode = false,
-					ExpectOneNode = !IsToManyNodes
-				};
+				var n = new TTo { IsFromNode = false, ExpectOneNode = !IsToManyNodes };
+				Path.AddItem(n);
+				return n;
 			}
 		}
 

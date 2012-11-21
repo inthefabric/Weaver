@@ -3,8 +3,6 @@
 	/*================================================================================================*/
 	public interface IWeaverProp {
 
-		TToItem Back<TToItem>(string pLabel) where TToItem : IWeaverQueryItem;
-
 	}
 
 }

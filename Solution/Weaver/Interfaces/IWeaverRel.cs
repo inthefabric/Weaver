@@ -24,15 +24,14 @@ namespace Weaver.Interfaces {
 	
 
 	/*================================================================================================*/
-	public interface IWeaverRel<out TQueryFrom, out TQueryTo> : IWeaverRel
-																	where TQueryFrom : IWeaverQueryNode
-																	where TQueryTo : IWeaverQueryNode {
+	public interface IWeaverRel<out TFrom, out TTo> : IWeaverRel where TFrom : IWeaverNode
+																			where TTo : IWeaverNode {
 
 
 		////////////////////////////////////////////////////////////////////////////////////////////////
 		/*--------------------------------------------------------------------------------------------*/
-		TQueryFrom FromNode { get; }
-		TQueryTo ToNode { get; }
+		TFrom FromNode { get; }
+		TTo ToNode { get; }
 
 	}
 

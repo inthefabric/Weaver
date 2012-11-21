@@ -1,16 +1,19 @@
 ﻿using Weaver.Interfaces;
-using Weaver.Test.Common.Rels;
 
-namespace Weaver.Test.Common.Nodes {
+namespace Weaver.Exceptions {
 
 	/*================================================================================================*/
-	public interface IQueryRoot : IWeaverQueryNode {
+	public class WeaverFuncException : WeaverException {
+
+		public IWeaverFunc Func { get; private set; }
 
 
 		////////////////////////////////////////////////////////////////////////////////////////////////
 		/*--------------------------------------------------------------------------------------------*/
-		IQueryRootHasCandy OutHasCandy { get; }
-		IQueryRootHasPerson OutHasPerson { get; }
+		public WeaverFuncException(IWeaverFunc pFunc, string pMessage) :
+														base("Func", pFunc.ItemIdentifier, pMessage) {
+			Func = pFunc;
+		}
 
 	}
 

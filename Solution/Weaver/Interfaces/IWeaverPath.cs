@@ -3,23 +3,22 @@
 namespace Weaver.Interfaces {
 
 	/*================================================================================================*/
-	public interface IWeaverQuery {
+	public interface IWeaverPath {
 
 
 		////////////////////////////////////////////////////////////////////////////////////////////////
 		/*--------------------------------------------------------------------------------------------*/
-		void AddQueryItem(IWeaverItem pItem);
+		void AddItem(IWeaverItem pItem);
 
 		/*--------------------------------------------------------------------------------------------*/
-		int PathLength();
-		IWeaverItem PathAtIndex(int pIndex);
+		int Length { get; }
+		IWeaverItem ItemAtIndex(int pIndex);
 		IList<IWeaverItem> PathToIndex(int pIndex, bool pInclusive=true);
 		IList<IWeaverItem> PathFromIndex(int pIndex, bool pInclusive=true);
 
-
-		////////////////////////////////////////////////////////////////////////////////////////////////
 		/*--------------------------------------------------------------------------------------------*/
-		TItem FindAsNode<TItem>(string pLabel) where TItem : IWeaverQueryItem;
+		int IndexOfItem(IWeaverItem pItem);
+		TItem FindAsNode<TItem>(string pLabel) where TItem : IWeaverItem;
 		
 		/*--------------------------------------------------------------------------------------------*/
 		string GremlinCode { get; }

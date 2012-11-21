@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
+using Weaver.Exceptions;
 using Weaver.Functions;
 using Weaver.Interfaces;
 
@@ -8,22 +9,29 @@ namespace Weaver.Items {
 
 	/*================================================================================================*/
 	public abstract class WeaverItem : Object, IWeaverItem {
-
-		public int QueryPathIndex { get; private set; }
 		
-		private WeaverQuery vQuery;
+		private int vQueryPathIndex;
 
 
 		////////////////////////////////////////////////////////////////////////////////////////////////
 		/*--------------------------------------------------------------------------------------------*/
-		public WeaverQuery Query {
+		protected WeaverItem() {
+			vQueryPathIndex = -1;
+		}
+		
+		/*--------------------------------------------------------------------------------------------*/
+		public IWeaverPath Path { get; set; }
+
+		/*--------------------------------------------------------------------------------------------*/
+		public int PathIndex {
 			get {
-				return vQuery;
-			}
-			set {
-				vQuery = value;
-				QueryPathIndex = vQuery.PathLength();
-				vQuery.AddQueryItem(this);
+				if ( Path == null ) {
+					throw new WeaverException("Path is null for "+this+".");
+				}
+
+				if ( vQueryPathIndex > -1 ) { return vQueryPathIndex; }
+				vQueryPathIndex = Path.IndexOfItem(this);
+				return vQueryPathIndex;
 			}
 		}
 
@@ -31,52 +39,22 @@ namespace Weaver.Items {
 		////////////////////////////////////////////////////////////////////////////////////////////////
 		/*--------------------------------------------------------------------------------------------*/
 		public virtual IWeaverItem PrevQueryItem {
-			get { return vQuery.PathAtIndex(QueryPathIndex-1); }
+			get { return Path.ItemAtIndex(PathIndex-1); }
 		}
 
 		/*--------------------------------------------------------------------------------------------*/
 		public virtual IWeaverItem NextQueryItem {
-			get { return vQuery.PathAtIndex(QueryPathIndex+1); }
+			get { return Path.ItemAtIndex(PathIndex+1); }
 		}
 
 		/*--------------------------------------------------------------------------------------------*/
 		public virtual IList<IWeaverItem> QueryPathToThisItem {
-			get { return vQuery.PathToIndex(QueryPathIndex); }
+			get { return Path.PathToIndex(PathIndex); }
 		}
 
 		/*--------------------------------------------------------------------------------------------*/
 		public virtual IList<IWeaverItem> QueryPathFromThisItem {
-			get { return vQuery.PathFromIndex(QueryPathIndex); }
-		}
-
-
-		////////////////////////////////////////////////////////////////////////////////////////////////
-		/*--------------------------------------------------------------------------------------------*/
-		public TItem As<TItem>(string pLabel) where TItem : IWeaverQueryItem {
-			var func = new WeaverFuncAs<TItem>(this, pLabel) { Query = Query };
-			return func.CallingItem;
-		}
-
-		/*--------------------------------------------------------------------------------------------*/
-		public TToItem Back<TToItem>(string pLabel) where TToItem : IWeaverQueryItem {
-			TToItem toNode = Query.FindAsNode<TToItem>(pLabel);
-			var func = new WeaverFuncBack<TToItem>(toNode, pLabel) { Query = Query };
-			return func.CallingItem;
-		}
-
-		/*--------------------------------------------------------------------------------------------*/
-		public IWeaverProp Prop<TItem>(Expression<Func<TItem, object>> pItemProperty)
-																		where TItem : IWeaverItem {
-			var func = new WeaverFuncProp<TItem>(this, pItemProperty) { Query = Query };
-			return func;
-		}
-
-		/*--------------------------------------------------------------------------------------------*/
-		public TItem Has<TItem>(Expression<Func<TItem, object>> pItemProperty,
-						WeaverFuncHasOp pOperation, object pValue) where TItem : IWeaverItem {
-			var func = new WeaverFuncHas<TItem>(this, pItemProperty, pOperation, pValue) 
-				{ Query = Query };
-			return func.CallingItem;
+			get { return Path.PathFromIndex(PathIndex); }
 		}
 
 
@@ -92,22 +70,43 @@ namespace Weaver.Items {
 	}
 
 
-	/*================================================================================================* /
+	/*================================================================================================*/
 	public static class WeaverItemExtensions {
 
 
 		////////////////////////////////////////////////////////////////////////////////////////////////
-		/*--------------------------------------------------------------------------------------------* /
-		public static TItem Has2<TItem>(this TItem pCallingItem,
-						Expression<Func<TItem, object>> pItemProperty, WeaverFuncHasOp pOperation,
-						object pValue) where TItem : IWeaverItem {
-
-			var func = new WeaverFuncHas<TItem>(
-				pCallingItem, pItemProperty, pOperation, pValue) { Query = pCallingItem.Query };
-
-			return func.CallingItem;
+		/*--------------------------------------------------------------------------------------------*/
+		public static T As<T>(this T pCallingItem, out T pAlias) where T : IWeaverItem {
+			var func = new WeaverFuncAs<T>(pCallingItem.Path);
+			pCallingItem.Path.AddItem(func);
+			pAlias = pCallingItem;
+			return pCallingItem;
 		}
 
-	}*/
+		/*--------------------------------------------------------------------------------------------*/
+		public static TBack Back<T, TBack>(this T pCallingItem, TBack pAlias) where T : IWeaverItem
+																			where TBack : IWeaverItem {
+			var func = new WeaverFuncBack<TBack>(pCallingItem.Path, pAlias);
+			pCallingItem.Path.AddItem(func);
+			return pAlias;
+		}
+
+		/*--------------------------------------------------------------------------------------------*/
+		public static IWeaverProp Prop<T>(this T pCallingItem,
+									Expression<Func<T, object>> pItemProperty) where T : IWeaverItem {
+			var func = new WeaverFuncProp<T>(pItemProperty);
+			pCallingItem.Path.AddItem(func);
+			return func;
+		}
+
+		/*--------------------------------------------------------------------------------------------*/
+		public static T Has<T>(this T pCallingItem, Expression<Func<T, object>> pItemProperty,
+						WeaverFuncHasOp pOperation, object pValue) where T : IWeaverItem {
+			var func = new WeaverFuncHas<T>(pItemProperty, pOperation, pValue);
+			pCallingItem.Path.AddItem(func);
+			return pCallingItem;
+		}
+
+	}
 
 }

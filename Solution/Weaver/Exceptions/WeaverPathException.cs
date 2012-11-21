@@ -1,18 +1,18 @@
 ﻿using Weaver.Interfaces;
-using Weaver.Test.Common.Rels;
 
-namespace Weaver.Test.Common.Nodes {
+namespace Weaver.Exceptions {
 
 	/*================================================================================================*/
-	public interface IQueryPerson : IWeaverQueryNode {
+	public class WeaverPathException : WeaverException {
+
+		public IWeaverPath Path { get; private set; }
 
 
 		////////////////////////////////////////////////////////////////////////////////////////////////
 		/*--------------------------------------------------------------------------------------------*/
-		IQueryPersonLikesCandy OutLikesCandy { get; }
-		IQueryPersonKnowsPerson OutKnowsPerson { get; }
-		IQueryRootHasPerson InRootHas { get; }
-		IQueryPersonKnowsPerson InPersonKnows { get; }
+		public WeaverPathException(IWeaverPath pPath, string pMessage) : base(pMessage) {
+			Path = pPath;
+		}
 
 	}
 

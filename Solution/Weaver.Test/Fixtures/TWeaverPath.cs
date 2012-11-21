@@ -1,14 +1,14 @@
 ﻿using NUnit.Framework;
 using Weaver.Functions;
+using Weaver.Items;
 using Weaver.Test.Common;
 using Weaver.Test.Common.Nodes;
-using Weaver.Test.Common.Rels;
 
 namespace Weaver.Test.Fixtures {
 
 	/*================================================================================================*/
 	//[TestFixture]
-	public class TWeaverQuery {
+	public class TWeaverPath {
 
 		//TODO: Weaver.PathLength
 		//TODO: Weaver.FindAsNode
@@ -22,33 +22,35 @@ namespace Weaver.Test.Fixtures {
 		/*--------------------------------------------------------------------------------------------*/
 		[Test]
 		public void Gremlin() {
-			var q = new TestQuery();
+			var q = new TestPath();
+			Person personAlias;
+
 			q.Root
 				.OutHasPerson.ToNode
 				.InRootHas.FromNode
 				.OutHasPerson.ToNode
-					.As<IQueryPerson>("test")
+					.As(out personAlias)
 				.OutKnowsPerson.ToNode
-					.Has<Person>(p => p.PersonId, WeaverFuncHasOp.LessThanOrEqualTo, 5)
+					.Has(p => p.PersonId, WeaverFuncHasOp.LessThanOrEqualTo, 5)
 				.InPersonKnows.FromNode
-					.Back<IQueryPerson>("test")
+					.Back(personAlias)
 				.OutLikesCandy
-					.Has<PersonLikesCandy>(h => h.Enjoyment, WeaverFuncHasOp.GreterThanOrEqualTo, 0.2)
+					.Has(h => h.Enjoyment, WeaverFuncHasOp.GreterThanOrEqualTo, 0.2)
 					.ToNode
 				.InPersonLikes.FromNode
-					.Prop<Person>(p => p.Name);
+					.Prop(p => p.Name);
 
 			const string expect = "g.v(0)"+
 				".outE('RootHasPerson').inV"+
 				".inE('RootHasPerson')[0].outV(0)"+
 				".outE('RootHasPerson').inV"+
-					".as('test')"+
+					".as('step6')"+
 				".outE('PersonKnowsPerson').inV"+
-					".has('PersonId', T.lte, 5)"+
+					".has('PersonId', Tokens.T.lte, 5)"+
 				".inE('PersonKnowsPerson').outV"+
-					".back('test')"+
+					".back('step6')"+
 				".outE('PersonLikesCandy')"+
-					".has('Enjoyment', T.gte, 0.2)"+
+					".has('Enjoyment', Tokens.T.gte, 0.2)"+
 					".inV"+
 				".inE('PersonLikesCandy').outV"+
 					".Name";

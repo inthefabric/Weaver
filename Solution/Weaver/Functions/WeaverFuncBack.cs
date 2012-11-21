@@ -1,18 +1,29 @@
-﻿using Weaver.Interfaces;
+﻿using Weaver.Exceptions;
+using Weaver.Interfaces;
 using Weaver.Items;
 
 namespace Weaver.Functions {
 
 	/*================================================================================================*/
-	public class WeaverFuncBack<TToItem> : WeaverFunc<TToItem> where TToItem : IWeaverQueryItem {
+	public class WeaverFuncBack<TBack> : WeaverFunc where TBack : IWeaverItem {
+
+		public TBack BackToItem { get; private set; }
 
 		private readonly string vLabel;
 
 
 		////////////////////////////////////////////////////////////////////////////////////////////////
 		/*--------------------------------------------------------------------------------------------*/
-		public WeaverFuncBack(IWeaverItem pCallingItem, string pLabel) : base(pCallingItem) {
-			vLabel = pLabel;
+		public WeaverFuncBack(IWeaverPath pPath, TBack pBackToItem) {
+			int i = pPath.IndexOfItem(pBackToItem);
+
+			if ( i < 0 ) {
+				throw new WeaverFuncException(this,
+					"The specified return item is not present in the current path.");
+			}
+
+			BackToItem = pBackToItem;
+			vLabel = "step"+i;
 		}
 
 		/*--------------------------------------------------------------------------------------------*/

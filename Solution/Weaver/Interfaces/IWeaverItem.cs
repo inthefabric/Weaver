@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq.Expressions;
-using Weaver.Functions;
+﻿using System.Collections.Generic;
 
 namespace Weaver.Interfaces {
 
@@ -11,7 +8,7 @@ namespace Weaver.Interfaces {
 
 		////////////////////////////////////////////////////////////////////////////////////////////////
 		/*--------------------------------------------------------------------------------------------*/
-		WeaverQuery Query { get; set; }
+		IWeaverPath Path { get; set; }
 
 		/*--------------------------------------------------------------------------------------------*/
 		IWeaverItem PrevQueryItem { get; }
@@ -24,15 +21,6 @@ namespace Weaver.Interfaces {
 
 		/*--------------------------------------------------------------------------------------------*/
 		string GremlinCode { get; }
-		
-
-		////////////////////////////////////////////////////////////////////////////////////////////////
-		/*--------------------------------------------------------------------------------------------*/
-		TItem As<TItem>(string pLabel) where TItem : IWeaverQueryItem;
-		TToItem Back<TToItem>(string pLabel) where TToItem : IWeaverQueryItem;
-		IWeaverProp Prop<TItem>(Expression<Func<TItem, object>> pItemProperty) where TItem :IWeaverItem;
-		TItem Has<TItem>(Expression<Func<TItem, object>> pItemProperty,
-								WeaverFuncHasOp pOperation, object pValue) where TItem : IWeaverItem;
 
 	}
 

@@ -5,8 +5,7 @@ using Weaver.Test.Common.RelTypes;
 namespace Weaver.Test.Common.Rels {
 
 	/*================================================================================================*/
-	public class RootHasCandy : WeaverRel<IQueryRoot, Root, Has, IQueryCandy, Candy>,
-																					IQueryRootHasCandy {
+	public class RootHasCandy : WeaverRel<Root, Has, Candy> {
 
 	}
 

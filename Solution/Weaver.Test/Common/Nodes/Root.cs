@@ -4,22 +4,22 @@ using Weaver.Test.Common.Rels;
 namespace Weaver.Test.Common.Nodes {
 
 	/*================================================================================================*/
-	public class Root : TestNode, IQueryRoot {
+	public class Root : TestNode {
 
 
 		////////////////////////////////////////////////////////////////////////////////////////////////
 		/*--------------------------------------------------------------------------------------------*/
-		public override bool IsRoot { get { return (QueryPathIndex == 0); } }
+		public override bool IsRoot { get { return (Path == null || PathIndex == 0); } }
 
 
 		////////////////////////////////////////////////////////////////////////////////////////////////
 		/*--------------------------------------------------------------------------------------------*/
-		public IQueryRootHasCandy OutHasCandy {
+		public RootHasCandy OutHasCandy {
 			get { return NewRel<RootHasCandy>(WeaverRelConn.OutToOneOrMore); }
 		}
 
 		/*--------------------------------------------------------------------------------------------*/
-		public IQueryRootHasPerson OutHasPerson {
+		public RootHasPerson OutHasPerson {
 			get { return NewRel<RootHasPerson>(WeaverRelConn.OutToOneOrMore); }
 		}
 

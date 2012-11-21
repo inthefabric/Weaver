@@ -10,8 +10,11 @@ namespace Weaver.Test.Utils {
 
 		////////////////////////////////////////////////////////////////////////////////////////////////
 		/*--------------------------------------------------------------------------------------------*/
-		public static Exception CheckThrows(Type pExType, bool pThrows, TestDelegate pFunc) {
-			if ( pThrows ) { return Assert.Throws(pExType, pFunc); }
+		public static Exception CheckThrows<TEx>(bool pThrows, TestDelegate pFunc) where TEx :Exception{
+			if ( pThrows ) {
+				return Assert.Throws(typeof(TEx), pFunc);
+			}
+
 			Assert.DoesNotThrow(pFunc);
 			return null;
 		}

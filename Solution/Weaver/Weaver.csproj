@@ -31,21 +31,19 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Interfaces\IWeaverQuery.cs" />
+    <Compile Include="Exceptions\WeaverFuncException.cs" />
+    <Compile Include="Interfaces\IWeaverPath.cs" />
     <Compile Include="Exceptions\WeaverGemlinException.cs" />
-    <Compile Include="Exceptions\WeaverQueryException.cs" />
+    <Compile Include="Exceptions\WeaverPathException.cs" />
     <Compile Include="Exceptions\WeaverRelException.cs" />
     <Compile Include="Exceptions\WeaverException.cs" />
     <Compile Include="Exceptions\WeaverNodeException.cs" />
     <Compile Include="Functions\WeaverFuncHas.cs" />
-    <Compile Include="Interfaces\IWeaverQueryItem.cs" />
-    <Compile Include="Interfaces\IWeaverQueryRel.cs" />
-    <Compile Include="Interfaces\IWeaverQueryNode.cs" />
-    <Compile Include="Interfaces\IWeaverProp.cs" />
     <Compile Include="Functions\WeaverFuncProp.cs" />
     <Compile Include="Functions\WeaverFuncBack.cs" />
     <Compile Include="Functions\WeaverFuncAs.cs" />
     <Compile Include="Interfaces\IWeaverFunc.cs" />
+    <Compile Include="Interfaces\IWeaverProp.cs" />
     <Compile Include="Items\WeaverFunc.cs" />
     <Compile Include="Interfaces\IWeaverRelType.cs" />
     <Compile Include="Interfaces\IWeaverRel.cs" />
@@ -53,7 +51,7 @@
     <Compile Include="Items\WeaverItem.cs" />
     <Compile Include="Items\WeaverRel.cs" />
     <Compile Include="Interfaces\IWeaverItem.cs" />
-    <Compile Include="WeaverQuery.cs" />
+    <Compile Include="WeaverPath.cs" />
     <Compile Include="Items\WeaverNode.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Schema\WeaverNodeSchema.cs" />

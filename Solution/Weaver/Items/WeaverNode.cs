@@ -18,8 +18,10 @@ namespace Weaver.Items {
 		}
 
 		/*--------------------------------------------------------------------------------------------*/
-		public TRel NewRel<TRel>(WeaverRelConn pConn) where TRel : IWeaverQueryRel, new() {
-			return new TRel { Connection = pConn, Query = Query };
+		public TRel NewRel<TRel>(WeaverRelConn pConn) where TRel : IWeaverRel, new() {
+			var rel = new TRel { Connection = pConn };
+			Path.AddItem(rel);
+			return rel;
 		}
 
 		/*--------------------------------------------------------------------------------------------*/

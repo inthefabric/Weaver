@@ -19,10 +19,9 @@ namespace Weaver.Test.Fixtures.Functions {
 		[TestCase(WeaverFuncHasOp.LessThan, 99, "lt, 99")]
 		[TestCase(WeaverFuncHasOp.LessThanOrEqualTo, 1.23456789d, "lte, 1.23456789")]
 		public void Gremlin(WeaverFuncHasOp pOperation, object pValue, string pExpect) {
-			pExpect = "has('ExpectOneNode', T."+pExpect+")";
+			pExpect = "has('ExpectOneNode', Tokens.T."+pExpect+")";
 
-			var f = new WeaverFuncHas<Person>(
-				new Person(), (n => n.ExpectOneNode), pOperation, pValue);
+			var f = new WeaverFuncHas<Person>(n => n.ExpectOneNode, pOperation, pValue);
 
 			Assert.AreEqual("ExpectOneNode", f.PropertyName, "Incorrect PropertyName.");
 			Assert.AreEqual(pOperation, f.Operation, "Incorrect Operation.");
@@ -32,14 +31,13 @@ namespace Weaver.Test.Fixtures.Functions {
 
 		/*--------------------------------------------------------------------------------------------*/
 		[Test]
-		public void GremlinBadExpression() {
+		public void BadExpression() {
 			try {
-				var f = new WeaverFuncHas<Person>(
-					new Person(), (n => (n.ExpectOneNode == false)),
+				var f = new WeaverFuncHas<Person>(n => (n.ExpectOneNode == false),
 					WeaverFuncHasOp.EqualTo, null);
-				Assert.Fail("Expected an Exception: "+f);
+				Assert.Fail("Expected WeaverFuncException: "+f.PropertyName);
 			}
-			catch ( WeaverGremlinException e ) {
+			catch ( WeaverFuncException e ) {
 				Assert.NotNull(e);
 			}
 		}

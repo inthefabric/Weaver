@@ -1,17 +1,18 @@
-﻿using Weaver.Interfaces;
-using Weaver.Test.Common.Rels;
+﻿using Weaver.Test.Common.Nodes;
 
-namespace Weaver.Test.Common.Nodes {
+namespace Weaver.Test.Common {
 
 	/*================================================================================================*/
-	public interface IQueryCandy : IWeaverQueryNode {
+	public class TestPath : WeaverPath {
 
 
 		////////////////////////////////////////////////////////////////////////////////////////////////
 		/*--------------------------------------------------------------------------------------------*/
-		IQueryRootHasPerson InRootHas { get; }
-		IQueryPersonLikesCandy InPersonLikes { get; }
-		
+		public TestPath() : base(new Root()) {}
+
+		/*--------------------------------------------------------------------------------------------*/
+		public Root Root { get { return (Root)BaseNode; } }
+
 	}
 
 }

@@ -42,6 +42,9 @@
     <CodeAnalysisIgnoreBuiltInRules>true</CodeAnalysisIgnoreBuiltInRules>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Moq, Version=4.0.10827.0, Culture=neutral, PublicKeyToken=69f491c39445e920, processorArchitecture=MSIL">
+      <HintPath>..\..\Packages\Moq.4.0.10827\lib\NET40\Moq.dll</HintPath>
+    </Reference>
     <Reference Include="nunit.framework, Version=2.6.2.12296, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\Packages\NUnit.2.6.2\lib\nunit.framework.dll</HintPath>
@@ -49,13 +52,6 @@
     <Reference Include="System" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Common\Nodes\IQueryCandy.cs" />
-    <Compile Include="Common\Nodes\IQueryPerson.cs" />
-    <Compile Include="Common\Nodes\IQueryRoot.cs" />
-    <Compile Include="Common\Rels\IQueryPersonKnowsPerson.cs" />
-    <Compile Include="Common\Rels\IQueryPersonLikesCandy.cs" />
-    <Compile Include="Common\Rels\IQueryRootHasCandy.cs" />
-    <Compile Include="Common\Rels\IQueryRootHasPerson.cs" />
     <Compile Include="Common\Rels\RootHasCandy.cs" />
     <Compile Include="Common\Rels\RootHasPerson.cs" />
     <Compile Include="Common\RelTypes\Has.cs" />
@@ -67,14 +63,14 @@
     <Compile Include="Common\Rels\PersonKnowsPerson.cs" />
     <Compile Include="Common\RelTypes\Knows.cs" />
     <Compile Include="Common\Nodes\Person.cs" />
-    <Compile Include="Common\TestQuery.cs" />
+    <Compile Include="Common\TestPath.cs" />
     <Compile Include="Fixtures\Items\TWeaverRel.cs" />
     <Compile Include="Fixtures\Items\TWeaverFunc.cs" />
     <Compile Include="Fixtures\Functions\TWeaverFuncAs.cs" />
     <Compile Include="Fixtures\Functions\TWeaverFuncBack.cs" />
     <Compile Include="Fixtures\Functions\TWeaverFuncHas.cs" />
     <Compile Include="Fixtures\Functions\TWeaverFuncProp.cs" />
-    <Compile Include="Fixtures\TWeaverQuery.cs" />
+    <Compile Include="Fixtures\TWeaverPath.cs" />
     <Compile Include="Fixtures\Items\TWeaverNode.cs" />
     <Compile Include="Utils\WeaverTestUtil.cs" />
     <Compile Include="WeaverTestBase.cs" />

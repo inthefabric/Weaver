@@ -4,7 +4,7 @@ using Weaver.Test.Common.Rels;
 namespace Weaver.Test.Common.Nodes {
 
 	/*================================================================================================*/
-	public class Person : TestNode, IQueryPerson {
+	public class Person : TestNode {
 
 		public int PersonId { get; set; }
 		public bool IsMale { get; set; }
@@ -13,24 +13,24 @@ namespace Weaver.Test.Common.Nodes {
 
 		////////////////////////////////////////////////////////////////////////////////////////////////
 		/*--------------------------------------------------------------------------------------------*/
-		public IQueryPersonLikesCandy OutLikesCandy {
+		public PersonLikesCandy OutLikesCandy {
 			get { return NewRel<PersonLikesCandy>(WeaverRelConn.OutToZeroOrMore); }
 		}
 
 		/*--------------------------------------------------------------------------------------------*/
-		public IQueryPersonKnowsPerson OutKnowsPerson {
+		public PersonKnowsPerson OutKnowsPerson {
 			get { return NewRel<PersonKnowsPerson>(WeaverRelConn.OutToZeroOrMore); }
 		}
 
 
 		////////////////////////////////////////////////////////////////////////////////////////////////
 		/*--------------------------------------------------------------------------------------------*/
-		public IQueryRootHasPerson InRootHas {
+		public RootHasPerson InRootHas {
 			get { return NewRel<RootHasPerson>(WeaverRelConn.InFromOne); }
 		}
 
 		/*--------------------------------------------------------------------------------------------*/
-		public IQueryPersonKnowsPerson InPersonKnows {
+		public PersonKnowsPerson InPersonKnows {
 			get { return NewRel<PersonKnowsPerson>(WeaverRelConn.InFromZeroOrMore); }
 		}
 

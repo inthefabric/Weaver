@@ -38,10 +38,8 @@ namespace Weaver.Functions {
 
 	}
 
-	//TODO: use generic type for Expression return value?
-
 	/*================================================================================================*/
-	public class WeaverFuncHas<TItem> : WeaverFunc<TItem>, IWeaverProp where TItem : IWeaverItem {
+	public class WeaverFuncHas<TItem> : WeaverFunc, IWeaverProp where TItem : IWeaverItem {
 
 		private readonly Expression<Func<TItem, object>> vProp;
 		private string vPropName;
@@ -52,9 +50,8 @@ namespace Weaver.Functions {
 
 		////////////////////////////////////////////////////////////////////////////////////////////////
 		/*--------------------------------------------------------------------------------------------*/
-		public WeaverFuncHas(IWeaverItem pCallingItem,
-						Expression<Func<TItem, object>> pItemProperty, WeaverFuncHasOp pOperation,
-																object pValue) : base(pCallingItem) {
+		public WeaverFuncHas(Expression<Func<TItem, object>> pItemProperty, WeaverFuncHasOp pOperation,
+																						object pValue) {
 			vProp = pItemProperty;
 			Operation = pOperation;
 			Value = pValue;
@@ -64,7 +61,7 @@ namespace Weaver.Functions {
 		public string PropertyName {
 			get {
 				if ( vPropName != null ) { return vPropName; }
-				vPropName = WeaverFuncProp<TItem>.GetPropertyName(this, vProp);
+				vPropName = WeaverFuncProp.GetPropertyName(this, vProp);
 				return vPropName;
 			}
 		}
@@ -74,7 +71,7 @@ namespace Weaver.Functions {
 			get {
 				string v = (Value == null ? "null" : Value.ToString());
 				if ( Value is string ) { v = "'"+v+"'"; }
-				return "has('"+PropertyName+"', T."+
+				return "has('"+PropertyName+"', Tokens.T."+
 					WeaverFuncHas.GremlinOpMap[Operation]+", "+v+")";
 			}
 		}

@@ -5,8 +5,7 @@ using Weaver.Test.Common.RelTypes;
 namespace Weaver.Test.Common.Rels {
 
 	/*================================================================================================*/
-	public class RootHasPerson : WeaverRel<IQueryRoot, Root, Has, IQueryPerson, Person>,
-																				IQueryRootHasPerson {
+	public class RootHasPerson : WeaverRel<Root, Has, Person> {
 
 	}
 
