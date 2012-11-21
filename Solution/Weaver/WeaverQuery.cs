@@ -46,7 +46,7 @@ namespace Weaver {
 
 		////////////////////////////////////////////////////////////////////////////////////////////////
 		/*--------------------------------------------------------------------------------------------*/
-		public static WeaverQuery AddNodeGremlin<T>(T pNode) {
+		public static WeaverQuery AddNodeGremlin<T>(T pNode) where T : IWeaverItem {
 			var q = new WeaverQuery();
 
 			string grem = "g.addVertex([";
@@ -92,6 +92,24 @@ namespace Weaver {
 			q.Script = "n = g.v("+nodeIdParam+");"+
 				"g.idx("+indexNameParam+").put("+propNameParam+","+propValParam+",n);";
 
+			return q;
+		}
+
+
+		////////////////////////////////////////////////////////////////////////////////////////////////
+		/*--------------------------------------------------------------------------------------------*/
+		public static WeaverQuery UpdateNodesAtPath<T>(IWeaverPath pPath, WeaverUpdates<T> pUpdates)
+																				where T : IWeaverNode {
+			var q = new WeaverQuery();
+			q.Script = pPath.GremlinCode+".each{";
+
+			for ( int i = 0 ; i < pUpdates.Count ; ++i ) {
+				KeyValuePair<string, string> pair = pUpdates[i];
+				string propValParam = q.AddParam(pair.Value);
+				q.Script += (i == 0 ? "" : ";")+"it."+pair.Key+"="+propValParam;
+			}
+
+			q.Script += "};";
 			return q;
 		}
 

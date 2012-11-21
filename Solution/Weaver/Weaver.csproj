@@ -31,6 +31,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="WeaverUpdates.cs" />
     <Compile Include="Functions\WeaverFuncIndex.cs" />
     <Compile Include="Interfaces\IWeaverQuery.cs" />
     <Compile Include="Items\WeaverItemPropertyAttribute.cs" />

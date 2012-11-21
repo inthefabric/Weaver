@@ -1,5 +1,8 @@
 ﻿using System.Collections.Generic;
 using NUnit.Framework;
+using Weaver.Functions;
+using Weaver.Items;
+using Weaver.Test.Common;
 using Weaver.Test.Common.Nodes;
 
 namespace Weaver.Test.Fixtures {
@@ -90,6 +93,46 @@ namespace Weaver.Test.Fixtures {
 			Assert.AreEqual(expect, q.Script, "Incorrect Query.Script.");
 			CheckQueryParams(q, expectParams);
 		}
+
+
+		////////////////////////////////////////////////////////////////////////////////////////////////
+		/*--------------------------------------------------------------------------------------------*/
+		[Test]
+		public void UpdateNodesAtPath() {
+			var person = new Person();
+			person.PersonId = 321;
+			person.Name = "Zach K";
+			person.Age = 27.3f;
+			person.IsMale = true;
+
+			var path = new TestPath();
+			var end = path.BaseNode
+				.OutHasPerson.ToNode
+					.Has(p => p.PersonId, WeaverFuncHasOp.EqualTo, 123);
+
+			var updates = new WeaverUpdates<Person>();
+			updates.AddUpdate(person, p => p.PersonId);
+			updates.AddUpdate(person, p => p.Name);
+			updates.AddUpdate(person, p => p.IsMale);
+			updates.AddUpdate(person, p => p.Age);
+
+			WeaverQuery q = WeaverQuery.UpdateNodesAtPath(path, updates);
+
+			/*Console.WriteLine(q.Script);
+			foreach ( string key in q.Params.Keys ) { Console.WriteLine(key+": "+q.Params[key]); }*/
+
+			string expect = path.GremlinCode+".each{it.PersonId=P0;it.Name=P1;it.IsMale=P2;it.Age=P3};";
+
+			var expectParams = new Dictionary<string, string>();
+			expectParams.Add("P0", person.PersonId+"");
+			expectParams.Add("P1", "'"+person.Name+"'");
+			expectParams.Add("P2", person.IsMale+"");
+			expectParams.Add("P3", person.Age+"");
+
+			Assert.AreEqual(expect, q.Script, "Incorrect Query.Script.");
+			CheckQueryParams(q, expectParams);
+		}
+
 
 
 		////////////////////////////////////////////////////////////////////////////////////////////////
