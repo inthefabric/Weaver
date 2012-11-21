@@ -31,6 +31,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Functions\WeaverFuncIndex.cs" />
+    <Compile Include="Interfaces\IWeaverQuery.cs" />
+    <Compile Include="Items\WeaverItemPropertyAttribute.cs" />
+    <Compile Include="WeaverQuery.cs" />
     <Compile Include="Exceptions\WeaverFuncException.cs" />
     <Compile Include="Interfaces\IWeaverPath.cs" />
     <Compile Include="Exceptions\WeaverGemlinException.cs" />

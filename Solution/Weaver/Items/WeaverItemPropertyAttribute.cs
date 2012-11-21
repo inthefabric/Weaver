@@ -1,14 +1,17 @@
-﻿using Weaver.Test.Common.Nodes;
+﻿using System;
 
-namespace Weaver.Test.Common {
+namespace Weaver.Items {
 
 	/*================================================================================================*/
-	public class TestPath : WeaverPath<Root> {
-
+	[AttributeUsage(AttributeTargets.Property)]
+	public class WeaverItemPropertyAttribute : Attribute {
+		
 
 		////////////////////////////////////////////////////////////////////////////////////////////////
 		/*--------------------------------------------------------------------------------------------*/
-		public TestPath() : base(new Root()) {}
+		public WeaverItemPropertyAttribute() {
+
+		}
 
 	}
 

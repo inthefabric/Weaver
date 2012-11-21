@@ -5,21 +5,28 @@ using Weaver.Interfaces;
 
 namespace Weaver {
 
-	//TODO: indexing, see stackoverflow.com/a/10073156
-
 	/*================================================================================================*/
-	public class WeaverPath : IWeaverPath {
+	public class WeaverPath<TBase> : IWeaverPath, IWeaverPath<TBase> where TBase : IWeaverItem, new() {
 
-		public IWeaverNode BaseNode { get; private set; }
+		public TBase BaseNode { get; private set; }
+		public WeaverFuncIndex BaseIndex { get; private set; }
 		private readonly IList<IWeaverItem> vItems;
 		
 
 		////////////////////////////////////////////////////////////////////////////////////////////////
 		/*--------------------------------------------------------------------------------------------*/
-		public WeaverPath(IWeaverNode pBaseNode) {
+		public WeaverPath(TBase pBaseNode) {
 			BaseNode = pBaseNode;
 			vItems = new List<IWeaverItem>();
 			AddItem(BaseNode);
+		}
+
+		/*--------------------------------------------------------------------------------------------*/
+		public WeaverPath(string pIndexName, string pValue, bool pValueIsString) {
+			BaseNode = new TBase { Path = this };
+			BaseIndex = new WeaverFuncIndex(pIndexName, pValue, pValueIsString);
+			vItems = new List<IWeaverItem>();
+			AddItem(BaseIndex);
 		}
 
 		/*--------------------------------------------------------------------------------------------*/
@@ -98,13 +105,13 @@ namespace Weaver {
 
 		////////////////////////////////////////////////////////////////////////////////////////////////
 		/*--------------------------------------------------------------------------------------------*/
-		public static string GetGremlinCode(WeaverPath pPath) {
-			return GetGremlinCode(pPath.vItems);
+		public static string GetGremlinCode<T>(WeaverPath<T> pPath) where T : IWeaverItem, new() {
+			return GetGremlinCode(pPath.vItems, (pPath.BaseIndex != null));
 		}
 
 		/*--------------------------------------------------------------------------------------------*/
-		public static string GetGremlinCode(IList<IWeaverItem> pPathItems) {
-			string gremlin = "g.";
+		public static string GetGremlinCode(IList<IWeaverItem> pPathItems, bool pStartAtIndex=false) {
+			string gremlin = (pStartAtIndex ? "" : "g.");
 
 			foreach ( IWeaverItem q in pPathItems ) {
 				gremlin += q.GremlinCode+'.';
@@ -114,7 +121,7 @@ namespace Weaver {
 		}
 
 		/*--------------------------------------------------------------------------------------------*/
-		public string GremlinCode { get { return GetGremlinCode(vItems); } }
+		public string GremlinCode { get { return GetGremlinCode(this); } }
 
 	}
 

@@ -23,11 +23,26 @@ namespace Weaver.Test.Fixtures.Items {
 		public void Gremlin(WeaverRelConn pConn, string pExpectGremlin) {
 			IWeaverRel r = new RootHasCandy { Connection = pConn };
 
-			/*Assert.AreEqual("RootHasCandy", r.Label, "Incorrect IsRoot.");
-			Assert.AreEqual(pIsFromList, r.FromManyNodes, "Incorrect IsRoot.");
-			Assert.AreEqual(pIsRelOut, r.IsRelOut, "Incorrect IsRoot.");
-			Assert.AreEqual(pIsToList, r.ToManyNodes, "Incorrect IsFromNode.");*/
 			Assert.AreEqual(pExpectGremlin, r.GremlinCode, "Incorrect GremlinCode.");
+		}
+
+		/*--------------------------------------------------------------------------------------------*/
+		[TestCase(WeaverRelConn.InFromOne, false, false, false)]
+		[TestCase(WeaverRelConn.InFromZeroOrOne, false, false, false)]
+		[TestCase(WeaverRelConn.InFromOneOrMore, true, false, false)]
+		[TestCase(WeaverRelConn.InFromZeroOrMore, true, false, false)]
+		[TestCase(WeaverRelConn.OutToOne, false, false, true)]
+		[TestCase(WeaverRelConn.OutToZeroOrOne, false, false, true)]
+		[TestCase(WeaverRelConn.OutToOneOrMore, false, true, true)]
+		[TestCase(WeaverRelConn.OutToZeroOrMore, false, true, true)]
+		public void Connection(WeaverRelConn pConn, bool pFromMany, bool pToMany, bool pOut) {
+			IWeaverRel r = new RootHasCandy { Connection = pConn };
+
+			Assert.AreEqual("RootHasCandy", r.Label, "Incorrect IsRoot.");
+			Assert.AreEqual(pConn, r.Connection, "Incorrect Connection.");
+			Assert.AreEqual(pFromMany, r.IsFromManyNodes, "Incorrect IsFromManyNodes.");
+			Assert.AreEqual(pToMany, r.IsToManyNodes, "Incorrect IsToManyNodes.");
+			Assert.AreEqual(pOut, r.IsOutgoing, "Incorrect IsOutgoing.");
 		}
 
 	}

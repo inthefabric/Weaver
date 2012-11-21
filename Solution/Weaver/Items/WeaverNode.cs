@@ -5,7 +5,9 @@ namespace Weaver.Items {
 	/*================================================================================================*/
 	public abstract class WeaverNode : WeaverItem, IWeaverNode {
 
+		[WeaverItemProperty]
 		public long Id { get; set; }
+
 		public virtual bool IsFromNode { get; set; }
 		public virtual bool ExpectOneNode { get; set; }
 		public virtual bool IsRoot { get; protected set; }
@@ -18,7 +20,7 @@ namespace Weaver.Items {
 		}
 
 		/*--------------------------------------------------------------------------------------------*/
-		public TRel NewRel<TRel>(WeaverRelConn pConn) where TRel : IWeaverRel, new() {
+		protected TRel NewRel<TRel>(WeaverRelConn pConn) where TRel : IWeaverRel, new() {
 			var rel = new TRel { Connection = pConn };
 			Path.AddItem(rel);
 			return rel;

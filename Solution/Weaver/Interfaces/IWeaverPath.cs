@@ -1,9 +1,18 @@
 ﻿using System.Collections.Generic;
+using Weaver.Functions;
 
 namespace Weaver.Interfaces {
 
 	/*================================================================================================*/
+	public interface IWeaverPath<out TBase> where TBase : IWeaverItem, new() {
+
+		TBase BaseNode { get; }
+	}
+
+	/*================================================================================================*/
 	public interface IWeaverPath {
+
+		WeaverFuncIndex BaseIndex { get; }
 
 
 		////////////////////////////////////////////////////////////////////////////////////////////////
@@ -19,7 +28,7 @@ namespace Weaver.Interfaces {
 		/*--------------------------------------------------------------------------------------------*/
 		int IndexOfItem(IWeaverItem pItem);
 		TItem FindAsNode<TItem>(string pLabel) where TItem : IWeaverItem;
-		
+
 		/*--------------------------------------------------------------------------------------------*/
 		string GremlinCode { get; }
 

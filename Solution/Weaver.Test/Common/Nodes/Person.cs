@@ -6,8 +6,13 @@ namespace Weaver.Test.Common.Nodes {
 	/*================================================================================================*/
 	public class Person : TestNode {
 
+		[WeaverItemProperty]
 		public int PersonId { get; set; }
+
+		[WeaverItemProperty]
 		public bool IsMale { get; set; }
+
+		[WeaverItemProperty]
 		public float Age { get; set; }
 
 
