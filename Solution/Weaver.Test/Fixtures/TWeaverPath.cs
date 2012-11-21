@@ -54,14 +54,15 @@ namespace Weaver.Test.Fixtures {
 		/*--------------------------------------------------------------------------------------------*/
 		[Test]
 		public void GremlinIndex() {
-			var path = new WeaverPath<Person>("PersonId", "123", false);
+			var path = new WeaverPath<Person>();
+			path.StartAtIndex<Person>("Person", p => p.PersonId, 123);
 
 			path.BaseNode
 				.OutKnowsPerson.ToNode
 				.OutLikesCandy.ToNode
 					.Prop(p => p.Name);
 
-			const string expect = "index.get('PersonId', 123)"+
+			const string expect = "g.idx('Person').get('PersonId', 123)"+
 				".outE('PersonKnowsPerson').inV"+
 				".outE('PersonLikesCandy').inV"+
 					".Name";

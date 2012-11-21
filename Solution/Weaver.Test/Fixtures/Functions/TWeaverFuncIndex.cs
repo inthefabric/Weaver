@@ -1,5 +1,8 @@
-﻿using NUnit.Framework;
+﻿using System;
+using System.Linq.Expressions;
+using NUnit.Framework;
 using Weaver.Functions;
+using Weaver.Test.Common.Nodes;
 
 namespace Weaver.Test.Fixtures.Functions {
 
@@ -10,15 +13,23 @@ namespace Weaver.Test.Fixtures.Functions {
 
 		////////////////////////////////////////////////////////////////////////////////////////////////
 		/*--------------------------------------------------------------------------------------------*/
-		[TestCase("PersonId", "123", false, "index.get('PersonId', 123)")]
-		[TestCase("Name", "zach", true, "index.get('Name', 'zach')")]
-		[TestCase("Age", "27.1", false, "index.get('Age', 27.1)")]
-		public void Gremlin(string pName, string pVal, bool pIsString, string pExpect) {
-			var q = new WeaverFuncIndex(pName, pVal, pIsString);
+		[TestCase("PersonId", 123, "g.idx('Person').get('PersonId', 123)")]
+		[TestCase("Name", "zach", "g.idx('Person').get('Name', 'zach')")]
+		[TestCase("Age", 27.1f, "g.idx('Person').get('Age', 27.1)")]
+		public void Gremlin(string pPropName, object pValue, string pExpect) {
+			const string indexName = "Person";
+			Expression<Func<Person, object>> func = null;
 
-			Assert.AreEqual(pName, q.IndexName, "Incorrect IndexName.");
-			Assert.AreEqual(pVal, q.Value, "Incorrect Value.");
-			Assert.AreEqual(pIsString, q.ValueIsString, "Incorrect ValueIsString.");
+			switch ( pPropName ) {
+				case "PersonId": func = (p => p.PersonId); break;
+				case "Name": func = (p => p.Name); break;
+				case "Age": func = (p => p.Age); break;
+			}
+
+			var q = new WeaverFuncIndex<Person>(indexName, func, pValue);
+
+			Assert.AreEqual(indexName, q.IndexName, "Incorrect IndexName.");
+			Assert.AreEqual(pValue, q.Value, "Incorrect Value.");
 			Assert.AreEqual(pExpect, q.GremlinCode, "Incorrect GrelminCode.");
 		}
 

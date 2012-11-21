@@ -44,9 +44,18 @@ namespace Weaver.Functions {
 
 		////////////////////////////////////////////////////////////////////////////////////////////////
 		/*--------------------------------------------------------------------------------------------*/
-		//stackoverflow.com/questions/12420466/
-		//	unable-to-cast-object-of-type-system-linq-expressions-unaryexpression-to-type
-		public static string GetPropertyName<T>(IWeaverFunc pFunc, Expression<Func<T, Object>> pExp) {
+		public static string GetPropertyName<T>(IWeaverFunc pFunc, Expression<Func<T, object>> pExp) {
+
+			try {
+				return GetPropertyName(pExp);
+			}
+			catch ( WeaverException we ) {
+				throw new WeaverFuncException(pFunc, we.Message);
+			}
+		}
+
+		/*--------------------------------------------------------------------------------------------*/
+		public static string GetPropertyName<T>(Expression<Func<T, object>> pExp) {
 
 			MemberExpression me = GetMemberExpr(pExp);
 
@@ -54,12 +63,12 @@ namespace Weaver.Functions {
 				return (me).Member.Name;
 			}
 
-			throw new WeaverFuncException(pFunc, "Item property expression body was of type "+
+			throw new WeaverException("Item property expression body was of type "+
 				pExp.Body.GetType().Name+", but must be of type MemberExpression.");
 		}
 
 		/*--------------------------------------------------------------------------------------------*/
-		private static MemberExpression GetMemberExpr<T>(Expression<Func<T, Object>> pExp) {
+		private static MemberExpression GetMemberExpr<T>(Expression<Func<T, object>> pExp) {
 
 			var me = (pExp.Body as MemberExpression);
 			if ( me != null ) { return me; }

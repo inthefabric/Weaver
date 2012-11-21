@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq.Expressions;
 using Weaver.Exceptions;
 using Weaver.Functions;
 using Weaver.Interfaces;
@@ -22,17 +24,22 @@ namespace Weaver {
 		}
 
 		/*--------------------------------------------------------------------------------------------*/
-		public WeaverPath(string pIndexName, string pValue, bool pValueIsString) {
-			BaseNode = new TBase { Path = this };
-			BaseIndex = new WeaverFuncIndex(pIndexName, pValue, pValueIsString);
+		public WeaverPath() {
 			vItems = new List<IWeaverItem>();
-			AddItem(BaseIndex);
 		}
 
 		/*--------------------------------------------------------------------------------------------*/
 		public void AddItem(IWeaverItem pItem) {
 			vItems.Add(pItem);
 			pItem.Path = this;
+		}
+
+		/*--------------------------------------------------------------------------------------------*/
+		public void StartAtIndex<T>(string pIndexName, Expression<Func<T, object>> pFunc, 
+																object pValue) where T : IWeaverNode {
+			BaseNode = new TBase { Path = this };
+			BaseIndex = new WeaverFuncIndex<T>(pIndexName, pFunc, pValue);
+			AddItem(BaseIndex);
 		}
 
 

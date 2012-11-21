@@ -1,40 +1,37 @@
-﻿using Weaver.Items;
+﻿using System;
+using System.Linq.Expressions;
+using Weaver.Interfaces;
+using Weaver.Items;
 
 namespace Weaver.Functions {
+	
+	/*================================================================================================*/
+	public abstract class WeaverFuncIndex : WeaverFunc {
+	}
 
 	/*================================================================================================*/
-	public class WeaverFuncIndex : WeaverFunc {
+	public class WeaverFuncIndex<T> : WeaverFuncIndex where T : IWeaverNode {
 
-		public bool ValueIsString { get; private set; }
+		public string IndexName { get; private set; }
+		public object Value { get; private set; }
 
-		private readonly string vIndexName;
-		private readonly string vValue;
+		private readonly Expression<Func<T, object>> vFunc;
 
 
 		////////////////////////////////////////////////////////////////////////////////////////////////
 		/*--------------------------------------------------------------------------------------------*/
-		public WeaverFuncIndex(string pIndexName, string pValue, bool pValueIsString) {
-			vIndexName = pIndexName;
-			vValue = pValue;
-			ValueIsString = pValueIsString;
-		}
-
-		/*--------------------------------------------------------------------------------------------*/
-		public string IndexName {
-			get { return vIndexName+""; }
-		}
-
-		/*--------------------------------------------------------------------------------------------*/
-		public string Value {
-			get { return vValue+""; }
+		public WeaverFuncIndex(string pIndexName, Expression<Func<T,object>> pFunc, object pValue) {
+			IndexName = pIndexName;
+			vFunc = pFunc;
+			Value = pValue;
 		}
 
 		/*--------------------------------------------------------------------------------------------*/
 		public override string GremlinCode {
 			get {
-				string val = vValue;
-				if ( ValueIsString ) { val = "'"+val+"'"; }
-				return "index.get('"+vIndexName+"', "+val+")";
+				var propName = WeaverFuncProp.GetPropertyName(vFunc);
+				return "g.idx('"+IndexName+"').get('"+propName+"', "+
+					WeaverQuery.QuoteValueIfString(Value)+")";
 			}
 		}
 
