@@ -4,6 +4,7 @@ using Weaver.Functions;
 using Weaver.Items;
 using Weaver.Test.Common;
 using Weaver.Test.Common.Nodes;
+using Weaver.Test.Common.Rels;
 
 namespace Weaver.Test.Fixtures {
 
@@ -15,7 +16,7 @@ namespace Weaver.Test.Fixtures {
 		////////////////////////////////////////////////////////////////////////////////////////////////
 		/*--------------------------------------------------------------------------------------------*/
 		[Test]
-		public void AddNodeGremlin() {
+		public void AddNode() {
 			var person = new Person();
 			person.Id = 98765;
 			person.PersonId = 1234;
@@ -23,15 +24,19 @@ namespace Weaver.Test.Fixtures {
 			person.Age = 27.1f;
 			person.IsMale = true;
 
-			WeaverQuery q = WeaverQuery.AddNodeGremlin(person);
+			WeaverQuery q = WeaverQuery.AddNode(person);
+
+			int bracketI = q.Script.IndexOf('[');
+			int bracketIClose = q.Script.LastIndexOf(']');
 
 			Assert.NotNull(q.Script, "Script should be filled.");
-			Assert.AreEqual(0, q.Script.IndexOf("g.addVertex(["), "Incorrect starting code.");
-			Assert.AreEqual(q.Script.Length-3, q.Script.LastIndexOf("]);"), "Incorrect ending code.");
+			Assert.AreEqual("g.addVertex([",
+				q.Script.Substring(0, bracketI+1), "Incorrect starting code.");
+			Assert.AreEqual("]);", q.Script.Substring(bracketIClose), "Incorrect ending code.");
 
-			int startI = q.Script.IndexOf('[')+1;
-			int endI = q.Script.IndexOf(']');
-			string vals = q.Script.Substring(startI, endI-startI);
+			////
+			
+			string vals = q.Script.Substring(bracketI+1, bracketIClose-bracketI-1);
 			string[] valPairs = vals.Split(',');
 			var pairMap = new Dictionary<string, string>();
 
@@ -40,22 +45,18 @@ namespace Weaver.Test.Fixtures {
 				pairMap.Add(parts[0], parts[1]);
 			}
 
-			Dictionary<string, string> qp = q.Params;
-			Assert.NotNull(qp, "Query.Params should not be null.");
-			Assert.AreEqual(5, qp.Keys.Count, "Incorrect Query.Params count.");
-			Assert.AreEqual(5, pairMap.Keys.Count, "Incorrect Key count.");
-
-			Assert.True(pairMap.ContainsKey("Id"), "Missing Id key.");
+			Assert.AreEqual(4, pairMap.Keys.Count, "Incorrect Key count.");
 			Assert.True(pairMap.ContainsKey("PersonId"), "Missing PersonId key.");
 			Assert.True(pairMap.ContainsKey("Name"), "Missing Name key.");
 			Assert.True(pairMap.ContainsKey("Age"), "Missing Age key.");
 			Assert.True(pairMap.ContainsKey("IsMale"), "Missing IsMale key.");
 
-			Assert.AreEqual("98765", qp[pairMap["Id"]], "Incorrect Id value.");
-			Assert.AreEqual("1234", qp[pairMap["PersonId"]], "Incorrect PersonId value.");
-			Assert.AreEqual("'Zach K'", qp[pairMap["Name"]], "Incorrect Name value.");
-			Assert.AreEqual("27.1", qp[pairMap["Age"]], "Incorrect Age value.");
-			Assert.AreEqual("True", qp[pairMap["IsMale"]], "Incorrect IsMale value.");
+			var expectParams = new Dictionary<string, string>();
+			expectParams.Add(pairMap["PersonId"], "1234");
+			expectParams.Add(pairMap["Name"], "'Zach K'");
+			expectParams.Add(pairMap["Age"], "27.1");
+			expectParams.Add(pairMap["IsMale"], "True");
+			CheckQueryParams(q, expectParams);
 		}
 
 		/*--------------------------------------------------------------------------------------------*/
@@ -82,20 +83,18 @@ namespace Weaver.Test.Fixtures {
 
 			WeaverQuery q = WeaverQuery.AddNodeToIndex(indexName, per, p => p.PersonId);
 
-			const string expect = "n = g.v(P0);g.idx(P1).put(P2,P3,n);";
+			const string expect = "g.idx(P0).put(P1,P2,g.v(P3));";
 
 			var expectParams = new Dictionary<string, string>();
-			expectParams.Add("P0", nodeId+"");
-			expectParams.Add("P1", "'"+indexName+"'");
-			expectParams.Add("P2", "'PersonId'");
-			expectParams.Add("P3", perId+"");
+			expectParams.Add("P0", "'"+indexName+"'");
+			expectParams.Add("P1", "'PersonId'");
+			expectParams.Add("P2", perId+"");
+			expectParams.Add("P3", nodeId+"");
 
 			Assert.AreEqual(expect, q.Script, "Incorrect Query.Script.");
 			CheckQueryParams(q, expectParams);
 		}
 
-
-		////////////////////////////////////////////////////////////////////////////////////////////////
 		/*--------------------------------------------------------------------------------------------*/
 		[Test]
 		public void UpdateNodesAtPath() {
@@ -133,6 +132,54 @@ namespace Weaver.Test.Fixtures {
 			CheckQueryParams(q, expectParams);
 		}
 
+
+		////////////////////////////////////////////////////////////////////////////////////////////////
+		/*--------------------------------------------------------------------------------------------*/
+		[Test]
+		public void AddRel() {
+			var plc = new PersonLikesCandy();
+			plc.Enjoyment = 0.84f;
+			plc.TimesEaten = 54;
+
+			const int perId = 99;
+			const int candyId = 1234;
+
+			var person = new Person { Id = perId };
+			var candy = new Candy() { Id = candyId };
+
+			WeaverQuery q = WeaverQuery.AddRel(person, plc, candy);
+
+			int bracketI = q.Script.IndexOf('[');
+			int bracketIClose = q.Script.LastIndexOf(']');
+
+			Assert.NotNull(q.Script, "Script should be filled.");
+			Assert.AreEqual("g.addEdge(g.v(P0),g.v(P1),P2,[", 
+				q.Script.Substring(0, bracketI+1), "Incorrect starting code.");
+			Assert.AreEqual("]);", q.Script.Substring(bracketIClose), "Incorrect ending code.");
+
+			////
+
+			string vals = q.Script.Substring(bracketI+1, bracketIClose-bracketI-1);
+			string[] valPairs = vals.Split(',');
+			var pairMap = new Dictionary<string, string>();
+
+			foreach ( string pair in valPairs ) {
+				string[] parts = pair.Split(':');
+				pairMap.Add(parts[0], parts[1]);
+			}
+
+			Assert.AreEqual(2, pairMap.Keys.Count, "Incorrect Key count.");
+			Assert.True(pairMap.ContainsKey("Enjoyment"), "Missing Enjoyment key.");
+			Assert.True(pairMap.ContainsKey("TimesEaten"), "Missing PersonId key.");
+
+			var expectParams = new Dictionary<string, string>();
+			expectParams.Add("P0", perId+"");
+			expectParams.Add("P1", candyId+"");
+			expectParams.Add("P2", "'PersonLikesCandy'");
+			expectParams.Add(pairMap["Enjoyment"], "0.84");
+			expectParams.Add(pairMap["TimesEaten"], "54");
+			CheckQueryParams(q, expectParams);
+		}
 
 
 		////////////////////////////////////////////////////////////////////////////////////////////////

@@ -46,24 +46,9 @@ namespace Weaver {
 
 		////////////////////////////////////////////////////////////////////////////////////////////////
 		/*--------------------------------------------------------------------------------------------*/
-		public static WeaverQuery AddNodeGremlin<T>(T pNode) where T : IWeaverItem {
+		public static WeaverQuery AddNode<T>(T pNode) where T : IWeaverItem {
 			var q = new WeaverQuery();
-
-			string grem = "g.addVertex([";
-			int i = 0;
-
-			foreach ( PropertyInfo prop in pNode.GetType().GetProperties() ) {
-				object[] propAtts = prop.GetCustomAttributes(typeof(WeaverItemPropertyAttribute), true);
-				if ( propAtts.Length == 0 ) { continue; }
-				object val = prop.GetValue(pNode, null);
-				if ( val == null ) { continue; }
-				if ( i++ > 0 ) { grem += ","; }
-
-				string valParam = q.AddParam(QuoteValueIfString(val));
-				grem += prop.Name+":"+valParam;
-			}
-
-			q.Script = grem+"]);";
+			q.Script = "g.addVertex(["+BuildPropList(q, pNode)+"]);";
 			return q;
 		}
 
@@ -83,20 +68,18 @@ namespace Weaver {
 			}
 
 			var q = new WeaverQuery();
-			string nodeIdParam = q.AddParam(pNode.Id+"");
 			string indexNameParam = q.AddParam(QuoteValueIfString(pIndexName, true));
 			string propName = WeaverFuncProp.GetPropertyName(pFunc);
 			string propNameParam = q.AddParam(QuoteValueIfString(propName));
 			string propValParam = q.AddParam(QuoteValueIfString(pFunc.Compile()(pNode)));
+			string nodeIdParam = q.AddParam(pNode.Id+"");
 
-			q.Script = "n = g.v("+nodeIdParam+");"+
-				"g.idx("+indexNameParam+").put("+propNameParam+","+propValParam+",n);";
+			q.Script = "g.idx("+indexNameParam+").put("+propNameParam+","+propValParam+
+				",g.v("+nodeIdParam+"));";
 
 			return q;
 		}
 
-
-		////////////////////////////////////////////////////////////////////////////////////////////////
 		/*--------------------------------------------------------------------------------------------*/
 		public static WeaverQuery UpdateNodesAtPath<T>(IWeaverPath pPath, WeaverUpdates<T> pUpdates)
 																				where T : IWeaverNode {
@@ -116,6 +99,22 @@ namespace Weaver {
 
 		////////////////////////////////////////////////////////////////////////////////////////////////
 		/*--------------------------------------------------------------------------------------------*/
+		public static WeaverQuery AddRel<TFrom, TRel, TTo>(TFrom pFromNode, TRel pRel, TTo pToNode)
+							where TFrom : IWeaverNode where TRel : IWeaverRel where TTo : IWeaverNode {
+			var q = new WeaverQuery();
+			string fromNodeParam = q.AddParam(pFromNode.Id+"");
+			string toNodeParam = q.AddParam(pToNode.Id+"");
+			string relLabelParam = q.AddParam(QuoteValueIfString(pRel.Label, true));
+
+			q.Script = "g.addEdge(g.v("+fromNodeParam+"),g.v("+toNodeParam+"),"+relLabelParam+",["+
+				BuildPropList(q, pRel)+"]);";
+
+			return q;
+		}
+
+
+		////////////////////////////////////////////////////////////////////////////////////////////////
+		/*--------------------------------------------------------------------------------------------*/
 		public static string QuoteValueIfString(object pValue) {
 			return QuoteValueIfString(pValue, (pValue is string));
 		}
@@ -124,6 +123,27 @@ namespace Weaver {
 		public static string QuoteValueIfString(object pValue, bool pValueIsString) {
 			if ( pValueIsString ) { return "'"+pValue+"'"; }
 			return pValue+"";
+		}
+
+		/*--------------------------------------------------------------------------------------------*/
+		public static string BuildPropList<TItem>(IWeaverQuery pQuery, TItem pItem,
+													bool pIncludeId=false) where TItem : IWeaverItem {
+			string list = "";
+			int i = 0;
+
+			foreach ( PropertyInfo prop in pItem.GetType().GetProperties() ) {
+				object[] propAtts = prop.GetCustomAttributes(typeof(WeaverItemPropertyAttribute), true);
+				if ( propAtts.Length == 0 ) { continue; }
+				if ( !pIncludeId && prop.Name == "Id" ) { continue; }
+				object val = prop.GetValue(pItem, null);
+				if ( val == null ) { continue; }
+				if ( i++ > 0 ) { list += ","; }
+
+				string valParam = pQuery.AddParam(QuoteValueIfString(val));
+				list += prop.Name+":"+valParam;
+			}
+
+			return list;
 		}
 
 	}
