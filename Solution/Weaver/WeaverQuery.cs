@@ -55,8 +55,8 @@ namespace Weaver {
 		/*--------------------------------------------------------------------------------------------*/
 		public static WeaverQuery AddNodeIndex(string pIndexName) {
 			var q = new WeaverQuery();
-			var indexNameParam = q.AddParam(pIndexName);
-			q.Script = "g.createManualIndex("+indexNameParam+", Vertex.class);";
+			var indexNameParam = q.AddParam(QuoteValueIfString(pIndexName, true));
+			q.Script = "g.createManualIndex("+indexNameParam+",Vertex.class);";
 			return q;
 		}
 
