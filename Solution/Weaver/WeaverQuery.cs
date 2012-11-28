@@ -68,14 +68,14 @@ namespace Weaver {
 			}
 
 			var q = new WeaverQuery();
+			string nodeIdParam = q.AddParam(pNode.Id+"");
 			string indexNameParam = q.AddParam(pIndexName);
 			string propName = WeaverFuncProp.GetPropertyName(pFunc);
 			string propNameParam = q.AddParam(QuoteValueIfString(propName));
 			string propValParam = q.AddParam(QuoteValueIfString(pFunc.Compile()(pNode)));
-			string nodeIdParam = q.AddParam(pNode.Id+"");
 
-			q.Script = "g.idx("+indexNameParam+").put("+propNameParam+","+propValParam+
-				",g.v("+nodeIdParam+"));";
+			q.Script = "n=g.v("+nodeIdParam+");g.idx("+indexNameParam+").put("+
+				propNameParam+","+propValParam+",n);";
 
 			return q;
 		}
@@ -114,8 +114,8 @@ namespace Weaver {
 			string toNodeParam = q.AddParam(pToNode.Id+"");
 			string relLabelParam = q.AddParam(QuoteValueIfString(pRel.Label, true));
 
-			q.Script = "g.addEdge(g.v("+fromNodeParam+"),g.v("+toNodeParam+"),"+relLabelParam+",["+
-				BuildPropList(q, pRel)+"]);";
+			q.Script = "f=g.v("+fromNodeParam+");t=g.v("+toNodeParam+");"+
+				"g.addEdge(f,t,"+relLabelParam+",["+BuildPropList(q, pRel)+"]);";
 
 			return q;
 		}

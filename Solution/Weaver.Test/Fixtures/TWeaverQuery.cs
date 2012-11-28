@@ -83,13 +83,13 @@ namespace Weaver.Test.Fixtures {
 
 			WeaverQuery q = WeaverQuery.AddNodeToIndex(indexName, per, p => p.PersonId);
 
-			const string expect = "g.idx(P0).put(P1,P2,g.v(P3));";
+			const string expect = "n=g.v(P0);g.idx(P1).put(P2,P3,n);";
 
 			var expectParams = new Dictionary<string, string>();
-			expectParams.Add("P0", indexName);
-			expectParams.Add("P1", "'PersonId'");
-			expectParams.Add("P2", perId+"");
-			expectParams.Add("P3", nodeId+"");
+			expectParams.Add("P0", nodeId+"");
+			expectParams.Add("P1", indexName);
+			expectParams.Add("P2", "'PersonId'");
+			expectParams.Add("P3", perId+"");
 
 			Assert.AreEqual(expect, q.Script, "Incorrect Query.Script.");
 			CheckQueryParams(q, expectParams);
@@ -153,7 +153,7 @@ namespace Weaver.Test.Fixtures {
 			int bracketIClose = q.Script.LastIndexOf(']');
 
 			Assert.NotNull(q.Script, "Script should be filled.");
-			Assert.AreEqual("g.addEdge(g.v(P0),g.v(P1),P2,[", 
+			Assert.AreEqual("f=g.v(P0);t=g.v(P1);g.addEdge(f,t,P2,[", 
 				q.Script.Substring(0, bracketI+1), "Incorrect starting code.");
 			Assert.AreEqual("]);", q.Script.Substring(bracketIClose), "Incorrect ending code.");
 
