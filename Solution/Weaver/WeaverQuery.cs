@@ -68,7 +68,7 @@ namespace Weaver {
 			}
 
 			var q = new WeaverQuery();
-			string indexNameParam = q.AddParam(QuoteValueIfString(pIndexName, true));
+			string indexNameParam = q.AddParam(pIndexName);
 			string propName = WeaverFuncProp.GetPropertyName(pFunc);
 			string propNameParam = q.AddParam(QuoteValueIfString(propName));
 			string propValParam = q.AddParam(QuoteValueIfString(pFunc.Compile()(pNode)));

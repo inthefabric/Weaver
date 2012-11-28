@@ -86,7 +86,7 @@ namespace Weaver.Test.Fixtures {
 			const string expect = "g.idx(P0).put(P1,P2,g.v(P3));";
 
 			var expectParams = new Dictionary<string, string>();
-			expectParams.Add("P0", "'"+indexName+"'");
+			expectParams.Add("P0", indexName);
 			expectParams.Add("P1", "'PersonId'");
 			expectParams.Add("P2", perId+"");
 			expectParams.Add("P3", nodeId+"");
