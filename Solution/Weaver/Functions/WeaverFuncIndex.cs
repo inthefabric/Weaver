@@ -30,7 +30,7 @@ namespace Weaver.Functions {
 		public override string GremlinCode {
 			get {
 				var propName = WeaverFuncProp.GetPropertyName(vFunc);
-				return "g.idx('"+IndexName+"').get('"+propName+"', "+
+				return "g.idx("+IndexName+").get('"+propName+"', "+
 					WeaverQuery.QuoteValueIfString(Value)+")";
 			}
 		}

@@ -13,9 +13,9 @@ namespace Weaver.Test.Fixtures.Functions {
 
 		////////////////////////////////////////////////////////////////////////////////////////////////
 		/*--------------------------------------------------------------------------------------------*/
-		[TestCase("PersonId", 123, "g.idx('Person').get('PersonId', 123)")]
-		[TestCase("Name", "zach", "g.idx('Person').get('Name', 'zach')")]
-		[TestCase("Age", 27.1f, "g.idx('Person').get('Age', 27.1)")]
+		[TestCase("PersonId", 123, "g.idx(Person).get('PersonId', 123)")]
+		[TestCase("Name", "zach", "g.idx(Person).get('Name', 'zach')")]
+		[TestCase("Age", 27.1f, "g.idx(Person).get('Age', 27.1)")]
 		public void Gremlin(string pPropName, object pValue, string pExpect) {
 			const string indexName = "Person";
 			Expression<Func<Person, object>> func = null;

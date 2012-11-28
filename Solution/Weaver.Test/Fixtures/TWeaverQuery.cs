@@ -67,7 +67,7 @@ namespace Weaver.Test.Fixtures {
 
 			const string expect = "g.createManualIndex(P0,Vertex.class);";
 			var expectParams = new Dictionary<string, string>();
-			expectParams.Add("P0", "'"+pIndexName+"'");
+			expectParams.Add("P0", pIndexName);
 
 			Assert.AreEqual(expect, q.Script, "Incorrect Query.Script.");
 			CheckQueryParams(q, expectParams);

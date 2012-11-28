@@ -62,7 +62,7 @@ namespace Weaver.Test.Fixtures {
 				.OutLikesCandy.ToNode
 					.Prop(p => p.Name);
 
-			const string expect = "g.idx('Person').get('PersonId', 123)"+
+			const string expect = "g.idx(Person).get('PersonId', 123)"+
 				".outE('PersonKnowsPerson').inV"+
 				".outE('PersonLikesCandy').inV"+
 					".Name";

@@ -55,7 +55,7 @@ namespace Weaver {
 		/*--------------------------------------------------------------------------------------------*/
 		public static WeaverQuery AddNodeIndex(string pIndexName) {
 			var q = new WeaverQuery();
-			var indexNameParam = q.AddParam(QuoteValueIfString(pIndexName, true));
+			var indexNameParam = q.AddParam(pIndexName);
 			q.Script = "g.createManualIndex("+indexNameParam+",Vertex.class);";
 			return q;
 		}
@@ -64,7 +64,7 @@ namespace Weaver {
 		public static WeaverQuery AddNodeToIndex<T>(string pIndexName, T pNode,
 											Expression<Func<T,object>> pFunc) where T : IWeaverNode {
 			if ( pNode.Id < 0 ) {
-				throw new WeaverException("Node Id cannot be less than zero: "+pNode.Id);
+				throw new WeaverException("Node.Id cannot be less than zero: "+pNode.Id);
 			}
 
 			var q = new WeaverQuery();
@@ -101,6 +101,14 @@ namespace Weaver {
 		/*--------------------------------------------------------------------------------------------*/
 		public static WeaverQuery AddRel<TFrom, TRel, TTo>(TFrom pFromNode, TRel pRel, TTo pToNode)
 							where TFrom : IWeaverNode where TRel : IWeaverRel where TTo : IWeaverNode {
+			if ( pFromNode.Id < 0 ) {
+				throw new WeaverException("FromNode.Id cannot be less than zero: "+pFromNode.Id);
+			}
+
+			if ( pToNode.Id < 0 ) {
+				throw new WeaverException("ToNode.Id cannot be less than zero: "+pToNode.Id);
+			}
+
 			var q = new WeaverQuery();
 			string fromNodeParam = q.AddParam(pFromNode.Id+"");
 			string toNodeParam = q.AddParam(pToNode.Id+"");
