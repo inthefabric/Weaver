@@ -135,6 +135,7 @@ namespace Weaver.Test.Fixtures {
 
 		////////////////////////////////////////////////////////////////////////////////////////////////
 		/*--------------------------------------------------------------------------------------------*/
+		//TODO: test Rel with no properties
 		[Test]
 		public void AddRel() {
 			var plc = new PersonLikesCandy();

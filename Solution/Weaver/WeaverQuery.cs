@@ -113,10 +113,10 @@ namespace Weaver {
 			string fromNodeParam = q.AddParam(pFromNode.Id+"");
 			string toNodeParam = q.AddParam(pToNode.Id+"");
 			string relLabelParam = q.AddParam(QuoteValueIfString(pRel.Label, true));
+			string propList = BuildPropList(q, pRel);
 
 			q.Script = "f=g.v("+fromNodeParam+");t=g.v("+toNodeParam+");"+
-				"g.addEdge(f,t,"+relLabelParam+",["+BuildPropList(q, pRel)+"]);";
-
+				"g.addEdge(f,t,"+relLabelParam+(propList.Length > 0 ? ",["+propList+"]" : "")+");";
 			return q;
 		}
 
