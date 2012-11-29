@@ -176,7 +176,7 @@ namespace Weaver.Test.Fixtures {
 			var expectParams = new Dictionary<string, string>();
 			expectParams.Add("P0", perId+"");
 			expectParams.Add("P1", candyId+"");
-			expectParams.Add("P2", "'PersonLikesCandy'");
+			expectParams.Add("P2", "PersonLikesCandy");
 			expectParams.Add(pairMap["Enjoyment"], "0.84");
 			expectParams.Add(pairMap["TimesEaten"], "54");
 			CheckQueryParams(q, expectParams);

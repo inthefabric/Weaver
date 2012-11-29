@@ -112,7 +112,7 @@ namespace Weaver {
 			var q = new WeaverQuery();
 			string fromNodeParam = q.AddParam(pFromNode.Id+"");
 			string toNodeParam = q.AddParam(pToNode.Id+"");
-			string relLabelParam = q.AddParam(QuoteValueIfString(pRel.Label, true));
+			string relLabelParam = q.AddParam(pRel.Label);
 			string propList = BuildPropList(q, pRel);
 
 			q.Script = "f=g.v("+fromNodeParam+");t=g.v("+toNodeParam+");"+
