@@ -27,20 +27,26 @@ namespace Weaver {
 		public WeaverQuery() : this("") {}
 
 		/*--------------------------------------------------------------------------------------------*/
-		public void AddParam(string pParamName, string pValue) {
-			Params.Add(pParamName, pValue);
+		public void AddParam(string pParamName, WeaverQueryVal pValue) {
+			Params.Add(pParamName, pValue.GetQuoted());
 		}
 
 		/*--------------------------------------------------------------------------------------------*/
-		public string AddParam(string pValue) {
+		public string AddParam(WeaverQueryVal pValue) {
 			string p = NextParamName;
-			Params.Add(p, pValue);
+			AddParam(p, pValue);
 			return p;
 		}
 
 		/*--------------------------------------------------------------------------------------------*/
+		public string AddParamIfString(WeaverQueryVal pValue) {
+			if ( !pValue.IsString ) { return pValue.FixedText; }
+			return AddParam(pValue);
+		}
+
+		/*--------------------------------------------------------------------------------------------*/
 		public string NextParamName {
-			get { return "P"+Params.Keys.Count; }
+			get { return "_P"+Params.Keys.Count; }
 		}
 
 
@@ -55,8 +61,8 @@ namespace Weaver {
 		/*--------------------------------------------------------------------------------------------*/
 		public static WeaverQuery AddNodeIndex(string pIndexName) {
 			var q = new WeaverQuery();
-			var indexNameParam = q.AddParam(pIndexName);
-			q.Script = "g.createManualIndex("+indexNameParam+",Vertex.class);";
+			var nameVal = new WeaverQueryVal(pIndexName, false);
+			q.Script = "g.createManualIndex("+q.AddParam(nameVal)+",Vertex.class);";
 			return q;
 		}
 
@@ -68,14 +74,14 @@ namespace Weaver {
 			}
 
 			var q = new WeaverQuery();
-			string nodeIdParam = q.AddParam(pNode.Id+"");
-			string indexNameParam = q.AddParam(pIndexName);
-			string propName = WeaverFuncProp.GetPropertyName(pFunc);
-			string propNameParam = q.AddParam(QuoteValueIfString(propName));
-			string propValParam = q.AddParam(QuoteValueIfString(pFunc.Compile()(pNode)));
+			
+			var nodeIdVal = new WeaverQueryVal(pNode.Id);
+			var indexNameVal = new WeaverQueryVal(pIndexName, false);
+			var propNameVal = new WeaverQueryVal(WeaverFuncProp.GetPropertyName(pFunc));
+			var propValVal = new WeaverQueryVal(pFunc.Compile()(pNode));
 
-			q.Script = "n=g.v("+nodeIdParam+");g.idx("+indexNameParam+").put("+
-				propNameParam+","+propValParam+",n);";
+			q.Script = "n=g.v("+q.AddParam(nodeIdVal)+");g.idx("+q.AddParam(indexNameVal)+").put("+
+				q.AddParam(propNameVal)+","+q.AddParamIfString(propValVal)+",n);";
 
 			return q;
 		}
@@ -87,9 +93,8 @@ namespace Weaver {
 			q.Script = pPath.GremlinCode+".each{";
 
 			for ( int i = 0 ; i < pUpdates.Count ; ++i ) {
-				KeyValuePair<string, string> pair = pUpdates[i];
-				string propValParam = q.AddParam(pair.Value);
-				q.Script += (i == 0 ? "" : ";")+"it."+pair.Key+"="+propValParam;
+				KeyValuePair<string, WeaverQueryVal> pair = pUpdates[i];
+				q.Script += (i == 0 ? "" : ";")+"it."+pair.Key+"="+q.AddParamIfString(pair.Value);
 			}
 
 			q.Script += "};";
@@ -110,13 +115,17 @@ namespace Weaver {
 			}
 
 			var q = new WeaverQuery();
-			string fromNodeParam = q.AddParam(pFromNode.Id+"");
-			string toNodeParam = q.AddParam(pToNode.Id+"");
-			string relLabelParam = q.AddParam(pRel.Label);
-			string propList = BuildPropList(q, pRel);
 
-			q.Script = "f=g.v("+fromNodeParam+");t=g.v("+toNodeParam+");"+
-				"g.addEdge(f,t,"+relLabelParam+(propList.Length > 0 ? ",["+propList+"]" : "")+");";
+			var fromNodeVal= new WeaverQueryVal(pFromNode.Id);
+			var toNodeVal = new WeaverQueryVal(pToNode.Id);
+			var relLabelVal = new WeaverQueryVal(pRel.Label, false);
+
+			q.Script = "f=g.v("+q.AddParam(fromNodeVal)+");t=g.v("+q.AddParam(toNodeVal)+");"+
+				"g.addEdge(f,t,"+q.AddParam(relLabelVal);
+
+			string propList = BuildPropList(q, pRel);
+			q.Script += (propList.Length > 0 ? ",["+propList+"]" : "")+");";
+
 			return q;
 		}
 
@@ -124,13 +133,18 @@ namespace Weaver {
 		////////////////////////////////////////////////////////////////////////////////////////////////
 		/*--------------------------------------------------------------------------------------------*/
 		public static string QuoteValueIfString(object pValue) {
-			return QuoteValueIfString(pValue, (pValue is string));
+			return (pValue is string ? QuoteValue(pValue) : pValue+"");
 		}
 		
 		/*--------------------------------------------------------------------------------------------*/
-		public static string QuoteValueIfString(object pValue, bool pValueIsString) {
-			if ( pValueIsString ) { return "'"+pValue+"'"; }
-			return pValue+"";
+		public static string QuoteValue(object pValue) {
+			return "'"+pValue+"'";
+		}
+
+		/*--------------------------------------------------------------------------------------------* /
+		public static string FixValue(object pValue) {
+			if ( pValue is bool ) { return (pValue+"").ToLower(); }
+			return pValue;
 		}
 
 		/*--------------------------------------------------------------------------------------------*/
@@ -147,8 +161,8 @@ namespace Weaver {
 				if ( val == null ) { continue; }
 				if ( i++ > 0 ) { list += ","; }
 
-				string valParam = pQuery.AddParam(QuoteValueIfString(val));
-				list += prop.Name+":"+valParam;
+				var valVal = new WeaverQueryVal(val);
+				list += prop.Name+":"+pQuery.AddParam(valVal);
 			}
 
 			return list;
@@ -157,21 +171,3 @@ namespace Weaver {
 	}
 
 }
-
-/*
-
-gremlin> g.V.each{ it.something = 444; it.test = "asdf" };
-
-gremlin> g.V.something
-==> 444
-==> 444
-
-gremlin> g.V.test
-==> asdf
-==> asdf
-
-gremlin> g.V.sideEffect{ it.something = 333; it.test = "aaaa" }.test
-==> aaaa
-==> aaaa 
-
-*/

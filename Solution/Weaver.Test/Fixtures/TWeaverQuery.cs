@@ -55,7 +55,7 @@ namespace Weaver.Test.Fixtures {
 			expectParams.Add(pairMap["PersonId"], "1234");
 			expectParams.Add(pairMap["Name"], "'Zach K'");
 			expectParams.Add(pairMap["Age"], "27.1");
-			expectParams.Add(pairMap["IsMale"], "True");
+			expectParams.Add(pairMap["IsMale"], "true");
 			CheckQueryParams(q, expectParams);
 		}
 
@@ -65,9 +65,9 @@ namespace Weaver.Test.Fixtures {
 		public void AddNodeIndex(string pIndexName) {
 			WeaverQuery q = WeaverQuery.AddNodeIndex(pIndexName);
 
-			const string expect = "g.createManualIndex(P0,Vertex.class);";
+			const string expect = "g.createManualIndex(_P0,Vertex.class);";
 			var expectParams = new Dictionary<string, string>();
-			expectParams.Add("P0", pIndexName);
+			expectParams.Add("_P0", pIndexName);
 
 			Assert.AreEqual(expect, q.Script, "Incorrect Query.Script.");
 			CheckQueryParams(q, expectParams);
@@ -83,13 +83,12 @@ namespace Weaver.Test.Fixtures {
 
 			WeaverQuery q = WeaverQuery.AddNodeToIndex(indexName, per, p => p.PersonId);
 
-			const string expect = "n=g.v(P0);g.idx(P1).put(P2,P3,n);";
+			string expect = "n=g.v(_P0);g.idx(_P1).put(_P2,"+perId+",n);";
 
 			var expectParams = new Dictionary<string, string>();
-			expectParams.Add("P0", nodeId+"");
-			expectParams.Add("P1", indexName);
-			expectParams.Add("P2", "'PersonId'");
-			expectParams.Add("P3", perId+"");
+			expectParams.Add("_P0", nodeId+"");
+			expectParams.Add("_P1", indexName);
+			expectParams.Add("_P2", "'PersonId'");
 
 			Assert.AreEqual(expect, q.Script, "Incorrect Query.Script.");
 			CheckQueryParams(q, expectParams);
@@ -117,16 +116,11 @@ namespace Weaver.Test.Fixtures {
 
 			WeaverQuery q = WeaverQuery.UpdateNodesAtPath(path, updates);
 
-			/*Console.WriteLine(q.Script);
-			foreach ( string key in q.Params.Keys ) { Console.WriteLine(key+": "+q.Params[key]); }*/
-
-			string expect = path.GremlinCode+".each{it.PersonId=P0;it.Name=P1;it.IsMale=P2;it.Age=P3};";
+			string expect = path.GremlinCode+
+				".each{it.PersonId=321;it.Name=_P0;it.IsMale=true;it.Age=27.3};";
 
 			var expectParams = new Dictionary<string, string>();
-			expectParams.Add("P0", person.PersonId+"");
-			expectParams.Add("P1", "'"+person.Name+"'");
-			expectParams.Add("P2", person.IsMale+"");
-			expectParams.Add("P3", person.Age+"");
+			expectParams.Add("_P0", "'"+person.Name+"'");
 
 			Assert.AreEqual(expect, q.Script, "Incorrect Query.Script.");
 			CheckQueryParams(q, expectParams);
@@ -154,7 +148,7 @@ namespace Weaver.Test.Fixtures {
 			int bracketIClose = q.Script.LastIndexOf(']');
 
 			Assert.NotNull(q.Script, "Script should be filled.");
-			Assert.AreEqual("f=g.v(P0);t=g.v(P1);g.addEdge(f,t,P2,[", 
+			Assert.AreEqual("f=g.v(_P0);t=g.v(_P1);g.addEdge(f,t,_P2,[", 
 				q.Script.Substring(0, bracketI+1), "Incorrect starting code.");
 			Assert.AreEqual("]);", q.Script.Substring(bracketIClose), "Incorrect ending code.");
 
@@ -174,9 +168,9 @@ namespace Weaver.Test.Fixtures {
 			Assert.True(pairMap.ContainsKey("TimesEaten"), "Missing PersonId key.");
 
 			var expectParams = new Dictionary<string, string>();
-			expectParams.Add("P0", perId+"");
-			expectParams.Add("P1", candyId+"");
-			expectParams.Add("P2", "PersonLikesCandy");
+			expectParams.Add("_P0", perId+"");
+			expectParams.Add("_P1", candyId+"");
+			expectParams.Add("_P2", "PersonLikesCandy");
 			expectParams.Add(pairMap["Enjoyment"], "0.84");
 			expectParams.Add(pairMap["TimesEaten"], "54");
 			CheckQueryParams(q, expectParams);

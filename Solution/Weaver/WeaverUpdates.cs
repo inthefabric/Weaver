@@ -29,10 +29,10 @@ namespace Weaver {
 		public int Count { get { return vUpdates.Count; } }
 
 		/*--------------------------------------------------------------------------------------------*/
-		public KeyValuePair<string, string> this[int pIndex] {
+		public KeyValuePair<string, WeaverQueryVal> this[int pIndex] {
 			get {
 				WeaverUpdate<T> u = vUpdates[pIndex];
-				return new KeyValuePair<string, string>(u.PropName, u.PropVal);
+				return new KeyValuePair<string, WeaverQueryVal>(u.PropName, u.PropVal);
 			}
 		}
 
@@ -45,14 +45,14 @@ namespace Weaver {
 		public Expression<Func<T,object>> PropFunc { get; set; }
 		public T Node { get; set; }
 		public string PropName { get; private set; }
-		public string PropVal { get; private set; }
+		public WeaverQueryVal PropVal { get; private set; }
 		
 		
 		////////////////////////////////////////////////////////////////////////////////////////////////
 		/*--------------------------------------------------------------------------------------------*/
 		public void BuildStrings() {
 			PropName = WeaverFuncProp.GetPropertyName(PropFunc);
-			PropVal = WeaverQuery.QuoteValueIfString(PropFunc.Compile()(Node));
+			PropVal = new WeaverQueryVal(PropFunc.Compile()(Node));
 		}
 
 	}
