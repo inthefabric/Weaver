@@ -83,7 +83,7 @@ namespace Weaver.Test.Fixtures {
 			string expect = "n=g.v(_P0);g.idx(_P1).put(_P2,"+perId+",n);";
 
 			var expectParams = new Dictionary<string, string>();
-			expectParams.Add("_P0", nodeId+"");
+			expectParams.Add("_P0", nodeId+"L");
 			expectParams.Add("_P1", indexName);
 			expectParams.Add("_P2", "'PersonId'");
 
@@ -114,7 +114,7 @@ namespace Weaver.Test.Fixtures {
 			WeaverQuery q = WeaverQuery.UpdateNodesAtPath(path, updates);
 
 			string expect = path.GremlinCode+
-				".each{it.PersonId=321;it.Name=_P0;it.IsMale=true;it.Age=27.3};";
+				".each{it.PersonId=321;it.Name=_P0;it.IsMale=true;it.Age=27.3F};";
 
 			var expectParams = new Dictionary<string, string>();
 			expectParams.Add("_P0", "'"+person.Name+"'");
@@ -134,8 +134,8 @@ namespace Weaver.Test.Fixtures {
 			plc.TimesEaten = 54;
 			plc.Notes = "Tastes great!";
 
-			const int perId = 99;
-			const int candyId = 1234;
+			const long perId = 99;
+			const long candyId = 1234;
 
 			var person = new Person { Id = perId };
 			var candy = new Candy() { Id = candyId };
@@ -166,9 +166,12 @@ namespace Weaver.Test.Fixtures {
 			Assert.True(pairMap.ContainsKey("TimesEaten"), "Missing TimesEaten key.");
 			Assert.True(pairMap.ContainsKey("Notes"), "Missing Notes key.");
 
+			Assert.AreEqual("0.84F", pairMap["Enjoyment"], "Incorrect Enjoyment value.");
+			Assert.AreEqual("54", pairMap["TimesEaten"], "Incorrect TimesEaten value.");
+
 			var expectParams = new Dictionary<string, string>();
-			expectParams.Add("_P0", perId+"");
-			expectParams.Add("_P1", candyId+"");
+			expectParams.Add("_P0", perId+"L");
+			expectParams.Add("_P1", candyId+"L");
 			expectParams.Add("_P2", "PersonLikesCandy");
 			expectParams.Add(pairMap["Notes"], "'"+plc.Notes+"'");
 			CheckQueryParams(q, expectParams);

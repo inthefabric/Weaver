@@ -24,6 +24,15 @@
 			if ( Original is bool ) {
 				FixedText = RawText.ToLower();
 			}
+			else if ( Original is double ) {
+				FixedText = RawText+"D";
+			}
+			else if ( Original is float ) {
+				FixedText = RawText+"F";
+			}
+			else if ( Original is long ) {
+				FixedText = RawText+"L";
+			}
 		}
 
 		/*--------------------------------------------------------------------------------------------*/
