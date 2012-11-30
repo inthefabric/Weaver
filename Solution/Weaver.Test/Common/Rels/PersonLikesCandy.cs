@@ -13,6 +13,9 @@ namespace Weaver.Test.Common.Rels {
 		[WeaverItemProperty]
 		public float Enjoyment { get; set; }
 
+		[WeaverItemProperty]
+		public string Notes { get; set; }
+
 	}
 
 }

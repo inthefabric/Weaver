@@ -162,7 +162,7 @@ namespace Weaver {
 				if ( i++ > 0 ) { list += ","; }
 
 				var valVal = new WeaverQueryVal(val);
-				list += prop.Name+":"+pQuery.AddParam(valVal);
+				list += prop.Name+":"+pQuery.AddParamIfString(valVal);
 			}
 
 			return list;

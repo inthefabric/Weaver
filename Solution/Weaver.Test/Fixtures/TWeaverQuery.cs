@@ -52,10 +52,7 @@ namespace Weaver.Test.Fixtures {
 			Assert.True(pairMap.ContainsKey("IsMale"), "Missing IsMale key.");
 
 			var expectParams = new Dictionary<string, string>();
-			expectParams.Add(pairMap["PersonId"], "1234");
 			expectParams.Add(pairMap["Name"], "'Zach K'");
-			expectParams.Add(pairMap["Age"], "27.1");
-			expectParams.Add(pairMap["IsMale"], "true");
 			CheckQueryParams(q, expectParams);
 		}
 
@@ -135,6 +132,7 @@ namespace Weaver.Test.Fixtures {
 			var plc = new PersonLikesCandy();
 			plc.Enjoyment = 0.84f;
 			plc.TimesEaten = 54;
+			plc.Notes = "Tastes great!";
 
 			const int perId = 99;
 			const int candyId = 1234;
@@ -163,16 +161,16 @@ namespace Weaver.Test.Fixtures {
 				pairMap.Add(parts[0], parts[1]);
 			}
 
-			Assert.AreEqual(2, pairMap.Keys.Count, "Incorrect Key count.");
+			Assert.AreEqual(3, pairMap.Keys.Count, "Incorrect Key count.");
 			Assert.True(pairMap.ContainsKey("Enjoyment"), "Missing Enjoyment key.");
-			Assert.True(pairMap.ContainsKey("TimesEaten"), "Missing PersonId key.");
+			Assert.True(pairMap.ContainsKey("TimesEaten"), "Missing TimesEaten key.");
+			Assert.True(pairMap.ContainsKey("Notes"), "Missing Notes key.");
 
 			var expectParams = new Dictionary<string, string>();
 			expectParams.Add("_P0", perId+"");
 			expectParams.Add("_P1", candyId+"");
 			expectParams.Add("_P2", "PersonLikesCandy");
-			expectParams.Add(pairMap["Enjoyment"], "0.84");
-			expectParams.Add(pairMap["TimesEaten"], "54");
+			expectParams.Add(pairMap["Notes"], "'"+plc.Notes+"'");
 			CheckQueryParams(q, expectParams);
 		}
 
