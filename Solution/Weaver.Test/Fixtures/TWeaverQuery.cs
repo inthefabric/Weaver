@@ -80,12 +80,11 @@ namespace Weaver.Test.Fixtures {
 
 			WeaverQuery q = WeaverQuery.AddNodeToIndex(indexName, per, p => p.PersonId);
 
-			string expect = "n=g.v(_P0);g.idx(_P1).put(_P2,"+perId+",n);";
+			string expect = "n=g.v(987L);g.idx(_P0).put(_P1,"+perId+",n);";
 
 			var expectParams = new Dictionary<string, string>();
-			expectParams.Add("_P0", nodeId+"L");
-			expectParams.Add("_P1", indexName);
-			expectParams.Add("_P2", "'PersonId'");
+			expectParams.Add("_P0", indexName);
+			expectParams.Add("_P1", "'PersonId'");
 
 			Assert.AreEqual(expect, q.Script, "Incorrect Query.Script.");
 			CheckQueryParams(q, expectParams);
@@ -146,7 +145,7 @@ namespace Weaver.Test.Fixtures {
 			int bracketIClose = q.Script.LastIndexOf(']');
 
 			Assert.NotNull(q.Script, "Script should be filled.");
-			Assert.AreEqual("f=g.v(_P0);t=g.v(_P1);g.addEdge(f,t,_P2,[", 
+			Assert.AreEqual("f=g.v(99L);t=g.v(1234L);g.addEdge(f,t,_P0,[", 
 				q.Script.Substring(0, bracketI+1), "Incorrect starting code.");
 			Assert.AreEqual("]);", q.Script.Substring(bracketIClose), "Incorrect ending code.");
 
@@ -170,9 +169,7 @@ namespace Weaver.Test.Fixtures {
 			Assert.AreEqual("54", pairMap["TimesEaten"], "Incorrect TimesEaten value.");
 
 			var expectParams = new Dictionary<string, string>();
-			expectParams.Add("_P0", perId+"L");
-			expectParams.Add("_P1", candyId+"L");
-			expectParams.Add("_P2", "PersonLikesCandy");
+			expectParams.Add("_P0", "PersonLikesCandy");
 			expectParams.Add(pairMap["Notes"], "'"+plc.Notes+"'");
 			CheckQueryParams(q, expectParams);
 		}

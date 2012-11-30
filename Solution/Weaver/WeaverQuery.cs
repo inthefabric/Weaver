@@ -80,7 +80,7 @@ namespace Weaver {
 			var propNameVal = new WeaverQueryVal(WeaverFuncProp.GetPropertyName(pFunc));
 			var propValVal = new WeaverQueryVal(pFunc.Compile()(pNode));
 
-			q.Script = "n=g.v("+q.AddParam(nodeIdVal)+");g.idx("+q.AddParam(indexNameVal)+").put("+
+			q.Script = "n=g.v("+nodeIdVal.FixedText+");g.idx("+q.AddParam(indexNameVal)+").put("+
 				q.AddParam(propNameVal)+","+q.AddParamIfString(propValVal)+",n);";
 
 			return q;
@@ -120,7 +120,7 @@ namespace Weaver {
 			var toNodeVal = new WeaverQueryVal(pToNode.Id);
 			var relLabelVal = new WeaverQueryVal(pRel.Label, false);
 
-			q.Script = "f=g.v("+q.AddParam(fromNodeVal)+");t=g.v("+q.AddParam(toNodeVal)+");"+
+			q.Script = "f=g.v("+fromNodeVal.FixedText+");t=g.v("+toNodeVal.FixedText+");"+
 				"g.addEdge(f,t,"+q.AddParam(relLabelVal);
 
 			string propList = BuildPropList(q, pRel);
