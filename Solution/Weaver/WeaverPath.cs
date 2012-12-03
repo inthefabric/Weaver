@@ -61,13 +61,12 @@ namespace Weaver {
 
 		/*--------------------------------------------------------------------------------------------*/
 		public IList<IWeaverItem> PathToIndex(int pIndex, bool pInclusive=true) {
+			pIndex -= (pInclusive ? 0 : 1);
 			ThrowIfOutOfBounds(pIndex);
 
 			var path = new List<IWeaverItem>();
-			pIndex -= (pInclusive ? 0 : 1);
 
 			for ( int i = 0 ; i <= pIndex ; ++i ) {
-				if ( i == pIndex && !pInclusive ) { break; }
 				path.Add(vItems[i]);
 			}
 
@@ -76,11 +75,11 @@ namespace Weaver {
 
 		/*--------------------------------------------------------------------------------------------*/
 		public IList<IWeaverItem> PathFromIndex(int pIndex, bool pInclusive=true) {
+			pIndex += (pInclusive ? 0 : 1);
 			ThrowIfOutOfBounds(pIndex);
 
 			var path = new List<IWeaverItem>();
 			var n = vItems.Count;
-			pIndex += (pInclusive ? 0 : 1);
 
 			for ( int i = pIndex ; i < n ; ++i ) {
 				path.Add(vItems[i]);
@@ -92,7 +91,8 @@ namespace Weaver {
 		/*--------------------------------------------------------------------------------------------*/
 		private void ThrowIfOutOfBounds(int pIndex) {
 			if ( pIndex < 0 || pIndex >= vItems.Count ) {
-				throw new WeaverPathException(this, "Index out of bounds: "+pIndex);
+				throw new WeaverPathException(this,
+					"Index "+pIndex+" is out of bounds: [0,"+vItems.Count+"].");
 			}
 		}
 
@@ -114,6 +114,7 @@ namespace Weaver {
 				if ( funcAs == null || funcAs.Label != pLabel ) { continue; }
 
 				IWeaverItem prev = vItems[i-1];
+
 				if ( prev is TItem ) { return (TItem)prev; }
 
 				throw new WeaverPathException(this, "The 'As' marker with label '"+pLabel

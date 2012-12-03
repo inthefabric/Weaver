@@ -1,6 +1,8 @@
-﻿using NUnit.Framework;
+﻿using System.Collections.Generic;
+using NUnit.Framework;
 using Weaver.Exceptions;
 using Weaver.Functions;
+using Weaver.Interfaces;
 using Weaver.Items;
 using Weaver.Test.Common;
 using Weaver.Test.Common.Nodes;
@@ -129,21 +131,146 @@ namespace Weaver.Test.Fixtures {
 		[TestCase(-1)]
 		[TestCase(3)]
 		public void ItemAtIndexBounds(int pIndex) {
-			var p = new WeaverPath<Root>(new Root());
-			var n = p.BaseNode.OutHasPerson.ToNode;
-
-			Assert.AreEqual(3, p.Length, "Incorrect Length.");
+			TestPath p = GetTestPathLength3();
 
 			WeaverTestUtils.CheckThrows<WeaverPathException>(true,
 				() => p.ItemAtIndex(pIndex)
 			);
 		}
-		
 
-		//TODO: PathToIndex(int pIndex, bool pInclusive=true)
-		//TODO: PathFromIndex(int pIndex, bool pInclusive=true)
-		//TODO: IndexOfItem(IWeaverItem pItem)
-		//TODO: FindAsNode<TItem>(string pLabel)
+		/*--------------------------------------------------------------------------------------------*/
+		[TestCase(0, true, 1)]
+		[TestCase(1, true, 2)]
+		[TestCase(1, false, 1)]
+		[TestCase(2, true, 3)]
+		[TestCase(4, true, 5)]
+		[TestCase(4, false, 4)]
+		[TestCase(5, false, 5)]
+		public void PathToIndex(int pIndex, bool pInclusive, int pCount) {
+			TestPath p = GetTestPathLength5();
+
+			IList<IWeaverItem> result = p.PathToIndex(pIndex, pInclusive);
+
+			Assert.NotNull(result, "Result should be filled.");
+			Assert.AreEqual(pCount, result.Count, "Incorrect Result.Count.");
+			Assert.AreEqual(p.BaseNode, result[0], "Incorrect Result[0].");
+
+			int ri = pCount-1;
+			Assert.AreEqual(p.ItemAtIndex(ri), result[ri], "Incorrect Result["+ri+"].");
+		}
+
+		/*--------------------------------------------------------------------------------------------*/
+		[TestCase(-1, true, true)]
+		[TestCase(-1, false, true)]
+		[TestCase(0, true, false)]
+		[TestCase(0, false, true)]
+		[TestCase(2, true, false)]
+		[TestCase(2, false, false)]
+		[TestCase(3, true, true)]
+		[TestCase(3, false, false)]
+		public void PathToIndexBounds(int pIndex, bool pInclusive, bool pThrows) {
+			TestPath p = GetTestPathLength3();
+
+			WeaverTestUtils.CheckThrows<WeaverPathException>(pThrows,
+				() => p.PathToIndex(pIndex, pInclusive)
+			);
+		}
+
+		/*--------------------------------------------------------------------------------------------*/
+		[TestCase(0, true, 5)]
+		[TestCase(0, false, 4)]
+		[TestCase(1, true, 4)]
+		[TestCase(1, false, 3)]
+		[TestCase(2, true, 3)]
+		[TestCase(3, true, 2)]
+		[TestCase(3, false, 1)]
+		[TestCase(4, true, 1)]
+		public void PathFromIndex(int pIndex, bool pInclusive, int pCount) {
+			TestPath p = GetTestPathLength5();
+
+			IList<IWeaverItem> result = p.PathFromIndex(pIndex, pInclusive);
+
+			Assert.NotNull(result, "Result should be filled.");
+			Assert.AreEqual(pCount, result.Count, "Incorrect Result.Count.");
+
+			int pi = pIndex + (pInclusive ? 0 : 1);
+			int ri = 0;
+			Assert.AreEqual(p.ItemAtIndex(pi), result[ri], "Incorrect Result["+ri+"].");
+
+			pi = p.Length-1;
+			ri = pCount-1;
+			Assert.AreEqual(p.ItemAtIndex(pi), result[ri], "Incorrect Result["+ri+"].");
+		}
+
+		/*--------------------------------------------------------------------------------------------*/
+		[TestCase(-1, true, true)]
+		[TestCase(-1, false, false)]
+		[TestCase(0, true, false)]
+		[TestCase(0, false, false)]
+		[TestCase(2, true, false)]
+		[TestCase(2, false, true)]
+		[TestCase(3, true, true)]
+		[TestCase(3, false, true)]
+		public void PathFromIndexBounds(int pIndex, bool pInclusive, bool pThrows) {
+			TestPath p = GetTestPathLength3();
+
+			WeaverTestUtils.CheckThrows<WeaverPathException>(pThrows,
+				() => p.PathFromIndex(pIndex, pInclusive)
+			);
+		}
+
+
+		////////////////////////////////////////////////////////////////////////////////////////////////
+		/*--------------------------------------------------------------------------------------------*/
+		[Test]
+		public void IndexOfItem() {
+			var p = new TestPath();
+			var n2 = p.BaseNode.OutHasPerson.ToNode;
+			var n4 = n2.OutLikesCandy.ToNode;
+
+			Assert.AreEqual(5, p.Length, "Incorrect Path.Length.");
+			Assert.AreEqual(2, p.IndexOfItem(n2), "Incorrect item index.");
+			Assert.AreEqual(4, p.IndexOfItem(n4), "Incorrect item index.");
+		}
+
+		/*--------------------------------------------------------------------------------------------*/
+		[Test]
+		public void FindAsNode() {
+			Person perAlias ;
+
+			var p = new TestPath();
+			var n2 = p.BaseNode.OutHasPerson.ToNode;
+			var n2Again = n2.As(out perAlias);
+			var n5 = n2Again.OutLikesCandy.ToNode;
+			
+			var as3 = (WeaverFuncAs<Person>)p.ItemAtIndex(3);
+			Person result = p.FindAsNode<Person>(as3.Label);
+
+			Assert.AreEqual(n2, result, "Incorrect Result.");
+			Assert.AreEqual(n2Again, result, "Incorrect Result.");
+		}
+
+		/*--------------------------------------------------------------------------------------------*/
+		[Test]
+		public void FindAsNodeNone() {
+			var p = GetTestPathLength3();
+			Person result = p.FindAsNode<Person>("test");
+			Assert.Null(result, "Result should be null.");
+		}
+
+		/*--------------------------------------------------------------------------------------------*/
+		[Test]
+		public void FindAsNodeWrongType() {
+			var p = new TestPath();
+			var n = p.BaseNode.OutHasPerson.ToNode;
+
+			var as3 = new WeaverFuncAs<Candy>(p);
+			p.AddItem(as3);
+
+			WeaverTestUtils.CheckThrows<WeaverPathException>(true,
+				() => p.FindAsNode<Candy>(as3.Label)
+			);
+		}
 
 
 		////////////////////////////////////////////////////////////////////////////////////////////////
@@ -207,6 +334,25 @@ namespace Weaver.Test.Fixtures {
 
 		//TODO: GetGremlinCode (by path, static)
 		//TODO: GetGremlinCode (by items, static)
+
+
+
+		////////////////////////////////////////////////////////////////////////////////////////////////
+		/*--------------------------------------------------------------------------------------------*/
+		private TestPath GetTestPathLength3() {
+			var p = new TestPath();
+			var n = p.BaseNode.OutHasPerson.ToNode;
+			Assert.AreEqual(3, p.Length, "Incorrect Length.");
+			return p;
+		}
+
+		/*--------------------------------------------------------------------------------------------*/
+		private TestPath GetTestPathLength5() {
+			var p = new TestPath();
+			var n = p.BaseNode.OutHasPerson.ToNode.OutLikesCandy.ToNode;
+			Assert.AreEqual(5, p.Length, "Incorrect Length.");
+			return p;
+		}
 
 	}
 
