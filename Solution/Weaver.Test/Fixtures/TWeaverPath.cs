@@ -4,6 +4,8 @@ using Weaver.Functions;
 using Weaver.Items;
 using Weaver.Test.Common;
 using Weaver.Test.Common.Nodes;
+using Weaver.Test.Common.Rels;
+using Weaver.Test.Utils;
 
 namespace Weaver.Test.Fixtures {
 
@@ -64,13 +66,9 @@ namespace Weaver.Test.Fixtures {
 		public void StartWithIndexFail() {
 			var p = new WeaverPath<Person>(new Person());
 
-			try {
-				p.StartWithIndex<Person>("P", (x => x.PersonId), 1);
-				Assert.Fail("StartWithIndex did not throw an Exception.");
-			}
-			catch ( WeaverPathException wpe ) {
-				Assert.NotNull(wpe);
-			}
+			WeaverTestUtils.CheckThrows<WeaverPathException>(true,
+				() => p.StartWithIndex<Person>("P", (x => x.PersonId), 1)
+			);
 		}
 		
 		/*--------------------------------------------------------------------------------------------*/
@@ -108,69 +106,44 @@ namespace Weaver.Test.Fixtures {
 			Person person = p.BaseNode.OutHasPerson.ToNode;
 			Assert.AreEqual(3, p.Length, "Incorrect Length.");
 		}
+
+		/*--------------------------------------------------------------------------------------------*/
+		[Test]
+		public void ItemAtIndex() {
+			var r = new Root();
+			var p = new WeaverPath<Root>(r);
+			RootHasPerson i1 = p.BaseNode.OutHasPerson;
+			Person i2 = i1.ToNode;
+			PersonLikesCandy i3 = i2.OutLikesCandy;
+			Candy i4 = i3.ToNode;
+
+			Assert.AreEqual(5, p.Length, "Incorrect Length.");
+			Assert.AreEqual(r, p.ItemAtIndex(0), "Incorrect item at index 0.");
+			Assert.AreEqual(i1, p.ItemAtIndex(1), "Incorrect item at index 1.");
+			Assert.AreEqual(i2, p.ItemAtIndex(2), "Incorrect item at index 2.");
+			Assert.AreEqual(i3, p.ItemAtIndex(3), "Incorrect item at index 3.");
+			Assert.AreEqual(i4, p.ItemAtIndex(4), "Incorrect item at index 4.");
+		}
+
+		/*--------------------------------------------------------------------------------------------*/
+		[TestCase(-1)]
+		[TestCase(3)]
+		public void ItemAtIndexBounds(int pIndex) {
+			var p = new WeaverPath<Root>(new Root());
+			var n = p.BaseNode.OutHasPerson.ToNode;
+
+			Assert.AreEqual(3, p.Length, "Incorrect Length.");
+
+			WeaverTestUtils.CheckThrows<WeaverPathException>(true,
+				() => p.ItemAtIndex(pIndex)
+			);
+		}
 		
 
-		//TODO: ItemAtIndex(int pIndex)
 		//TODO: PathToIndex(int pIndex, bool pInclusive=true)
 		//TODO: PathFromIndex(int pIndex, bool pInclusive=true)
 		//TODO: IndexOfItem(IWeaverItem pItem)
 		//TODO: FindAsNode<TItem>(string pLabel)
-
-
-		////////////////////////////////////////////////////////////////////////////////////////////////
-		/*--------------------------------------------------------------------------------------------* /
-		[Test]
-		public void PrevQueryItem() {
-			var q = new TestQuery();
-			var n = q.Root.OutHasThing.ToThing;
-			var afterN = n.OutHasArtifact;
-			Assert.AreEqual(n, afterN.PrevQueryItem, "Incorrect PrevQueryItem.");
-		}
-
-		/*--------------------------------------------------------------------------------------------* /
-		[Test]
-		public void NextQueryItem() {
-			var q = new TestQuery();
-			var n = q.Root.OutHasThing.ToThing;
-			var afterN = n.OutHasArtifact;
-			Assert.AreEqual(afterN, n.NextQueryItem, "Incorrect NextQueryItem.");
-		}
-
-		/*--------------------------------------------------------------------------------------------* /
-		[Test]
-		public void QueryPathToThisItem() {
-			var q = new TestQuery();
-			var n = q.Root.OutHasThing.ToThing;
-			int pathCountAtN = q.PathLength();
-			var afterN = n.OutHasArtifact.ToArtifact;
-			var listToN = n.QueryPathToThisItem;
-
-			Assert.AreEqual(pathCountAtN, listToN.Count, "Incorrect QueryPathToThisItem.Count.");
-
-			for ( int i = 0 ; i < pathCountAtN ; ++i ) {
-				Assert.AreEqual(listToN[i], n.QueryPathToThisItem[i],
-					"Incorrect QueryPathToThisItem["+i+"].");
-			}
-		}
-
-		/*--------------------------------------------------------------------------------------------* /
-		[Test]
-		public void QueryPathFromThisItem() {
-			var q = new TestQuery();
-			var n = q.Root.OutHasThing.ToThing;
-			int pathCountAtN = q.PathLength();
-			var afterN = n.OutHasArtifact.ToArtifact;
-			var listFromN = n.QueryPathFromThisItem;
-			int pathCountAtAfterN = q.PathLength();
-			int expectCount = pathCountAtAfterN-pathCountAtN+1;
-
-			Assert.AreEqual(expectCount, listFromN.Count, "Incorrect QueryPathFromThisItem.Count.");
-
-			for ( int i = 0 ; i < expectCount ; ++i ) {
-				Assert.AreEqual(listFromN[i], n.QueryPathFromThisItem[i],
-					"Incorrect QueryPathFromThisItem["+i+"].");
-			}
-		}*/
 
 
 		////////////////////////////////////////////////////////////////////////////////////////////////

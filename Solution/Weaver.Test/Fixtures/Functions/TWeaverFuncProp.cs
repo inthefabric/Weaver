@@ -29,13 +29,10 @@ namespace Weaver.Test.Fixtures.Functions {
 		/*--------------------------------------------------------------------------------------------*/
 		[Test]
 		public void GremlinBadExpression() {
-			try {
+			WeaverTestUtils.CheckThrows<WeaverFuncException>(true, () => {
 				var f = new WeaverFuncProp<Person>(n => (n.ExpectOneNode == false));
-				Assert.Fail("Expected WeaverFuncException: "+f.PropertyName);
-			}
-			catch ( WeaverFuncException e ) {
-				Assert.NotNull(e);
-			}
+				var p = f.PropertyName;
+			});
 		}
 
 

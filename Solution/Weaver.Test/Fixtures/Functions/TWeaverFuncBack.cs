@@ -4,6 +4,7 @@ using Weaver.Exceptions;
 using Weaver.Functions;
 using Weaver.Interfaces;
 using Weaver.Test.Common.Nodes;
+using Weaver.Test.Utils;
 
 namespace Weaver.Test.Fixtures.Functions {
 
@@ -40,13 +41,9 @@ namespace Weaver.Test.Fixtures.Functions {
 			var pathMock = new Mock<IWeaverPath>();
 			pathMock.Setup(x => x.IndexOfItem(It.IsAny<IWeaverItem>())).Returns(pItemIndex);
 
-			try {
+			WeaverTestUtils.CheckThrows<WeaverFuncException>(true, () => {
 				f = new WeaverFuncBack<Person>(pathMock.Object, perAlias);
-				Assert.Fail("Expected WeaverFuncException.");
-			}
-			catch ( WeaverFuncException fe ) {
-				Assert.NotNull(fe);
-			}
+			});
 		}
 
 	}

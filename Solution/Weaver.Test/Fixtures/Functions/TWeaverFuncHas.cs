@@ -2,6 +2,7 @@
 using Weaver.Exceptions;
 using Weaver.Functions;
 using Weaver.Test.Common.Nodes;
+using Weaver.Test.Utils;
 
 namespace Weaver.Test.Fixtures.Functions {
 
@@ -32,14 +33,11 @@ namespace Weaver.Test.Fixtures.Functions {
 		/*--------------------------------------------------------------------------------------------*/
 		[Test]
 		public void BadExpression() {
-			try {
+			WeaverTestUtils.CheckThrows<WeaverFuncException>(true, () => {
 				var f = new WeaverFuncHas<Person>(n => (n.ExpectOneNode == false),
 					WeaverFuncHasOp.EqualTo, null);
-				Assert.Fail("Expected WeaverFuncException: "+f.PropertyName);
-			}
-			catch ( WeaverFuncException e ) {
-				Assert.NotNull(e);
-			}
+				var p = f.PropertyName;
+			});
 		}
 
 	}

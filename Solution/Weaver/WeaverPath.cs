@@ -55,13 +55,14 @@ namespace Weaver {
 
 		/*--------------------------------------------------------------------------------------------*/
 		public IWeaverItem ItemAtIndex(int pIndex) {
-			if ( pIndex < 0 || pIndex >= vItems.Count ) { return null; }
+			ThrowIfOutOfBounds(pIndex);
 			return vItems[pIndex];
 		}
 
 		/*--------------------------------------------------------------------------------------------*/
 		public IList<IWeaverItem> PathToIndex(int pIndex, bool pInclusive=true) {
-			if ( pIndex < 0 || pIndex >= vItems.Count ) { return null; }
+			ThrowIfOutOfBounds(pIndex);
+
 			var path = new List<IWeaverItem>();
 			pIndex -= (pInclusive ? 0 : 1);
 
@@ -75,7 +76,8 @@ namespace Weaver {
 
 		/*--------------------------------------------------------------------------------------------*/
 		public IList<IWeaverItem> PathFromIndex(int pIndex, bool pInclusive=true) {
-			if ( pIndex < 0 || pIndex >= vItems.Count ) { return null; }
+			ThrowIfOutOfBounds(pIndex);
+
 			var path = new List<IWeaverItem>();
 			var n = vItems.Count;
 			pIndex += (pInclusive ? 0 : 1);
@@ -85,6 +87,13 @@ namespace Weaver {
 			}
 
 			return path;
+		}
+		
+		/*--------------------------------------------------------------------------------------------*/
+		private void ThrowIfOutOfBounds(int pIndex) {
+			if ( pIndex < 0 || pIndex >= vItems.Count ) {
+				throw new WeaverPathException(this, "Index out of bounds: "+pIndex);
+			}
 		}
 
 
