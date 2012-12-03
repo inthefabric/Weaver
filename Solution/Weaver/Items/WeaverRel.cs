@@ -21,11 +21,10 @@ namespace Weaver.Items {
 	/*================================================================================================*/
 	public abstract class WeaverRel<TFrom, TType, TTo> : WeaverItem, IWeaverRel<TFrom, TTo>
 																	where TFrom : IWeaverNode, new()
-																	where TType : IWeaverRelType
+																	where TType : IWeaverRelType, new()
 																	where TTo : IWeaverNode, new() {
 
 		public long Id { get; set; }
-		public IWeaverRelType RelType { get; private set; }
 		public bool IsFromManyNodes { get; private set; }
 		public bool IsToManyNodes { get; private set; }
 		public bool IsOutgoing { get; private set; }
@@ -37,7 +36,6 @@ namespace Weaver.Items {
 		/*--------------------------------------------------------------------------------------------*/
 		protected WeaverRel() {
 			Id = -1;
-			RelType = (typeof(TType) as IWeaverRelType);
 		}
 
 		/*--------------------------------------------------------------------------------------------*/
@@ -92,6 +90,13 @@ namespace Weaver.Items {
 				var n = new TTo { IsFromNode = false, ExpectOneNode = !IsToManyNodes };
 				Path.AddItem(n);
 				return n;
+			}
+		}
+
+		/*--------------------------------------------------------------------------------------------*/
+		public IWeaverRelType RelType {
+			get {
+				return new TType();
 			}
 		}
 

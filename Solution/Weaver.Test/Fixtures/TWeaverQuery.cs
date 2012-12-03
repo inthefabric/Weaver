@@ -52,7 +52,7 @@ namespace Weaver.Test.Fixtures {
 			Assert.True(pairMap.ContainsKey("IsMale"), "Missing IsMale key.");
 
 			var expectParams = new Dictionary<string, string>();
-			expectParams.Add(pairMap["Name"], "'Zach K'");
+			expectParams.Add(pairMap["Name"], "Zach K");
 			CheckQueryParams(q, expectParams);
 		}
 
@@ -170,7 +170,7 @@ namespace Weaver.Test.Fixtures {
 
 			var expectParams = new Dictionary<string, string>();
 			expectParams.Add("_P0", "PersonLikesCandy");
-			expectParams.Add(pairMap["Notes"], "'"+plc.Notes+"'");
+			expectParams.Add(pairMap["Notes"], plc.Notes);
 			CheckQueryParams(q, expectParams);
 		}
 

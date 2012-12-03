@@ -161,7 +161,7 @@ namespace Weaver {
 				if ( val == null ) { continue; }
 				if ( i++ > 0 ) { list += ","; }
 
-				var valVal = new WeaverQueryVal(val);
+				var valVal = new WeaverQueryVal(val, false);
 				list += prop.Name+":"+pQuery.AddParamIfString(valVal);
 			}
 
