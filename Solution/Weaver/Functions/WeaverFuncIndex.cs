@@ -7,15 +7,19 @@ namespace Weaver.Functions {
 	
 	/*================================================================================================*/
 	public abstract class WeaverFuncIndex : WeaverFunc {
+
+		public string IndexName { get; protected set; }
+		public object Value { get; protected set; }
+
+		public abstract string PropertyName { get; }
+
 	}
 
 	/*================================================================================================*/
 	public class WeaverFuncIndex<T> : WeaverFuncIndex where T : IWeaverNode {
 
-		public string IndexName { get; private set; }
-		public object Value { get; private set; }
-
 		private readonly Expression<Func<T, object>> vFunc;
+		private string vPropName;
 
 
 		////////////////////////////////////////////////////////////////////////////////////////////////
@@ -26,11 +30,20 @@ namespace Weaver.Functions {
 			Value = pValue;
 		}
 
+
+		/*--------------------------------------------------------------------------------------------*/
+		public override string PropertyName {
+			get {
+				if ( vPropName != null ) { return vPropName; }
+				vPropName = WeaverFuncProp.GetPropertyName(vFunc);
+				return vPropName;
+			}
+		}
+
 		/*--------------------------------------------------------------------------------------------*/
 		public override string GremlinCode {
 			get {
-				var propName = WeaverFuncProp.GetPropertyName(vFunc);
-				return "g.idx("+IndexName+").get('"+propName+"', "+
+				return "g.idx("+IndexName+").get('"+PropertyName+"', "+
 					WeaverQuery.QuoteValueIfString(Value)+")";
 			}
 		}

@@ -36,8 +36,8 @@ namespace Weaver {
 		}
 
 		/*--------------------------------------------------------------------------------------------*/
-		public void StartAtIndex<T>(string pIndexName, Expression<Func<T, object>> pFunc, 
-																object pValue) where T : IWeaverNode {
+		public void StartWithIndex<T>(string pIndexName, Expression<Func<T, object>> pFunc, 
+														object pValue) where T : TBase, IWeaverNode {
 			if ( BaseNode != null ) {
 				throw new WeaverPathException(this,
 					"Cannot use StartAtIndex<T>(): the BaseNode is already set.");
@@ -123,8 +123,8 @@ namespace Weaver {
 		}
 
 		/*--------------------------------------------------------------------------------------------*/
-		public static string GetGremlinCode(IList<IWeaverItem> pPathItems, bool pStartAtIndex=false) {
-			string gremlin = (pStartAtIndex ? "" : "g.");
+		public static string GetGremlinCode(IList<IWeaverItem> pPathItems, bool pStartWithIndex=false) {
+			string gremlin = (pStartWithIndex ? "" : "g.");
 
 			foreach ( IWeaverItem q in pPathItems ) {
 				gremlin += q.GremlinCode+'.';
