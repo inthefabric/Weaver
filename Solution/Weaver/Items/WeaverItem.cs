@@ -8,7 +8,7 @@ using Weaver.Interfaces;
 namespace Weaver.Items {
 
 	/*================================================================================================*/
-	public abstract class WeaverItem : Object, IWeaverItem {
+	public abstract class WeaverItem : IWeaverItem {
 		
 		private int vQueryPathIndex;
 

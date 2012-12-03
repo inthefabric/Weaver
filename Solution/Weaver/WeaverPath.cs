@@ -8,7 +8,8 @@ using Weaver.Interfaces;
 namespace Weaver {
 
 	/*================================================================================================*/
-	public class WeaverPath<TBase> : IWeaverPath, IWeaverPath<TBase> where TBase : IWeaverItem, new() {
+	public class WeaverPath<TBase> : IWeaverPath, IWeaverPath<TBase>
+															where TBase : class, IWeaverItem, new() {
 
 		public TBase BaseNode { get; private set; }
 		public WeaverFuncIndex BaseIndex { get; private set; }
@@ -37,6 +38,11 @@ namespace Weaver {
 		/*--------------------------------------------------------------------------------------------*/
 		public void StartAtIndex<T>(string pIndexName, Expression<Func<T, object>> pFunc, 
 																object pValue) where T : IWeaverNode {
+			if ( BaseNode != null ) {
+				throw new WeaverPathException(this,
+					"Cannot use StartAtIndex<T>(): the BaseNode is already set.");
+			}
+
 			BaseNode = new TBase { Path = this };
 			BaseIndex = new WeaverFuncIndex<T>(pIndexName, pFunc, pValue);
 			AddItem(BaseIndex);
@@ -112,7 +118,7 @@ namespace Weaver {
 
 		////////////////////////////////////////////////////////////////////////////////////////////////
 		/*--------------------------------------------------------------------------------------------*/
-		public static string GetGremlinCode<T>(WeaverPath<T> pPath) where T : IWeaverItem, new() {
+		public static string GetGremlinCode<T>(WeaverPath<T> pPath) where T : class, IWeaverItem, new(){
 			return GetGremlinCode(pPath.vItems, (pPath.BaseIndex != null));
 		}
 

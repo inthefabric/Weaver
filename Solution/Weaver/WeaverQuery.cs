@@ -141,12 +141,6 @@ namespace Weaver {
 			return "'"+pValue+"'";
 		}
 
-		/*--------------------------------------------------------------------------------------------* /
-		public static string FixValue(object pValue) {
-			if ( pValue is bool ) { return (pValue+"").ToLower(); }
-			return pValue;
-		}
-
 		/*--------------------------------------------------------------------------------------------*/
 		public static string BuildPropList<TItem>(IWeaverQuery pQuery, TItem pItem,
 													bool pIncludeId=false) where TItem : IWeaverItem {

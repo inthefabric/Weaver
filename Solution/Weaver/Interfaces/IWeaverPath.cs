@@ -4,7 +4,7 @@ using Weaver.Functions;
 namespace Weaver.Interfaces {
 
 	/*================================================================================================*/
-	public interface IWeaverPath<out TBase> where TBase : IWeaverItem, new() {
+	public interface IWeaverPath<out TBase> where TBase : class, IWeaverItem, new() {
 
 		TBase BaseNode { get; }
 	}

@@ -27,7 +27,9 @@ namespace Weaver.Items {
 		}
 
 		/*--------------------------------------------------------------------------------------------*/
-		public override string ItemIdentifier { get { return this+"(Id="+Id+")"; } }
+		public override string ItemIdentifier {
+			get { return GetType().Name+"(Id="+Id+")"; }
+		}
 
 		/*--------------------------------------------------------------------------------------------*/
 		public override string GremlinCode {
