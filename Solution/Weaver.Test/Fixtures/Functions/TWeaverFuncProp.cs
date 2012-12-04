@@ -10,7 +10,7 @@ namespace Weaver.Test.Fixtures.Functions {
 
 	/*================================================================================================*/
 	[TestFixture]
-	public class TWeaverFuncProp {
+	public class TWeaverFuncProp : WeaverTestBase {
 
 		private Expression<Func<Person, object>> vPropExpr;
 		private string vPropExprResult;

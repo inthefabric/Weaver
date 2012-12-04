@@ -10,7 +10,7 @@ namespace Weaver.Test.Fixtures.Functions {
 
 	/*================================================================================================*/
 	[TestFixture]
-	public class TWeaverFuncBack {
+	public class TWeaverFuncBack : WeaverTestBase {
 
 
 		////////////////////////////////////////////////////////////////////////////////////////////////

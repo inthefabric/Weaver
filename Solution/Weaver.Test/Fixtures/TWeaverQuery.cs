@@ -12,7 +12,7 @@ namespace Weaver.Test.Fixtures {
 
 	/*================================================================================================*/
 	[TestFixture]
-	public class TWeaverQuery {
+	public class TWeaverQuery : WeaverTestBase {
 
 
 		////////////////////////////////////////////////////////////////////////////////////////////////

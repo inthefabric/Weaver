@@ -13,7 +13,7 @@ namespace Weaver.Test.Fixtures {
 
 	/*================================================================================================*/
 	[TestFixture]
-	public class TWeaverPath {
+	public class TWeaverPath : WeaverTestBase {
 
 
 		////////////////////////////////////////////////////////////////////////////////////////////////

@@ -7,7 +7,7 @@ namespace Weaver.Test.Fixtures.Items {
 
 	/*================================================================================================*/
 	[TestFixture]
-	public class TWeaverNode {
+	public class TWeaverNode : WeaverTestBase {
 
 
 		////////////////////////////////////////////////////////////////////////////////////////////////

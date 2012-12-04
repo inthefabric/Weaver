@@ -8,7 +8,7 @@ namespace Weaver.Test.Fixtures.Functions {
 
 	/*================================================================================================*/
 	[TestFixture]
-	public class TWeaverFuncHas {
+	public class TWeaverFuncHas : WeaverTestBase {
 
 
 		////////////////////////////////////////////////////////////////////////////////////////////////

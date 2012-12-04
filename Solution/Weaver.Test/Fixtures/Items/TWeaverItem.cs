@@ -11,7 +11,7 @@ namespace Weaver.Test.Fixtures.Items {
 
 	/*================================================================================================*/
 	[TestFixture]
-	public class TWeaverItem {
+	public class TWeaverItem : WeaverTestBase {
 
 
 		////////////////////////////////////////////////////////////////////////////////////////////////

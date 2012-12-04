@@ -5,7 +5,7 @@ namespace Weaver.Test.Fixtures.Schema {
 
 	/*================================================================================================*/
 	[TestFixture]
-	public class TWeaverPropSchema {
+	public class TWeaverPropSchema : WeaverTestBase {
 
 
 		////////////////////////////////////////////////////////////////////////////////////////////////

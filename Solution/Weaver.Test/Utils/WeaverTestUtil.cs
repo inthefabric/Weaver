@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using NUnit.Framework;
 
 namespace Weaver.Test.Utils {
@@ -19,7 +18,7 @@ namespace Weaver.Test.Utils {
 			return null;
 		}
 
-		/*--------------------------------------------------------------------------------------------*/
+		/*--------------------------------------------------------------------------------------------* /
 		public static void CheckListProps<TL>(IList<TL> pList, IList<uint> pExpectIds,
 																			Func<TL, object> pGetProp) {
 			int n = pList.Count;
@@ -31,7 +30,7 @@ namespace Weaver.Test.Utils {
 			for ( int i = 0 ; i < n ; ++i ) {
 				Assert.AreEqual(pExpectIds[i], pGetProp(pList[i]), "Invalid "+name+".Id at index "+i);
 			}
-		}
+		}*/
 
 	}
 

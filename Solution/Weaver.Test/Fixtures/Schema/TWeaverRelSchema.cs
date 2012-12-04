@@ -8,7 +8,7 @@ namespace Weaver.Test.Fixtures.Schema {
 
 	/*================================================================================================*/
 	[TestFixture]
-	public class TWeaverRelSchema {
+	public class TWeaverRelSchema : WeaverTestBase {
 
 
 		////////////////////////////////////////////////////////////////////////////////////////////////
