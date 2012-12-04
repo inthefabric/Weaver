@@ -38,32 +38,30 @@ namespace Weaver.Items {
 
 		////////////////////////////////////////////////////////////////////////////////////////////////
 		/*--------------------------------------------------------------------------------------------*/
-		public virtual IWeaverItem PrevQueryItem {
+		public virtual IWeaverItem PrevPathItem {
 			get { return Path.ItemAtIndex(PathIndex-1); }
 		}
 
 		/*--------------------------------------------------------------------------------------------*/
-		public virtual IWeaverItem NextQueryItem {
+		public virtual IWeaverItem NextPathItem {
 			get { return Path.ItemAtIndex(PathIndex+1); }
 		}
 
 		/*--------------------------------------------------------------------------------------------*/
-		public virtual IList<IWeaverItem> QueryPathToThisItem {
+		public virtual IList<IWeaverItem> PathToThisItem {
 			get { return Path.PathToIndex(PathIndex); }
 		}
 
 		/*--------------------------------------------------------------------------------------------*/
-		public virtual IList<IWeaverItem> QueryPathFromThisItem {
+		public virtual IList<IWeaverItem> PathFromThisItem {
 			get { return Path.PathFromIndex(PathIndex); }
 		}
 
 
 		////////////////////////////////////////////////////////////////////////////////////////////////
 		/*--------------------------------------------------------------------------------------------*/
-		public virtual string ItemIdentifier { get { return this+""; } }
+		public virtual string ItemIdentifier { get { return GetType().Name+""; } }
 
-
-		////////////////////////////////////////////////////////////////////////////////////////////////
 		/*--------------------------------------------------------------------------------------------*/
 		public abstract string GremlinCode { get; }
 

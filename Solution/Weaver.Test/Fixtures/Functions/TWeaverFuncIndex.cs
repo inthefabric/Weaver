@@ -13,6 +13,17 @@ namespace Weaver.Test.Fixtures.Functions {
 
 		////////////////////////////////////////////////////////////////////////////////////////////////
 		/*--------------------------------------------------------------------------------------------*/
+		[Test]
+		public void NewIndex() {
+			var q = new WeaverFuncIndex<Person>("Test", x => x.PersonId, 123);
+
+			Assert.AreEqual("Test", q.IndexName, "Incorrect IndexName.");
+			Assert.AreEqual("PersonId", q.PropertyName, "Incorrect PropertyName.");
+			Assert.AreEqual("PersonId", q.PropertyName, "Incorrect cached PropertyName.");
+			Assert.AreEqual(123, q.Value, "Incorrect Value.");
+		}
+		
+		/*--------------------------------------------------------------------------------------------*/
 		[TestCase("PersonId", 123, "g.idx(Person).get('PersonId', 123)")]
 		[TestCase("Name", "zach", "g.idx(Person).get('Name', 'zach')")]
 		[TestCase("Age", 27.1f, "g.idx(Person).get('Age', 27.1)")]

@@ -6,8 +6,6 @@ using Weaver.Items;
 
 namespace Weaver.Functions {
 
-	//TODO: use generic type for Expression return value?
-
 	/*================================================================================================*/
 	public class WeaverFuncProp<TItem> : WeaverFunc, IWeaverProp where TItem : IWeaverItem {
 

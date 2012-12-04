@@ -11,10 +11,10 @@ namespace Weaver.Interfaces {
 		IWeaverPath Path { get; set; }
 
 		/*--------------------------------------------------------------------------------------------*/
-		IWeaverItem PrevQueryItem { get; }
-		IWeaverItem NextQueryItem { get; }
-		IList<IWeaverItem> QueryPathToThisItem { get; }
-		IList<IWeaverItem> QueryPathFromThisItem { get; }
+		IWeaverItem PrevPathItem { get; }
+		IWeaverItem NextPathItem { get; }
+		IList<IWeaverItem> PathToThisItem { get; }
+		IList<IWeaverItem> PathFromThisItem { get; }
 
 		/*--------------------------------------------------------------------------------------------*/
 		string ItemIdentifier { get; }

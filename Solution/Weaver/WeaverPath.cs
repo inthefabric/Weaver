@@ -117,9 +117,8 @@ namespace Weaver {
 
 				if ( prev is TItem ) { return (TItem)prev; }
 
-				throw new WeaverPathException(this, "The 'As' marker with label '"+pLabel
-					+"' uses type "+prev.GetType().Name+", but type "+
-					typeof(TItem).Name+" was expected.");
+				throw new WeaverPathException(this, "The 'As' marker with label '"+pLabel+"' uses "+
+					"type "+prev.GetType().Name+", but type "+typeof(TItem).Name+" was expected.");
 			}
 
 			return default(TItem);

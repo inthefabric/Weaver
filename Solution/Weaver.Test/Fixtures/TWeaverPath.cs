@@ -236,12 +236,12 @@ namespace Weaver.Test.Fixtures {
 		/*--------------------------------------------------------------------------------------------*/
 		[Test]
 		public void FindAsNode() {
-			Person perAlias ;
+			Person perAlias, perAlias2;
 
 			var p = new TestPath();
 			var n2 = p.BaseNode.OutHasPerson.ToNode;
 			var n2Again = n2.As(out perAlias);
-			var n5 = n2Again.OutLikesCandy.ToNode;
+			var n5 = n2Again.OutLikesCandy.FromNode.As(out perAlias2);
 			
 			var as3 = (WeaverFuncAs<Person>)p.ItemAtIndex(3);
 			Person result = p.FindAsNode<Person>(as3.Label);
@@ -331,10 +331,6 @@ namespace Weaver.Test.Fixtures {
 
 			Assert.AreEqual(expect, path.GremlinCode, "Incorrect GrelminCode.");
 		}
-
-		//TODO: GetGremlinCode (by path, static)
-		//TODO: GetGremlinCode (by items, static)
-
 
 
 		////////////////////////////////////////////////////////////////////////////////////////////////
