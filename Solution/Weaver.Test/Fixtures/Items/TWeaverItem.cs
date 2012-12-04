@@ -1,9 +1,11 @@
 ﻿using NUnit.Framework;
+using Weaver.Exceptions;
 using Weaver.Functions;
 using Weaver.Interfaces;
 using Weaver.Items;
 using Weaver.Test.Common;
 using Weaver.Test.Common.Nodes;
+using Weaver.Test.Utils;
 
 namespace Weaver.Test.Fixtures.Items {
 
@@ -22,6 +24,16 @@ namespace Weaver.Test.Fixtures.Items {
 			Assert.NotNull(n.Path, "Path should be filled.");
 			Assert.AreEqual(2, n.PathIndex, "Incorrect PathIndex.");
 			Assert.AreEqual(2, n.PathIndex, "Incorrect cached PathIndex.");
+		}
+
+		/*--------------------------------------------------------------------------------------------*/
+		[Test]
+		public void PathIndexFail() {
+			var candy = new Candy();
+
+			WeaverTestUtils.CheckThrows<WeaverException>(true, () => {
+				var i = candy.PathIndex;
+			});
 		}
 
 

@@ -39,11 +39,9 @@
     <Compile Include="WeaverQuery.cs" />
     <Compile Include="Exceptions\WeaverFuncException.cs" />
     <Compile Include="Interfaces\IWeaverPath.cs" />
-    <Compile Include="Exceptions\WeaverGemlinException.cs" />
     <Compile Include="Exceptions\WeaverPathException.cs" />
     <Compile Include="Exceptions\WeaverRelException.cs" />
     <Compile Include="Exceptions\WeaverException.cs" />
-    <Compile Include="Exceptions\WeaverNodeException.cs" />
     <Compile Include="Functions\WeaverFuncHas.cs" />
     <Compile Include="Functions\WeaverFuncProp.cs" />
     <Compile Include="Functions\WeaverFuncBack.cs" />
