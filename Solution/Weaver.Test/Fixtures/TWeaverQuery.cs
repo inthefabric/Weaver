@@ -131,7 +131,6 @@ namespace Weaver.Test.Fixtures {
 
 		////////////////////////////////////////////////////////////////////////////////////////////////
 		/*--------------------------------------------------------------------------------------------*/
-		//TODO: test Rel with no properties
 		[Test]
 		public void AddRel() {
 			var plc = new PersonLikesCandy();
@@ -171,6 +170,23 @@ namespace Weaver.Test.Fixtures {
 			var expectParams = new Dictionary<string, string>();
 			expectParams.Add("_P0", "PersonLikesCandy");
 			expectParams.Add(pairMap["Notes"], plc.Notes);
+			CheckQueryParams(q, expectParams);
+		}
+
+		/*--------------------------------------------------------------------------------------------*/
+		[Test]
+		public void AddRelNoProps() {
+			var rhp = new RootHasPerson();
+			var root = new Root { Id = 0 };
+			var per = new Person { Id = 99 };
+
+			WeaverQuery q = WeaverQuery.AddRel(root, rhp, per);
+
+			Assert.NotNull(q.Script, "Script should be filled.");
+			Assert.AreEqual(q.Script, "f=g.v(0L);t=g.v(99L);g.addEdge(f,t,_P0);","Incorrect Script.");
+
+			var expectParams = new Dictionary<string, string>();
+			expectParams.Add("_P0", "RootHasPerson");
 			CheckQueryParams(q, expectParams);
 		}
 

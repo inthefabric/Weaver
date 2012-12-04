@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
+using Weaver.Exceptions;
 using Weaver.Functions;
 using Weaver.Interfaces;
 
@@ -31,6 +32,11 @@ namespace Weaver {
 		/*--------------------------------------------------------------------------------------------*/
 		public KeyValuePair<string, WeaverQueryVal> this[int pIndex] {
 			get {
+				if ( pIndex < 0 || pIndex >= vUpdates.Count ) {
+					throw new WeaverException(
+						"Index "+pIndex+" is out of bounds: [0,"+vUpdates.Count+"].");
+				}
+
 				WeaverUpdate<T> u = vUpdates[pIndex];
 				return new KeyValuePair<string, WeaverQueryVal>(u.PropName, u.PropVal);
 			}
