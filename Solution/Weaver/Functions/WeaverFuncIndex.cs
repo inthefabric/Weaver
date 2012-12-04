@@ -43,8 +43,8 @@ namespace Weaver.Functions {
 		/*--------------------------------------------------------------------------------------------*/
 		public override string GremlinCode {
 			get {
-				return "g.idx("+IndexName+").get('"+PropertyName+"', "+
-					WeaverQuery.QuoteValueIfString(Value)+")";
+				WeaverQueryVal qv = new WeaverQueryVal(Value);
+				return "g.idx("+IndexName+").get('"+PropertyName+"', "+qv.GetQuoted()+")";
 			}
 		}
 

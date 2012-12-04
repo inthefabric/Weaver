@@ -132,16 +132,6 @@ namespace Weaver {
 
 		////////////////////////////////////////////////////////////////////////////////////////////////
 		/*--------------------------------------------------------------------------------------------*/
-		public static string QuoteValueIfString(object pValue) {
-			return (pValue is string ? QuoteValue(pValue) : pValue+"");
-		}
-		
-		/*--------------------------------------------------------------------------------------------*/
-		public static string QuoteValue(object pValue) {
-			return "'"+pValue+"'";
-		}
-
-		/*--------------------------------------------------------------------------------------------*/
 		public static string BuildPropList<TItem>(IWeaverQuery pQuery, TItem pItem,
 													bool pIncludeId=false) where TItem : IWeaverItem {
 			string list = "";
