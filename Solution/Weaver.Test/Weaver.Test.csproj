@@ -65,6 +65,9 @@
     <Compile Include="Common\Nodes\Person.cs" />
     <Compile Include="Common\TestPath.cs" />
     <Compile Include="Fixtures\Items\TWeaverItem.cs" />
+    <Compile Include="Fixtures\Schema\TWeaverRelSchema.cs" />
+    <Compile Include="Fixtures\Schema\TWeaverPropSchema.cs" />
+    <Compile Include="Fixtures\Schema\TWeaverNodeSchema.cs" />
     <Compile Include="Fixtures\TWeaverQuery.cs" />
     <Compile Include="Fixtures\Functions\TWeaverFuncIndex.cs" />
     <Compile Include="Fixtures\Items\TWeaverRel.cs" />
