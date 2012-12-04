@@ -80,7 +80,7 @@ namespace Weaver.Test.Fixtures {
 
 			var expectParams = new Dictionary<string, string>();
 			expectParams.Add("_P0", indexName);
-			expectParams.Add("_P1", "'PersonId'");
+			expectParams.Add("_P1", "PersonId");
 
 			Assert.AreEqual(expect, q.Script, "Incorrect Query.Script.");
 			CheckQueryParams(q, expectParams);

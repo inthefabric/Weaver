@@ -77,7 +77,7 @@ namespace Weaver {
 			
 			var nodeIdVal = new WeaverQueryVal(pNode.Id);
 			var indexNameVal = new WeaverQueryVal(pIndexName, false);
-			var propNameVal = new WeaverQueryVal(WeaverFuncProp.GetPropertyName(pFunc));
+			var propNameVal = new WeaverQueryVal(WeaverFuncProp.GetPropertyName(pFunc), false);
 			var propValVal = new WeaverQueryVal(pFunc.Compile()(pNode));
 
 			q.Script = "n=g.v("+nodeIdVal.FixedText+");g.idx("+q.AddParam(indexNameVal)+").put("+
