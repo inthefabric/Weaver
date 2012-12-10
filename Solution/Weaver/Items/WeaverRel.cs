@@ -1,4 +1,5 @@
-﻿using Weaver.Exceptions;
+﻿using System;
+using Weaver.Exceptions;
 using Weaver.Interfaces;
 
 namespace Weaver.Items {
@@ -92,6 +93,10 @@ namespace Weaver.Items {
 				return n;
 			}
 		}
+
+		/*--------------------------------------------------------------------------------------------*/
+		public Type FromNodeType { get { return typeof(TFrom); } }
+		public Type ToNodeType { get { return typeof(TTo); } }
 
 		/*--------------------------------------------------------------------------------------------*/
 		public IWeaverRelType RelType {

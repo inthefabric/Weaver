@@ -1,4 +1,5 @@
-﻿using Weaver.Items;
+﻿using System;
+using Weaver.Items;
 
 namespace Weaver.Interfaces {
 
@@ -19,6 +20,10 @@ namespace Weaver.Interfaces {
 		bool IsFromManyNodes { get; }
 		bool IsToManyNodes { get; }
 		bool IsOutgoing { get; }
+
+		/*--------------------------------------------------------------------------------------------*/
+		Type FromNodeType { get; }
+		Type ToNodeType { get; }
 
 	}
 	

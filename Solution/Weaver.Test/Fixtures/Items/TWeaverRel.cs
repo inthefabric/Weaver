@@ -95,6 +95,15 @@ namespace Weaver.Test.Fixtures.Items {
 
 		/*--------------------------------------------------------------------------------------------*/
 		[Test]
+		public void NodeType() {
+			var r = new PersonLikesCandy();
+
+			Assert.AreEqual(typeof(Person), r.FromNodeType, "Incorrect FromNodeType.");
+			Assert.AreEqual(typeof(Candy), r.ToNodeType, "Incorrect ToNodeType.");
+		}
+
+		/*--------------------------------------------------------------------------------------------*/
+		[Test]
 		public void RelType() {
 			var r = new PersonLikesCandy();
 			IWeaverRelType hasType = r.RelType;
