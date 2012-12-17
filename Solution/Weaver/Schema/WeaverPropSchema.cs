@@ -13,6 +13,8 @@ namespace Weaver.Schema {
 		public bool? IsTimestamp { get; set; }
 		public bool? IsNullable { get; set; }
 		public bool? IsCaseInsensitive { get; set; }
+		public bool? IsInternal { get; set; }
+		public bool? IsPassword { get; set; }
 		public int? Len { get; set; }
 		public int? LenMin { get; set; }
 		public int? LenMax { get; set; }
