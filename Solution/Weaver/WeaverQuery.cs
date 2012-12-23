@@ -133,9 +133,9 @@ namespace Weaver {
 		////////////////////////////////////////////////////////////////////////////////////////////////
 		/*--------------------------------------------------------------------------------------------*/
 		public static string BuildPropList<TItem>(IWeaverQuery pQuery, TItem pItem,
-													bool pIncludeId=false) where TItem : IWeaverItem {
+								bool pIncludeId=false, int pStartParamI=0) where TItem : IWeaverItem {
 			string list = "";
-			int i = 0;
+			int i = pStartParamI;
 
 			foreach ( PropertyInfo prop in pItem.GetType().GetProperties() ) {
 				object[] propAtts = prop.GetCustomAttributes(typeof(WeaverItemPropertyAttribute), true);
