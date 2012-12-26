@@ -5,7 +5,7 @@ using Weaver.Exceptions;
 namespace Weaver {
 
 	/*================================================================================================*/
-	public class WeaverTransaction { //TEST: WeaverTransaction
+	public class WeaverTransaction {
 
 		public enum ConclusionType {
 			Success = 1,

@@ -4,15 +4,18 @@ using Weaver.Functions;
 namespace Weaver.Interfaces {
 
 	/*================================================================================================*/
-	public interface IWeaverPath<out TBase> where TBase : class, IWeaverItem, new() {
+	public interface IWeaverPath<out TBase> : IWeaverPath where TBase : class, IWeaverItem, new() {
 
 		TBase BaseNode { get; }
+
 	}
 
 	/*================================================================================================*/
 	public interface IWeaverPath {
 
+		IWeaverQuery Query { get; }
 		WeaverFuncIndex BaseIndex { get; }
+		bool Finished { get; }
 
 
 		////////////////////////////////////////////////////////////////////////////////////////////////
@@ -28,9 +31,9 @@ namespace Weaver.Interfaces {
 		/*--------------------------------------------------------------------------------------------*/
 		int IndexOfItem(IWeaverItem pItem);
 		TItem FindAsNode<TItem>(string pLabel) where TItem : IWeaverItem;
-
+		
 		/*--------------------------------------------------------------------------------------------*/
-		string GremlinCode { get; }
+		string GetParameterizedScriptAndFinish();
 
 	}
 

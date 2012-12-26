@@ -116,11 +116,9 @@ namespace Weaver.Items {
 
 		////////////////////////////////////////////////////////////////////////////////////////////////
 		/*--------------------------------------------------------------------------------------------*/
-		public override string GremlinCode {
-			get {
-				return (IsOutgoing ? "out" : "in")+"E('"+Label+"')"+
-					(!IsFromManyNodes && !IsToManyNodes ? "[0]" : "");
-			}
+		public override string BuildParameterizedString() {
+			bool fromOne = (!IsFromManyNodes && !IsToManyNodes);
+			return (IsOutgoing ? "out" : "in")+"E('"+Label+"')"+(fromOne ? "[0]" : "");
 		}
 
 	}

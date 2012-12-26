@@ -27,7 +27,7 @@ namespace Weaver.Test.Fixtures.Functions {
 			var f = new WeaverFuncBack<Person>(pathMock.Object, perAlias);
 
 			Assert.AreEqual("step"+pItemIndex, f.Label, "Incorrect Label.");
-			Assert.AreEqual("back('step"+pItemIndex+"')", f.GremlinCode, "Incorrect GremlinCode.");
+			Assert.AreEqual("back('step"+pItemIndex+"')", f.Script, "Incorrect GremlinCode.");
 			Assert.AreEqual(perAlias, f.BackToItem, "Incorrect BackToItem.");
 		}
 

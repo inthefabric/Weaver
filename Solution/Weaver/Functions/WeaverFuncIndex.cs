@@ -41,11 +41,11 @@ namespace Weaver.Functions {
 		}
 
 		/*--------------------------------------------------------------------------------------------*/
-		public override string GremlinCode {
-			get {
-				WeaverQueryVal qv = new WeaverQueryVal(Value);
-				return "g.idx("+IndexName+").get('"+PropertyName+"', "+qv.GetQuoted()+")";
-			}
+		public override string BuildParameterizedString() {
+			var qvIdx = new WeaverQueryVal(IndexName, false);
+			var qvVal = new WeaverQueryVal(Value, false);
+			return "g.idx("+Path.Query.AddParam(qvIdx)+").get('"+PropertyName+"',"+
+				Path.Query.AddParamIfString(qvVal)+")";
 		}
 
 	}

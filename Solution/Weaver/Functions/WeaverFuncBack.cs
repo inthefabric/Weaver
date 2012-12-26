@@ -32,8 +32,8 @@ namespace Weaver.Functions {
 		}
 
 		/*--------------------------------------------------------------------------------------------*/
-		public override string GremlinCode {
-			get { return "back('"+vLabel+"')"; }
+		public override string BuildParameterizedString() {
+			return "back('"+vLabel+"')";
 		}
 
 	}

@@ -27,7 +27,7 @@ namespace Weaver.Test.Fixtures.Functions {
 			Assert.AreEqual("ExpectOneNode", f.PropertyName, "Incorrect PropertyName.");
 			Assert.AreEqual(pOperation, f.Operation, "Incorrect Operation.");
 			Assert.AreEqual(pValue, f.Value, "Incorrect Value.");
-			Assert.AreEqual(pExpect, f.GremlinCode, "Incorrect GremlinCode.");
+			Assert.AreEqual(pExpect, f.Script, "Incorrect GremlinCode.");
 		}
 
 		/*--------------------------------------------------------------------------------------------*/

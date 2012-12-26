@@ -23,7 +23,7 @@ namespace Weaver.Test.Fixtures.Functions {
 			var f = new WeaverFuncProp<Person>(n => n.PersonId);
 
 			Assert.AreEqual("PersonId", f.PropertyName, "Incorrect PropertyName.");
-			Assert.AreEqual("PersonId", f.GremlinCode, "Incorrect GremlinCode.");
+			Assert.AreEqual("PersonId", f.Script, "Incorrect GremlinCode.");
 		}
 
 		/*--------------------------------------------------------------------------------------------*/

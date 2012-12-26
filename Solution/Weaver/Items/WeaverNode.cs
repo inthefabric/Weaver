@@ -32,12 +32,12 @@ namespace Weaver.Items {
 		}
 
 		/*--------------------------------------------------------------------------------------------*/
-		public override string GremlinCode {
-			get {
-				return (IsRoot ? "v(0)" :
-					(IsFromNode ? "outV" : "inV")+(ExpectOneNode ? "(0)" : "")
-				);
+		public override string BuildParameterizedString() {
+			if ( IsRoot ) {
+				return "v(0)";
 			}
+
+			return (IsFromNode ? "outV" : "inV")+(ExpectOneNode ? "(0)" : "");
 		}
 
 	}

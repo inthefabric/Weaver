@@ -30,8 +30,8 @@ namespace Weaver.Functions {
 		}
 
 		/*--------------------------------------------------------------------------------------------*/
-		public override string GremlinCode {
-			get { return PropertyName; }
+		public override string BuildParameterizedString() {
+			return PropertyName;
 		}
 
 	}

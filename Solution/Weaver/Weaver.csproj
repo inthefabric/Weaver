@@ -30,6 +30,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="WeaverItemExt.cs" />
     <Compile Include="WeaverQueryVal.cs" />
     <Compile Include="WeaverUpdates.cs" />
     <Compile Include="Functions\WeaverFuncIndex.cs" />

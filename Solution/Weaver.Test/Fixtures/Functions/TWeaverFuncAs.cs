@@ -24,7 +24,7 @@ namespace Weaver.Test.Fixtures.Functions {
 			var f = new WeaverFuncAs<Person>(mockPath.Object);
 
 			Assert.AreEqual("step"+itemI, f.Label, "Incorrect Label.");
-			Assert.AreEqual("as('step"+itemI+"')", f.GremlinCode, "Incorrect GremlinCode.");
+			Assert.AreEqual("as('step"+itemI+"')", f.Script, "Incorrect GremlinCode.");
 		}
 
 	}

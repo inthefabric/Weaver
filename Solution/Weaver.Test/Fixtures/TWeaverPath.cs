@@ -310,7 +310,7 @@ namespace Weaver.Test.Fixtures {
 				".inE('PersonLikesCandy').outV"+
 					".Name";
 
-			Assert.AreEqual(expect, path.GremlinCode, "Incorrect GrelminCode.");
+			Assert.AreEqual(expect, path.Script, "Incorrect GrelminCode.");
 		}
 
 		/*--------------------------------------------------------------------------------------------*/
@@ -329,7 +329,7 @@ namespace Weaver.Test.Fixtures {
 				".outE('PersonLikesCandy').inV"+
 					".Name";
 
-			Assert.AreEqual(expect, path.GremlinCode, "Incorrect GrelminCode.");
+			Assert.AreEqual(expect, path.Script, "Incorrect GrelminCode.");
 		}
 
 

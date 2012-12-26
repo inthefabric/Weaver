@@ -140,7 +140,7 @@ namespace Weaver.Test.Fixtures.Items {
 		public void Gremlin(WeaverRelConn pConn, string pExpectGremlin) {
 			var r = new RootHasCandy { Connection = pConn };
 
-			Assert.AreEqual(pExpectGremlin, r.GremlinCode, "Incorrect GremlinCode.");
+			Assert.AreEqual(pExpectGremlin, r.Script, "Incorrect GremlinCode.");
 		}
 
 	}

@@ -20,7 +20,7 @@ namespace Weaver.Interfaces {
 		string ItemIdentifier { get; }
 
 		/*--------------------------------------------------------------------------------------------*/
-		string GremlinCode { get; }
+		string BuildParameterizedString();
 
 	}
 

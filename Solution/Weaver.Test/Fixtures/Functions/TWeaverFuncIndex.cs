@@ -41,7 +41,7 @@ namespace Weaver.Test.Fixtures.Functions {
 
 			Assert.AreEqual(indexName, q.IndexName, "Incorrect IndexName.");
 			Assert.AreEqual(pValue, q.Value, "Incorrect Value.");
-			Assert.AreEqual(pExpect, q.GremlinCode, "Incorrect GrelminCode.");
+			Assert.AreEqual(pExpect, q.Script, "Incorrect GrelminCode.");
 		}
 
 	}

@@ -12,20 +12,87 @@ namespace Weaver {
 	/*================================================================================================*/
 	public class WeaverQuery : IWeaverQuery {
 
-		public string Script { get; set; }
-		public Dictionary<string, string> Params { get; set; }
+		public enum ResultQuantity {
+			Single = 1,
+			List
+		}
+
+		public string Script { get; private set; }
+		public Dictionary<string, string> Params { get; private set; }
+		public ResultQuantity? ExpectQuantity { get; private set; } //TEST: WeaverQuery.ExpectQuantity
+
+		private IWeaverPath vPath;
 		
 		
 		////////////////////////////////////////////////////////////////////////////////////////////////
 		/*--------------------------------------------------------------------------------------------*/
-		public WeaverQuery(string pScript) {
+		public WeaverQuery(string pScript, Dictionary<string, string> pParams=null) {
 			Script = pScript;
-			Params = new Dictionary<string, string>();
+			Params = (pParams ?? new Dictionary<string, string>());
 		}
 		
 		/*--------------------------------------------------------------------------------------------*/
 		public WeaverQuery() : this("") {}
 
+
+		////////////////////////////////////////////////////////////////////////////////////////////////
+		/*--------------------------------------------------------------------------------------------*/
+		//TEST: WeaverQuery.BeginPath
+		public WeaverPath<TBase> BeginPath<TBase>(TBase pBaseNode)
+															where TBase : class, IWeaverItem, new() {
+			if ( Script != null ) {
+				throw new WeaverException("Script is already set.");
+			}
+
+			var wp = new WeaverPath<TBase>(this, pBaseNode);
+			vPath = wp;
+			return wp;
+		}
+		
+		/*--------------------------------------------------------------------------------------------*/
+		//TEST: WeaverQuery.BeginPathWithIndex
+		public WeaverPath<T> BeginPathWithIndex<T>(string pIndexName, Expression<Func<T, object>> pFunc,
+												object pValue) where T : class, IWeaverNode, new() {
+			if ( Script != null ) {
+				throw new WeaverException("Script is already set.");
+			}
+
+			var p = new WeaverPath<T>(this);
+			p.StartWithIndex(pIndexName, pFunc, pValue);
+			vPath = p;
+			return p;
+		}
+
+		/*--------------------------------------------------------------------------------------------*/
+		//TEST: WeaverQuery.FinishPathWithQuantity
+		public void FinishPathWithQuantity(ResultQuantity pQuantity) {
+			if ( vPath == null ) {
+				throw new WeaverException("Path is null.");
+			}
+
+			ExpectQuantity = pQuantity;
+			Script = vPath.GetParameterizedScriptAndFinish();
+		}
+
+		/*--------------------------------------------------------------------------------------------*/
+		//TEST: WeaverQuery.FinishPathWithUpdate
+		public void FinishPathWithUpdate<T>(WeaverUpdates<T> pUpdates) where T : IWeaverNode {
+			if ( vPath == null ) {
+				throw new WeaverException("Path is null.");
+			}
+
+			Script = vPath.GetParameterizedScriptAndFinish()+".each{";
+
+			for ( int i = 0 ; i < pUpdates.Count ; ++i ) {
+				KeyValuePair<string, WeaverQueryVal> pair = pUpdates[i];
+				Script += (i == 0 ? "" : ";")+"it."+pair.Key+"="+AddParamIfString(pair.Value);
+			}
+			
+			Script += "};";
+		}
+
+
+		////////////////////////////////////////////////////////////////////////////////////////////////
 		/*--------------------------------------------------------------------------------------------*/
 		public void AddParam(string pParamName, WeaverQueryVal pValue) {
 			Params.Add(pParamName, pValue.GetQuoted());
@@ -83,21 +150,6 @@ namespace Weaver {
 			q.Script = "n=g.v("+nodeIdVal.FixedText+");g.idx("+q.AddParam(indexNameVal)+").put("+
 				q.AddParam(propNameVal)+","+q.AddParamIfString(propValVal)+",n);";
 
-			return q;
-		}
-
-		/*--------------------------------------------------------------------------------------------*/
-		public static WeaverQuery UpdateNodesAtPath<T>(IWeaverPath pPath, WeaverUpdates<T> pUpdates)
-																				where T : IWeaverNode {
-			var q = new WeaverQuery();
-			q.Script = pPath.GremlinCode+".each{";
-
-			for ( int i = 0 ; i < pUpdates.Count ; ++i ) {
-				KeyValuePair<string, WeaverQueryVal> pair = pUpdates[i];
-				q.Script += (i == 0 ? "" : ";")+"it."+pair.Key+"="+q.AddParamIfString(pair.Value);
-			}
-
-			q.Script += "};";
 			return q;
 		}
 

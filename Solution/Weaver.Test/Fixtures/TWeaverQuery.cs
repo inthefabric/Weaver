@@ -118,7 +118,7 @@ namespace Weaver.Test.Fixtures {
 
 			WeaverQuery q = WeaverQuery.UpdateNodesAtPath(path, updates);
 
-			string expect = path.GremlinCode+
+			string expect = path.Script+
 				".each{it.PersonId=321;it.Name=_P0;it.IsMale=true;it.Age=27.3F};";
 
 			var expectParams = new Dictionary<string, string>();

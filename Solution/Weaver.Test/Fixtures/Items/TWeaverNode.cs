@@ -30,7 +30,7 @@ namespace Weaver.Test.Fixtures.Items {
 				n = new Person { IsFromNode = pIsFrom, ExpectOneNode = pExpectOne };
 			}
 
-			Assert.AreEqual(pExpectGremlin, n.GremlinCode, "Incorrect GremlinCode.");
+			Assert.AreEqual(pExpectGremlin, n.Script, "Incorrect GremlinCode.");
 		}
 
 		/*--------------------------------------------------------------------------------------------*/

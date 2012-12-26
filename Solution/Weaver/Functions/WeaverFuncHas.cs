@@ -67,13 +67,10 @@ namespace Weaver.Functions {
 		}
 
 		/*--------------------------------------------------------------------------------------------*/
-		public override string GremlinCode {
-			get {
-				string v = (Value == null ? "null" : Value.ToString());
-				if ( Value is string ) { v = "'"+v+"'"; }
-				return "has('"+PropertyName+"', Tokens.T."+
-					WeaverFuncHas.GremlinOpMap[Operation]+", "+v+")";
-			}
+		public override string BuildParameterizedString() {
+			var qv = new WeaverQueryVal(Value);
+			return "has('"+PropertyName+"',Tokens.T."+WeaverFuncHas.GremlinOpMap[Operation]+","+
+				Path.Query.AddParamIfString(qv)+")";
 		}
 
 	}
