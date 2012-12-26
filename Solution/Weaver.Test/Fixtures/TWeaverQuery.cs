@@ -2,7 +2,6 @@
 using NUnit.Framework;
 using Weaver.Exceptions;
 using Weaver.Functions;
-using Weaver.Items;
 using Weaver.Test.Common;
 using Weaver.Test.Common.Nodes;
 using Weaver.Test.Common.Rels;
@@ -96,7 +95,7 @@ namespace Weaver.Test.Fixtures {
 			);
 		}
 
-		/*--------------------------------------------------------------------------------------------*/
+		/*--------------------------------------------------------------------------------------------* /
 		[Test]
 		public void UpdateNodesAtPath() {
 			var person = new Person();

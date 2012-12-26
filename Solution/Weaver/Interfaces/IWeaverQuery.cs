@@ -9,13 +9,13 @@ namespace Weaver.Interfaces {
 
 		string Script { get; }
 		Dictionary<string, string> Params { get; }
-		WeaverQuery.ResultQuantity? ExpectQuantity { get; }
+		WeaverQuery.ResultQuantity ExpectQuantity { get; }
 
 
 		////////////////////////////////////////////////////////////////////////////////////////////////
 		/*--------------------------------------------------------------------------------------------*/
-		WeaverPath<TBase> BeginPath<TBase>(TBase pBaseNode) where TBase : class, IWeaverItem, new();
-		WeaverPath<T> BeginPathWithIndex<T>(string pIndexName, Expression<Func<T, object>> pFunc,
+		IWeaverPath<TBase> BeginPath<TBase>(TBase pBaseNode) where TBase : class, IWeaverItem, new();
+		IWeaverPath<T> BeginPathWithIndex<T>(string pIndexName, Expression<Func<T, object>> pFunc,
 													object pValue) where T : class, IWeaverNode, new();
 		void FinishPathWithQuantity(WeaverQuery.ResultQuantity pQuantity);
 		void FinishPathWithUpdate<T>(WeaverUpdates<T> pUpdates) where T : IWeaverNode;

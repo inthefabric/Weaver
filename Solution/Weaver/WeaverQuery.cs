@@ -13,15 +13,17 @@ namespace Weaver {
 	public class WeaverQuery : IWeaverQuery {
 
 		public enum ResultQuantity {
-			Single = 1,
+			Undefined = 0,
+			Single,
 			List
 		}
 
 		public string Script { get; private set; }
 		public Dictionary<string, string> Params { get; private set; }
-		public ResultQuantity? ExpectQuantity { get; private set; } //TEST: WeaverQuery.ExpectQuantity
+		public ResultQuantity ExpectQuantity { get; private set; } //TEST: WeaverQuery.ExpectQuantity
+		public IWeaverPath Path { get { return vPath; } } //TEST: WeaverQuery.Path
 
-		private IWeaverPath vPath;
+		private WeaverPath vPath;
 		
 		
 		////////////////////////////////////////////////////////////////////////////////////////////////
@@ -29,16 +31,17 @@ namespace Weaver {
 		public WeaverQuery(string pScript, Dictionary<string, string> pParams=null) {
 			Script = pScript;
 			Params = (pParams ?? new Dictionary<string, string>());
+			ExpectQuantity = ResultQuantity.Undefined;
 		}
 		
 		/*--------------------------------------------------------------------------------------------*/
-		public WeaverQuery() : this("") {}
+		public WeaverQuery() : this(null) {}
 
 
 		////////////////////////////////////////////////////////////////////////////////////////////////
 		/*--------------------------------------------------------------------------------------------*/
 		//TEST: WeaverQuery.BeginPath
-		public WeaverPath<TBase> BeginPath<TBase>(TBase pBaseNode)
+		public IWeaverPath<TBase> BeginPath<TBase>(TBase pBaseNode)
 															where TBase : class, IWeaverItem, new() {
 			if ( Script != null ) {
 				throw new WeaverException("Script is already set.");
@@ -51,7 +54,7 @@ namespace Weaver {
 		
 		/*--------------------------------------------------------------------------------------------*/
 		//TEST: WeaverQuery.BeginPathWithIndex
-		public WeaverPath<T> BeginPathWithIndex<T>(string pIndexName, Expression<Func<T, object>> pFunc,
+		public IWeaverPath<T> BeginPathWithIndex<T>(string pIndexName, Expression<Func<T, object>> pFunc,
 												object pValue) where T : class, IWeaverNode, new() {
 			if ( Script != null ) {
 				throw new WeaverException("Script is already set.");
@@ -70,6 +73,10 @@ namespace Weaver {
 				throw new WeaverException("Path is null.");
 			}
 
+			if ( Script != null ) {
+				throw new WeaverException("Query is already finished.");
+			}
+
 			ExpectQuantity = pQuantity;
 			Script = vPath.GetParameterizedScriptAndFinish();
 		}
@@ -79,6 +86,10 @@ namespace Weaver {
 		public void FinishPathWithUpdate<T>(WeaverUpdates<T> pUpdates) where T : IWeaverNode {
 			if ( vPath == null ) {
 				throw new WeaverException("Path is null.");
+			}
+
+			if ( Script != null ) {
+				throw new WeaverException("Query is already finished.");
 			}
 
 			Script = vPath.GetParameterizedScriptAndFinish()+".each{";

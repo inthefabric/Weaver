@@ -3,8 +3,6 @@ using NUnit.Framework;
 using Weaver.Exceptions;
 using Weaver.Functions;
 using Weaver.Interfaces;
-using Weaver.Items;
-using Weaver.Test.Common;
 using Weaver.Test.Common.Nodes;
 using Weaver.Test.Common.Rels;
 using Weaver.Test.Utils;
@@ -13,17 +11,19 @@ namespace Weaver.Test.Fixtures {
 
 	/*================================================================================================*/
 	[TestFixture]
-	public class TWeaverPath : WeaverTestBase {
+	public class TWeaverQueryPath : WeaverTestBase {
 
 
 		////////////////////////////////////////////////////////////////////////////////////////////////
 		/*--------------------------------------------------------------------------------------------*/
 		[Test]
 		public void StartEmpty() {
-			var p = new WeaverPath<Root>();
+			IWeaverQuery q = new WeaverQuery();
+			IWeaverPath<Root> p = GetPathFromRoot(q);
 
 			Assert.Null(p.BaseNode, "BaseNode should be null.");
 			Assert.Null(p.BaseIndex, "BaseIndex should be null.");
+			Assert.AreEqual(q, p.Query, "Incorrect Query.");
 			Assert.AreEqual(0, p.Length, "Incorrect Length.");
 		}
 
@@ -31,7 +31,7 @@ namespace Weaver.Test.Fixtures {
 		[Test]
 		public void StartWithBase() {
 			var r = new Root();
-			var p = new WeaverPath<Root>(r);
+			IWeaverPath<Root> p = GetPathFromRoot(r);
 
 			Assert.NotNull(p.BaseNode, "BaseNode should be filled.");
 			Assert.AreEqual(p, p.BaseNode.Path, "Incorrect BaseNode.Path.");
@@ -47,8 +47,8 @@ namespace Weaver.Test.Fixtures {
 			const int perId = 99;
 			const string indexName = "Person";
 
-			var p = new WeaverPath<Person>();
-			p.StartWithIndex<Person>(indexName, (x => x.PersonId), perId);
+			var q = new WeaverQuery();
+			IWeaverPath<Person> p = q.BeginPathWithIndex<Person>(indexName, (x => x.PersonId), perId);
 
 			Assert.NotNull(p.BaseNode, "BaseNode should be filled.");
 			Assert.AreEqual(p, p.BaseNode.Path, "Incorrect BaseNode.Path.");
@@ -66,17 +66,19 @@ namespace Weaver.Test.Fixtures {
 		/*--------------------------------------------------------------------------------------------*/
 		[Test]
 		public void StartWithIndexFail() {
-			var p = new WeaverPath<Person>(new Person());
+			var q = new WeaverQuery();
+			q.BeginPath(new Root());
 
 			WeaverTestUtils.CheckThrows<WeaverPathException>(true,
-				() => p.StartWithIndex<Person>("P", (x => x.PersonId), 1)
+				() => q.BeginPathWithIndex<Person>("P", (x => x.PersonId), 1)
 			);
 		}
 		
 		/*--------------------------------------------------------------------------------------------*/
 		[Test]
 		public void AddItem() {
-			var p = new TestPath();
+			var q = new WeaverQuery();
+			IWeaverPath<Root> p = q.BeginPath(new Root());
 			var candy = new Candy();
 			p.AddItem(candy);
 
@@ -90,21 +92,21 @@ namespace Weaver.Test.Fixtures {
 		/*--------------------------------------------------------------------------------------------*/
 		[Test]
 		public void Length0() {
-			var p = new WeaverPath<Root>();
+			IWeaverPath<Root> p = GetPathFromRoot();
 			Assert.AreEqual(0, p.Length, "Incorrect Length.");
 		}
 
 		/*--------------------------------------------------------------------------------------------*/
 		[Test]
 		public void Length1() {
-			var p = new WeaverPath<Root>(new Root());
+			IWeaverPath<Root> p = GetPathFromRoot();
 			Assert.AreEqual(1, p.Length, "Incorrect Length.");
 		}
 
 		/*--------------------------------------------------------------------------------------------*/
 		[Test]
 		public void Length3() {
-			var p = new WeaverPath<Root>(new Root());
+			IWeaverPath<Root> p = GetPathFromRoot();
 			Person person = p.BaseNode.OutHasPerson.ToNode;
 			Assert.AreEqual(3, p.Length, "Incorrect Length.");
 		}
@@ -113,7 +115,7 @@ namespace Weaver.Test.Fixtures {
 		[Test]
 		public void ItemAtIndex() {
 			var r = new Root();
-			var p = new WeaverPath<Root>(r);
+			IWeaverPath<Root> p = GetPathFromRoot(r);
 			RootHasPerson i1 = p.BaseNode.OutHasPerson;
 			Person i2 = i1.ToNode;
 			PersonLikesCandy i3 = i2.OutLikesCandy;
@@ -131,7 +133,7 @@ namespace Weaver.Test.Fixtures {
 		[TestCase(-1)]
 		[TestCase(3)]
 		public void ItemAtIndexBounds(int pIndex) {
-			TestPath p = GetTestPathLength3();
+			IWeaverPath<Root> p = GetTestPathLength3();
 
 			WeaverTestUtils.CheckThrows<WeaverPathException>(true,
 				() => p.ItemAtIndex(pIndex)
@@ -147,7 +149,7 @@ namespace Weaver.Test.Fixtures {
 		[TestCase(4, false, 4)]
 		[TestCase(5, false, 5)]
 		public void PathToIndex(int pIndex, bool pInclusive, int pCount) {
-			TestPath p = GetTestPathLength5();
+			IWeaverPath<Root> p = GetTestPathLength5();
 
 			IList<IWeaverItem> result = p.PathToIndex(pIndex, pInclusive);
 
@@ -169,7 +171,7 @@ namespace Weaver.Test.Fixtures {
 		[TestCase(3, true, true)]
 		[TestCase(3, false, false)]
 		public void PathToIndexBounds(int pIndex, bool pInclusive, bool pThrows) {
-			TestPath p = GetTestPathLength3();
+			IWeaverPath<Root> p = GetTestPathLength3();
 
 			WeaverTestUtils.CheckThrows<WeaverPathException>(pThrows,
 				() => p.PathToIndex(pIndex, pInclusive)
@@ -186,7 +188,7 @@ namespace Weaver.Test.Fixtures {
 		[TestCase(3, false, 1)]
 		[TestCase(4, true, 1)]
 		public void PathFromIndex(int pIndex, bool pInclusive, int pCount) {
-			TestPath p = GetTestPathLength5();
+			IWeaverPath<Root> p = GetTestPathLength5();
 
 			IList<IWeaverItem> result = p.PathFromIndex(pIndex, pInclusive);
 
@@ -212,7 +214,7 @@ namespace Weaver.Test.Fixtures {
 		[TestCase(3, true, true)]
 		[TestCase(3, false, true)]
 		public void PathFromIndexBounds(int pIndex, bool pInclusive, bool pThrows) {
-			TestPath p = GetTestPathLength3();
+			IWeaverPath<Root> p = GetTestPathLength3();
 
 			WeaverTestUtils.CheckThrows<WeaverPathException>(pThrows,
 				() => p.PathFromIndex(pIndex, pInclusive)
@@ -224,7 +226,7 @@ namespace Weaver.Test.Fixtures {
 		/*--------------------------------------------------------------------------------------------*/
 		[Test]
 		public void IndexOfItem() {
-			var p = new TestPath();
+			IWeaverPath<Root> p = GetPathFromRoot();
 			var n2 = p.BaseNode.OutHasPerson.ToNode;
 			var n4 = n2.OutLikesCandy.ToNode;
 
@@ -238,7 +240,7 @@ namespace Weaver.Test.Fixtures {
 		public void FindAsNode() {
 			Person perAlias, perAlias2;
 
-			var p = new TestPath();
+			IWeaverPath<Root> p = GetPathFromRoot();
 			var n2 = p.BaseNode.OutHasPerson.ToNode;
 			var n2Again = n2.As(out perAlias);
 			var n5 = n2Again.OutLikesCandy.FromNode.As(out perAlias2);
@@ -261,7 +263,7 @@ namespace Weaver.Test.Fixtures {
 		/*--------------------------------------------------------------------------------------------*/
 		[Test]
 		public void FindAsNodeWrongType() {
-			var p = new TestPath();
+			IWeaverPath<Root> p = GetPathFromRoot();
 			var n = p.BaseNode.OutHasPerson.ToNode;
 
 			var as3 = new WeaverFuncAs<Candy>(p);
@@ -277,10 +279,9 @@ namespace Weaver.Test.Fixtures {
 		/*--------------------------------------------------------------------------------------------*/
 		[Test]
 		public void GremlinBase() {
-			var path = new TestPath();
 			Person personAlias;
-
-			path.BaseNode
+			IWeaverQuery q = new WeaverQuery()
+				.BeginPath(new Root()).BaseNode
 				.OutHasPerson.ToNode
 				.InRootHas.FromNode
 				.OutHasPerson.ToNode
@@ -293,7 +294,8 @@ namespace Weaver.Test.Fixtures {
 					.Has(h => h.Enjoyment, WeaverFuncHasOp.GreterThanOrEqualTo, 0.2)
 					.ToNode
 				.InPersonLikes.FromNode
-					.Prop(p => p.Name);
+					//.Prop(p => p.Name);
+				.ToList();
 
 			const string expect = "g.v(0)"+
 				".outE('RootHasPerson').inV"+
@@ -310,46 +312,64 @@ namespace Weaver.Test.Fixtures {
 				".inE('PersonLikesCandy').outV"+
 					".Name";
 
-			Assert.AreEqual(expect, path.Script, "Incorrect GrelminCode.");
+			Assert.AreEqual(expect, q.Script, "Incorrect GrelminCode.");
 		}
 
 		/*--------------------------------------------------------------------------------------------*/
 		[Test]
 		public void GremlinIndex() {
-			var path = new WeaverPath<Person>();
-			path.StartWithIndex<Person>("Person", p => p.PersonId, 123);
-
-			path.BaseNode
+			IWeaverQuery q = new WeaverQuery()
+				.BeginPathWithIndex<Person>("Person", p => p.PersonId, 123).BaseNode
 				.OutKnowsPerson.ToNode
 				.OutLikesCandy.ToNode
-					.Prop(p => p.Name);
+					//.Prop(p => p.Name)
+				.ToList();
 
 			const string expect = "g.idx(Person).get('PersonId', 123)"+
 				".outE('PersonKnowsPerson').inV"+
 				".outE('PersonLikesCandy').inV"+
 					".Name";
 
-			Assert.AreEqual(expect, path.Script, "Incorrect GrelminCode.");
+			Assert.AreEqual(expect, q.Script, "Incorrect GrelminCode.");
 		}
 
 
 		////////////////////////////////////////////////////////////////////////////////////////////////
 		/*--------------------------------------------------------------------------------------------*/
-		private TestPath GetTestPathLength3() {
-			var p = new TestPath();
+		private IWeaverPath<Root> GetPathFromRoot() {
+			var q = new WeaverQuery();
+			return q.BeginPath(new Root());
+		}
+		
+		/*--------------------------------------------------------------------------------------------*/
+		private IWeaverPath<Root> GetPathFromRoot(IWeaverQuery pQuery) {
+			return pQuery.BeginPath(new Root());
+		}
+
+		/*--------------------------------------------------------------------------------------------*/
+		private IWeaverPath<Root> GetPathFromRoot(Root pRoot) {
+			var q = new WeaverQuery();
+			return q.BeginPath(pRoot);
+		}
+		
+
+		////////////////////////////////////////////////////////////////////////////////////////////////
+		/*--------------------------------------------------------------------------------------------*/
+		private IWeaverPath<Root> GetTestPathLength3() {
+			IWeaverPath<Root> p = GetPathFromRoot();
 			var n = p.BaseNode.OutHasPerson.ToNode;
 			Assert.AreEqual(3, p.Length, "Incorrect Length.");
 			return p;
 		}
 
 		/*--------------------------------------------------------------------------------------------*/
-		private TestPath GetTestPathLength5() {
-			var p = new TestPath();
+		private IWeaverPath<Root> GetTestPathLength5() {
+			IWeaverPath<Root> p = GetPathFromRoot();
 			var n = p.BaseNode.OutHasPerson.ToNode.OutLikesCandy.ToNode;
 			Assert.AreEqual(5, p.Length, "Incorrect Length.");
 			return p;
 		}
 
 	}
-
+	
 }

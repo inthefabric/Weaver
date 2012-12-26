@@ -10,7 +10,7 @@ namespace Weaver {
 	/*================================================================================================*/
 	public class WeaverPath : IWeaverPath {
 
-		public IWeaverQuery Query { get; protected set; }
+		public IWeaverQuery Query { get; private set; }
 		public WeaverFuncIndex BaseIndex { get; protected set; }
 		public bool Finished { get; protected set; }
 
@@ -19,7 +19,7 @@ namespace Weaver {
 
 		////////////////////////////////////////////////////////////////////////////////////////////////
 		/*--------------------------------------------------------------------------------------------*/
-		internal WeaverPath(WeaverQuery pQuery) {
+		internal WeaverPath(IWeaverQuery pQuery) {
 			Query = pQuery;
 			vItems = new List<IWeaverItem>();
 		}
@@ -109,9 +109,9 @@ namespace Weaver {
 
 		////////////////////////////////////////////////////////////////////////////////////////////////
 		/*--------------------------------------------------------------------------------------------*/
-		public string GetParameterizedScriptAndFinish() {
+		internal string GetParameterizedScriptAndFinish() {
 			if ( Finished ) {
-				throw new WeaverException("Path has already been finished.");
+				throw new Exception("Path has already been finished.");
 			}
 
 			Finished = true;
@@ -136,18 +136,18 @@ namespace Weaver {
 
 		////////////////////////////////////////////////////////////////////////////////////////////////
 		/*--------------------------------------------------------------------------------------------*/
-		public WeaverPath(WeaverQuery pQuery, TBase pBaseNode) : this(pQuery) {
+		internal WeaverPath(IWeaverQuery pQuery, TBase pBaseNode) : this(pQuery) {
 			BaseNode = pBaseNode;
 			AddItem(BaseNode);
 		}
 
 		/*--------------------------------------------------------------------------------------------*/
-		public WeaverPath(WeaverQuery pQuery) : base(pQuery) {}
+		internal WeaverPath(IWeaverQuery pQuery) : base(pQuery) { }
 
 
 		////////////////////////////////////////////////////////////////////////////////////////////////
 		/*--------------------------------------------------------------------------------------------*/
-		public void StartWithIndex<T>(string pIndexName, Expression<Func<T, object>> pFunc, 
+		internal void StartWithIndex<T>(string pIndexName, Expression<Func<T, object>> pFunc, 
 														object pValue) where T : TBase, IWeaverNode {
 			if ( BaseNode != null ) {
 				throw new WeaverPathException(this,

@@ -62,7 +62,6 @@
     <Compile Include="Common\Rels\PersonKnowsPerson.cs" />
     <Compile Include="Common\RelTypes\Knows.cs" />
     <Compile Include="Common\Nodes\Person.cs" />
-    <Compile Include="Common\TestPath.cs" />
     <Compile Include="Fixtures\TWeaverUpdates.cs" />
     <Compile Include="Fixtures\TWeaverQueryVal.cs" />
     <Compile Include="Fixtures\Items\TWeaverItem.cs" />
@@ -76,7 +75,7 @@
     <Compile Include="Fixtures\Functions\TWeaverFuncBack.cs" />
     <Compile Include="Fixtures\Functions\TWeaverFuncHas.cs" />
     <Compile Include="Fixtures\Functions\TWeaverFuncProp.cs" />
-    <Compile Include="Fixtures\TWeaverPath.cs" />
+    <Compile Include="Fixtures\TWeaverQueryPath.cs" />
     <Compile Include="Fixtures\Items\TWeaverNode.cs" />
     <Compile Include="Utils\WeaverTestUtil.cs" />
     <Compile Include="WeaverTestBase.cs" />
