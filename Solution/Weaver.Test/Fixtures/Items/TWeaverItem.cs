@@ -38,7 +38,7 @@ namespace Weaver.Test.Fixtures.Items {
 		public void PathIndexFail() {
 			var candy = new Candy();
 
-			WeaverTestUtils.CheckThrows<WeaverException>(true, () => {
+			WeaverTestUtil.CheckThrows<WeaverException>(true, () => {
 				var i = candy.PathIndex;
 			});
 		}

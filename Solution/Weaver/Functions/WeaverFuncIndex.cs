@@ -35,7 +35,7 @@ namespace Weaver.Functions {
 		public override string PropertyName {
 			get {
 				if ( vPropName != null ) { return vPropName; }
-				vPropName = WeaverFuncProp.GetPropertyName(this, vFunc);
+				vPropName = WeaverUtil.GetPropertyName(this, vFunc);
 				return vPropName;
 			}
 		}

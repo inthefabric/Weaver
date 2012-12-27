@@ -185,7 +185,7 @@ namespace Weaver.Test.Fixtures {
 		public void ItemAtIndexBounds(int pIndex) {
 			IWeaverPath<Root> p = GetTestPathLength3();
 
-			WeaverTestUtils.CheckThrows<WeaverPathException>(true,
+			WeaverTestUtil.CheckThrows<WeaverPathException>(true,
 				() => p.ItemAtIndex(pIndex)
 			);
 		}
@@ -223,7 +223,7 @@ namespace Weaver.Test.Fixtures {
 		public void PathToIndexBounds(int pIndex, bool pInclusive, bool pThrows) {
 			IWeaverPath<Root> p = GetTestPathLength3();
 
-			WeaverTestUtils.CheckThrows<WeaverPathException>(pThrows,
+			WeaverTestUtil.CheckThrows<WeaverPathException>(pThrows,
 				() => p.PathToIndex(pIndex, pInclusive)
 			);
 		}
@@ -266,7 +266,7 @@ namespace Weaver.Test.Fixtures {
 		public void PathFromIndexBounds(int pIndex, bool pInclusive, bool pThrows) {
 			IWeaverPath<Root> p = GetTestPathLength3();
 
-			WeaverTestUtils.CheckThrows<WeaverPathException>(pThrows,
+			WeaverTestUtil.CheckThrows<WeaverPathException>(pThrows,
 				() => p.PathFromIndex(pIndex, pInclusive)
 			);
 		}
@@ -319,7 +319,7 @@ namespace Weaver.Test.Fixtures {
 			var as3 = new WeaverFuncAs<Candy>(p);
 			p.AddItem(as3);
 
-			WeaverTestUtils.CheckThrows<WeaverPathException>(true,
+			WeaverTestUtil.CheckThrows<WeaverPathException>(true,
 				() => p.FindAsNode<Candy>(as3.Label)
 			);
 		}

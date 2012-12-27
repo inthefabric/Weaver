@@ -40,7 +40,7 @@ namespace Weaver.Test.Fixtures.Items {
 		public void ConnectionNotSet() {
 			var r = new RootHasCandy();
 			
-			WeaverTestUtils.CheckThrows<WeaverRelException>(true, () => {
+			WeaverTestUtil.CheckThrows<WeaverRelException>(true, () => {
 				var c = r.Connection;
 			});
 		}
@@ -50,7 +50,7 @@ namespace Weaver.Test.Fixtures.Items {
 		public void ConnectionAlreadSet() {
 			var r = new RootHasCandy(WeaverRelConn.OutToOne);
 
-			WeaverTestUtils.CheckThrows<WeaverRelException>(true, () => {
+			WeaverTestUtil.CheckThrows<WeaverRelException>(true, () => {
 				r.Connection = WeaverRelConn.OutToOneOrMore;
 			});
 		}

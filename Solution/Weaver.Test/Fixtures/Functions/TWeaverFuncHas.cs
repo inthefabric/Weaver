@@ -40,7 +40,7 @@ namespace Weaver.Test.Fixtures.Functions {
 			var f = new WeaverFuncHas<Person>(x => (x.ExpectOneNode == false),
 				WeaverFuncHasOp.EqualTo, 1);
 
-			WeaverTestUtils.CheckThrows<WeaverFuncException>(true, () => {
+			WeaverTestUtil.CheckThrows<WeaverFuncException>(true, () => {
 				var p = f.PropertyName;
 			});
 		}

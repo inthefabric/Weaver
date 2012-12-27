@@ -37,7 +37,7 @@ namespace Weaver.Test.Fixtures.Functions {
 		public void PropertyNameInvalid() {
 			var q = new WeaverFuncIndex<Person>("Test", x => (x.ExpectOneNode == false), 123);
 
-			WeaverTestUtils.CheckThrows<WeaverFuncException>(true, () => {
+			WeaverTestUtil.CheckThrows<WeaverFuncException>(true, () => {
 				var p = q.PropertyName;
 			});
 		}

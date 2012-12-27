@@ -1,10 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
 using NUnit.Framework;
+using Weaver.Interfaces;
 
 namespace Weaver.Test.Utils {
 
 	/*================================================================================================*/
-	public static class WeaverTestUtils {
+	public static class WeaverTestUtil {
 		
 
 		////////////////////////////////////////////////////////////////////////////////////////////////
@@ -18,19 +20,33 @@ namespace Weaver.Test.Utils {
 			return null;
 		}
 
-		/*--------------------------------------------------------------------------------------------* /
-		public static void CheckListProps<TL>(IList<TL> pList, IList<uint> pExpectIds,
-																			Func<TL, object> pGetProp) {
-			int n = pList.Count;
-			string name = typeof(TL).Name;
 
-			Assert.NotNull(pList,name+" list should be filled.");
-			Assert.AreEqual(pExpectIds.Count, n, "Incorrect "+name+" list length.");
+		////////////////////////////////////////////////////////////////////////////////////////////////
+		/*--------------------------------------------------------------------------------------------*/
+		public static Dictionary<string, string> GetPropListDictionary(string pPropList) {
+			string[] valPairs = pPropList.Split(',');
+			var map = new Dictionary<string, string>();
 
-			for ( int i = 0 ; i < n ; ++i ) {
-				Assert.AreEqual(pExpectIds[i], pGetProp(pList[i]), "Invalid "+name+".Id at index "+i);
+			foreach ( string pair in valPairs ) {
+				string[] parts = pair.Split(':');
+				map.Add(parts[0], parts[1]);
 			}
-		}*/
+
+			return map;
+		}
+
+		/*--------------------------------------------------------------------------------------------*/
+		public static void CheckQueryParams(IWeaverQuery pQuery, Dictionary<string, string> pExpect) {
+			Assert.NotNull(pQuery.Params, "Query.Params should not be null.");
+			Assert.AreEqual(pExpect.Keys.Count, pQuery.Params.Keys.Count,
+				"Incorrect Query.Params count.");
+
+			foreach ( string key in pExpect.Keys ) {
+				Assert.True(pQuery.Params.ContainsKey(key), "Missing Query.Params["+key+"].");
+				Assert.AreEqual(pExpect[key], pQuery.Params[key],
+					"Incorrect value for Query.Params["+key+"].");
+			}
+		}
 
 	}
 

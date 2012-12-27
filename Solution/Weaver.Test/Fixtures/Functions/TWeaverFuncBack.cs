@@ -54,7 +54,7 @@ namespace Weaver.Test.Fixtures.Functions {
 			var pathMock = new Mock<IWeaverPath>();
 			pathMock.Setup(x => x.IndexOfItem(It.IsAny<IWeaverItem>())).Returns(pItemIndex);
 
-			WeaverTestUtils.CheckThrows<WeaverFuncException>(true, () => {
+			WeaverTestUtil.CheckThrows<WeaverFuncException>(true, () => {
 				var f = new WeaverFuncBack<Person>(pathMock.Object, perAlias);
 			});
 		}

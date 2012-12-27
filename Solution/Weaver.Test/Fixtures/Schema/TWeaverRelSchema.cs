@@ -31,7 +31,7 @@ namespace Weaver.Test.Fixtures.Schema {
 		public void FromNodeConnFail() {
 			var rs = new WeaverRelSchema(null, "Test", null);
 
-			WeaverTestUtils.CheckThrows<WeaverException>(true,
+			WeaverTestUtil.CheckThrows<WeaverException>(true,
 				() => rs.FromNodeConn = WeaverRelConn.InFromOne
 			);
 		}
@@ -41,7 +41,7 @@ namespace Weaver.Test.Fixtures.Schema {
 		public void ToNodeConnFail() {
 			var rs = new WeaverRelSchema(null, "Test", null);
 
-			WeaverTestUtils.CheckThrows<WeaverException>(true,
+			WeaverTestUtil.CheckThrows<WeaverException>(true,
 				() => rs.ToNodeConn = WeaverRelConn.OutToOne
 			);
 		}

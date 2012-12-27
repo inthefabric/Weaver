@@ -61,7 +61,7 @@ namespace Weaver.Functions {
 		public string PropertyName {
 			get {
 				if ( vPropName != null ) { return vPropName; }
-				vPropName = WeaverFuncProp.GetPropertyName(this, vProp);
+				vPropName = WeaverUtil.GetPropertyName(this, vProp);
 				return vPropName;
 			}
 		}

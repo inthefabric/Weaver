@@ -57,7 +57,7 @@ namespace Weaver {
 		////////////////////////////////////////////////////////////////////////////////////////////////
 		/*--------------------------------------------------------------------------------------------*/
 		public void BuildStrings() {
-			PropName = WeaverFuncProp.GetPropertyName(PropFunc);
+			PropName = WeaverUtil.GetPropertyName(PropFunc);
 			PropVal = new WeaverQueryVal(PropFunc.Compile()(Node));
 		}
 

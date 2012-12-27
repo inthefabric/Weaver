@@ -101,7 +101,7 @@ namespace Weaver.Test.Fixtures {
 			////
 
 			string vals = q.Script.Substring(bracketI+1, bracketIClose-bracketI-1);
-			Dictionary<string, string> pairMap = GetPropListDictionary(vals);
+			Dictionary<string, string> pairMap = WeaverTestUtil.GetPropListDictionary(vals);
 
 			Assert.AreEqual(4, pairMap.Keys.Count, "Incorrect Key count.");
 			Assert.True(pairMap.ContainsKey("PersonId"), "Missing PersonId key.");
@@ -111,7 +111,7 @@ namespace Weaver.Test.Fixtures {
 
 			var expectParams = new Dictionary<string, string>();
 			expectParams.Add(pairMap["Name"], "Zach K");
-			CheckQueryParams(q, expectParams);
+			WeaverTestUtil.CheckQueryParams(q, expectParams);
 		}
 
 		/*--------------------------------------------------------------------------------------------*/
@@ -126,7 +126,7 @@ namespace Weaver.Test.Fixtures {
 
 			Assert.True(q.IsFinalized, "Incorrect IsFinalized.");
 			Assert.AreEqual(expect, q.Script, "Incorrect Query.Script.");
-			CheckQueryParams(q, expectParams);
+			WeaverTestUtil.CheckQueryParams(q, expectParams);
 		}
 
 		/*--------------------------------------------------------------------------------------------*/
@@ -141,7 +141,7 @@ namespace Weaver.Test.Fixtures {
 
 			Assert.True(q.IsFinalized, "Incorrect IsFinalized.");
 			Assert.AreEqual(expect, q.Script, "Incorrect Query.Script.");
-			CheckQueryParams(q, expectParams);
+			WeaverTestUtil.CheckQueryParams(q, expectParams);
 		}
 
 		/*--------------------------------------------------------------------------------------------*/
@@ -162,7 +162,7 @@ namespace Weaver.Test.Fixtures {
 
 			Assert.True(q.IsFinalized, "Incorrect IsFinalized.");
 			Assert.AreEqual(expect, q.Script, "Incorrect Query.Script.");
-			CheckQueryParams(q, expectParams);
+			WeaverTestUtil.CheckQueryParams(q, expectParams);
 		}
 
 		/*--------------------------------------------------------------------------------------------*/
@@ -170,7 +170,7 @@ namespace Weaver.Test.Fixtures {
 		public void AddNodeToIndexFail() {
 			var per = new Person { Id = -1 };
 
-			WeaverTestUtils.CheckThrows<WeaverException>(true,
+			WeaverTestUtil.CheckThrows<WeaverException>(true,
 				() => WeaverTasks.AddNodeToIndex("Test", per, p => p.PersonId)
 			);
 		}
@@ -205,7 +205,7 @@ namespace Weaver.Test.Fixtures {
 			////
 
 			string vals = q.Script.Substring(bracketI+1, bracketIClose-bracketI-1);
-			Dictionary<string, string> pairMap = GetPropListDictionary(vals);
+			Dictionary<string, string> pairMap = WeaverTestUtil.GetPropListDictionary(vals);
 
 			Assert.AreEqual(3, pairMap.Keys.Count, "Incorrect Key count.");
 			Assert.True(pairMap.ContainsKey("Enjoyment"), "Missing Enjoyment key.");
@@ -218,7 +218,7 @@ namespace Weaver.Test.Fixtures {
 			var expectParams = new Dictionary<string, string>();
 			expectParams.Add("_P0", "PersonLikesCandy");
 			expectParams.Add(pairMap["Notes"], plc.Notes);
-			CheckQueryParams(q, expectParams);
+			WeaverTestUtil.CheckQueryParams(q, expectParams);
 		}
 
 		/*--------------------------------------------------------------------------------------------*/
@@ -236,7 +236,7 @@ namespace Weaver.Test.Fixtures {
 
 			var expectParams = new Dictionary<string, string>();
 			expectParams.Add("_P0", "RootHasPerson");
-			CheckQueryParams(q, expectParams);
+			WeaverTestUtil.CheckQueryParams(q, expectParams);
 		}
 
 		/*--------------------------------------------------------------------------------------------*/
@@ -246,81 +246,9 @@ namespace Weaver.Test.Fixtures {
 			var per = new Person { Id = pPerId };
 			var can = new Candy { Id = pCanId };
 
-			WeaverTestUtils.CheckThrows<WeaverException>(true,
+			WeaverTestUtil.CheckThrows<WeaverException>(true,
 				() => WeaverTasks.AddRel(per, new PersonLikesCandy(), can)
 			);
-		}
-
-
-		////////////////////////////////////////////////////////////////////////////////////////////////
-		/*--------------------------------------------------------------------------------------------*/
-		[TestCase(true, "Zach")]
-		[TestCase(false, "Zach")]
-		[TestCase(true, null)]
-		public void BuildPropListPerson(bool pIncludeId, string pName) {
-			var p = new Person();
-			p.Id = 123456789123;
-			p.PersonId = 3456789;
-			p.Name = pName;
-			p.Age = 27.3f;
-			p.IsMale = true;
-
-			var q = new WeaverQuery();
-			string propList = WeaverTasks.BuildPropList(q, p, pIncludeId);
-			Dictionary<string, string> pairMap = GetPropListDictionary(propList);
-
-			int expectCount = 3 + (pIncludeId ? 1 : 0) + (pName != null ? 1 : 0);
-			Assert.AreEqual(expectCount, pairMap.Keys.Count, "Incorrect Key count.");
-
-			Assert.True(pairMap.ContainsKey("PersonId"), "Missing PersonId key.");
-			Assert.True(pairMap.ContainsKey("Age"), "Missing Age key.");
-			Assert.True(pairMap.ContainsKey("IsMale"), "Missing IsMale key.");
-			Assert.AreEqual(pIncludeId, pairMap.ContainsKey("Id"), "Incorrect Id key.");
-			Assert.AreEqual((pName != null), pairMap.ContainsKey("Name"), "Incorrect Name key.");
-
-			Assert.AreEqual("3456789", pairMap["PersonId"], "Incorrect PersonId value.");
-			Assert.AreEqual("27.3F", pairMap["Age"], "Incorrect Age value.");
-			Assert.AreEqual("true", pairMap["IsMale"], "Incorrect IsMale value.");
-
-			if ( pIncludeId ) {
-				Assert.AreEqual("123456789123L", pairMap["Id"], "Incorrect Id value.");
-			}
-
-			if ( pName != null ) {
-				Assert.AreEqual("_P0", pairMap["Name"], "Incorrect Name value.");
-
-				var expectParams = new Dictionary<string, string>();
-				expectParams.Add("_P0", pName);
-				CheckQueryParams(q, expectParams);
-			}
-		}
-
-
-		////////////////////////////////////////////////////////////////////////////////////////////////
-		/*--------------------------------------------------------------------------------------------*/
-		private static Dictionary<string, string> GetPropListDictionary(string pPropList) {
-			string[] valPairs = pPropList.Split(',');
-			var map = new Dictionary<string, string>();
-
-			foreach ( string pair in valPairs ) {
-				string[] parts = pair.Split(':');
-				map.Add(parts[0], parts[1]);
-			}
-
-			return map;
-		}
-		
-		/*--------------------------------------------------------------------------------------------*/
-		private static void CheckQueryParams(IWeaverQuery pQuery, Dictionary<string, string> pExpect) {
-			Assert.NotNull(pQuery.Params, "Query.Params should not be null.");
-			Assert.AreEqual(pExpect.Keys.Count, pQuery.Params.Keys.Count,
-				"Incorrect Query.Params count.");
-
-			foreach ( string key in pExpect.Keys ) {
-				Assert.True(pQuery.Params.ContainsKey(key), "Missing Query.Params["+key+"].");
-				Assert.AreEqual(pExpect[key], pQuery.Params[key],
-					"Incorrect value for Query.Params["+key+"].");
-			}
 		}
 
 	}

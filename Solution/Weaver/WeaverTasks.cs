@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Linq.Expressions;
-using System.Reflection;
 using Weaver.Exceptions;
 using Weaver.Functions;
 using Weaver.Interfaces;
-using Weaver.Items;
 
 namespace Weaver {
 
@@ -29,7 +27,7 @@ namespace Weaver {
 		/*--------------------------------------------------------------------------------------------*/
 		public static IWeaverQuery AddNode<T>(T pNode) where T : IWeaverItem {
 			var q = new WeaverQuery();
-			q.FinalizeQuery("g.addVertex(["+BuildPropList(q, pNode)+"]);");
+			q.FinalizeQuery("g.addVertex(["+WeaverUtil.BuildPropList(q, pNode)+"]);");
 			return q;
 		}
 
@@ -63,7 +61,7 @@ namespace Weaver {
 			
 			var nodeIdVal = new WeaverQueryVal(pNode.Id);
 			var indexNameVal = new WeaverQueryVal(pIndexName, false);
-			var propNameVal = new WeaverQueryVal(WeaverFuncProp.GetPropertyName(pFunc), false);
+			var propNameVal = new WeaverQueryVal(WeaverUtil.GetPropertyName(pFunc), false);
 			var propValVal = new WeaverQueryVal(pFunc.Compile()(pNode));
 
 			q.FinalizeQuery("n=g.v("+nodeIdVal.FixedText+");g.idx("+q.AddParam(indexNameVal)+").put("+
@@ -93,34 +91,11 @@ namespace Weaver {
 			string script = "f=g.v("+fromNodeVal.FixedText+");t=g.v("+toNodeVal.FixedText+");"+
 				"g.addEdge(f,t,"+q.AddParam(relLabelVal);
 
-			string propList = BuildPropList(q, pRel);
+			string propList = WeaverUtil.BuildPropList(q, pRel);
 			script += (propList.Length > 0 ? ",["+propList+"]" : "")+");";
 
 			q.FinalizeQuery(script);
 			return q;
-		}
-
-
-		////////////////////////////////////////////////////////////////////////////////////////////////
-		/*--------------------------------------------------------------------------------------------*/
-		public static string BuildPropList<TItem>(IWeaverQuery pQuery, TItem pItem,
-								bool pIncludeId=false, int pStartParamI=0) where TItem : IWeaverItem {
-			string list = "";
-			int i = pStartParamI;
-
-			foreach ( PropertyInfo prop in pItem.GetType().GetProperties() ) {
-				object[] propAtts = prop.GetCustomAttributes(typeof(WeaverItemPropertyAttribute), true);
-				if ( propAtts.Length == 0 ) { continue; }
-				if ( !pIncludeId && prop.Name == "Id" ) { continue; }
-				object val = prop.GetValue(pItem, null);
-				if ( val == null ) { continue; }
-				if ( i++ > 0 ) { list += ","; }
-
-				var valVal = new WeaverQueryVal(val, false);
-				list += prop.Name+":"+pQuery.AddParamIfString(valVal);
-			}
-
-			return list;
 		}
 
 	}

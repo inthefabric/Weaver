@@ -40,7 +40,7 @@ namespace Weaver.Test.Fixtures {
 		public void FinalizeQueryTwiceFail() {
 			var q = new WeaverQuery();
 			q.FinalizeQuery("1");
-			WeaverTestUtils.CheckThrows<WeaverException>(true, () => q.FinalizeQuery("2"));
+			WeaverTestUtil.CheckThrows<WeaverException>(true, () => q.FinalizeQuery("2"));
 		}
 		
 		

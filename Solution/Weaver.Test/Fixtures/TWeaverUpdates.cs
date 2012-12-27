@@ -44,7 +44,7 @@ namespace Weaver.Test.Fixtures {
 			var u = new WeaverUpdates<Person>();
 			u.AddUpdate(new Person(), x => x.PersonId);
 
-			WeaverTestUtils.CheckThrows<WeaverException>(true, () => {
+			WeaverTestUtil.CheckThrows<WeaverException>(true, () => {
 				var x = u[pIndex];
 			});
 		}

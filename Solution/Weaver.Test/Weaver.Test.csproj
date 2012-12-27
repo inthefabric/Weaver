@@ -63,6 +63,7 @@
     <Compile Include="Common\Rels\PersonKnowsPerson.cs" />
     <Compile Include="Common\RelTypes\Knows.cs" />
     <Compile Include="Common\Nodes\Person.cs" />
+    <Compile Include="Fixtures\TWeaverUtil.cs" />
     <Compile Include="Fixtures\TWeaverItemExt.cs" />
     <Compile Include="Fixtures\TWeaverTasks.cs" />
     <Compile Include="Fixtures\TWeaverUpdates.cs" />

@@ -72,7 +72,7 @@ namespace Weaver.Test.Fixtures {
 		[Test]
 		public void AddQueryNull() {
 			var tx = new WeaverTransaction();
-			WeaverTestUtils.CheckThrows<WeaverException>(true, () => tx.AddQuery(null));
+			WeaverTestUtil.CheckThrows<WeaverException>(true, () => tx.AddQuery(null));
 		}
 
 		/*--------------------------------------------------------------------------------------------*/
@@ -83,7 +83,7 @@ namespace Weaver.Test.Fixtures {
 			var tx = new WeaverTransaction();
 			tx.AddQuery(wq);
 			tx.Finish(WeaverTransaction.ConclusionType.Success);
-			WeaverTestUtils.CheckThrows<WeaverException>(true, () => tx.AddQuery(wq));
+			WeaverTestUtil.CheckThrows<WeaverException>(true, () => tx.AddQuery(wq));
 		}
 
 		/*--------------------------------------------------------------------------------------------*/
@@ -94,7 +94,7 @@ namespace Weaver.Test.Fixtures {
 			var tx = new WeaverTransaction();
 			tx.AddQuery(wq);
 			tx.Finish(WeaverTransaction.ConclusionType.Success);
-			WeaverTestUtils.CheckThrows<WeaverException>(true,
+			WeaverTestUtil.CheckThrows<WeaverException>(true,
 				() => tx.Finish(WeaverTransaction.ConclusionType.Success));
 		}
 		
@@ -102,7 +102,7 @@ namespace Weaver.Test.Fixtures {
 		[Test]
 		public void FinishNoQueries() {
 			var tx = new WeaverTransaction();
-			WeaverTestUtils.CheckThrows<WeaverException>(true,
+			WeaverTestUtil.CheckThrows<WeaverException>(true,
 				() => tx.Finish(WeaverTransaction.ConclusionType.Success));
 		}
 		
