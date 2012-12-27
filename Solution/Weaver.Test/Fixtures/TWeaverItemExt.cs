@@ -44,7 +44,7 @@ namespace Weaver.Test.Fixtures {
 		[Test]
 		public void Prop() {
 			var item = new TestItem();
-			IWeaverProp result = item.Prop(x => x.ItemIdentifier);
+			IWeaverItemWithPath result = item.Prop(x => x.ItemIdentifier);
 
 			Assert.NotNull(result, "Result should be filled.");
 			item.MockPath.Verify(x => x.AddItem(It.IsAny<WeaverFuncProp<TestItem>>()), Times.Once());
@@ -72,6 +72,26 @@ namespace Weaver.Test.Fixtures {
 			Assert.AreEqual(item, result, "Incorrect result.");
 			item.MockPath
 				.Verify(x => x.AddItem(It.IsAny<WeaverFuncUpdateEach<TestItem>>()), Times.Once());
+		}
+
+
+		////////////////////////////////////////////////////////////////////////////////////////////////
+		/*--------------------------------------------------------------------------------------------*/
+		[Test]
+		public void End() {
+			const string parScript = "this.is.the.parameterized.script;";
+
+			var mockQuery = new Mock<IWeaverQuery>();
+			//mockQuery.Setup(x => x.FinalizeQuery(parScript));
+
+			var item = new TestItem();
+			item.MockPath.SetupGet(x => x.Query).Returns(mockQuery.Object);
+			item.MockPath.Setup(x => x.BuildParameterizedScript()).Returns(parScript);
+
+			IWeaverQuery result = item.End();
+
+			Assert.AreEqual(mockQuery.Object, result, "Incorrect result.");
+			mockQuery.Verify(x => x.FinalizeQuery(parScript), Times.Once());
 		}
 
 	}

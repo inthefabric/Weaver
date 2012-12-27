@@ -25,13 +25,13 @@ namespace Weaver.Test.Fixtures {
 		/*--------------------------------------------------------------------------------------------*/
 		[Test]
 		public void FinalizeQuery() {
-			const string script = "test";
+			const string script = "finalize.this.query.please";
 
 			var q = new WeaverQuery();
 			q.FinalizeQuery(script);
 
 			Assert.True(q.IsFinalized, "Incorrect IsFinalized.");
-			Assert.AreEqual(script, q.Script, "Incorrect Script.");
+			Assert.AreEqual(script+";", q.Script, "Incorrect Script.");
 			Assert.NotNull(q.Params, "Params should not be null.");
 		}
 

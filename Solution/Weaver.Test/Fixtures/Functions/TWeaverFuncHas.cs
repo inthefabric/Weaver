@@ -52,7 +52,7 @@ namespace Weaver.Test.Fixtures.Functions {
 		[TestCase(WeaverFuncHasOp.GreterThanOrEqualTo, 1.5f, "gte,1.5")]
 		[TestCase(WeaverFuncHasOp.LessThan, 99, "lt,99")]
 		[TestCase(WeaverFuncHasOp.LessThanOrEqualTo, 1.23456789d, "lte,1.23456789")]
-		public void BuildParameterizedString(WeaverFuncHasOp pOperation, object pValue, string pExpect) {
+		public void BuildParameterizedString(WeaverFuncHasOp pOperation, object pValue, string pExpect){
 			var val = (pValue is string ? "_P0" : pValue+"");
 			if ( pValue == null ) { val = "null"; }
 

@@ -39,7 +39,7 @@ namespace Weaver.Functions {
 	}
 
 	/*================================================================================================*/
-	public class WeaverFuncHas<TItem> : WeaverFunc, IWeaverProp where TItem : IWeaverIndexableItem {
+	public class WeaverFuncHas<TItem> : WeaverFunc, IWeaverItemWithPath where TItem : IWeaverItemIndexable {
 
 		private readonly Expression<Func<TItem, object>> vProp;
 		private string vPropName;
@@ -68,7 +68,7 @@ namespace Weaver.Functions {
 
 		/*--------------------------------------------------------------------------------------------*/
 		public override string BuildParameterizedString() {
-			var qv = new WeaverQueryVal(Value);
+			var qv = new WeaverQueryVal(Value, false);
 			return "has('"+PropertyName+"',Tokens.T."+WeaverFuncHas.GremlinOpMap[Operation]+","+
 				Path.Query.AddParamIfString(qv)+")";
 		}

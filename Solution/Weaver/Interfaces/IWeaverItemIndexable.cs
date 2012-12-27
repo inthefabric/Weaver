@@ -1,9 +1,7 @@
 ﻿namespace Weaver.Interfaces {
 
 	/*================================================================================================*/
-	public interface IWeaverProp {
-
-		IWeaverPath Path { get; set; }
+	public interface IWeaverItemIndexable : IWeaverItem {
 
 	}
 

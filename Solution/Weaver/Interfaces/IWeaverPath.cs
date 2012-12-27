@@ -23,7 +23,7 @@ namespace Weaver.Interfaces {
 
 		/*--------------------------------------------------------------------------------------------*/
 		int IndexOfItem(IWeaverItem pItem);
-		TItem FindAsNode<TItem>(string pLabel) where TItem : IWeaverIndexableItem;
+		TItem FindAsNode<TItem>(string pLabel) where TItem : IWeaverItemIndexable;
 
 	}
 

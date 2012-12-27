@@ -16,7 +16,7 @@ namespace Weaver.Functions {
 	}
 
 	/*================================================================================================*/
-	public class WeaverFuncIndex<T> : WeaverFuncIndex where T : IWeaverIndexableItem {
+	public class WeaverFuncIndex<T> : WeaverFuncIndex where T : IWeaverItemIndexable {
 
 		private readonly Expression<Func<T, object>> vFunc;
 		private string vPropName;

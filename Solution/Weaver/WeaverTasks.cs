@@ -18,7 +18,7 @@ namespace Weaver {
 		
 		/*--------------------------------------------------------------------------------------------*/
 		public static IWeaverPath<T> BeginPath<T>(string pIndexName, Expression<Func<T, object>> pFunc,
-										object pValue) where T : class, IWeaverIndexableItem, new() {
+										object pValue) where T : class, IWeaverItemIndexable, new() {
 			return new WeaverPathFromIndex<T>(new WeaverQuery(), pIndexName, pFunc, pValue);
 		}
 
@@ -27,7 +27,7 @@ namespace Weaver {
 		/*--------------------------------------------------------------------------------------------*/
 		public static IWeaverQuery AddNode<T>(T pNode) where T : IWeaverItem {
 			var q = new WeaverQuery();
-			q.FinalizeQuery("g.addVertex(["+WeaverUtil.BuildPropList(q, pNode)+"]);");
+			q.FinalizeQuery("g.addVertex(["+WeaverUtil.BuildPropList(q, pNode)+"])");
 			return q;
 		}
 
@@ -46,7 +46,7 @@ namespace Weaver {
 			var q = new WeaverQuery();
 			var nameVal = new WeaverQueryVal(pIndexName, false);
 			var type = (pIsNode ? "Vertex" : "Edge");
-			q.FinalizeQuery("g.createManualIndex("+q.AddParam(nameVal)+","+type+".class);");
+			q.FinalizeQuery("g.createManualIndex("+q.AddParam(nameVal)+","+type+".class)");
 			return q;
 		}
 
@@ -65,7 +65,7 @@ namespace Weaver {
 			var propValVal = new WeaverQueryVal(pFunc.Compile()(pNode));
 
 			q.FinalizeQuery("n=g.v("+nodeIdVal.FixedText+");g.idx("+q.AddParam(indexNameVal)+").put("+
-				q.AddParam(propNameVal)+","+q.AddParamIfString(propValVal)+",n);");
+				q.AddParam(propNameVal)+","+q.AddParamIfString(propValVal)+",n)");
 			return q;
 		}
 
@@ -92,7 +92,7 @@ namespace Weaver {
 				"g.addEdge(f,t,"+q.AddParam(relLabelVal);
 
 			string propList = WeaverUtil.BuildPropList(q, pRel);
-			script += (propList.Length > 0 ? ",["+propList+"]" : "")+");";
+			script += (propList.Length > 0 ? ",["+propList+"]" : "")+")";
 
 			q.FinalizeQuery(script);
 			return q;

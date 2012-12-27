@@ -32,7 +32,7 @@
   <ItemGroup>
     <Compile Include="Functions\WeaverFuncUpdateEach.cs" />
     <Compile Include="WeaverUtil.cs" />
-    <Compile Include="Interfaces\IWeaverIndexableItem.cs" />
+    <Compile Include="Interfaces\IWeaverItemIndexable.cs" />
     <Compile Include="Interfaces\IWeaverQueryVal.cs" />
     <Compile Include="WeaverTasks.cs" />
     <Compile Include="WeaverItemExt.cs" />
@@ -52,7 +52,7 @@
     <Compile Include="Functions\WeaverFuncBack.cs" />
     <Compile Include="Functions\WeaverFuncAs.cs" />
     <Compile Include="Interfaces\IWeaverFunc.cs" />
-    <Compile Include="Interfaces\IWeaverProp.cs" />
+    <Compile Include="Interfaces\IWeaverItemWithPath.cs" />
     <Compile Include="Items\WeaverFunc.cs" />
     <Compile Include="Interfaces\IWeaverRelType.cs" />
     <Compile Include="Interfaces\IWeaverRel.cs" />

@@ -96,7 +96,7 @@ namespace Weaver {
 		}
 
 		/*--------------------------------------------------------------------------------------------*/
-		public TItem FindAsNode<TItem>(string pLabel) where TItem : IWeaverIndexableItem {
+		public TItem FindAsNode<TItem>(string pLabel) where TItem : IWeaverItemIndexable {
 			var n = vItems.Count;
 
 			for ( int i = 1 ; i < n ; ++i ) {
@@ -141,7 +141,7 @@ namespace Weaver {
 
 	/*================================================================================================*/
 	public class WeaverPathFromIndex<TBase> : WeaverPath<TBase>
-													where TBase : class, IWeaverIndexableItem, new() {
+													where TBase : class, IWeaverItemIndexable, new() {
 
 
 		////////////////////////////////////////////////////////////////////////////////////////////////

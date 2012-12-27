@@ -25,7 +25,7 @@ namespace Weaver {
 			}
 
 			IsFinalized = true;
-			Script = pScript;
+			Script = pScript+";";
 		}
 
 

@@ -6,7 +6,7 @@ using Weaver.Items;
 namespace Weaver.Functions {
 
 	/*================================================================================================*/
-	public class WeaverFuncUpdateEach<TItem> : WeaverFunc where TItem : IWeaverIndexableItem {
+	public class WeaverFuncUpdateEach<TItem> : WeaverFunc where TItem : IWeaverItemIndexable {
 
 		private readonly WeaverUpdates<TItem> vUpdates;
 

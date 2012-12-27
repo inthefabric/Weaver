@@ -5,7 +5,7 @@ using Weaver.Items;
 namespace Weaver.Functions {
 
 	/*================================================================================================*/
-	public class WeaverFuncBack<TBack> : WeaverFunc where TBack : IWeaverIndexableItem {
+	public class WeaverFuncBack<TBack> : WeaverFunc where TBack : IWeaverItemIndexable {
 
 		public TBack BackToItem { get; private set; }
 

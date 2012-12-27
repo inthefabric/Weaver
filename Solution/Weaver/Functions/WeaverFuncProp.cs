@@ -6,7 +6,7 @@ using Weaver.Items;
 namespace Weaver.Functions {
 
 	/*================================================================================================*/
-	public class WeaverFuncProp<TItem> : WeaverFunc, IWeaverProp where TItem : IWeaverIndexableItem {
+	public class WeaverFuncProp<TItem> : WeaverFunc, IWeaverItemWithPath where TItem : IWeaverItemIndexable {
 
 		private readonly Expression<Func<TItem, object>> vProp;
 		private string vPropName;

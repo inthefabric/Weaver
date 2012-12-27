@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using NUnit.Framework;
 using Weaver.Exceptions;
+using Weaver.Functions;
 using Weaver.Interfaces;
 using Weaver.Test.Common.Nodes;
 using Weaver.Test.Common.Rels;
@@ -215,6 +216,46 @@ namespace Weaver.Test.Fixtures {
 			WeaverTestUtil.CheckThrows<WeaverException>(true,
 				() => WeaverTasks.AddRel(per, new PersonLikesCandy(), can)
 			);
+		}
+
+
+		////////////////////////////////////////////////////////////////////////////////////////////////
+		/*--------------------------------------------------------------------------------------------*/
+		[Test]
+		[Category("Integration")]
+		public void PathBasedQuery() {
+			Person personAlias;
+
+			IWeaverQuery q = WeaverTasks.BeginPath(new Root())
+				.BaseNode
+				.OutHasPerson.ToNode
+					.As(out personAlias)
+				.InPersonKnows.FromNode
+					.Has(p => p.PersonId, WeaverFuncHasOp.GreaterThan, 5)
+					.Has(p => p.Name, WeaverFuncHasOp.NotEqualTo, "Hello")
+					.Has(p => p.Name, WeaverFuncHasOp.NotEqualTo, "Goodbye")
+					.Back(personAlias)
+				.OutLikesCandy.ToNode
+					.Prop(c => c.Calories)
+				.End();
+
+			const string expectScript = "g.v(0)"+
+				".outE('RootHasPerson').inV"+
+					".as('step2')"+
+				".inE('PersonKnowsPerson').outV"+
+					".has('PersonId',Tokens.T.gt,5)"+
+					".has('Name',Tokens.T.neq,_P0)"+
+					".has('Name',Tokens.T.neq,_P1)"+
+					".back('step2')"+
+				".outE('PersonLikesCandy').inV"+
+					".Calories;";
+
+			var expectParams = new Dictionary<string, string>();
+			expectParams.Add("_P0", "Hello");
+			expectParams.Add("_P1", "Goodbye");
+
+			Assert.AreEqual(expectScript, q.Script);
+			WeaverTestUtil.CheckQueryParams(q, expectParams);
 		}
 
 	}
