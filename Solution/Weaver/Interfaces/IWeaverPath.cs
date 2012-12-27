@@ -8,12 +8,12 @@ namespace Weaver.Interfaces {
 
 		IWeaverQuery Query { get; }
 		WeaverFuncIndex BaseIndex { get; }
-		bool Finished { get; }
 
 
 		////////////////////////////////////////////////////////////////////////////////////////////////
 		/*--------------------------------------------------------------------------------------------*/
 		void AddItem(IWeaverItem pItem);
+		string BuildParameterizedScript();
 
 		/*--------------------------------------------------------------------------------------------*/
 		int Length { get; }

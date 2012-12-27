@@ -1,8 +1,8 @@
-﻿using NUnit.Framework;
+﻿using Moq;
+using NUnit.Framework;
 using Weaver.Exceptions;
 using Weaver.Interfaces;
 using Weaver.Items;
-using Weaver.Test.Common;
 using Weaver.Test.Common.Nodes;
 using Weaver.Test.Common.Rels;
 using Weaver.Test.Common.RelTypes;
@@ -60,15 +60,12 @@ namespace Weaver.Test.Fixtures.Items {
 		/*--------------------------------------------------------------------------------------------*/
 		[Test]
 		public void FromNode() {
-			var p = new TestPath();
-			var r = new RootHasCandy { Path = p };
-			int len = p.Length;
+			var mockPath = new Mock<IWeaverPath>();
+			var r = new RootHasCandy { Path = mockPath.Object };
 
 			Root fromRoot = r.FromNode;
-
 			Assert.NotNull(fromRoot, "FromNode should be filled.");
-			Assert.AreEqual(p, fromRoot.Path, "Incorrect FromNode.Path.");
-			Assert.AreEqual(len+1, p.Length, "Incorrect Path.Length.");
+			mockPath.Verify(x => x.AddItem(It.IsAny<Root>()), Times.Once());
 
 			Assert.True(fromRoot.IsFromNode, "Incorrect FromNode.IsFromNode.");
 			Assert.AreEqual(!r.IsFromManyNodes, fromRoot.ExpectOneNode,
@@ -78,15 +75,12 @@ namespace Weaver.Test.Fixtures.Items {
 		/*--------------------------------------------------------------------------------------------*/
 		[Test]
 		public void ToNode() {
-			var p = new TestPath();
-			var r = new RootHasCandy { Path = p };
-			int len = p.Length;
+			var mockPath = new Mock<IWeaverPath>();
+			var r = new RootHasCandy { Path = mockPath.Object };
 
 			Candy toCandy = r.ToNode;
-
 			Assert.NotNull(toCandy, "ToNode should be filled.");
-			Assert.AreEqual(p, toCandy.Path, "Incorrect ToNode.Path.");
-			Assert.AreEqual(len+1, p.Length, "Incorrect Path.Length.");
+			mockPath.Verify(x => x.AddItem(It.IsAny<Candy>()), Times.Once());
 
 			Assert.False(toCandy.IsFromNode, "Incorrect ToNode.IsFromNode.");
 			Assert.AreEqual(!r.IsToManyNodes, toCandy.ExpectOneNode,
@@ -137,10 +131,9 @@ namespace Weaver.Test.Fixtures.Items {
 		[TestCase(WeaverRelConn.OutToZeroOrOne, "outE('RootHasCandy')[0]")]
 		[TestCase(WeaverRelConn.OutToOneOrMore, "outE('RootHasCandy')")]
 		[TestCase(WeaverRelConn.OutToZeroOrMore, "outE('RootHasCandy')")]
-		public void Gremlin(WeaverRelConn pConn, string pExpectGremlin) {
+		public void BuildParameterizedString(WeaverRelConn pConn, string pExpectScript) {
 			var r = new RootHasCandy { Connection = pConn };
-
-			Assert.AreEqual(pExpectGremlin, r.Script, "Incorrect GremlinCode.");
+			Assert.AreEqual(pExpectScript, r.BuildParameterizedString(), "Incorrect result.");
 		}
 
 	}

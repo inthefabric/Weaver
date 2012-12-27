@@ -42,32 +42,21 @@ namespace Weaver {
 			return pCallingItem;
 		}
 
+		/*--------------------------------------------------------------------------------------------* /
+		//TEST: WeaverItemExt.Each
+		public static T Each<T>(IWeaverPath pPath, WeaverUpdates<T> pUpdates) where T : IWeaverNode {
+			IWeaverQuery q = pPath.Query;
+			string update = ".each{";
 
-		////////////////////////////////////////////////////////////////////////////////////////////////
-		/*--------------------------------------------------------------------------------------------*/
-		//TEST: WeaverItemExt.ToSingle
-		public static IWeaverQuery ToSingle<T>(this T pCallingItem) where T : IWeaverItem {
-			IWeaverQuery q = pCallingItem.Path.Query;
-			q.FinishPathWithQuantity(WeaverQuery.ResultQuantity.Single);
-			return q;
-		}
+			for ( int i = 0 ; i < pUpdates.Count ; ++i ) {
+				KeyValuePair<string, WeaverQueryVal> pair = pUpdates[i];
+				update += (i == 0 ? "" : ";")+"it."+pair.Key+"="+q.AddParamIfString(pair.Value);
+			}
 
-		/*--------------------------------------------------------------------------------------------*/
-		//TEST: WeaverItemExt.ToList
-		public static IWeaverQuery ToList<T>(this T pCallingItem) where T : IWeaverItem {
-			IWeaverQuery q = pCallingItem.Path.Query;
-			q.FinishPathWithQuantity(WeaverQuery.ResultQuantity.List);
+			update += "};";
+			q.FinalizeQuery(pPath.BuildParameterizedScript()+update);
 			return q;
-		}
-
-		/*--------------------------------------------------------------------------------------------*/
-		//TEST: WeaverItemExt.Update
-		public static IWeaverQuery Update<T,TUp>(this T pCallingItem, IWeaverPath pPath,
-							WeaverUpdates<TUp> pUpdates) where T : IWeaverItem where TUp : IWeaverNode {
-			IWeaverQuery q = pCallingItem.Path.Query;
-			q.FinishPathWithUpdate(pUpdates);
-			return q;
-		}
+		}*/
 
 	}
 

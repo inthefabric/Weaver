@@ -1,8 +1,8 @@
-﻿using NUnit.Framework;
+﻿using System.Collections.Generic;
+using Moq;
+using NUnit.Framework;
 using Weaver.Exceptions;
-using Weaver.Functions;
 using Weaver.Interfaces;
-using Weaver.Items;
 using Weaver.Test.Common;
 using Weaver.Test.Common.Nodes;
 using Weaver.Test.Utils;
@@ -17,13 +17,20 @@ namespace Weaver.Test.Fixtures.Items {
 		////////////////////////////////////////////////////////////////////////////////////////////////
 		/*--------------------------------------------------------------------------------------------*/
 		[Test]
-		public void PathAndPathIndex() {
-			var p = new TestPath();
-			var n = p.BaseNode.OutHasPerson.ToNode;
+		public void Path() {
+			var item = new TestItem();
+			Assert.AreEqual(item.MockPath.Object, item.Path, "Incorrect Path.");
+		}
 
-			Assert.NotNull(n.Path, "Path should be filled.");
-			Assert.AreEqual(2, n.PathIndex, "Incorrect PathIndex.");
-			Assert.AreEqual(2, n.PathIndex, "Incorrect cached PathIndex.");
+		/*--------------------------------------------------------------------------------------------*/
+		[Test]
+		public void PathIndex() {
+			const int expectIndex = 2;
+
+			var item = new TestItem();
+			item.MockPath.Setup(x => x.IndexOfItem(item)).Returns(expectIndex);
+
+			Assert.AreEqual(expectIndex, item.PathIndex, "Incorrect PathIndex.");
 		}
 
 		/*--------------------------------------------------------------------------------------------*/
@@ -41,60 +48,61 @@ namespace Weaver.Test.Fixtures.Items {
 		/*--------------------------------------------------------------------------------------------*/
 		[Test]
 		public void PrevPathItem() {
-			var p = new TestPath();
-			var n = p.BaseNode.OutHasPerson.ToNode;
-			var afterN = n.OutLikesCandy;
-			Assert.AreEqual(n, afterN.PrevPathItem, "Incorrect PrevPathItem.");
+			IWeaverItem prev = new Mock<IWeaverItem>().Object;
+
+			var item = new TestItem();
+			item.MockPath.Setup(x => x.IndexOfItem(item)).Returns(4);
+			item.MockPath.Setup(x => x.ItemAtIndex(3)).Returns(prev);
+
+			Assert.AreEqual(prev, item.PrevPathItem, "Incorrect PrevPathItem.");
 		}
 
 		/*--------------------------------------------------------------------------------------------*/
 		[Test]
 		public void NextPathItem() {
-			var p = new TestPath();
-			var n = p.BaseNode.OutHasPerson.ToNode;
-			var afterN = n.OutLikesCandy;
-			Assert.AreEqual(afterN, n.NextPathItem, "Incorrect NextPathItem.");
+			IWeaverItem next = new Mock<IWeaverItem>().Object;
+
+			var item = new TestItem();
+			item.MockPath.Setup(x => x.IndexOfItem(item)).Returns(4);
+			item.MockPath.Setup(x => x.ItemAtIndex(5)).Returns(next);
+
+			Assert.AreEqual(next, item.NextPathItem, "Incorrect NextPathItem.");
 		}
 
 		/*--------------------------------------------------------------------------------------------*/
 		[Test]
-		public void QueryPathToThisItem() {
-			var p = new TestPath();
-			var i0 = p.BaseNode;
-			var i1 = i0.OutHasPerson;
-			var i2 = i1.ToNode;
-			var i3 = i2.OutLikesCandy;
-			var i4 = i3.ToNode;
+		public void PathToThisItem() {
+			IWeaverItem itemA = new Mock<IWeaverItem>().Object;
+			IWeaverItem itemB = new Mock<IWeaverItem>().Object;
+			IWeaverItem itemC = new Mock<IWeaverItem>().Object;
+			var expectItems = new List<IWeaverItem> { itemA, itemB, itemC };
 
-			var items = i2.PathToThisItem;
+			var item = new TestItem();
+			item.MockPath.Setup(x => x.IndexOfItem(item)).Returns(4);
+			item.MockPath.Setup(x => x.PathToIndex(4, true)).Returns(expectItems);
 
-			Assert.AreEqual(3, items.Count, "Incorrect PathToThisItem.Count.");
-			Assert.AreEqual(i0, items[0], "Incorrect PathToThisItem[0].");
-			Assert.AreEqual(i1, items[1], "Incorrect PathToThisItem[1].");
-			Assert.AreEqual(i2, items[2], "Incorrect PathToThisItem[2].");
+			Assert.AreEqual(expectItems, item.PathToThisItem, "Incorrect PathToThisItem.");
 		}
 
 		/*--------------------------------------------------------------------------------------------*/
 		[Test]
-		public void QueryPathFromThisItem() {
-			var p = new TestPath();
-			var i0 = p.BaseNode;
-			var i1 = i0.OutHasPerson;
-			var i2 = i1.ToNode;
-			var i3 = i2.OutLikesCandy;
-			var i4 = i3.ToNode;
+		public void PathFromThisItem() {
+			IWeaverItem itemA = new Mock<IWeaverItem>().Object;
+			IWeaverItem itemB = new Mock<IWeaverItem>().Object;
+			IWeaverItem itemC = new Mock<IWeaverItem>().Object;
+			var expectItems = new List<IWeaverItem> { itemA, itemB, itemC };
 
-			var items = i2.PathFromThisItem;
+			var item = new TestItem();
+			item.MockPath.Setup(x => x.IndexOfItem(item)).Returns(4);
+			item.MockPath.Setup(x => x.PathFromIndex(4, true)).Returns(expectItems);
 
-			Assert.AreEqual(3, items.Count, "Incorrect PathFromThisItem.Count.");
-			Assert.AreEqual(i2, items[0], "Incorrect PathFromThisItem[0].");
-			Assert.AreEqual(i3, items[1], "Incorrect PathFromThisItem[1].");
-			Assert.AreEqual(i4, items[2], "Incorrect PathFromThisItem[2].");
+			Assert.AreEqual(expectItems, item.PathFromThisItem, "Incorrect PathFromThisItem.");
 		}
 
 
 		////////////////////////////////////////////////////////////////////////////////////////////////
-		/*--------------------------------------------------------------------------------------------*/
+		//TEST: uncomment TWeaverItemExt tests
+		/*--------------------------------------------------------------------------------------------* /
 		[Test]
 		public void ExtensionAs() {
 			Person alias;
@@ -110,7 +118,7 @@ namespace Weaver.Test.Fixtures.Items {
 			Assert.AreEqual(p, asFunc.Path, "Incorrect AsFunc.Path.");
 		}
 
-		/*--------------------------------------------------------------------------------------------*/
+		/*--------------------------------------------------------------------------------------------* /
 		[Test]
 		public void ExtensionBack() {
 			Person alias;
@@ -129,7 +137,7 @@ namespace Weaver.Test.Fixtures.Items {
 			Assert.AreEqual(p, backFunc.Path, "Incorrect BackFunc.Path.");
 		}
 
-		/*--------------------------------------------------------------------------------------------*/
+		/*--------------------------------------------------------------------------------------------* /
 		[Test]
 		public void ExtensionProp() {
 			var p = new TestPath();
@@ -140,7 +148,7 @@ namespace Weaver.Test.Fixtures.Items {
 			Assert.AreEqual(p, prop.Path, "Incorrect PropFunc.Path.");
 		}
 
-		/*--------------------------------------------------------------------------------------------*/
+		/*--------------------------------------------------------------------------------------------* /
 		[Test]
 		public void ExtensionHas() {
 			var p = new TestPath();
@@ -152,7 +160,7 @@ namespace Weaver.Test.Fixtures.Items {
 
 			var hasFunc = (WeaverFuncHas<Person>)p.ItemAtIndex(3);
 			Assert.AreEqual(p, hasFunc.Path, "Incorrect BackFunc.Path.");
-		}
+		}*/
 
 	}
 

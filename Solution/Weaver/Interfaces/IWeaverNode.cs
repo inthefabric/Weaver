@@ -1,7 +1,7 @@
 ﻿namespace Weaver.Interfaces {
 
 	/*================================================================================================*/
-	public interface IWeaverNode : IWeaverItem {
+	public interface IWeaverNode : IWeaverIndexableItem {
 
 		long Id { get; set; }
 		bool IsFromNode { get; set; }

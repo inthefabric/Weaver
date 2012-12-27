@@ -16,7 +16,7 @@ namespace Weaver.Functions {
 	}
 
 	/*================================================================================================*/
-	public class WeaverFuncIndex<T> : WeaverFuncIndex where T : IWeaverNode {
+	public class WeaverFuncIndex<T> : WeaverFuncIndex where T : IWeaverIndexableItem {
 
 		private readonly Expression<Func<T, object>> vFunc;
 		private string vPropName;
@@ -35,7 +35,7 @@ namespace Weaver.Functions {
 		public override string PropertyName {
 			get {
 				if ( vPropName != null ) { return vPropName; }
-				vPropName = WeaverFuncProp.GetPropertyName(vFunc);
+				vPropName = WeaverFuncProp.GetPropertyName(this, vFunc);
 				return vPropName;
 			}
 		}

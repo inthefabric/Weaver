@@ -1,4 +1,5 @@
-﻿using NUnit.Framework;
+﻿using Moq;
+using NUnit.Framework;
 using Weaver.Interfaces;
 using Weaver.Test.Common.Nodes;
 using Weaver.Test.Common.Rels;
@@ -20,7 +21,8 @@ namespace Weaver.Test.Fixtures.Items {
 		[TestCase(true, false, true, "v(0)")]
 		[TestCase(true, true, false, "v(0)")]
 		[TestCase(true, true, true, "v(0)")]
-		public void Gremlin(bool pIsRoot, bool pIsFrom, bool pExpectOne, string pExpectGremlin) {
+		public void BuildParameterizedString(bool pIsRoot, bool pIsFrom, bool pExpectOne,
+																				string pExpectScript) {
 			IWeaverNode n;
 			
 			if ( pIsRoot ) {
@@ -30,24 +32,19 @@ namespace Weaver.Test.Fixtures.Items {
 				n = new Person { IsFromNode = pIsFrom, ExpectOneNode = pExpectOne };
 			}
 
-			Assert.AreEqual(pExpectGremlin, n.Script, "Incorrect GremlinCode.");
+			Assert.AreEqual(pExpectScript, n.BuildParameterizedString(), "Incorrect result.");
 		}
 
 		/*--------------------------------------------------------------------------------------------*/
 		[Test]
 		public void NewRel() {
-			var path = new WeaverPath<Root>(new Root());
-			var person = new Person() { Path = path };
-			int pathLen0 = person.Path.Length;
-			Assert.AreEqual(pathLen0, 1, "Incorrect initial Path.Length.");
+			var mockPath = new Mock<IWeaverPath>();
+			var person = new Person { Path = mockPath.Object };
 
 			PersonLikesCandy rel = person.OutLikesCandy;
-			Assert.AreEqual(path, rel.Path, "Incorrect Rel.Path.");
 
-			int pathLen1 = person.Path.Length;
-			int relI = pathLen1-1;
-			Assert.AreEqual(pathLen0+1, pathLen1, "Incorrect Path.Length.");
-			Assert.AreEqual(rel, person.Path.ItemAtIndex(relI), "Incorrect Path Item at index "+relI);
+			Assert.NotNull(rel, "Rel should be filled.");
+			mockPath.Verify(x => x.AddItem(It.IsAny<PersonLikesCandy>()), Times.Once());
 		}
 
 		/*--------------------------------------------------------------------------------------------*/

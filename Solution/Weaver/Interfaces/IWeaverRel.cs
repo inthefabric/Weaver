@@ -4,7 +4,7 @@ using Weaver.Items;
 namespace Weaver.Interfaces {
 
 	/*================================================================================================*/
-	public interface IWeaverRel : IWeaverItem {
+	public interface IWeaverRel : IWeaverIndexableItem {
 
 
 		////////////////////////////////////////////////////////////////////////////////////////////////

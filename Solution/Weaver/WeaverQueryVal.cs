@@ -21,7 +21,11 @@
 			FixedText = RawText;
 			IsString = (pValue is string);
 
-			if ( Original is bool ) {
+			if ( Original == null ) {
+				AllowQuote = false;
+				FixedText = "null";
+			}
+			else if ( Original is bool ) {
 				FixedText = RawText.ToLower();
 			}
 			else if ( Original is double ) {

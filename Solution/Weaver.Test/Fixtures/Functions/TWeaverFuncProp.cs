@@ -19,22 +19,28 @@ namespace Weaver.Test.Fixtures.Functions {
 		////////////////////////////////////////////////////////////////////////////////////////////////
 		/*--------------------------------------------------------------------------------------------*/
 		[Test]
-		public void Gremlin() {
+		public void PropertyName() {
 			var f = new WeaverFuncProp<Person>(n => n.PersonId);
-
 			Assert.AreEqual("PersonId", f.PropertyName, "Incorrect PropertyName.");
-			Assert.AreEqual("PersonId", f.Script, "Incorrect GremlinCode.");
 		}
 
 		/*--------------------------------------------------------------------------------------------*/
 		[Test]
-		public void GremlinBadExpression() {
+		public void PropertyNameInvalid() {
+			var f = new WeaverFuncProp<Person>(n => (n.ExpectOneNode == false));
+
 			WeaverTestUtils.CheckThrows<WeaverFuncException>(true, () => {
-				var f = new WeaverFuncProp<Person>(n => (n.ExpectOneNode == false));
 				var p = f.PropertyName;
 			});
 		}
 
+		/*--------------------------------------------------------------------------------------------*/
+		[Test]
+		public void BuildParameterizedString() {
+			var f = new WeaverFuncProp<Person>(n => n.PersonId);
+			Assert.AreEqual("PersonId", f.BuildParameterizedString(), "Incorrect result.");
+		}
+		
 
 		////////////////////////////////////////////////////////////////////////////////////////////////
 		/*--------------------------------------------------------------------------------------------*/

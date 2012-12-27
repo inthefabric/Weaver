@@ -8,18 +8,17 @@ using Weaver.Interfaces;
 namespace Weaver {
 	
 	/*================================================================================================*/
-	public class WeaverPath : IWeaverPath {
+	public abstract class WeaverPath : IWeaverPath {
 
 		public IWeaverQuery Query { get; private set; }
 		public WeaverFuncIndex BaseIndex { get; protected set; }
-		public bool Finished { get; protected set; }
 
 		protected readonly IList<IWeaverItem> vItems;
 
 
 		////////////////////////////////////////////////////////////////////////////////////////////////
 		/*--------------------------------------------------------------------------------------------*/
-		internal WeaverPath(IWeaverQuery pQuery) {
+		protected WeaverPath(IWeaverQuery pQuery) {
 			Query = pQuery;
 			vItems = new List<IWeaverItem>();
 		}
@@ -28,6 +27,17 @@ namespace Weaver {
 		public void AddItem(IWeaverItem pItem) {
 			vItems.Add(pItem);
 			pItem.Path = this;
+		}
+
+		/*--------------------------------------------------------------------------------------------*/
+		public string BuildParameterizedScript() {
+			string s = (BaseIndex != null ? "" : "g");
+
+			foreach ( IWeaverItem item in vItems ) {
+				s += (s == "" ? "" : ".")+item.BuildParameterizedString();
+			}
+
+			return s;
 		}
 
 
@@ -106,24 +116,6 @@ namespace Weaver {
 			return default(TItem);
 		}
 
-
-		////////////////////////////////////////////////////////////////////////////////////////////////
-		/*--------------------------------------------------------------------------------------------*/
-		internal string GetParameterizedScriptAndFinish() {
-			if ( Finished ) {
-				throw new Exception("Path has already been finished.");
-			}
-
-			Finished = true;
-			string s = (BaseIndex != null ? "" : "g");
-
-			foreach ( IWeaverItem item in vItems ) {
-				s += (s == "" ? "" : ".")+item.BuildParameterizedString();
-			}
-
-			return s;
-		}
-
 	}
 
 
@@ -131,31 +123,33 @@ namespace Weaver {
 	public class WeaverPath<TBase> : WeaverPath, IWeaverPath<TBase>
 															where TBase : class, IWeaverItem, new() {
 
-		public TBase BaseNode { get; private set; }
+		public TBase BaseNode { get; protected set; }
 		
 
 		////////////////////////////////////////////////////////////////////////////////////////////////
 		/*--------------------------------------------------------------------------------------------*/
-		internal WeaverPath(IWeaverQuery pQuery, TBase pBaseNode) : this(pQuery) {
+		public WeaverPath(IWeaverQuery pQuery) : base(pQuery) {}
+
+		/*--------------------------------------------------------------------------------------------*/
+		public WeaverPath(IWeaverQuery pQuery, TBase pBaseNode) : this(pQuery) {
 			BaseNode = pBaseNode;
 			AddItem(BaseNode);
 		}
 
-		/*--------------------------------------------------------------------------------------------*/
-		internal WeaverPath(IWeaverQuery pQuery) : base(pQuery) { }
+	}
+
+
+	/*================================================================================================*/
+	public class WeaverPathFromIndex<TBase> : WeaverPath<TBase>
+													where TBase : class, IWeaverIndexableItem, new() {
 
 
 		////////////////////////////////////////////////////////////////////////////////////////////////
 		/*--------------------------------------------------------------------------------------------*/
-		internal void StartWithIndex<T>(string pIndexName, Expression<Func<T, object>> pFunc, 
-														object pValue) where T : TBase, IWeaverNode {
-			if ( BaseNode != null ) {
-				throw new WeaverPathException(this,
-					"Cannot use StartAtIndex<T>(): the BaseNode is already set.");
-			}
-
+		public WeaverPathFromIndex(IWeaverQuery pQuery, string pIndexName,
+								Expression<Func<TBase, object>> pFunc, object pValue) : base(pQuery) {
 			BaseNode = new TBase { Path = this };
-			BaseIndex = new WeaverFuncIndex<T>(pIndexName, pFunc, pValue);
+			BaseIndex = new WeaverFuncIndex<TBase>(pIndexName, pFunc, pValue);
 			AddItem(BaseIndex);
 		}
 

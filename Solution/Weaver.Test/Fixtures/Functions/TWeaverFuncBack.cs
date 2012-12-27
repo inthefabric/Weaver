@@ -15,34 +15,47 @@ namespace Weaver.Test.Fixtures.Functions {
 
 		////////////////////////////////////////////////////////////////////////////////////////////////
 		/*--------------------------------------------------------------------------------------------*/
-		[TestCase(1)]
-		[TestCase(22)]
-		[TestCase(333)]
-		public void Gremlin(int pItemIndex) {
-			Person perAlias = new Person();
+		[Test]
+		public void New() {
+			var perAlias = new Person();
+			const int itemI = 99;
 
 			var pathMock = new Mock<IWeaverPath>();
-			pathMock.Setup(x => x.IndexOfItem(It.IsAny<IWeaverItem>())).Returns(pItemIndex);
+			pathMock.Setup(x => x.IndexOfItem(It.IsAny<IWeaverItem>())).Returns(itemI);
 
 			var f = new WeaverFuncBack<Person>(pathMock.Object, perAlias);
 
-			Assert.AreEqual("step"+pItemIndex, f.Label, "Incorrect Label.");
-			Assert.AreEqual("back('step"+pItemIndex+"')", f.Script, "Incorrect GremlinCode.");
+			Assert.AreEqual("step"+itemI, f.Label, "Incorrect Label.");
 			Assert.AreEqual(perAlias, f.BackToItem, "Incorrect BackToItem.");
 		}
+		
+		/*--------------------------------------------------------------------------------------------*/
+		[Test]
+		public void BuildParameterizedString() {
+			var perAlias = new Person();
+			const int itemI = 99;
 
+			var pathMock = new Mock<IWeaverPath>();
+			pathMock.Setup(x => x.IndexOfItem(It.IsAny<IWeaverItem>())).Returns(itemI);
+
+			var f = new WeaverFuncBack<Person>(pathMock.Object, perAlias);
+
+			Assert.AreEqual("back('step"+itemI+"')", f.BuildParameterizedString(), "Incorrect result.");
+		}
+
+
+		////////////////////////////////////////////////////////////////////////////////////////////////
 		/*--------------------------------------------------------------------------------------------*/
 		[TestCase(-1)]
 		[TestCase(-22)]
 		public void NotInPath(int pItemIndex) {
-			Person perAlias = new Person();
-			WeaverFuncBack<Person> f = null;
+			var perAlias = new Person();
 
 			var pathMock = new Mock<IWeaverPath>();
 			pathMock.Setup(x => x.IndexOfItem(It.IsAny<IWeaverItem>())).Returns(pItemIndex);
 
 			WeaverTestUtils.CheckThrows<WeaverFuncException>(true, () => {
-				f = new WeaverFuncBack<Person>(pathMock.Object, perAlias);
+				var f = new WeaverFuncBack<Person>(pathMock.Object, perAlias);
 			});
 		}
 
