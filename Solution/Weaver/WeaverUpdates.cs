@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using Weaver.Exceptions;
-using Weaver.Functions;
 using Weaver.Interfaces;
 
 namespace Weaver {

@@ -96,7 +96,7 @@ namespace Weaver {
 		}
 
 		/*--------------------------------------------------------------------------------------------*/
-		public TItem FindAsNode<TItem>(string pLabel) where TItem : IWeaverItem {
+		public TItem FindAsNode<TItem>(string pLabel) where TItem : IWeaverIndexableItem {
 			var n = vItems.Count;
 
 			for ( int i = 1 ; i < n ; ++i ) {

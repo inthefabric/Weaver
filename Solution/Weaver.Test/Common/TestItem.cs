@@ -5,7 +5,7 @@ using Weaver.Items;
 namespace Weaver.Test.Common {
 
 	/*================================================================================================*/
-	public class TestItem : WeaverItem {
+	public class TestItem : WeaverItem, IWeaverIndexableItem {
 
 		public Mock<IWeaverPath> MockPath { get; private set; }
 

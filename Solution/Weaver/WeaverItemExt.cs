@@ -11,7 +11,7 @@ namespace Weaver {
 
 		////////////////////////////////////////////////////////////////////////////////////////////////
 		/*--------------------------------------------------------------------------------------------*/
-		public static T As<T>(this T pCallingItem, out T pAlias) where T : IWeaverItem {
+		public static T As<T>(this T pCallingItem, out T pAlias) where T : IWeaverIndexableItem {
 			var func = new WeaverFuncAs<T>(pCallingItem.Path);
 			pCallingItem.Path.AddItem(func);
 			pAlias = pCallingItem;
@@ -19,16 +19,16 @@ namespace Weaver {
 		}
 
 		/*--------------------------------------------------------------------------------------------*/
-		public static TBack Back<T, TBack>(this T pCallingItem, TBack pAlias) where T : IWeaverItem
-																			where TBack : IWeaverItem {
+		public static TBack Back<T, TBack>(this T pCallingItem, TBack pAlias)
+									where T : IWeaverIndexableItem where TBack : IWeaverIndexableItem {
 			var func = new WeaverFuncBack<TBack>(pCallingItem.Path, pAlias);
 			pCallingItem.Path.AddItem(func);
 			return pAlias;
 		}
 
 		/*--------------------------------------------------------------------------------------------*/
-		public static IWeaverProp Prop<T>(this T pCallingItem,
-									Expression<Func<T, object>> pItemProperty) where T : IWeaverItem {
+		public static IWeaverProp Prop<T>(this T pCallingItem, 
+							Expression<Func<T, object>> pItemProperty) where T : IWeaverIndexableItem {
 			var func = new WeaverFuncProp<T>(pItemProperty);
 			pCallingItem.Path.AddItem(func);
 			return func;
@@ -36,28 +36,19 @@ namespace Weaver {
 
 		/*--------------------------------------------------------------------------------------------*/
 		public static T Has<T>(this T pCallingItem, Expression<Func<T, object>> pItemProperty,
-						WeaverFuncHasOp pOperation, object pValue) where T : IWeaverItem {
+							WeaverFuncHasOp pOperation, object pValue) where T : IWeaverIndexableItem {
 			var func = new WeaverFuncHas<T>(pItemProperty, pOperation, pValue);
 			pCallingItem.Path.AddItem(func);
 			return pCallingItem;
 		}
 
-		/*--------------------------------------------------------------------------------------------* /
-		//TEST: WeaverItemExt.UpdateEach
-		public static T UpdateEach<T>(IWeaverPath pPath, WeaverUpdates<T> pUpdates) 
-																				where T : IWeaverNode {
-			IWeaverQuery q = pPath.Query;
-			string update = ".each{";
-
-			for ( int i = 0 ; i < pUpdates.Count ; ++i ) {
-				KeyValuePair<string, WeaverQueryVal> pair = pUpdates[i];
-				update += (i == 0 ? "" : ";")+"it."+pair.Key+"="+q.AddParamIfString(pair.Value);
-			}
-
-			update += "};";
-			q.FinalizeQuery(pPath.BuildParameterizedScript()+update);
-			return q;
-		}*/
+		/*--------------------------------------------------------------------------------------------*/
+		public static T UpdateEach<T>(this T pCallingItem, WeaverUpdates<T> pUpdates) 
+																		where T : IWeaverIndexableItem {
+			var func = new WeaverFuncUpdateEach<T>(pUpdates);
+			pCallingItem.Path.AddItem(func);
+			return pCallingItem;
+		}
 
 	}
 

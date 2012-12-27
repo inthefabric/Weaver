@@ -60,6 +60,20 @@ namespace Weaver.Test.Fixtures {
 			item.MockPath.Verify(x => x.AddItem(It.IsAny<WeaverFuncHas<TestItem>>()), Times.Once());
 		}
 
+		/*--------------------------------------------------------------------------------------------*/
+		[Test]
+		public void UpdateEach() {
+			var item = new TestItem();
+			var updates = new WeaverUpdates<TestItem>();
+			updates.AddUpdate(item, p => p.ItemIdentifier);
+
+			TestItem result = item.UpdateEach(updates);
+
+			Assert.AreEqual(item, result, "Incorrect result.");
+			item.MockPath
+				.Verify(x => x.AddItem(It.IsAny<WeaverFuncUpdateEach<TestItem>>()), Times.Once());
+		}
+
 	}
 
 }
