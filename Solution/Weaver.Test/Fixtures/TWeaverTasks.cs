@@ -45,6 +45,35 @@ namespace Weaver.Test.Fixtures {
 			Assert.AreEqual(expect, q.Script, "Incorrect Query.Script.");
 			CheckQueryParams(q, expectParams);
 		}
+		
+		
+		////////////////////////////////////////////////////////////////////////////////////////////////
+		/*--------------------------------------------------------------------------------------------*/
+		[Test]
+		public void BeginPath() {
+			var r = new Root();
+
+			IWeaverPath<Root> p = WeaverTasks.BeginPath(r);
+
+			Assert.NotNull(p.Query, "Query should not be null.");
+			Assert.AreEqual(r, p.BaseNode, "Incorrect BaseNode.");
+		}
+
+		/*--------------------------------------------------------------------------------------------*/
+		[Test]
+		public void BeginPathFromIndex() {
+			const string name = "Person";
+			const int perId = 123;
+
+			IWeaverPath<Person> p =
+				WeaverTasks.BeginPath<Person>(name, (per => per.PersonId), perId);
+
+			Assert.NotNull(p.Query, "Query should be filled.");
+			Assert.NotNull(p.BaseIndex, "BaseIndex should be filled.");
+			Assert.AreEqual(name, p.BaseIndex.IndexName, "Incorrect BaseIndex.IndexName.");
+			Assert.AreEqual(perId, p.BaseIndex.Value, "Incorrect BaseIndex.Value.");
+			Assert.AreEqual("PersonId", p.BaseIndex.PropertyName, "Incorrect BaseIndex.PropertyName.");
+		}
 
 		
 		////////////////////////////////////////////////////////////////////////////////////////////////
@@ -63,6 +92,7 @@ namespace Weaver.Test.Fixtures {
 			int bracketI = q.Script.IndexOf('[');
 			int bracketIClose = q.Script.LastIndexOf(']');
 
+			Assert.True(q.IsFinalized, "Incorrect IsFinalized.");
 			Assert.NotNull(q.Script, "Script should be filled.");
 			Assert.AreEqual("g.addVertex([",
 				q.Script.Substring(0, bracketI+1), "Incorrect starting code.");
@@ -85,15 +115,31 @@ namespace Weaver.Test.Fixtures {
 		}
 
 		/*--------------------------------------------------------------------------------------------*/
-		[TestCase("Person")]
-		[TestCase("Artifact")]
-		public void AddNodeIndex(string pIndexName) {
-			IWeaverQuery q = WeaverTasks.AddNodeIndex(pIndexName);
+		[Test]
+		public void AddNodeIndex() {
+			const string indexName = "Person";
+			IWeaverQuery q = WeaverTasks.AddNodeIndex(indexName);
 
 			const string expect = "g.createManualIndex(_P0,Vertex.class);";
 			var expectParams = new Dictionary<string, string>();
-			expectParams.Add("_P0", pIndexName);
+			expectParams.Add("_P0", indexName);
 
+			Assert.True(q.IsFinalized, "Incorrect IsFinalized.");
+			Assert.AreEqual(expect, q.Script, "Incorrect Query.Script.");
+			CheckQueryParams(q, expectParams);
+		}
+
+		/*--------------------------------------------------------------------------------------------*/
+		[Test]
+		public void AddRelIndex() {
+			const string indexName = "PersonLikesCandy";
+			IWeaverQuery q = WeaverTasks.AddRelIndex(indexName);
+
+			const string expect = "g.createManualIndex(_P0,Edge.class);";
+			var expectParams = new Dictionary<string, string>();
+			expectParams.Add("_P0", indexName);
+
+			Assert.True(q.IsFinalized, "Incorrect IsFinalized.");
 			Assert.AreEqual(expect, q.Script, "Incorrect Query.Script.");
 			CheckQueryParams(q, expectParams);
 		}
@@ -114,6 +160,7 @@ namespace Weaver.Test.Fixtures {
 			expectParams.Add("_P0", indexName);
 			expectParams.Add("_P1", "PersonId");
 
+			Assert.True(q.IsFinalized, "Incorrect IsFinalized.");
 			Assert.AreEqual(expect, q.Script, "Incorrect Query.Script.");
 			CheckQueryParams(q, expectParams);
 		}
@@ -149,6 +196,7 @@ namespace Weaver.Test.Fixtures {
 			int bracketI = q.Script.IndexOf('[');
 			int bracketIClose = q.Script.LastIndexOf(']');
 
+			Assert.True(q.IsFinalized, "Incorrect IsFinalized.");
 			Assert.NotNull(q.Script, "Script should be filled.");
 			Assert.AreEqual("f=g.v(99L);t=g.v(1234L);g.addEdge(f,t,_P0,[", 
 				q.Script.Substring(0, bracketI+1), "Incorrect starting code.");
@@ -182,6 +230,7 @@ namespace Weaver.Test.Fixtures {
 
 			IWeaverQuery q = WeaverTasks.AddRel(root, rhp, per);
 
+			Assert.True(q.IsFinalized, "Incorrect IsFinalized.");
 			Assert.NotNull(q.Script, "Script should be filled.");
 			Assert.AreEqual(q.Script, "f=g.v(0L);t=g.v(99L);g.addEdge(f,t,_P0);","Incorrect Script.");
 
@@ -249,7 +298,7 @@ namespace Weaver.Test.Fixtures {
 
 		////////////////////////////////////////////////////////////////////////////////////////////////
 		/*--------------------------------------------------------------------------------------------*/
-		public Dictionary<string, string> GetPropListDictionary(string pPropList) {
+		private static Dictionary<string, string> GetPropListDictionary(string pPropList) {
 			string[] valPairs = pPropList.Split(',');
 			var map = new Dictionary<string, string>();
 
@@ -262,16 +311,15 @@ namespace Weaver.Test.Fixtures {
 		}
 		
 		/*--------------------------------------------------------------------------------------------*/
-		public void CheckQueryParams(IWeaverQuery pQuery, Dictionary<string, string> pExpectParams) {
+		private static void CheckQueryParams(IWeaverQuery pQuery, Dictionary<string, string> pExpect) {
 			Assert.NotNull(pQuery.Params, "Query.Params should not be null.");
-			Assert.AreEqual(pExpectParams.Keys.Count, pQuery.Params.Keys.Count,
+			Assert.AreEqual(pExpect.Keys.Count, pQuery.Params.Keys.Count,
 				"Incorrect Query.Params count.");
 
-			foreach ( string key in pExpectParams.Keys ) {
+			foreach ( string key in pExpect.Keys ) {
 				Assert.True(pQuery.Params.ContainsKey(key), "Missing Query.Params["+key+"].");
-				Assert.AreEqual(pExpectParams[key], pQuery.Params[key],
+				Assert.AreEqual(pExpect[key], pQuery.Params[key],
 					"Incorrect value for Query.Params["+key+"].");
-				//Console.WriteLine(key+": "+pQuery.Params[key]);
 			}
 		}
 

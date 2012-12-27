@@ -99,69 +99,6 @@ namespace Weaver.Test.Fixtures.Items {
 			Assert.AreEqual(expectItems, item.PathFromThisItem, "Incorrect PathFromThisItem.");
 		}
 
-
-		////////////////////////////////////////////////////////////////////////////////////////////////
-		//TEST: uncomment TWeaverItemExt tests
-		/*--------------------------------------------------------------------------------------------* /
-		[Test]
-		public void ExtensionAs() {
-			Person alias;
-
-			var p = new TestPath();
-			Person personNodeA = p.BaseNode.OutHasPerson.ToNode;
-			Person personNodeB = personNodeA.As(out alias);
-
-			Assert.AreEqual(4, p.Length, "Incorrect Path.Length.");
-			Assert.AreEqual(personNodeA, personNodeB, "Incorrectly returned Person Node.");
-
-			var asFunc = (WeaverFuncAs<Person>)p.ItemAtIndex(3);
-			Assert.AreEqual(p, asFunc.Path, "Incorrect AsFunc.Path.");
-		}
-
-		/*--------------------------------------------------------------------------------------------* /
-		[Test]
-		public void ExtensionBack() {
-			Person alias;
-
-			var p = new TestPath();
-			Person personNodeA = p.BaseNode.OutHasPerson.ToNode;
-			Person personNodeB = personNodeA.As(out alias);
-			Candy candyNode = personNodeB.OutLikesCandy.ToNode;
-			Person personNodeC = candyNode.Back(alias);
-
-			Assert.AreEqual(7, p.Length, "Incorrect Path.Length.");
-			Assert.AreEqual(personNodeA, personNodeB, "Incorrectly returned Person Node (AB).");
-			Assert.AreEqual(personNodeB, personNodeC, "Incorrectly returned Person Node (BC).");
-
-			var backFunc = (WeaverFuncBack<Person>)p.ItemAtIndex(6);
-			Assert.AreEqual(p, backFunc.Path, "Incorrect BackFunc.Path.");
-		}
-
-		/*--------------------------------------------------------------------------------------------* /
-		[Test]
-		public void ExtensionProp() {
-			var p = new TestPath();
-			IWeaverProp prop = p.BaseNode.OutHasPerson.ToNode.Prop(x => x.Name);
-
-			Assert.AreEqual(4, p.Length, "Incorrect Path.Length.");
-			Assert.AreEqual(prop, p.ItemAtIndex(3), "Incorrect item at path index 3.");
-			Assert.AreEqual(p, prop.Path, "Incorrect PropFunc.Path.");
-		}
-
-		/*--------------------------------------------------------------------------------------------* /
-		[Test]
-		public void ExtensionHas() {
-			var p = new TestPath();
-			Person personNodeA = p.BaseNode.OutHasPerson.ToNode;
-			Person personNodeB = personNodeA.Has(x => x.Name, WeaverFuncHasOp.EqualTo, "test");
-
-			Assert.AreEqual(4, p.Length, "Incorrect Path.Length.");
-			Assert.AreEqual(personNodeA, personNodeB, "Incorrectly returned Person Node.");
-
-			var hasFunc = (WeaverFuncHas<Person>)p.ItemAtIndex(3);
-			Assert.AreEqual(p, hasFunc.Path, "Incorrect BackFunc.Path.");
-		}*/
-
 	}
 
 }

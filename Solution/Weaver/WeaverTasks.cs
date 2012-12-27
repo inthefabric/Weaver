@@ -14,13 +14,11 @@ namespace Weaver {
 
 		////////////////////////////////////////////////////////////////////////////////////////////////
 		/*--------------------------------------------------------------------------------------------*/
-		//TEST: WeaverTasks.BeginPath
 		public static IWeaverPath<T> BeginPath<T>(T pBaseNode) where T : class, IWeaverItem, new() {
 			return new WeaverPath<T>(new WeaverQuery(), pBaseNode);
 		}
 		
 		/*--------------------------------------------------------------------------------------------*/
-		//TEST: WeaverTasks.BeginPathWithIndex
 		public static IWeaverPath<T> BeginPath<T>(string pIndexName, Expression<Func<T, object>> pFunc,
 										object pValue) where T : class, IWeaverIndexableItem, new() {
 			return new WeaverPathFromIndex<T>(new WeaverQuery(), pIndexName, pFunc, pValue);
@@ -41,7 +39,7 @@ namespace Weaver {
 		}
 
 		/*--------------------------------------------------------------------------------------------*/
-		public static IWeaverQuery AddRelIndex(string pIndexName) { //TEST: WeaverTasks.AddRelIndex
+		public static IWeaverQuery AddRelIndex(string pIndexName) {
 			return AddIndex(pIndexName, false);
 		}
 

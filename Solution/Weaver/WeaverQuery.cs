@@ -5,7 +5,7 @@ using Weaver.Interfaces;
 namespace Weaver {
 
 	/*================================================================================================*/
-	public class WeaverQuery : IWeaverQuery { //TEST: WeaverQuery
+	public class WeaverQuery : IWeaverQuery {
 
 		public bool IsFinalized { get; private set; }
 		public string Script { get; private set; }
@@ -31,19 +31,19 @@ namespace Weaver {
 
 		////////////////////////////////////////////////////////////////////////////////////////////////
 		/*--------------------------------------------------------------------------------------------*/
-		public void AddParam(string pParamName, WeaverQueryVal pValue) {
+		public void AddParam(string pParamName, IWeaverQueryVal pValue) {
 			Params.Add(pParamName, pValue.GetQuoted());
 		}
 
 		/*--------------------------------------------------------------------------------------------*/
-		public string AddParam(WeaverQueryVal pValue) {
+		public string AddParam(IWeaverQueryVal pValue) {
 			string p = NextParamName;
 			AddParam(p, pValue);
 			return p;
 		}
 
 		/*--------------------------------------------------------------------------------------------*/
-		public string AddParamIfString(WeaverQueryVal pValue) {
+		public string AddParamIfString(IWeaverQueryVal pValue) {
 			if ( !pValue.IsString ) { return pValue.FixedText; }
 			return AddParam(pValue);
 		}

@@ -43,8 +43,9 @@ namespace Weaver {
 		}
 
 		/*--------------------------------------------------------------------------------------------* /
-		//TEST: WeaverItemExt.Each
-		public static T Each<T>(IWeaverPath pPath, WeaverUpdates<T> pUpdates) where T : IWeaverNode {
+		//TEST: WeaverItemExt.UpdateEach
+		public static T UpdateEach<T>(IWeaverPath pPath, WeaverUpdates<T> pUpdates) 
+																				where T : IWeaverNode {
 			IWeaverQuery q = pPath.Query;
 			string update = ".each{";
 

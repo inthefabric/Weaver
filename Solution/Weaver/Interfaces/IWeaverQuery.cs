@@ -15,9 +15,9 @@ namespace Weaver.Interfaces {
 		void FinalizeQuery(string pScript);
 
 		/*--------------------------------------------------------------------------------------------*/
-		void AddParam(string pParamName, WeaverQueryVal pValue);
-		string AddParam(WeaverQueryVal pValue);
-		string AddParamIfString(WeaverQueryVal pValue);
+		void AddParam(string pParamName, IWeaverQueryVal pValue);
+		string AddParam(IWeaverQueryVal pValue);
+		string AddParamIfString(IWeaverQueryVal pValue);
 		string NextParamName { get; }
 
 	}

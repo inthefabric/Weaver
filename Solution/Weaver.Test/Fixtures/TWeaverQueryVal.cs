@@ -15,11 +15,12 @@ namespace Weaver.Test.Fixtures {
 		[TestCase(123.456789, false, "123.456789D")]
 		[TestCase("1234", true, "1234")]
 		[TestCase(true, false, "true")]
-		public void Constructor(object pValue, bool pIsString, string pFixedText) {
+		[TestCase(null, false, "null")]
+		public void New(object pValue, bool pIsString, string pFixedText) {
 			var qv = new WeaverQueryVal(pValue);
 
 			Assert.AreEqual(pValue, qv.Original, "Incorrect Original.");
-			Assert.AreEqual(true, qv.AllowQuote, "Incorrect AllowQuote.");
+			Assert.AreEqual((pValue != null), qv.AllowQuote, "Incorrect AllowQuote.");
 
 			Assert.AreEqual(pValue+"", qv.RawText, "Incorrect RawText.");
 			Assert.AreEqual(pIsString, qv.IsString, "Incorrect IsString.");
@@ -45,16 +46,6 @@ namespace Weaver.Test.Fixtures {
 		public void GetQuotedForce(object pValue, bool pAllowString, string pExpect) {
 			var qv = new WeaverQueryVal(pValue, pAllowString);
 			Assert.AreEqual(pExpect, qv.GetQuotedForce(), "Incorrect result.");
-		}
-
-
-		////////////////////////////////////////////////////////////////////////////////////////////////
-		/*--------------------------------------------------------------------------------------------*/
-		[TestCase(123, "123")]
-		[TestCase("test", "'test'")]
-		[TestCase(false, "false")]
-		public void QuoteIfString(object pValue, string pExpect) {
-			Assert.AreEqual(pExpect, WeaverQueryVal.QuoteIfString(pValue), "Incorrect result.");
 		}
 
 	}

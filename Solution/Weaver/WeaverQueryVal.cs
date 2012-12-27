@@ -1,7 +1,9 @@
-﻿namespace Weaver {
+﻿using Weaver.Interfaces;
+
+namespace Weaver {
 	
 	/*================================================================================================*/
-	public class WeaverQueryVal {
+	public class WeaverQueryVal : IWeaverQueryVal {
 
 		public object Original { get; private set; }
 		public bool AllowQuote { get; private set; }
@@ -51,13 +53,6 @@
 		/*--------------------------------------------------------------------------------------------*/
 		public string GetQuotedForce() {
 			return "'"+FixedText+"'";
-		}
-		
-
-		////////////////////////////////////////////////////////////////////////////////////////////////
-		/*--------------------------------------------------------------------------------------------*/
-		public static string QuoteIfString(object pValue) {
-			return new WeaverQueryVal(pValue).GetQuoted();
 		}
 
 	}

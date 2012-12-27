@@ -22,6 +22,7 @@ namespace Weaver.Test.Fixtures.Functions {
 		public void PropertyName() {
 			var f = new WeaverFuncProp<Person>(n => n.PersonId);
 			Assert.AreEqual("PersonId", f.PropertyName, "Incorrect PropertyName.");
+			Assert.AreEqual("PersonId", f.PropertyName, "Incorrect cached PropertyName.");
 		}
 
 		/*--------------------------------------------------------------------------------------------*/

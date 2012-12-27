@@ -31,6 +31,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Interfaces\IWeaverIndexableItem.cs" />
+    <Compile Include="Interfaces\IWeaverQueryVal.cs" />
     <Compile Include="WeaverTasks.cs" />
     <Compile Include="WeaverItemExt.cs" />
     <Compile Include="WeaverQueryVal.cs" />
