@@ -79,10 +79,9 @@ namespace Weaver.Test.Fixtures {
 		/*--------------------------------------------------------------------------------------------*/
 		[Test]
 		public void End() {
-			const string parScript = "this.is.the.parameterized.script;";
+			const string parScript = "this.is.the.parameterized.script";
 
 			var mockQuery = new Mock<IWeaverQuery>();
-			//mockQuery.Setup(x => x.FinalizeQuery(parScript));
 
 			var item = new TestItem();
 			item.MockPath.SetupGet(x => x.Query).Returns(mockQuery.Object);
@@ -92,6 +91,24 @@ namespace Weaver.Test.Fixtures {
 
 			Assert.AreEqual(mockQuery.Object, result, "Incorrect result.");
 			mockQuery.Verify(x => x.FinalizeQuery(parScript), Times.Once());
+		}
+		
+		/*--------------------------------------------------------------------------------------------*/
+		[Test]
+		public void EndAsVar() {
+			const string parScript = "this.is.the.parameterized.script";
+			const string parScriptWithVar = "myVar=this.is.the.parameterized.script";
+
+			var mockQuery = new Mock<IWeaverQuery>();
+
+			var item = new TestItem();
+			item.MockPath.SetupGet(x => x.Query).Returns(mockQuery.Object);
+			item.MockPath.Setup(x => x.BuildParameterizedScript()).Returns(parScript);
+
+			IWeaverQuery result = item.EndAsVar("myVar");
+
+			Assert.AreEqual(mockQuery.Object, result, "Incorrect result.");
+			mockQuery.Verify(x => x.FinalizeQuery(parScriptWithVar), Times.Once());
 		}
 
 	}
