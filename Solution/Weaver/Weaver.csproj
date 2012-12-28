@@ -30,6 +30,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="WeaverUpdate.cs" />
     <Compile Include="Functions\WeaverFuncUpdateEach.cs" />
     <Compile Include="WeaverUtil.cs" />
     <Compile Include="Interfaces\IWeaverItemIndexable.cs" />

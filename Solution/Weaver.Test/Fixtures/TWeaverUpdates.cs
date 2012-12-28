@@ -51,30 +51,4 @@ namespace Weaver.Test.Fixtures {
 
 	}
 
-
-	/*================================================================================================*/
-	[TestFixture]
-	public class TWeaverUpdate : WeaverTestBase {
-
-
-		////////////////////////////////////////////////////////////////////////////////////////////////
-		/*--------------------------------------------------------------------------------------------*/
-		[Test]
-		public void BuildStrings() {
-			var u = new WeaverUpdate<Person>();
-			u.PropFunc = (x => x.PersonId);
-			u.Node = new Person { PersonId = 123 };
-
-			Assert.Null(u.PropName, "PropName should be null.");
-			Assert.Null(u.PropVal, "PropVal should be null.");
-
-			u.BuildStrings();
-
-			Assert.AreEqual("PersonId", u.PropName, "Incorrect PropName.");
-			Assert.NotNull(u.PropVal, "PropVal should not be null.");
-			Assert.AreEqual(123, u.PropVal.Original, "Incorrect PropVal.Original.");
-		}
-
-	}
-
 }
