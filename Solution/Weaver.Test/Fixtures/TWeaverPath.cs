@@ -7,6 +7,7 @@ using Weaver.Interfaces;
 using Weaver.Test.Common.Nodes;
 using Weaver.Test.Common.Rels;
 using Weaver.Test.Utils;
+using System;
 
 namespace Weaver.Test.Fixtures {
 
@@ -87,7 +88,7 @@ namespace Weaver.Test.Fixtures {
 		/*--------------------------------------------------------------------------------------------*/
 		[Test]
 		public void BuildParamScriptBase() {
-			Person personAlias;
+			IWeaverFuncAs<Person> personAlias;
 			IWeaverQuery q = new WeaverQuery();
 			IWeaverPath<Root> path = GetPathWithRootNode(q);
 
@@ -110,17 +111,17 @@ namespace Weaver.Test.Fixtures {
 				".outE('RootHasPerson').inV"+
 				".inE('RootHasPerson')[0].outV(0)"+
 				".outE('RootHasPerson').inV"+
-					".as('step6')"+
+					".as('step7')"+
 				".outE('PersonKnowsPerson').inV"+
 					".has('PersonId',Tokens.T.lte,5)"+
 				".inE('PersonKnowsPerson').outV"+
-					".back('step6')"+
+					".back('step7')"+
 				".outE('PersonLikesCandy')"+
 					".has('Enjoyment',Tokens.T.gte,0.2D)"+
 					".inV"+
 				".inE('PersonLikesCandy').outV"+
 					".Name";
-
+			
 			Assert.AreEqual(expect, path.BuildParameterizedScript(), "Incorrect result.");
 		}
 
@@ -283,45 +284,6 @@ namespace Weaver.Test.Fixtures {
 			Assert.AreEqual(5, p.Length, "Incorrect Path.Length.");
 			Assert.AreEqual(2, p.IndexOfItem(n2), "Incorrect item index.");
 			Assert.AreEqual(4, p.IndexOfItem(n4), "Incorrect item index.");
-		}
-
-		/*--------------------------------------------------------------------------------------------*/
-		[Test]
-		public void FindAsNode() {
-			Person perAlias, perAlias2;
-
-			IWeaverPath<Root> p = GetPathWithRootNode();
-			var n2 = p.BaseNode.OutHasPerson.ToNode;
-			var n2Again = n2.As(out perAlias);
-			var n5 = n2Again.OutLikesCandy.FromNode.As(out perAlias2);
-			
-			var as3 = (WeaverFuncAs<Person>)p.ItemAtIndex(3);
-			Person result = p.FindAsNode<Person>(as3.Label);
-
-			Assert.AreEqual(n2, result, "Incorrect Result.");
-			Assert.AreEqual(n2Again, result, "Incorrect Result.");
-		}
-
-		/*--------------------------------------------------------------------------------------------*/
-		[Test]
-		public void FindAsNodeNone() {
-			var p = GetTestPathLength3();
-			Person result = p.FindAsNode<Person>("test");
-			Assert.Null(result, "Result should be null.");
-		}
-
-		/*--------------------------------------------------------------------------------------------*/
-		[Test]
-		public void FindAsNodeWrongType() {
-			IWeaverPath<Root> p = GetPathWithRootNode();
-			var n = p.BaseNode.OutHasPerson.ToNode;
-
-			var as3 = new WeaverFuncAs<Candy>(p);
-			p.AddItem(as3);
-
-			WeaverTestUtil.CheckThrows<WeaverPathException>(true,
-				() => p.FindAsNode<Candy>(as3.Label)
-			);
 		}
 
 

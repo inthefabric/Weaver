@@ -72,6 +72,7 @@
     <Compile Include="WeaverListVar.cs" />
     <Compile Include="Interfaces\IWeaverListVar.cs" />
     <Compile Include="Functions\WeaverFuncCustom.cs" />
+    <Compile Include="Interfaces\IWeaverFuncAs.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />

@@ -20,25 +20,29 @@ namespace Weaver.Test.Fixtures {
 			var item = new TestItem();
 			item.MockPath.SetupGet(x => x.Length).Returns(4);
 
-			TestItem alias;
+			IWeaverFuncAs<TestItem> alias;
 			TestItem result = item.As(out alias);
 
 			Assert.AreEqual(item, result, "Incorrect result.");
-			Assert.AreEqual(item, alias, "Incorrect alias.");
+			Assert.NotNull(alias, "Alias should be filled.");
+			Assert.AreEqual(item, alias.Item, "Incorrect Alias.Item.");
 			item.MockPath.Verify(x => x.AddItem(It.IsAny<WeaverFuncAs<TestItem>>()), Times.Once());
 		}
 
 		/*--------------------------------------------------------------------------------------------*/
 		[Test]
 		public void Back() {
-			var alias = new TestItem();
-
 			var item = new TestItem();
-			item.MockPath.Setup(x => x.IndexOfItem(alias)).Returns(4);
+			
+			var mockTestItem = new Mock<TestItem>();
+			mockTestItem.SetupGet(x => x.PathIndex).Returns(4);
+			
+			var mockAlias = new Mock<IWeaverFuncAs<TestItem>>();
+			mockAlias.SetupGet(x => x.Item).Returns(mockTestItem.Object);
 
-			TestItem result = item.Back(alias);
+			TestItem result = item.Back(mockAlias.Object);
 
-			Assert.AreEqual(alias, result, "Incorrect result.");
+			Assert.AreEqual(mockTestItem.Object, result, "Incorrect result.");
 			item.MockPath.Verify(x => x.AddItem(It.IsAny<WeaverFuncBack<TestItem>>()), Times.Once());
 		}
 
@@ -78,7 +82,7 @@ namespace Weaver.Test.Fixtures {
 
 		
 		////////////////////////////////////////////////////////////////////////////////////////////////
-		/*--------------------------------------------------------------------------------------------*/
+		/*--------------------------------------------------------------------------------------------* /
 		[Test]
 		public void Aggregate() {
 			var tx = new WeaverTransaction();

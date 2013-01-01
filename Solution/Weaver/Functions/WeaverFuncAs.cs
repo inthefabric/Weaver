@@ -5,18 +5,19 @@ using Weaver.Items;
 namespace Weaver.Functions {
 
 	/*================================================================================================*/
-	public class WeaverFuncAs<TItem> : WeaverFunc where TItem : IWeaverItemIndexable {
+	public class WeaverFuncAs<TItem> : WeaverFunc, IWeaverFuncAs<TItem>
+																where TItem : IWeaverItemIndexable {
 
-		public Type ItemType { get; private set; }
+		public TItem Item { get; private set; }
 
 		private readonly string vLabel;
 
 
 		////////////////////////////////////////////////////////////////////////////////////////////////
 		/*--------------------------------------------------------------------------------------------*/
-		public WeaverFuncAs(IWeaverPath pPath) {
-			ItemType = typeof(TItem);
-			vLabel = "step"+(pPath.Length-1);
+		public WeaverFuncAs(TItem pItem) {
+			Item = pItem;
+			vLabel = "step"+pItem.Path.Length;
 		}
 
 		/*--------------------------------------------------------------------------------------------*/

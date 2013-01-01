@@ -10,10 +10,10 @@ namespace Weaver.Items {
 
 		////////////////////////////////////////////////////////////////////////////////////////////////
 		/*--------------------------------------------------------------------------------------------*/
-		public IWeaverPath Path { get; set; }
+		public virtual IWeaverPath Path { get; set; }
 
 		/*--------------------------------------------------------------------------------------------*/
-		public int PathIndex {
+		public virtual int PathIndex {
 			get {
 				if ( Path == null ) {
 					throw new WeaverException("Path is null for "+this+".");

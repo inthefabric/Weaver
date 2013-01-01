@@ -7,15 +7,15 @@ namespace Weaver.Functions {
 	/*================================================================================================*/
 	public class WeaverFuncBack<TBack> : WeaverFunc where TBack : IWeaverItemIndexable {
 
-		public TBack BackToItem { get; private set; }
+		public IWeaverFuncAs<TBack> BackToItem { get; private set; }
 
 		private readonly string vLabel;
 
 
 		////////////////////////////////////////////////////////////////////////////////////////////////
 		/*--------------------------------------------------------------------------------------------*/
-		public WeaverFuncBack(IWeaverPath pPath, TBack pBackToItem) {
-			int i = pPath.IndexOfItem(pBackToItem);
+		public WeaverFuncBack(IWeaverFuncAs<TBack> pBackToItem) {
+			int i = pBackToItem.PathIndex;
 
 			if ( i < 0 ) {
 				throw new WeaverFuncException(this,

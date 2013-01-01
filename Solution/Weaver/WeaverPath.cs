@@ -94,28 +94,7 @@ namespace Weaver {
 		public int IndexOfItem(IWeaverItem pItem) {
 			return vItems.IndexOf(pItem);
 		}
-
-		/*--------------------------------------------------------------------------------------------*/
-		public TItem FindAsNode<TItem>(string pLabel) where TItem : IWeaverItemIndexable {
-			var n = vItems.Count;
-
-			for ( int i = 1 ; i < n ; ++i ) {
-				IWeaverItem item = vItems[i];
-				WeaverFuncAs<TItem> funcAs = (item as WeaverFuncAs<TItem>);
-
-				if ( funcAs == null || funcAs.Label != pLabel ) { continue; }
-
-				IWeaverItem prev = vItems[i-1];
-
-				if ( prev is TItem ) { return (TItem)prev; }
-
-				throw new WeaverPathException(this, "The 'As' marker with label '"+pLabel+"' uses "+
-					"type "+prev.GetType().Name+", but type "+typeof(TItem).Name+" was expected.");
-			}
-
-			return default(TItem);
-		}
-
+		
 	}
 
 

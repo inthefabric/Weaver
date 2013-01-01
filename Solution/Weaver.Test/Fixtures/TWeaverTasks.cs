@@ -243,7 +243,7 @@ namespace Weaver.Test.Fixtures {
 		[Test]
 		[Category("Integration")]
 		public void PathBasedQuery() {
-			Person personAlias;
+			IWeaverFuncAs<Person> personAlias;
 
 			IWeaverQuery q = WeaverTasks.BeginPath(new Root())
 				.BaseNode
@@ -260,12 +260,12 @@ namespace Weaver.Test.Fixtures {
 
 			const string expectScript = "g.v(0)"+
 				".outE('RootHasPerson').inV"+
-					".as('step2')"+
+					".as('step3')"+
 				".inE('PersonKnowsPerson').outV"+
 					".has('PersonId',Tokens.T.gt,5)"+
 					".has('Name',Tokens.T.neq,_P0)"+
 					".has('Name',Tokens.T.neq,_P1)"+
-					".back('step2')"+
+					".back('step3')"+
 				".outE('PersonLikesCandy').inV"+
 					".Calories;";
 

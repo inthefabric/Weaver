@@ -11,19 +11,20 @@ namespace Weaver {
 
 		////////////////////////////////////////////////////////////////////////////////////////////////
 		/*--------------------------------------------------------------------------------------------*/
-		public static T As<T>(this T pCallingItem, out T pAlias) where T : IWeaverItemIndexable {
-			var func = new WeaverFuncAs<T>(pCallingItem.Path);
+		public static T As<T>(this T pCallingItem, out IWeaverFuncAs<T> pAlias)
+																	where T : IWeaverItemIndexable {
+			var func = new WeaverFuncAs<T>(pCallingItem);
 			pCallingItem.Path.AddItem(func);
-			pAlias = pCallingItem;
+			pAlias = func;
 			return pCallingItem;
 		}
 
 		/*--------------------------------------------------------------------------------------------*/
-		public static TBack Back<T, TBack>(this T pCallingItem, TBack pAlias)
+		public static TBack Back<T, TBack>(this T pCallingItem, IWeaverFuncAs<TBack> pAlias)
 									where T : IWeaverItemIndexable where TBack : IWeaverItemIndexable {
-			var func = new WeaverFuncBack<TBack>(pCallingItem.Path, pAlias);
+			var func = new WeaverFuncBack<TBack>(pAlias);
 			pCallingItem.Path.AddItem(func);
-			return pAlias;
+			return pAlias.Item;
 		}
 
 		/*--------------------------------------------------------------------------------------------*/

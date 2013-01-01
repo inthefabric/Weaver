@@ -9,3 +9,4 @@ _Publish/*
 VisualizeHg.bat
 _Publish_*/*
 Solution/_ReSharper.*
+Solution/test-results
