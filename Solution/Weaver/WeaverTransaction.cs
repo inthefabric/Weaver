@@ -5,7 +5,7 @@ using Weaver.Exceptions;
 namespace Weaver {
 
 	/*================================================================================================*/
-	public class WeaverTransaction {
+	public class WeaverTransaction : IWeaverTransaction {
 
 		public enum ConclusionType {
 			Success = 1,
@@ -17,12 +17,14 @@ namespace Weaver {
 		public ConclusionType Conclusion { get; set; }
 		
 		private List<IWeaverQuery> vQueries;
+		private int vVarCount;
 		
 		
 		////////////////////////////////////////////////////////////////////////////////////////////////
 		/*--------------------------------------------------------------------------------------------*/
 		public WeaverTransaction() {
 			vQueries = new List<IWeaverQuery>();
+			vVarCount = -1;
 		}
 
 		/*--------------------------------------------------------------------------------------------*/
@@ -37,31 +39,41 @@ namespace Weaver {
 		}
 		
 		/*--------------------------------------------------------------------------------------------*/
-		public void Finish(ConclusionType pConclusion) {
-			EnsureUnfinished();
+		public string GetNextVarName() { //TODO: WeaverTransaction.GetNextVarName()
+			return "_var"+(++vVarCount);
+		}
+		
+		/*--------------------------------------------------------------------------------------------*/
+		public void Finish (ConclusionType pConclusion, IWeaverListVar pFinalOutput=null)
+		{
+			EnsureUnfinished ();
 
-			if ( vQueries.Count == 0 ) {
-				throw new WeaverException("Could not finish transaction; no queries were added.");
+			if (vQueries.Count == 0) {
+				throw new WeaverException ("Could not finish transaction; no queries were added.");
 			}
 
 			Script = "g.startTransaction();";
-			Params = new Dictionary<string, string>();
+			Params = new Dictionary<string, string> ();
 
-			foreach ( IWeaverQuery wq in vQueries ) {
-				string queryScript = wq.Script+"";
+			foreach (IWeaverQuery wq in vQueries) {
+				string queryScript = wq.Script + "";
 				Dictionary<string, string> pars = wq.Params;
 
-				foreach ( string key in pars.Keys ) {
-					string newKey = "_TP"+Params.Keys.Count;
-					queryScript = queryScript.Replace(key, newKey);
-					Params.Add(newKey, pars[key]);
+				foreach (string key in pars.Keys) {
+					string newKey = "_TP" + Params.Keys.Count;
+					queryScript = queryScript.Replace (key, newKey);
+					Params.Add (newKey, pars [key]);
 				}
 
 				Script += queryScript;
 			}
 
-			Script += "g.stopTransaction(TransactionalGraph.Conclusion."+
-				pConclusion.ToString().ToUpper()+");";
+			Script += "g.stopTransaction(TransactionalGraph.Conclusion." +
+				pConclusion.ToString ().ToUpper () + ");";
+				
+			if (pFinalOutput != null) {
+				Script += pFinalOutput.Name+";";
+			}
 		}
 
 

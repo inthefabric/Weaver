@@ -97,6 +97,17 @@ namespace Weaver {
 			q.FinalizeQuery(script);
 			return q;
 		}
+		
+		
+		////////////////////////////////////////////////////////////////////////////////////////////////
+		/*--------------------------------------------------------------------------------------------*/
+		public static IWeaverQuery InitListVar(IWeaverTransaction pCurrentTx, out IWeaverListVar pVar) {
+			pVar = new WeaverListVar(pCurrentTx);
+			
+			var q = new WeaverQuery();
+			q.FinalizeQuery(pVar.Name+"=[]");
+			return q;
+		}
 
 	}
 

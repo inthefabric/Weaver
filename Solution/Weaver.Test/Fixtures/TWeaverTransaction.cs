@@ -66,6 +66,30 @@ namespace Weaver.Test.Fixtures {
 			Assert.AreEqual(expectParams, tx.Params, "Incorrect Params.");
 		}
 		
+		/*--------------------------------------------------------------------------------------------*/
+		[Test]
+		public void FinishWithVar() {
+			const string name = "_var0";
+		
+			var mockVar = new Mock<IWeaverListVar>();
+			mockVar.SetupGet(x => x.Name).Returns(name);
+			
+			var mockQ1 = new Mock<IWeaverQuery>();
+			mockQ1.SetupGet(x => x.Script).Returns("g.V;");
+			mockQ1.SetupGet(x => x.Params).Returns(new Dictionary<string,string>());
+			
+			var tx = new WeaverTransaction();
+			tx.AddQuery(mockQ1.Object);
+			tx.Finish(Weaver.WeaverTransaction.ConclusionType.Success, mockVar.Object);
+			
+			string expectScript = "g.startTransaction();"+
+				"g.V;"+
+				"g.stopTransaction(TransactionalGraph.Conclusion.SUCCESS);"+
+				name+";";
+			
+			Assert.AreEqual(expectScript, tx.Script, "Incorrect Script.");
+		}
+		
 		
 		////////////////////////////////////////////////////////////////////////////////////////////////
 		/*--------------------------------------------------------------------------------------------*/

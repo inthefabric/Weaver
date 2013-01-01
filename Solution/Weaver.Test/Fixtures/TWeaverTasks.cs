@@ -6,6 +6,7 @@ using Weaver.Interfaces;
 using Weaver.Test.Common.Nodes;
 using Weaver.Test.Common.Rels;
 using Weaver.Test.Utils;
+using Moq;
 
 namespace Weaver.Test.Fixtures {
 
@@ -216,6 +217,24 @@ namespace Weaver.Test.Fixtures {
 			WeaverTestUtil.CheckThrows<WeaverException>(true,
 				() => WeaverTasks.AddRel(per, new PersonLikesCandy(), can)
 			);
+		}
+		
+		
+		////////////////////////////////////////////////////////////////////////////////////////////////
+		/*--------------------------------------------------------------------------------------------*/
+		[Test]
+		public void InitListVar() {
+			const string name = "_var0";
+			IWeaverListVar setList;
+			
+			var mockTx = new Mock<IWeaverTransaction>();
+			mockTx.Setup(x => x.GetNextVarName()).Returns(name);
+			
+			IWeaverQuery q = WeaverTasks.InitListVar(mockTx.Object, out setList);
+			
+			Assert.True(q.IsFinalized, "Incorrect IsFinalized.");
+			Assert.AreEqual(name+"=[];", q.Script, "Incorrect Script.");
+			Assert.NotNull(setList, "The out WeaverListVar should not be null.");
 		}
 
 

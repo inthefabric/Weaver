@@ -3,6 +3,8 @@ using NUnit.Framework;
 using Weaver.Functions;
 using Weaver.Interfaces;
 using Weaver.Test.Common;
+using Weaver.Test.Common.Nodes;
+using System;
 
 namespace Weaver.Test.Fixtures {
 
@@ -74,6 +76,29 @@ namespace Weaver.Test.Fixtures {
 				.Verify(x => x.AddItem(It.IsAny<WeaverFuncUpdateEach<TestItem>>()), Times.Once());
 		}
 
+		
+		////////////////////////////////////////////////////////////////////////////////////////////////
+		/*--------------------------------------------------------------------------------------------*/
+		[Test]
+		public void Aggregate() {
+			var tx = new WeaverTransaction();
+			IWeaverListVar x;
+			
+			tx.AddQuery(
+				WeaverTasks.InitListVar(tx, out x)
+			);
+			
+			tx.AddQuery(
+				WeaverTasks.BeginPath<Root>(new Root()).BaseNode
+				.OutHasPerson.ToNode
+					.Aggregate(x).Iterate()
+				.End()
+			);
+			
+			tx.Finish(WeaverTransaction.ConclusionType.Success, x);
+			Console.WriteLine(tx.Script.Replace(";", ";\n"));
+		}
+		
 
 		////////////////////////////////////////////////////////////////////////////////////////////////
 		/*--------------------------------------------------------------------------------------------*/
@@ -93,7 +118,7 @@ namespace Weaver.Test.Fixtures {
 			mockQuery.Verify(x => x.FinalizeQuery(parScript), Times.Once());
 		}
 		
-		/*--------------------------------------------------------------------------------------------*/
+		/*--------------------------------------------------------------------------------------------* /
 		[Test]
 		public void EndAsVar() {
 			const string parScript = "this.is.the.parameterized.script";
@@ -109,7 +134,7 @@ namespace Weaver.Test.Fixtures {
 
 			Assert.AreEqual(mockQuery.Object, result, "Incorrect result.");
 			mockQuery.Verify(x => x.FinalizeQuery(parScriptWithVar), Times.Once());
-		}
+		}*/
 
 	}
 

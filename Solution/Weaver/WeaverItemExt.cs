@@ -49,6 +49,60 @@ namespace Weaver {
 			pCallingItem.Path.AddItem(func);
 			return pCallingItem;
 		}
+		
+		
+		////////////////////////////////////////////////////////////////////////////////////////////////
+		//TEST: WeaverItemExt.Aggregate()
+		/*--------------------------------------------------------------------------------------------*/
+		public static T Aggregate<T>(this T pCallingItem, IWeaverListVar pVar)
+																		where T : IWeaverItemIndexable {
+			var func = new WeaverFuncCustom<T>("aggregate("+pVar.Name+")");
+			pCallingItem.Path.AddItem(func);
+			return pCallingItem;
+		}
+		
+		//TEST: WeaverItemExt.Retain()
+		/*--------------------------------------------------------------------------------------------*/
+		public static T Retain<T>(this T pCallingItem, IWeaverListVar pVar)
+																		where T : IWeaverItemIndexable {
+			var func = new WeaverFuncCustom<T>("retain("+pVar.Name+")");
+			pCallingItem.Path.AddItem(func);
+			return pCallingItem;
+		}
+		
+		//TEST: WeaverItemExt.Except()
+		/*--------------------------------------------------------------------------------------------*/
+		public static T Except<T>(this T pCallingItem, IWeaverListVar pVar)
+																		where T : IWeaverItemIndexable {
+			var func = new WeaverFuncCustom<T>("except("+pVar.Name+")");
+			pCallingItem.Path.AddItem(func);
+			return pCallingItem;
+		}
+		
+		//TEST: WeaverItemExt.Iterate()
+		/*--------------------------------------------------------------------------------------------*/
+		public static T Iterate<T>(this T pCallingItem) where T : IWeaverItemIndexable {
+			var func = new WeaverFuncCustom<T>("iterate()");
+			pCallingItem.Path.AddItem(func);
+			return pCallingItem;
+		}
+		
+		//TEST: WeaverItemExt.Dedup()
+		/*--------------------------------------------------------------------------------------------*/
+		public static T Dedup<T>(this T pCallingItem) where T : IWeaverItemIndexable {
+			var func = new WeaverFuncCustom<T>("dedup");
+			pCallingItem.Path.AddItem(func);
+			return pCallingItem;
+		}
+		
+		//TEST: WeaverItemExt.Limit()
+		/*--------------------------------------------------------------------------------------------*/
+		public static T Limit<T>(this T pCallingItem, int pStartIndex, int pEndIndex)
+																		where T : IWeaverItemIndexable {
+			var func = new WeaverFuncCustom<T>("["+pStartIndex+".."+pEndIndex+"]");
+			pCallingItem.Path.AddItem(func);
+			return pCallingItem;
+		}
 
 
 		////////////////////////////////////////////////////////////////////////////////////////////////
@@ -58,14 +112,22 @@ namespace Weaver {
 			p.Query.FinalizeQuery(p.BuildParameterizedScript());
 			return p.Query;
 		}
-
+		
 		/*--------------------------------------------------------------------------------------------*/
+		public static T CustomStep<T>(this T pCallingItem, string pScript)
+																		where T : IWeaverItemIndexable {
+			var func = new WeaverFuncCustom<T>(pScript);
+			pCallingItem.Path.AddItem(func);
+			return pCallingItem;
+		}
+
+		/*--------------------------------------------------------------------------------------------* /
 		public static IWeaverQuery EndAsVar<T>(this T pCallingItem, string pVarName)
 																		where T : IWeaverItemWithPath {
 			IWeaverPath p = pCallingItem.Path;
 			p.Query.FinalizeQuery(pVarName+"="+p.BuildParameterizedScript());
 			return p.Query;
-		}
+		}*/
 
 	}
 
