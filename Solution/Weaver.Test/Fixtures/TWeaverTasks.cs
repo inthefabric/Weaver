@@ -143,6 +143,29 @@ namespace Weaver.Test.Fixtures {
 			);
 		}
 
+		/*--------------------------------------------------------------------------------------------*/
+		[Test]
+		public void AddNodeToIndexVar() {
+			const string indexName = "Person";
+			const string varName = "_var0";
+
+			var mockVar = new Mock<IWeaverVarAlias>();
+			mockVar.SetupGet(x => x.Name).Returns(varName);
+
+			IWeaverQuery q = WeaverTasks.AddNodeToIndex<Person>(
+				indexName, mockVar.Object, p => p.PersonId);
+
+			const string expect = "g.idx(_P0).put(_P1,"+varName+".PersonId,"+varName+");";
+
+			var expectParams = new Dictionary<string, string>();
+			expectParams.Add("_P0", indexName);
+			expectParams.Add("_P1", "PersonId");
+
+			Assert.True(q.IsFinalized, "Incorrect IsFinalized.");
+			Assert.AreEqual(expect, q.Script, "Incorrect Query.Script.");
+			WeaverTestUtil.CheckQueryParams(q, expectParams);
+		}
+
 
 		////////////////////////////////////////////////////////////////////////////////////////////////
 		/*--------------------------------------------------------------------------------------------*/
@@ -186,6 +209,31 @@ namespace Weaver.Test.Fixtures {
 			var expectParams = new Dictionary<string, string>();
 			expectParams.Add("_P0", "PersonLikesCandy");
 			expectParams.Add(pairMap["Notes"], plc.Notes);
+			WeaverTestUtil.CheckQueryParams(q, expectParams);
+		}
+
+		/*--------------------------------------------------------------------------------------------*/
+		[Test]
+		public void AddRelVarNoProps() {
+			var rhp = new RootHasPerson();
+			const string fromVarName = "_var0";
+			const string toVarName = "_var1";
+
+			var mockFromVar = new Mock<IWeaverVarAlias>();
+			mockFromVar.SetupGet(x => x.Name).Returns(fromVarName);
+
+			var mockToVar = new Mock<IWeaverVarAlias>();
+			mockToVar.SetupGet(x => x.Name).Returns(toVarName);
+
+			IWeaverQuery q = WeaverTasks.AddRel(mockFromVar.Object, rhp, mockToVar.Object);
+
+			Assert.True(q.IsFinalized, "Incorrect IsFinalized.");
+			Assert.NotNull(q.Script, "Script should be filled.");
+			Assert.AreEqual(q.Script, "g.addEdge("+fromVarName+","+toVarName+",_P0);",
+				"Incorrect Script.");
+
+			var expectParams = new Dictionary<string, string>();
+			expectParams.Add("_P0", "RootHasPerson");
 			WeaverTestUtil.CheckQueryParams(q, expectParams);
 		}
 

@@ -68,6 +68,19 @@ namespace Weaver {
 			return q;
 		}
 
+		/*--------------------------------------------------------------------------------------------*/
+		public static IWeaverQuery AddNodeToIndex<T>(string pIndexName, IWeaverVarAlias pVar,
+											Expression<Func<T, object>> pFunc) where T : IWeaverNode {
+			var q = new WeaverQuery();
+
+			var indexNameVal = new WeaverQueryVal(pIndexName, false);
+			var propNameVal = new WeaverQueryVal(WeaverUtil.GetPropertyName(pFunc), false);
+
+			q.FinalizeQuery("g.idx("+q.AddParam(indexNameVal)+").put("+
+				q.AddParam(propNameVal)+","+pVar.Name+"."+propNameVal.RawText+","+pVar.Name+")");
+			return q;
+		}
+
 
 		////////////////////////////////////////////////////////////////////////////////////////////////
 		/*--------------------------------------------------------------------------------------------*/
@@ -82,7 +95,6 @@ namespace Weaver {
 			}
 
 			var q = new WeaverQuery();
-
 			var fromNodeVal= new WeaverQueryVal(pFromNode.Id);
 			var toNodeVal = new WeaverQueryVal(pToNode.Id);
 			var relLabelVal = new WeaverQueryVal(pRel.Label, false);
@@ -90,11 +102,27 @@ namespace Weaver {
 			string script = "f=g.v("+fromNodeVal.FixedText+");t=g.v("+toNodeVal.FixedText+");"+
 				"g.addEdge(f,t,"+q.AddParam(relLabelVal);
 
-			string propList = WeaverUtil.BuildPropList(q, pRel);
-			script += (propList.Length > 0 ? ",["+propList+"]" : "")+")";
+			return FinishRel(q, pRel, script);
+		}
+		
+		/*--------------------------------------------------------------------------------------------*/
+		public static IWeaverQuery AddRel<TRel>(IWeaverVarAlias pFromVar, TRel pRel,
+													IWeaverVarAlias pToVar) where TRel : IWeaverRel {
+			var q = new WeaverQuery();
+			var relLabelVal = new WeaverQueryVal(pRel.Label, false);
 
-			q.FinalizeQuery(script);
-			return q;
+			string script = "g.addEdge("+pFromVar.Name+","+pToVar.Name+","+q.AddParam(relLabelVal);
+			return FinishRel(q, pRel, script);
+		}
+
+		/*--------------------------------------------------------------------------------------------*/
+		public static IWeaverQuery FinishRel<TRel>(IWeaverQuery pQuery, TRel pRel,
+															string pScript) where TRel : IWeaverRel {
+			string propList = WeaverUtil.BuildPropList(pQuery, pRel);
+			pScript += (propList.Length > 0 ? ",["+propList+"]" : "")+")";
+
+			pQuery.FinalizeQuery(pScript);
+			return pQuery;
 		}
 		
 		

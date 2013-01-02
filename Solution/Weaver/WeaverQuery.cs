@@ -30,7 +30,7 @@ namespace Weaver {
 		}
 
 		/*--------------------------------------------------------------------------------------------*/
-		public void StoreResultAsVar(IWeaverVarAlias pVarAlias) { //TEST: WeaverQuery.StoreResultAsVar
+		public void StoreResultAsVar(IWeaverVarAlias pVarAlias) {
 			if ( !IsFinalized ) {
 				throw new WeaverException("Query must be finalized.");
 			}
