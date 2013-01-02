@@ -16,7 +16,7 @@ namespace Weaver {
 		}
 		
 		/*--------------------------------------------------------------------------------------------*/
-		public static IWeaverPath<T> BeginPath<T>(string pIndexName, Expression<Func<T, object>> pFunc,
+		public static IWeaverPathFromIndex<T> BeginPath<T>(string pIndexName, Expression<Func<T, object>> pFunc,
 										object pValue) where T : class, IWeaverItemIndexable, new() {
 			return new WeaverPathFromIndex<T>(new WeaverQuery(), pIndexName, pFunc, pValue);
 		}

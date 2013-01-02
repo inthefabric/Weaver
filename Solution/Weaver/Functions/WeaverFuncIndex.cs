@@ -10,6 +10,7 @@ namespace Weaver.Functions {
 
 		public string IndexName { get; protected set; }
 		public object Value { get; protected set; }
+		public bool SingleResult { get; protected set; }
 
 		public abstract string PropertyName { get; }
 
@@ -24,10 +25,12 @@ namespace Weaver.Functions {
 
 		////////////////////////////////////////////////////////////////////////////////////////////////
 		/*--------------------------------------------------------------------------------------------*/
-		public WeaverFuncIndex(string pIndexName, Expression<Func<T,object>> pFunc, object pValue) {
+		public WeaverFuncIndex(string pIndexName, Expression<Func<T,object>> pFunc, object pValue,
+																				bool pSingleResult) {
 			IndexName = pIndexName;
 			vFunc = pFunc;
 			Value = pValue;
+			SingleResult = pSingleResult;
 		}
 
 
@@ -44,8 +47,8 @@ namespace Weaver.Functions {
 		public override string BuildParameterizedString() {
 			var qvIdx = new WeaverQueryVal(IndexName, false);
 			var qvVal = new WeaverQueryVal(Value, false);
-			return "g.idx("+Path.Query.AddParam(qvIdx)+").get('"+PropertyName+"',"+
-				Path.Query.AddParamIfString(qvVal)+")";
+			return "idx("+Path.Query.AddParam(qvIdx)+").get('"+PropertyName+"',"+
+				Path.Query.AddParamIfString(qvVal)+")"+(SingleResult ? "[0]" : "");
 		}
 
 	}

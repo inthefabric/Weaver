@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq.Expressions;
 using Weaver.Functions;
 
 namespace Weaver.Interfaces {
@@ -7,7 +8,6 @@ namespace Weaver.Interfaces {
 	public interface IWeaverPath {
 
 		IWeaverQuery Query { get; }
-		WeaverFuncIndex BaseIndex { get; }
 
 
 		////////////////////////////////////////////////////////////////////////////////////////////////
@@ -31,6 +31,15 @@ namespace Weaver.Interfaces {
 	public interface IWeaverPath<out TBase> : IWeaverPath where TBase : class, IWeaverItem, new() {
 
 		TBase BaseNode { get; }
+
+	}
+
+
+	/*================================================================================================*/
+	public interface IWeaverPathFromIndex<TBase> : IWeaverPath
+													where TBase : class, IWeaverItemIndexable, new() {
+
+		WeaverFuncIndex<TBase> BaseIndex { get; }
 
 	}
 

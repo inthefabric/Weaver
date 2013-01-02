@@ -11,7 +11,6 @@ namespace Weaver {
 	public abstract class WeaverPath : IWeaverPath {
 
 		public IWeaverQuery Query { get; private set; }
-		public WeaverFuncIndex BaseIndex { get; protected set; }
 
 		protected readonly IList<IWeaverItem> vItems;
 
@@ -31,7 +30,7 @@ namespace Weaver {
 
 		/*--------------------------------------------------------------------------------------------*/
 		public string BuildParameterizedScript() {
-			string s = (BaseIndex != null ? "" : "g");
+			string s = "g";
 
 			foreach ( IWeaverItem item in vItems ) {
 				s += (s == "" ? "" : ".")+item.BuildParameterizedString();
@@ -119,16 +118,19 @@ namespace Weaver {
 
 
 	/*================================================================================================*/
-	public class WeaverPathFromIndex<TBase> : WeaverPath<TBase>
+	public class WeaverPathFromIndex<TBase> : WeaverPath<TBase>, IWeaverPathFromIndex<TBase>
 													where TBase : class, IWeaverItemIndexable, new() {
+
+		public WeaverFuncIndex<TBase> BaseIndex { get; protected set; }
 
 
 		////////////////////////////////////////////////////////////////////////////////////////////////
 		/*--------------------------------------------------------------------------------------------*/
 		public WeaverPathFromIndex(IWeaverQuery pQuery, string pIndexName,
-								Expression<Func<TBase, object>> pFunc, object pValue) : base(pQuery) {
+												Expression<Func<TBase, object>> pFunc, object pValue,
+												bool pSingleResult=true) : base(pQuery) {
 			BaseNode = new TBase { Path = this };
-			BaseIndex = new WeaverFuncIndex<TBase>(pIndexName, pFunc, pValue);
+			BaseIndex = new WeaverFuncIndex<TBase>(pIndexName, pFunc, pValue, pSingleResult);
 			AddItem(BaseIndex);
 		}
 

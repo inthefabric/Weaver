@@ -23,7 +23,6 @@ namespace Weaver.Test.Fixtures {
 			var p = new WeaverPath<Root>(q);
 
 			Assert.Null(p.BaseNode, "BaseNode should be null.");
-			Assert.Null(p.BaseIndex, "BaseIndex should be null.");
 			Assert.AreEqual(q, p.Query, "Incorrect Query.");
 			Assert.AreEqual(0, p.Length, "Incorrect Length.");
 		}
@@ -37,7 +36,6 @@ namespace Weaver.Test.Fixtures {
 
 			Assert.NotNull(p.BaseNode, "BaseNode should be filled.");
 			Assert.AreEqual(p, p.BaseNode.Path, "Incorrect BaseNode.Path.");
-			Assert.Null(p.BaseIndex, "BaseIndex should be null.");
 
 			Assert.AreEqual(q, p.Query, "Incorrect Query.");
 
@@ -135,7 +133,7 @@ namespace Weaver.Test.Fixtures {
 				.OutLikesCandy.ToNode
 				.Prop(p => p.Name);
 
-			const string expect = "g.idx(_P0).get('PersonId',123)"+
+			const string expect = "g.idx(_P0).get('PersonId',123)[0]"+
 				".outE('PersonKnowsPerson').inV"+
 				".outE('PersonLikesCandy').inV"+
 					".Name";

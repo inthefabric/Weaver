@@ -33,7 +33,7 @@ namespace Weaver.Test.Fixtures {
 			const string name = "Person";
 			const int perId = 123;
 
-			IWeaverPath<Person> p =
+			IWeaverPathFromIndex<Person> p =
 				WeaverTasks.BeginPath<Person>(name, (per => per.PersonId), perId);
 
 			Assert.NotNull(p.Query, "Query should be filled.");
