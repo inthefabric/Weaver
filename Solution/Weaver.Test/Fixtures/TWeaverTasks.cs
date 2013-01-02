@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Moq;
 using NUnit.Framework;
 using Weaver.Exceptions;
 using Weaver.Functions;
@@ -6,7 +7,6 @@ using Weaver.Interfaces;
 using Weaver.Test.Common.Nodes;
 using Weaver.Test.Common.Rels;
 using Weaver.Test.Utils;
-using Moq;
 
 namespace Weaver.Test.Fixtures {
 
@@ -235,6 +235,25 @@ namespace Weaver.Test.Fixtures {
 			Assert.True(q.IsFinalized, "Incorrect IsFinalized.");
 			Assert.AreEqual(name+"=[];", q.Script, "Incorrect Script.");
 			Assert.NotNull(setList, "The out WeaverListVar should not be null.");
+		}
+
+		/*--------------------------------------------------------------------------------------------*/
+		[Test]
+		public void StoreQueryResultAsVar() {
+			const string name = "_var0";
+			IWeaverVarAlias varAlias;
+
+			var mockTx = new Mock<IWeaverTransaction>();
+			mockTx.Setup(x => x.GetNextVarName()).Returns(name);
+
+			var mockQuery = new Mock<IWeaverQuery>();
+			mockQuery.Setup(x => x.StoreResultAsVar(It.Is<IWeaverVarAlias>(a => a.Name == name)));
+
+			IWeaverQuery result = WeaverTasks.StoreQueryResultAsVar(
+				mockTx.Object, mockQuery.Object, out varAlias);
+
+			Assert.AreEqual(mockQuery.Object, result, "Incorrect result.");
+			Assert.AreEqual(name, varAlias.Name, "Incorrect VarAlias.Name.");
 		}
 
 

@@ -119,28 +119,6 @@ namespace Weaver.Test.Fixtures {
 			Assert.AreEqual(mockQuery.Object, result, "Incorrect result.");
 			mockQuery.Verify(x => x.FinalizeQuery(parScript), Times.Once());
 		}
-		
-		/*--------------------------------------------------------------------------------------------*/
-		[Test]
-		public void EndAsVar() {
-			const string name = "_var0";
-			const string parScript = "this.is.the.parameterized.script";
-			const string parScriptWithVar = name+"="+parScript;
-
-			var mockQuery = new Mock<IWeaverQuery>();
-
-			var item = new TestItem();
-			item.MockPath.SetupGet(x => x.Query).Returns(mockQuery.Object);
-			item.MockPath.Setup(x => x.BuildParameterizedScript()).Returns(parScript);
-
-			var mockTx = new Mock<IWeaverTransaction>();
-			mockTx.Setup(x => x.GetNextVarName()).Returns(name);
-
-			IWeaverQuery result = item.EndAsVar(new WeaverVarAlias(mockTx.Object));
-
-			Assert.AreEqual(mockQuery.Object, result, "Incorrect result.");
-			mockQuery.Verify(x => x.FinalizeQuery(parScriptWithVar), Times.Once());
-		}
 
 	}
 

@@ -20,6 +20,7 @@ namespace Weaver.Test.Fixtures {
 			Assert.False(q.IsFinalized, "Incorrect IsFinalized.");
 			Assert.Null(q.Script, "Script should be null.");
 			Assert.NotNull(q.Params, "Params should not be null.");
+			Assert.Null(q.ResultVar, "ResultVar should be null.");
 		}
 
 		/*--------------------------------------------------------------------------------------------*/
@@ -41,6 +42,44 @@ namespace Weaver.Test.Fixtures {
 			var q = new WeaverQuery();
 			q.FinalizeQuery("1");
 			WeaverTestUtil.CheckThrows<WeaverException>(true, () => q.FinalizeQuery("2"));
+		}
+
+		/*--------------------------------------------------------------------------------------------*/
+		[Test]
+		public void StoreResultAsVar() {
+			const string name = "_var0";
+			const string script = "this.is.the.query";
+			const string varScript = name+"="+script;
+
+			var mockVar = new Mock<IWeaverVarAlias>();
+			mockVar.SetupGet(x => x.Name).Returns(name);
+
+			var q = new WeaverQuery();
+			q.FinalizeQuery(script);
+			q.StoreResultAsVar(mockVar.Object);
+
+			Assert.AreEqual(mockVar.Object, q.ResultVar, "Incorrect ResultVar.");
+			Assert.AreEqual(varScript+";", q.Script, "Incorrect Script.");
+		}
+
+		/*--------------------------------------------------------------------------------------------*/
+		[Test]
+		public void StoreResultAsVarNotFinalized() {
+			var q = new WeaverQuery();
+			WeaverTestUtil.CheckThrows<WeaverException>(true, () => q.StoreResultAsVar(null));
+		}
+
+		/*--------------------------------------------------------------------------------------------*/
+		[Test]
+		public void StoreResultAsVarTwice() {
+			var mockVar = new Mock<IWeaverVarAlias>();
+			mockVar.SetupGet(x => x.Name).Returns("x");
+
+			var q = new WeaverQuery();
+			q.FinalizeQuery("script");
+			q.StoreResultAsVar(mockVar.Object);
+
+			WeaverTestUtil.CheckThrows<WeaverException>(true, () => q.StoreResultAsVar(null));
 		}
 		
 		

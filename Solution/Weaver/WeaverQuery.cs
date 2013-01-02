@@ -10,6 +10,7 @@ namespace Weaver {
 		public bool IsFinalized { get; private set; }
 		public string Script { get; private set; }
 		public Dictionary<string, string> Params { get; private set; }
+		public IWeaverVarAlias ResultVar { get; private set; }
 
 		
 		////////////////////////////////////////////////////////////////////////////////////////////////
@@ -26,6 +27,20 @@ namespace Weaver {
 
 			IsFinalized = true;
 			Script = pScript+";";
+		}
+
+		/*--------------------------------------------------------------------------------------------*/
+		public void StoreResultAsVar(IWeaverVarAlias pVarAlias) { //TEST: WeaverQuery.StoreResultAsVar
+			if ( !IsFinalized ) {
+				throw new WeaverException("Query must be finalized.");
+			}
+
+			if ( ResultVar != null ) {
+				throw new WeaverException("Query result already stored as '"+ResultVar.Name+"'.");
+			}
+
+			ResultVar = pVarAlias;
+			Script = ResultVar.Name+"="+Script;
 		}
 
 

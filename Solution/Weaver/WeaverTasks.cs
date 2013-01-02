@@ -108,6 +108,14 @@ namespace Weaver {
 			return q;
 		}
 
+		/*--------------------------------------------------------------------------------------------*/
+		public static IWeaverQuery StoreQueryResultAsVar(IWeaverTransaction pCurrentTx,
+														IWeaverQuery pQuery, out IWeaverVarAlias pVar) {
+			pVar = new WeaverVarAlias(pCurrentTx);
+			pQuery.StoreResultAsVar(pVar);
+			return pQuery;
+		}
+
 	}
 
 }

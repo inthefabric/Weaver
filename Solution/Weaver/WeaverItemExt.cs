@@ -122,14 +122,6 @@ namespace Weaver {
 			return p.Query;
 		}
 
-		/*--------------------------------------------------------------------------------------------*/
-		public static IWeaverQuery EndAsVar<T>(this T pCallingItem, IWeaverVarAlias pVar)
-																		where T : IWeaverItemWithPath {
-			IWeaverPath p = pCallingItem.Path;
-			p.Query.FinalizeQuery(pVar.Name+"="+p.BuildParameterizedScript());
-			return p.Query;
-		}
-
 	}
 
 }
