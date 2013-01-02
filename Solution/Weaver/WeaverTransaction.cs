@@ -16,7 +16,7 @@ namespace Weaver {
 		public Dictionary<string, string> Params { get; set; }
 		public ConclusionType Conclusion { get; set; }
 		
-		private List<IWeaverQuery> vQueries;
+		private readonly List<IWeaverQuery> vQueries;
 		private int vVarCount;
 		
 		

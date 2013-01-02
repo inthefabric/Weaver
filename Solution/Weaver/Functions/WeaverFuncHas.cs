@@ -39,7 +39,7 @@ namespace Weaver.Functions {
 	}
 
 	/*================================================================================================*/
-	public class WeaverFuncHas<TItem> : WeaverFunc, IWeaverItemWithPath where TItem : IWeaverItemIndexable {
+	public class WeaverFuncHas<TItem> : WeaverFunc where TItem : IWeaverItemIndexable {
 
 		private readonly Expression<Func<TItem, object>> vProp;
 		private string vPropName;

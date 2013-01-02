@@ -1,10 +1,9 @@
 ﻿using System.Collections.Generic;
+using Moq;
 using NUnit.Framework;
 using Weaver.Exceptions;
-using Weaver.Items;
 using Weaver.Interfaces;
 using Weaver.Test.Utils;
-using Moq;
 
 namespace Weaver.Test.Fixtures {
 
@@ -80,9 +79,9 @@ namespace Weaver.Test.Fixtures {
 			
 			var tx = new WeaverTransaction();
 			tx.AddQuery(mockQ1.Object);
-			tx.Finish(Weaver.WeaverTransaction.ConclusionType.Success, mockVar.Object);
+			tx.Finish(WeaverTransaction.ConclusionType.Success, mockVar.Object);
 			
-			string expectScript = "g.startTransaction();"+
+			const string expectScript = "g.startTransaction();"+
 				"g.V;"+
 				"g.stopTransaction(TransactionalGraph.Conclusion.SUCCESS);"+
 				name+";";

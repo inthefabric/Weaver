@@ -5,7 +5,6 @@ using Weaver.Functions;
 using Weaver.Interfaces;
 using Weaver.Test.Common.Nodes;
 using Weaver.Test.Utils;
-using System;
 
 namespace Weaver.Test.Fixtures.Functions {
 

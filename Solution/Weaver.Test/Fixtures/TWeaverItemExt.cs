@@ -3,8 +3,6 @@ using NUnit.Framework;
 using Weaver.Functions;
 using Weaver.Interfaces;
 using Weaver.Test.Common;
-using Weaver.Test.Common.Nodes;
-using System;
 
 namespace Weaver.Test.Fixtures {
 

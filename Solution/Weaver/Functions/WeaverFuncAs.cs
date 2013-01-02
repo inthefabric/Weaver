@@ -1,5 +1,4 @@
-﻿using System;
-using Weaver.Interfaces;
+﻿using Weaver.Interfaces;
 using Weaver.Items;
 
 namespace Weaver.Functions {

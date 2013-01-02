@@ -7,7 +7,6 @@ using Weaver.Interfaces;
 using Weaver.Test.Common.Nodes;
 using Weaver.Test.Common.Rels;
 using Weaver.Test.Utils;
-using System;
 
 namespace Weaver.Test.Fixtures {
 

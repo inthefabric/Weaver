@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using Weaver;
 
 namespace Weaver.Interfaces {
 

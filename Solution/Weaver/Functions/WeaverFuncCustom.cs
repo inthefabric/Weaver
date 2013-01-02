@@ -1,10 +1,9 @@
-﻿using Weaver.Interfaces;
-using Weaver.Items;
+﻿using Weaver.Items;
 
 namespace Weaver.Functions {
 
 	/*================================================================================================*/
-	public class WeaverFuncCustom<TItem> : WeaverFunc where TItem : IWeaverItemIndexable {
+	public class WeaverFuncCustom : WeaverFunc {
 
 		private readonly string vScript;
 
