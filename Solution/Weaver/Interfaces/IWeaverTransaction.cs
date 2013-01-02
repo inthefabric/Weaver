@@ -1,12 +1,8 @@
-﻿using System.Collections.Generic;
-
-namespace Weaver.Interfaces {
+﻿namespace Weaver.Interfaces {
 
 	/*================================================================================================*/
-	public interface IWeaverTransaction {
+	public interface IWeaverTransaction : IWeaverScript {
 	
-		string Script { get; set; }
-		Dictionary<string, string> Params { get; set; }
 		WeaverTransaction.ConclusionType Conclusion { get; set; }
 		
 		

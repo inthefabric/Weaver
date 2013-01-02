@@ -1,13 +1,9 @@
-﻿using System.Collections.Generic;
-
-namespace Weaver.Interfaces {
+﻿namespace Weaver.Interfaces {
 
 	/*================================================================================================*/
-	public interface IWeaverQuery {
+	public interface IWeaverQuery : IWeaverScript {
 
 		bool IsFinalized { get; }
-		string Script { get; }
-		Dictionary<string, string> Params { get; }
 
 
 		////////////////////////////////////////////////////////////////////////////////////////////////
