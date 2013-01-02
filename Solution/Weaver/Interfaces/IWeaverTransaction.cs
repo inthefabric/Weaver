@@ -14,7 +14,7 @@ namespace Weaver.Interfaces {
 		/*--------------------------------------------------------------------------------------------*/
 		void AddQuery(IWeaverQuery pQuery);
 		string GetNextVarName();
-		void Finish(WeaverTransaction.ConclusionType pConclusion, IWeaverListVar pFinalOutput=null);
+		void Finish(WeaverTransaction.ConclusionType pConclusion, IWeaverVarAlias pFinalOutput=null);
 		
 	}
 

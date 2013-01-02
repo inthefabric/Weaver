@@ -100,8 +100,8 @@ namespace Weaver {
 		
 		////////////////////////////////////////////////////////////////////////////////////////////////
 		/*--------------------------------------------------------------------------------------------*/
-		public static IWeaverQuery InitListVar(IWeaverTransaction pCurrentTx, out IWeaverListVar pVar) {
-			pVar = new WeaverListVar(pCurrentTx);
+		public static IWeaverQuery InitListVar(IWeaverTransaction pCurrentTx, out IWeaverVarAlias pVar){
+			pVar = new WeaverVarAlias(pCurrentTx);
 			
 			var q = new WeaverQuery();
 			q.FinalizeQuery(pVar.Name+"=[]");

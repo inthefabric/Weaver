@@ -225,7 +225,7 @@ namespace Weaver.Test.Fixtures {
 		[Test]
 		public void InitListVar() {
 			const string name = "_var0";
-			IWeaverListVar setList;
+			IWeaverVarAlias setList;
 			
 			var mockTx = new Mock<IWeaverTransaction>();
 			mockTx.Setup(x => x.GetNextVarName()).Returns(name);

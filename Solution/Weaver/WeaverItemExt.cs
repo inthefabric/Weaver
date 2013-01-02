@@ -55,7 +55,7 @@ namespace Weaver {
 		////////////////////////////////////////////////////////////////////////////////////////////////
 		//TEST: WeaverItemExt.Aggregate()
 		/*--------------------------------------------------------------------------------------------*/
-		public static T Aggregate<T>(this T pCallingItem, IWeaverListVar pVar)
+		public static T Aggregate<T>(this T pCallingItem, IWeaverVarAlias pVar)
 																		where T : IWeaverItemIndexable {
 			var func = new WeaverFuncCustom("aggregate("+pVar.Name+")");
 			pCallingItem.Path.AddItem(func);
@@ -64,7 +64,7 @@ namespace Weaver {
 		
 		//TEST: WeaverItemExt.Retain()
 		/*--------------------------------------------------------------------------------------------*/
-		public static T Retain<T>(this T pCallingItem, IWeaverListVar pVar)
+		public static T Retain<T>(this T pCallingItem, IWeaverVarAlias pVar)
 																		where T : IWeaverItemIndexable {
 			var func = new WeaverFuncCustom("retain("+pVar.Name+")");
 			pCallingItem.Path.AddItem(func);
@@ -73,7 +73,7 @@ namespace Weaver {
 		
 		//TEST: WeaverItemExt.Except()
 		/*--------------------------------------------------------------------------------------------*/
-		public static T Except<T>(this T pCallingItem, IWeaverListVar pVar)
+		public static T Except<T>(this T pCallingItem, IWeaverVarAlias pVar)
 																		where T : IWeaverItemIndexable {
 			var func = new WeaverFuncCustom("except("+pVar.Name+")");
 			pCallingItem.Path.AddItem(func);
@@ -104,15 +104,6 @@ namespace Weaver {
 			pCallingItem.Path.AddItem(func);
 			return pCallingItem;
 		}
-
-
-		////////////////////////////////////////////////////////////////////////////////////////////////
-		/*--------------------------------------------------------------------------------------------*/
-		public static IWeaverQuery End<T>(this T pCallingItem) where T : IWeaverItemWithPath {
-			IWeaverPath p = pCallingItem.Path;
-			p.Query.FinalizeQuery(p.BuildParameterizedScript());
-			return p.Query;
-		}
 		
 		/*--------------------------------------------------------------------------------------------*/
 		public static T CustomStep<T>(this T pCallingItem, string pScript)
@@ -122,13 +113,22 @@ namespace Weaver {
 			return pCallingItem;
 		}
 
-		/*--------------------------------------------------------------------------------------------* /
-		public static IWeaverQuery EndAsVar<T>(this T pCallingItem, string pVarName)
+
+		////////////////////////////////////////////////////////////////////////////////////////////////
+		/*--------------------------------------------------------------------------------------------*/
+		public static IWeaverQuery End<T>(this T pCallingItem) where T : IWeaverItemWithPath {
+			IWeaverPath p = pCallingItem.Path;
+			p.Query.FinalizeQuery(p.BuildParameterizedScript());
+			return p.Query;
+		}
+
+		/*--------------------------------------------------------------------------------------------*/
+		public static IWeaverQuery EndAsVar<T>(this T pCallingItem, IWeaverVarAlias pVar)
 																		where T : IWeaverItemWithPath {
 			IWeaverPath p = pCallingItem.Path;
-			p.Query.FinalizeQuery(pVarName+"="+p.BuildParameterizedScript());
+			p.Query.FinalizeQuery(pVar.Name+"="+p.BuildParameterizedScript());
 			return p.Query;
-		}*/
+		}
 
 	}
 

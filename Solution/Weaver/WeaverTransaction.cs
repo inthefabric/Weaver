@@ -39,12 +39,12 @@ namespace Weaver {
 		}
 		
 		/*--------------------------------------------------------------------------------------------*/
-		public string GetNextVarName() { //TODO: WeaverTransaction.GetNextVarName()
+		public string GetNextVarName() { //TEST: WeaverTransaction.GetNextVarName()
 			return "_var"+(++vVarCount);
 		}
 		
 		/*--------------------------------------------------------------------------------------------*/
-		public void Finish (ConclusionType pConclusion, IWeaverListVar pFinalOutput=null)
+		public void Finish (ConclusionType pConclusion, IWeaverVarAlias pFinalOutput=null)
 		{
 			EnsureUnfinished ();
 

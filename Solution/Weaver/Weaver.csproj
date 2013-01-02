@@ -69,8 +69,8 @@
     <Compile Include="Schema\WeaverRelSchema.cs" />
     <Compile Include="WeaverTransaction.cs" />
     <Compile Include="Interfaces\IWeaverTransaction.cs" />
-    <Compile Include="WeaverListVar.cs" />
-    <Compile Include="Interfaces\IWeaverListVar.cs" />
+    <Compile Include="WeaverVarAlias.cs" />
+    <Compile Include="Interfaces\IWeaverVarAlias.cs" />
     <Compile Include="Functions\WeaverFuncCustom.cs" />
     <Compile Include="Interfaces\IWeaverFuncAs.cs" />
   </ItemGroup>

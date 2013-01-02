@@ -1,7 +1,7 @@
 ﻿namespace Weaver.Interfaces {
 	
 	/*================================================================================================*/
-	public interface IWeaverListVar {
+	public interface IWeaverVarAlias {
 
 		string Name { get; }
 

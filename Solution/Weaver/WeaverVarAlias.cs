@@ -3,7 +3,7 @@
 namespace Weaver {
 	
 	/*================================================================================================*/
-	public class WeaverListVar : IWeaverListVar {
+	public class WeaverVarAlias : IWeaverVarAlias {
 
 		public string Name { get { return vName+""; } }
 		
@@ -12,7 +12,7 @@ namespace Weaver {
 
 		////////////////////////////////////////////////////////////////////////////////////////////////
 		/*--------------------------------------------------------------------------------------------*/
-		public WeaverListVar(IWeaverTransaction pCurrentTx) {
+		public WeaverVarAlias(IWeaverTransaction pCurrentTx) {
 			vName = pCurrentTx.GetNextVarName();
 		}
 

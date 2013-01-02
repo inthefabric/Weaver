@@ -70,7 +70,7 @@ namespace Weaver.Test.Fixtures {
 		public void FinishWithVar() {
 			const string name = "_var0";
 		
-			var mockVar = new Mock<IWeaverListVar>();
+			var mockVar = new Mock<IWeaverVarAlias>();
 			mockVar.SetupGet(x => x.Name).Returns(name);
 			
 			var mockQ1 = new Mock<IWeaverQuery>();
