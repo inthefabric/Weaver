@@ -37,7 +37,7 @@ namespace Weaver.Items {
 				return "v(0)";
 			}
 
-			return (IsFromNode ? "outV" : "inV")+(ExpectOneNode ? "(0)" : "");
+			return (IsFromNode ? "outV" : "inV")+(ExpectOneNode ? "[0]" : "");
 		}
 
 	}

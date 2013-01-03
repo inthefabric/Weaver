@@ -111,6 +111,17 @@ namespace Weaver.Test.Fixtures {
 
 		/*--------------------------------------------------------------------------------------------*/
 		[Test]
+		public void GetNextVarName() {
+			var tx = new WeaverTransaction();
+
+			for ( int i = 0 ; i < 101 ; ++i ) {
+				string name = tx.GetNextVarName();
+				Assert.AreEqual("_V"+i, name, "Incorrect name at index "+i+".");
+			}
+		}
+
+		/*--------------------------------------------------------------------------------------------*/
+		[Test]
 		public void FinishFinished() {
 			IWeaverQuery wq = GetBasicQuery();
 

@@ -106,7 +106,7 @@ namespace Weaver.Test.Fixtures {
 
 			const string expect = "g.v(0)"+
 				".outE('RootHasPerson').inV"+
-				".inE('RootHasPerson')[0].outV(0)"+
+				".inE('RootHasPerson')[0].outV[0]"+
 				".outE('RootHasPerson').inV"+
 					".as('step7')"+
 				".outE('PersonKnowsPerson').inV"+

@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
-using Weaver.Interfaces;
 using Weaver.Exceptions;
+using Weaver.Interfaces;
 
 namespace Weaver {
 
@@ -39,8 +39,8 @@ namespace Weaver {
 		}
 		
 		/*--------------------------------------------------------------------------------------------*/
-		public string GetNextVarName() { //TEST: WeaverTransaction.GetNextVarName()
-			return "_var"+(++vVarCount);
+		public string GetNextVarName() {
+			return "_V"+(++vVarCount);
 		}
 		
 		/*--------------------------------------------------------------------------------------------*/
