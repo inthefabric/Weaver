@@ -78,6 +78,18 @@ namespace Weaver.Test.Fixtures {
 				.Verify(x => x.AddItem(It.IsAny<WeaverFuncUpdateEach<TestItem>>()), Times.Once());
 		}
 
+		/*--------------------------------------------------------------------------------------------*/
+		[Test]
+		public void RemoveEach() {
+			var item = new TestItem();
+
+			TestItem result = item.RemoveEach();
+
+			Assert.AreEqual(item, result, "Incorrect result.");
+			item.MockPath
+				.Verify(x => x.AddItem(It.IsAny<WeaverFuncRemoveEach<TestItem>>()), Times.Once());
+		}
+
 		
 		////////////////////////////////////////////////////////////////////////////////////////////////
 		/*--------------------------------------------------------------------------------------------* /

@@ -50,6 +50,13 @@ namespace Weaver {
 			pCallingItem.Path.AddItem(func);
 			return pCallingItem;
 		}
+
+		/*--------------------------------------------------------------------------------------------*/
+		public static T RemoveEach<T>(this T pCallingItem) where T : IWeaverItemIndexable {
+			var func = new WeaverFuncRemoveEach<T>();
+			pCallingItem.Path.AddItem(func);
+			return pCallingItem;
+		}
 		
 		
 		////////////////////////////////////////////////////////////////////////////////////////////////
