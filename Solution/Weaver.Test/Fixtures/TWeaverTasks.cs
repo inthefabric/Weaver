@@ -149,7 +149,7 @@ namespace Weaver.Test.Fixtures {
 			const string indexName = "Person";
 			const string varName = "_var0";
 
-			var mockVar = new Mock<IWeaverVarAlias>();
+			var mockVar = new Mock<IWeaverVarAlias<Person>>();
 			mockVar.SetupGet(x => x.Name).Returns(varName);
 
 			IWeaverQuery q = WeaverTasks.AddNodeToIndex<Person>(
@@ -221,9 +221,11 @@ namespace Weaver.Test.Fixtures {
 
 			var mockFromVar = new Mock<IWeaverVarAlias>();
 			mockFromVar.SetupGet(x => x.Name).Returns(fromVarName);
+			mockFromVar.SetupGet(x => x.VarType).Returns(typeof(Root));
 
 			var mockToVar = new Mock<IWeaverVarAlias>();
 			mockToVar.SetupGet(x => x.Name).Returns(toVarName);
+			mockToVar.SetupGet(x => x.VarType).Returns(typeof(Person));
 
 			IWeaverQuery q = WeaverTasks.AddRel(mockFromVar.Object, rhp, mockToVar.Object);
 
@@ -237,6 +239,21 @@ namespace Weaver.Test.Fixtures {
 			WeaverTestUtil.CheckQueryParams(q, expectParams);
 		}
 
+		/*--------------------------------------------------------------------------------------------*/
+		[TestCase(true)]
+		[TestCase(false)]
+		public void AddRelVarInvalidVarType(bool pBadFrom) {
+			var mockFromVar = new Mock<IWeaverVarAlias>();
+			mockFromVar.SetupGet(x => x.VarType).Returns(pBadFrom ? typeof(Root) : typeof(Person));
+			
+			var mockToVar = new Mock<IWeaverVarAlias>();
+			mockFromVar.SetupGet(x => x.VarType).Returns(pBadFrom ? typeof(Candy) : typeof(Root));
+			
+			WeaverTestUtil.CheckThrows<WeaverException>(true,
+				() => WeaverTasks.AddRel(mockFromVar.Object, new PersonLikesCandy(), mockToVar.Object)
+			);
+		}
+		
 		/*--------------------------------------------------------------------------------------------*/
 		[Test]
 		public void AddRelNoProps() {

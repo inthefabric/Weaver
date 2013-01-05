@@ -16,8 +16,9 @@ namespace Weaver {
 		}
 		
 		/*--------------------------------------------------------------------------------------------*/
-		public static IWeaverPathFromIndex<T> BeginPath<T>(string pIndexName, Expression<Func<T, object>> pFunc,
-										object pValue) where T : class, IWeaverItemIndexable, new() {
+		public static IWeaverPathFromIndex<T> BeginPath<T>(string pIndexName,
+													Expression<Func<T, object>> pFunc, object pValue)
+													where T : class, IWeaverItemIndexable, new() {
 			return new WeaverPathFromIndex<T>(new WeaverQuery(), pIndexName, pFunc, pValue);
 		}
 
@@ -69,7 +70,7 @@ namespace Weaver {
 		}
 
 		/*--------------------------------------------------------------------------------------------*/
-		public static IWeaverQuery AddNodeToIndex<T>(string pIndexName, IWeaverVarAlias pVar,
+		public static IWeaverQuery AddNodeToIndex<T>(string pIndexName, IWeaverVarAlias<T> pVar,
 											Expression<Func<T, object>> pFunc) where T : IWeaverNode {
 			var q = new WeaverQuery();
 
@@ -108,6 +109,16 @@ namespace Weaver {
 		/*--------------------------------------------------------------------------------------------*/
 		public static IWeaverQuery AddRel<TRel>(IWeaverVarAlias pFromVar, TRel pRel,
 													IWeaverVarAlias pToVar) where TRel : IWeaverRel {
+			if ( pRel.FromNodeType != pFromVar.VarType ) {
+				throw new WeaverException("Invalid From VarType: '"+pFromVar.VarType.Name+
+					"', expected '"+pRel.FromNodeType.Name+"'.");
+			}
+			
+			if ( pRel.ToNodeType != pToVar.VarType ) {
+				throw new WeaverException("Invalid To VarType: '"+pToVar.VarType.Name+
+					"', expected '"+pRel.ToNodeType.Name+"'.");
+			}
+			
 			var q = new WeaverQuery();
 			var relLabelVal = new WeaverQueryVal(pRel.Label, false);
 
