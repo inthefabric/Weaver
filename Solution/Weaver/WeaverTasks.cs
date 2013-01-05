@@ -154,6 +154,15 @@ namespace Weaver {
 			pQuery.StoreResultAsVar(pVar);
 			return pQuery;
 		}
+		
+		/*--------------------------------------------------------------------------------------------*/
+		//TEST: WeaverTasks.StoreQueryResultAsVar()
+		public static IWeaverQuery StoreQueryResultAsVar<T>(IWeaverTransaction pCurrentTx,
+					IWeaverQuery pQuery, out IWeaverVarAlias<T> pVar) where T : IWeaverItemIndexable {
+			pVar = new WeaverVarAlias<T>(pCurrentTx);
+			pQuery.StoreResultAsVar(pVar);
+			return pQuery;
+		}
 
 	}
 
