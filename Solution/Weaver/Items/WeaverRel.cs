@@ -117,8 +117,7 @@ namespace Weaver.Items {
 		////////////////////////////////////////////////////////////////////////////////////////////////
 		/*--------------------------------------------------------------------------------------------*/
 		public override string BuildParameterizedString() {
-			bool fromOne = (!IsFromManyNodes && !IsToManyNodes);
-			return (IsOutgoing ? "out" : "in")+"E('"+Label+"')"+(fromOne ? "[0]" : "");
+			return (IsOutgoing ? "out" : "in")+"E('"+Label+"')";
 		}
 
 	}

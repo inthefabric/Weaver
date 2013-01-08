@@ -14,9 +14,9 @@ namespace Weaver.Test.Fixtures.Items {
 		////////////////////////////////////////////////////////////////////////////////////////////////
 		/*--------------------------------------------------------------------------------------------*/
 		[TestCase(false, false, false, "inV")]
-		[TestCase(false, false, true, "inV[0]")]
+		[TestCase(false, false, true, "inV")]
 		[TestCase(false, true, false, "outV")]
-		[TestCase(false, true, true, "outV[0]")]
+		[TestCase(false, true, true, "outV")]
 		[TestCase(true, false, false, "v(0)")]
 		[TestCase(true, false, true, "v(0)")]
 		[TestCase(true, true, false, "v(0)")]

@@ -123,12 +123,12 @@ namespace Weaver.Test.Fixtures.Items {
 
 		////////////////////////////////////////////////////////////////////////////////////////////////
 		/*--------------------------------------------------------------------------------------------*/
-		[TestCase(WeaverRelConn.InFromOne, "inE('RootHasCandy')[0]")]
-		[TestCase(WeaverRelConn.InFromZeroOrOne, "inE('RootHasCandy')[0]")]
+		[TestCase(WeaverRelConn.InFromOne, "inE('RootHasCandy')")]
+		[TestCase(WeaverRelConn.InFromZeroOrOne, "inE('RootHasCandy')")]
 		[TestCase(WeaverRelConn.InFromOneOrMore, "inE('RootHasCandy')")]
 		[TestCase(WeaverRelConn.InFromZeroOrMore, "inE('RootHasCandy')")]
-		[TestCase(WeaverRelConn.OutToOne, "outE('RootHasCandy')[0]")]
-		[TestCase(WeaverRelConn.OutToZeroOrOne, "outE('RootHasCandy')[0]")]
+		[TestCase(WeaverRelConn.OutToOne, "outE('RootHasCandy')")]
+		[TestCase(WeaverRelConn.OutToZeroOrOne, "outE('RootHasCandy')")]
 		[TestCase(WeaverRelConn.OutToOneOrMore, "outE('RootHasCandy')")]
 		[TestCase(WeaverRelConn.OutToZeroOrMore, "outE('RootHasCandy')")]
 		public void BuildParameterizedString(WeaverRelConn pConn, string pExpectScript) {
