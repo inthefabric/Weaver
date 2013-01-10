@@ -118,19 +118,38 @@ namespace Weaver {
 
 
 	/*================================================================================================*/
-	public class WeaverPathFromIndex<TBase> : WeaverPath<TBase>, IWeaverPathFromIndex<TBase>
+	public class WeaverPathFromManualIndex<TBase> : WeaverPath<TBase>, IWeaverPathFromManualIndex<TBase>
 													where TBase : class, IWeaverItemIndexable, new() {
 
-		public WeaverFuncIndex<TBase> BaseIndex { get; protected set; }
+		public WeaverFuncManualIndex<TBase> BaseIndex { get; protected set; }
 
 
 		////////////////////////////////////////////////////////////////////////////////////////////////
 		/*--------------------------------------------------------------------------------------------*/
-		public WeaverPathFromIndex(IWeaverQuery pQuery, string pIndexName,
-												Expression<Func<TBase, object>> pFunc, object pValue,
-												bool pSingleResult=true) : base(pQuery) {
+		public WeaverPathFromManualIndex(IWeaverQuery pQuery, string pIndexName,
+												Expression<Func<TBase, object>> pPropFunc, object pValue,
+															bool pSingleResult=true) : base(pQuery) {
 			BaseNode = new TBase { Path = this };
-			BaseIndex = new WeaverFuncIndex<TBase>(pIndexName, pFunc, pValue, pSingleResult);
+			BaseIndex = new WeaverFuncManualIndex<TBase>(pIndexName, pPropFunc, pValue, pSingleResult);
+			AddItem(BaseIndex);
+		}
+
+	}
+
+
+	/*================================================================================================*/
+	public class WeaverPathFromKeyIndex<TBase> : WeaverPath<TBase>, IWeaverPathFromKeyIndex<TBase>
+													where TBase : class, IWeaverItemIndexable, new() {
+
+		public WeaverFuncKeyIndex<TBase> BaseIndex { get; protected set; }
+
+
+		////////////////////////////////////////////////////////////////////////////////////////////////
+		/*--------------------------------------------------------------------------------------------*/
+		public WeaverPathFromKeyIndex(IWeaverQuery pQuery, Expression<Func<TBase, object>> pPropFunc,
+												object pValue, bool pSingleResult=true) : base(pQuery) {
+			BaseNode = new TBase { Path = this };
+			BaseIndex = new WeaverFuncKeyIndex<TBase>(pPropFunc, pValue, pSingleResult);
 			AddItem(BaseIndex);
 		}
 

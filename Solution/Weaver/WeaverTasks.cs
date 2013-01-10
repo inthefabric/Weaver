@@ -8,6 +8,11 @@ namespace Weaver {
 	/*================================================================================================*/
 	public static class WeaverTasks {
 
+		public enum ItemType {
+			Node,
+			Rel
+		}
+
 
 		////////////////////////////////////////////////////////////////////////////////////////////////
 		/*--------------------------------------------------------------------------------------------*/
@@ -16,10 +21,16 @@ namespace Weaver {
 		}
 		
 		/*--------------------------------------------------------------------------------------------*/
-		public static IWeaverPathFromIndex<T> BeginPath<T>(string pIndexName,
-													Expression<Func<T, object>> pFunc, object pValue)
+		public static IWeaverPathFromManualIndex<T> BeginPath<T>(string pIndexName,
+											Expression<Func<T, object>> pProp, object pValue)
 													where T : class, IWeaverItemIndexable, new() {
-			return new WeaverPathFromIndex<T>(new WeaverQuery(), pIndexName, pFunc, pValue);
+			return new WeaverPathFromManualIndex<T>(new WeaverQuery(), pIndexName,pProp,pValue);
+		}
+
+		/*--------------------------------------------------------------------------------------------*/
+		public static IWeaverPathFromKeyIndex<T> BeginPath<T>(Expression<Func<T, object>> pProp,
+										object pValue) where T : class, IWeaverItemIndexable, new() {
+			return new WeaverPathFromKeyIndex<T>(new WeaverQuery(), pProp, pValue);
 		}
 
 
@@ -32,21 +43,21 @@ namespace Weaver {
 		}
 
 		/*--------------------------------------------------------------------------------------------*/
-		public static IWeaverQuery AddNodeIndex(string pIndexName) {
-			return AddIndex(pIndexName, true);
-		}
-
-		/*--------------------------------------------------------------------------------------------*/
-		public static IWeaverQuery AddRelIndex(string pIndexName) {
-			return AddIndex(pIndexName, false);
-		}
-
-		/*--------------------------------------------------------------------------------------------*/
-		private static IWeaverQuery AddIndex(string pIndexName, bool pIsNode) {
+		public static IWeaverQuery CreateManualIndex(string pIndexName, ItemType pType) {
 			var q = new WeaverQuery();
 			var nameVal = new WeaverQueryVal(pIndexName, false);
-			var type = (pIsNode ? "Vertex" : "Edge");
+			string type = (pType == ItemType.Rel ? "Edge" : "Vertex");
 			q.FinalizeQuery("g.createManualIndex("+q.AddParam(nameVal)+","+type+".class)");
+			return q;
+		}
+
+		/*--------------------------------------------------------------------------------------------*/
+		public static IWeaverQuery CreateKeyIndex<T>(Expression<Func<T, object>> pProp,
+														ItemType pType) where T : IWeaverItemIndexable {
+			var q = new WeaverQuery();
+			var nameVal = new WeaverQueryVal(WeaverUtil.GetPropertyName(pProp), false);
+			string type = (pType == ItemType.Rel ? "Edge" : "Vertex");
+			q.FinalizeQuery("g.createKeyIndex("+q.AddParam(nameVal)+","+type+".class)");
 			return q;
 		}
 

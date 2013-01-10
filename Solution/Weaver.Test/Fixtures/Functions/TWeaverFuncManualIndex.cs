@@ -12,14 +12,14 @@ namespace Weaver.Test.Fixtures.Functions {
 
 	/*================================================================================================*/
 	[TestFixture]
-	public class TWeaverFuncIndex : WeaverTestBase {
+	public class TWeaverFuncManualIndex : WeaverTestBase {
 
 
 		////////////////////////////////////////////////////////////////////////////////////////////////
 		/*--------------------------------------------------------------------------------------------*/
 		[Test]
 		public void New() {
-			var q = new WeaverFuncIndex<Person>("Test", x => x.PersonId, 123, false);
+			var q = new WeaverFuncManualIndex<Person>("Test", x => x.PersonId, 123, false);
 			Assert.AreEqual("Test", q.IndexName, "Incorrect IndexName.");
 			Assert.AreEqual(123, q.Value, "Incorrect Value.");
 		}
@@ -27,7 +27,7 @@ namespace Weaver.Test.Fixtures.Functions {
 		/*--------------------------------------------------------------------------------------------*/
 		[Test]
 		public void PropertyName() {
-			var q = new WeaverFuncIndex<Person>("Test", x => x.PersonId, 123, false);
+			var q = new WeaverFuncManualIndex<Person>("Test", x => x.PersonId, 123, false);
 			Assert.AreEqual("PersonId", q.PropertyName, "Incorrect PropertyName.");
 			Assert.AreEqual("PersonId", q.PropertyName, "Incorrect cached PropertyName.");
 		}
@@ -35,7 +35,7 @@ namespace Weaver.Test.Fixtures.Functions {
 		/*--------------------------------------------------------------------------------------------*/
 		[Test]
 		public void PropertyNameInvalid() {
-			var q = new WeaverFuncIndex<Person>("Test", x => (x.ExpectOneNode == false), 123, false);
+			var q = new WeaverFuncManualIndex<Person>("Test", x => (x.ExpectOneNode == false), 123, false);
 
 			WeaverTestUtil.CheckThrows<WeaverFuncException>(true, () => {
 				var p = q.PropertyName;
@@ -68,7 +68,7 @@ namespace Weaver.Test.Fixtures.Functions {
 			var mockPath = new Mock<IWeaverPath>();
 			mockPath.SetupGet(x => x.Query).Returns(mockQuery.Object);
 
-			var f = new WeaverFuncIndex<Person>(indexName, func, pValue, pSingle);
+			var f = new WeaverFuncManualIndex<Person>(indexName, func, pValue, pSingle);
 			f.Path = mockPath.Object;
 
 			Assert.AreEqual(pExpect, f.BuildParameterizedString(), "Incorrect result.");

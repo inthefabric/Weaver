@@ -63,6 +63,7 @@
     <Compile Include="Common\Rels\PersonKnowsPerson.cs" />
     <Compile Include="Common\RelTypes\Knows.cs" />
     <Compile Include="Common\Nodes\Person.cs" />
+    <Compile Include="Fixtures\Functions\TWeaverFuncKeyIndex.cs" />
     <Compile Include="Fixtures\Functions\TWeaverFuncRemoveEach.cs" />
     <Compile Include="Fixtures\TWeaverUpdate.cs" />
     <Compile Include="Fixtures\Functions\TWeaverFuncUpdateEach.cs" />
@@ -76,7 +77,7 @@
     <Compile Include="Fixtures\Schema\TWeaverPropSchema.cs" />
     <Compile Include="Fixtures\Schema\TWeaverNodeSchema.cs" />
     <Compile Include="Fixtures\TWeaverQuery.cs" />
-    <Compile Include="Fixtures\Functions\TWeaverFuncIndex.cs" />
+    <Compile Include="Fixtures\Functions\TWeaverFuncManualIndex.cs" />
     <Compile Include="Fixtures\Items\TWeaverRel.cs" />
     <Compile Include="Fixtures\Functions\TWeaverFuncAs.cs" />
     <Compile Include="Fixtures\Functions\TWeaverFuncBack.cs" />

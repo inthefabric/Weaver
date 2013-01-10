@@ -30,7 +30,7 @@ namespace Weaver.Functions {
 
 		/*--------------------------------------------------------------------------------------------*/
 		public override string BuildParameterizedString() {
-			return PropertyName;
+			return "property('"+PropertyName+"')";
 		}
 
 	}

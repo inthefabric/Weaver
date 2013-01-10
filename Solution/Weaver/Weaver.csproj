@@ -30,6 +30,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Functions\WeaverFuncKeyIndex.cs" />
     <Compile Include="Functions\WeaverFuncRemoveEach.cs" />
     <Compile Include="Interfaces\IWeaverScript.cs" />
     <Compile Include="WeaverUpdate.cs" />
@@ -41,7 +42,7 @@
     <Compile Include="WeaverItemExt.cs" />
     <Compile Include="WeaverQueryVal.cs" />
     <Compile Include="WeaverUpdates.cs" />
-    <Compile Include="Functions\WeaverFuncIndex.cs" />
+    <Compile Include="Functions\WeaverFuncManualIndex.cs" />
     <Compile Include="Interfaces\IWeaverQuery.cs" />
     <Compile Include="Items\WeaverItemPropertyAttribute.cs" />
     <Compile Include="WeaverQuery.cs" />

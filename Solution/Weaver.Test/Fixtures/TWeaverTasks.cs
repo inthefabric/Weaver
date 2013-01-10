@@ -29,18 +29,32 @@ namespace Weaver.Test.Fixtures {
 
 		/*--------------------------------------------------------------------------------------------*/
 		[Test]
-		public void BeginPathFromIndex() {
+		public void BeginPathFromManualIndex() {
 			const string name = "Person";
 			const int perId = 123;
 
-			IWeaverPathFromIndex<Person> p =
-				WeaverTasks.BeginPath<Person>(name, (per => per.PersonId), perId);
+			IWeaverPathFromManualIndex<Person> p =
+				WeaverTasks.BeginPath<Person>(name, x => x.PersonId, perId);
 
 			Assert.NotNull(p.Query, "Query should be filled.");
 			Assert.NotNull(p.BaseIndex, "BaseIndex should be filled.");
 			Assert.AreEqual(name, p.BaseIndex.IndexName, "Incorrect BaseIndex.IndexName.");
 			Assert.AreEqual(perId, p.BaseIndex.Value, "Incorrect BaseIndex.Value.");
 			Assert.AreEqual("PersonId", p.BaseIndex.PropertyName, "Incorrect BaseIndex.PropertyName.");
+		}
+
+		/*--------------------------------------------------------------------------------------------*/
+		[Test]
+		public void BeginPathFromKeyIndex() {
+			const int perId = 123;
+
+			IWeaverPathFromKeyIndex<Person> p =
+				WeaverTasks.BeginPath<Person>(x => x.PersonId, perId);
+
+			Assert.NotNull(p.Query, "Query should be filled.");
+			Assert.NotNull(p.BaseIndex, "BaseIndex should be filled.");
+			Assert.AreEqual("PersonId", p.BaseIndex.IndexName, "Incorrect BaseIndex.IndexName.");
+			Assert.AreEqual(perId, p.BaseIndex.Value, "Incorrect BaseIndex.Value.");
 		}
 
 		
@@ -83,12 +97,13 @@ namespace Weaver.Test.Fixtures {
 		}
 
 		/*--------------------------------------------------------------------------------------------*/
-		[Test]
-		public void AddNodeIndex() {
-			const string indexName = "Person";
-			IWeaverQuery q = WeaverTasks.AddNodeIndex(indexName);
+		[TestCase(WeaverTasks.ItemType.Node, "Vertex")]
+		[TestCase(WeaverTasks.ItemType.Rel, "Edge")]
+		public void CreateManualIndex(WeaverTasks.ItemType pType, string pClass) {
+			const string indexName = "Test";
+			IWeaverQuery q = WeaverTasks.CreateManualIndex(indexName, pType);
 
-			const string expect = "g.createManualIndex(_P0,Vertex.class);";
+			string expect = "g.createManualIndex(_P0,"+pClass+".class);";
 			var expectParams = new Dictionary<string, string>();
 			expectParams.Add("_P0", indexName);
 
@@ -98,14 +113,14 @@ namespace Weaver.Test.Fixtures {
 		}
 
 		/*--------------------------------------------------------------------------------------------*/
-		[Test]
-		public void AddRelIndex() {
-			const string indexName = "PersonLikesCandy";
-			IWeaverQuery q = WeaverTasks.AddRelIndex(indexName);
+		[TestCase(WeaverTasks.ItemType.Node, "Vertex")]
+		[TestCase(WeaverTasks.ItemType.Rel, "Edge")]
+		public void CreateKeyIndex(WeaverTasks.ItemType pType, string pClass) {
+			IWeaverQuery q = WeaverTasks.CreateKeyIndex<Person>(x => x.PersonId, pType);
 
-			const string expect = "g.createManualIndex(_P0,Edge.class);";
+			string expect = "g.createKeyIndex(_P0,"+pClass+".class);";
 			var expectParams = new Dictionary<string, string>();
-			expectParams.Add("_P0", indexName);
+			expectParams.Add("_P0", "PersonId");
 
 			Assert.True(q.IsFinalized, "Incorrect IsFinalized.");
 			Assert.AreEqual(expect, q.Script, "Incorrect Query.Script.");
@@ -351,7 +366,7 @@ namespace Weaver.Test.Fixtures {
 					".has('Name',Tokens.T.neq,_P1)"+
 					".back('step3')"+
 				".outE('PersonLikesCandy').inV"+
-					".Calories;";
+					".property('Calories');";
 
 			var expectParams = new Dictionary<string, string>();
 			expectParams.Add("_P0", "Hello");

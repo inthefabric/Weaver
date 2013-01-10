@@ -6,7 +6,7 @@ using Weaver.Items;
 namespace Weaver.Functions {
 	
 	/*================================================================================================*/
-	public abstract class WeaverFuncIndex : WeaverFunc {
+	public abstract class WeaverFuncManualIndex : WeaverFunc {
 
 		public string IndexName { get; protected set; }
 		public object Value { get; protected set; }
@@ -17,7 +17,7 @@ namespace Weaver.Functions {
 	}
 
 	/*================================================================================================*/
-	public class WeaverFuncIndex<T> : WeaverFuncIndex where T : IWeaverItemIndexable {
+	public class WeaverFuncManualIndex<T> : WeaverFuncManualIndex where T : IWeaverItemIndexable {
 
 		private readonly Expression<Func<T, object>> vFunc;
 		private string vPropName;
@@ -25,7 +25,7 @@ namespace Weaver.Functions {
 
 		////////////////////////////////////////////////////////////////////////////////////////////////
 		/*--------------------------------------------------------------------------------------------*/
-		public WeaverFuncIndex(string pIndexName, Expression<Func<T,object>> pFunc, object pValue,
+		public WeaverFuncManualIndex(string pIndexName, Expression<Func<T,object>> pFunc, object pValue,
 																				bool pSingleResult) {
 			IndexName = pIndexName;
 			vFunc = pFunc;

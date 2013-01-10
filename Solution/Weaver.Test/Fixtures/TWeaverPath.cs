@@ -45,12 +45,12 @@ namespace Weaver.Test.Fixtures {
 
 		/*--------------------------------------------------------------------------------------------*/
 		[Test]
-		public void NewIndex() {
+		public void NewManualIndex() {
 			const int perId = 99;
 			const string indexName = "Person";
 
 			IWeaverQuery q = new Mock<WeaverQuery>().Object;
-			var p = new WeaverPathFromIndex<Person>(q, "Person", per => per.PersonId, perId);
+			var p = new WeaverPathFromManualIndex<Person>(q, "Person", x => x.PersonId, perId);
 
 			Assert.NotNull(p.BaseNode, "BaseNode should be filled.");
 			Assert.AreEqual(p, p.BaseNode.Path, "Incorrect BaseNode.Path.");
@@ -59,6 +59,27 @@ namespace Weaver.Test.Fixtures {
 			Assert.AreEqual(indexName, p.BaseIndex.IndexName, "Incorrect BaseIndex.IndexName.");
 			Assert.AreEqual(indexName+"Id", p.BaseIndex.PropertyName,
 				"Incorrect BaseIndex.PropertyName.");
+			Assert.AreEqual(perId, p.BaseIndex.Value, "Incorrect BaseIndex.Value.");
+
+			Assert.AreEqual(q, p.Query, "Incorrect Query.");
+
+			Assert.AreEqual(1, p.Length, "Incorrect Length.");
+			Assert.AreEqual(p.BaseIndex, p.ItemAtIndex(0), "Incorrect item at index 0.");
+		}
+
+		/*--------------------------------------------------------------------------------------------*/
+		[Test]
+		public void NewKeyIndex() {
+			const int perId = 99;
+
+			IWeaverQuery q = new Mock<WeaverQuery>().Object;
+			var p = new WeaverPathFromKeyIndex<Person>(q, x => x.PersonId, perId);
+
+			Assert.NotNull(p.BaseNode, "BaseNode should be filled.");
+			Assert.AreEqual(p, p.BaseNode.Path, "Incorrect BaseNode.Path.");
+			Assert.NotNull(p.BaseIndex, "BaseIndex should be filled.");
+
+			Assert.AreEqual("PersonId", p.BaseIndex.IndexName, "Incorrect BaseIndex.IndexName.");
 			Assert.AreEqual(perId, p.BaseIndex.Value, "Incorrect BaseIndex.Value.");
 
 			Assert.AreEqual(q, p.Query, "Incorrect Query.");
@@ -117,7 +138,7 @@ namespace Weaver.Test.Fixtures {
 					".has('Enjoyment',Tokens.T.gte,0.2D)"+
 					".inV"+
 				".inE('PersonLikesCandy').outV"+
-					".Name";
+					".property('Name')";
 			
 			Assert.AreEqual(expect, path.BuildParameterizedScript(), "Incorrect result.");
 		}
@@ -126,7 +147,7 @@ namespace Weaver.Test.Fixtures {
 		[Test]
 		public void BuildParamScriptIndex() {
 			IWeaverQuery q = new WeaverQuery();
-			var path = new WeaverPathFromIndex<Person>(q, "Person", p => p.PersonId, 123);
+			var path = new WeaverPathFromManualIndex<Person>(q, "Person", p => p.PersonId, 123);
 
 			var lastItem = path.BaseNode
 				.OutKnowsPerson.ToNode
@@ -136,7 +157,7 @@ namespace Weaver.Test.Fixtures {
 			const string expect = "g.idx(_P0).get('PersonId',123)[0]"+
 				".outE('PersonKnowsPerson').inV"+
 				".outE('PersonLikesCandy').inV"+
-					".Name";
+					".property('Name')";
 
 			Assert.AreEqual(expect, path.BuildParameterizedScript(), "Incorrect result.");
 		}

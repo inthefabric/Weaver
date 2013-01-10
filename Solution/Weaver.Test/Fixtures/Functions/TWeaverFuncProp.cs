@@ -34,7 +34,7 @@ namespace Weaver.Test.Fixtures.Functions {
 		[Test]
 		public void BuildParameterizedString() {
 			var f = new WeaverFuncProp<Person>(n => n.PersonId);
-			Assert.AreEqual("PersonId", f.BuildParameterizedString(), "Incorrect result.");
+			Assert.AreEqual("property('PersonId')", f.BuildParameterizedString(), "Incorrect result.");
 		}
 
 	}

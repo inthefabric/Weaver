@@ -35,10 +35,19 @@ namespace Weaver.Interfaces {
 
 
 	/*================================================================================================*/
-	public interface IWeaverPathFromIndex<TBase> : IWeaverPath<TBase>
+	public interface IWeaverPathFromManualIndex<TBase> : IWeaverPath<TBase>
 													where TBase : class, IWeaverItemIndexable, new() {
 
-		WeaverFuncIndex<TBase> BaseIndex { get; }
+		WeaverFuncManualIndex<TBase> BaseIndex { get; }
+
+	}
+
+
+	/*================================================================================================*/
+	public interface IWeaverPathFromKeyIndex<TBase> : IWeaverPath<TBase>
+													where TBase : class, IWeaverItemIndexable, new() {
+
+		WeaverFuncKeyIndex<TBase> BaseIndex { get; }
 
 	}
 
