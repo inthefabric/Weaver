@@ -15,11 +15,11 @@ namespace Weaver {
 		public string Script { get; set; }
 		public Dictionary<string, string> Params { get; set; }
 		public ConclusionType Conclusion { get; set; }
-		
+
 		private readonly List<IWeaverQuery> vQueries;
 		private int vVarCount;
-		
-		
+
+
 		////////////////////////////////////////////////////////////////////////////////////////////////
 		/*--------------------------------------------------------------------------------------------*/
 		public WeaverTransaction() {
@@ -37,42 +37,49 @@ namespace Weaver {
 
 			vQueries.Add(pQuery);
 		}
-		
+
 		/*--------------------------------------------------------------------------------------------*/
 		public string GetNextVarName() {
 			return "_V"+(++vVarCount);
 		}
-		
-		/*--------------------------------------------------------------------------------------------*/
-		public void Finish (ConclusionType pConclusion, IWeaverVarAlias pFinalOutput=null)
-		{
-			EnsureUnfinished ();
 
-			if (vQueries.Count == 0) {
-				throw new WeaverException ("Could not finish transaction; no queries were added.");
+		/*--------------------------------------------------------------------------------------------*/
+		public void Finish(ConclusionType pConclusion, IWeaverVarAlias pFinalOutput=null) {
+			FinishWithoutStartStop();
+
+			Script = "g.startTransaction();"+
+				Script+
+				"g.stopTransaction(TransactionalGraph.Conclusion." +
+				pConclusion.ToString().ToUpper() + ");";
+
+			if ( pFinalOutput != null ) {
+				Script += pFinalOutput.Name+";";
+			}
+		}
+
+		/*--------------------------------------------------------------------------------------------*/
+		//TEST: WeaverTx.FinishWithoutStartStop()
+		public void FinishWithoutStartStop() {
+			EnsureUnfinished();
+
+			if ( vQueries.Count == 0 ) {
+				throw new WeaverException("Could not finish transaction; no queries were added.");
 			}
 
-			Script = "g.startTransaction();";
-			Params = new Dictionary<string, string> ();
+			Script = "";
+			Params = new Dictionary<string, string>();
 
-			foreach (IWeaverQuery wq in vQueries) {
+			foreach ( IWeaverQuery wq in vQueries ) {
 				string queryScript = wq.Script + "";
 				Dictionary<string, string> pars = wq.Params;
 
-				foreach (string key in pars.Keys) {
+				foreach ( string key in pars.Keys ) {
 					string newKey = "_TP" + Params.Keys.Count;
-					queryScript = queryScript.Replace (key, newKey);
-					Params.Add (newKey, pars [key]);
+					queryScript = queryScript.Replace(key, newKey);
+					Params.Add(newKey, pars[key]);
 				}
 
 				Script += queryScript;
-			}
-
-			Script += "g.stopTransaction(TransactionalGraph.Conclusion." +
-				pConclusion.ToString ().ToUpper () + ");";
-				
-			if (pFinalOutput != null) {
-				Script += pFinalOutput.Name+";";
 			}
 		}
 
