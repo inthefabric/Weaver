@@ -77,8 +77,9 @@ namespace Weaver.Test.Fixtures {
 		}
 		
 		/*--------------------------------------------------------------------------------------------*/
-		[Test]
-		public void FinishWithVar() {
+		[TestCase(true)]
+		[TestCase(false)]
+		public void FinishWithVar(bool pWithStartStop) {
 			const string name = "_var0";
 		
 			var mockVar = new Mock<IWeaverVarAlias>();
@@ -90,13 +91,21 @@ namespace Weaver.Test.Fixtures {
 			
 			var tx = new WeaverTransaction();
 			tx.AddQuery(mockQ1.Object);
-			tx.Finish(WeaverTransaction.ConclusionType.Success, mockVar.Object);
 			
-			const string expectScript = "g.startTransaction();"+
-				"g.V;"+
-				"g.stopTransaction(TransactionalGraph.Conclusion.SUCCESS);"+
-				name+";";
-			
+			string expectScript = "g.V;";
+
+			if ( pWithStartStop ) {
+				tx.Finish(WeaverTransaction.ConclusionType.Success, mockVar.Object);
+
+				expectScript = "g.startTransaction();"+expectScript+
+					"g.stopTransaction(TransactionalGraph.Conclusion.SUCCESS);";
+			}
+			else {
+				tx.FinishWithoutStartStop(mockVar.Object);
+			}
+
+			expectScript += name+";";
+
 			Assert.AreEqual(expectScript, tx.Script, "Incorrect Script.");
 		}
 		

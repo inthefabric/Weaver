@@ -45,7 +45,7 @@ namespace Weaver {
 
 		/*--------------------------------------------------------------------------------------------*/
 		public void Finish(ConclusionType pConclusion, IWeaverVarAlias pFinalOutput=null) {
-			FinishWithoutStartStop();
+			FinishWithoutStartStop(null);
 
 			Script = "g.startTransaction();"+
 				Script+
@@ -58,7 +58,7 @@ namespace Weaver {
 		}
 
 		/*--------------------------------------------------------------------------------------------*/
-		public void FinishWithoutStartStop() {
+		public void FinishWithoutStartStop(IWeaverVarAlias pFinalOutput=null) {
 			EnsureUnfinished();
 
 			if ( vQueries.Count == 0 ) {
@@ -79,6 +79,10 @@ namespace Weaver {
 				}
 
 				Script += queryScript;
+			}
+
+			if ( pFinalOutput != null ) {
+				Script += pFinalOutput.Name+";";
 			}
 		}
 
