@@ -14,9 +14,11 @@ namespace Weaver.Test.Fixtures {
 
 		////////////////////////////////////////////////////////////////////////////////////////////////
 		/*--------------------------------------------------------------------------------------------*/
-		[TestCase(WeaverTransaction.ConclusionType.Success, "SUCCESS")]
-		[TestCase(WeaverTransaction.ConclusionType.Failure, "FAILURE")]
-		public void Finish(WeaverTransaction.ConclusionType pConclude, string pConcludeStr) {
+		[TestCase(false, WeaverTransaction.ConclusionType.Success, null)]
+		[TestCase(true, WeaverTransaction.ConclusionType.Success, "SUCCESS")]
+		[TestCase(true, WeaverTransaction.ConclusionType.Failure, "FAILURE")]
+		public void Finish(bool pWithStartStop, WeaverTransaction.ConclusionType pConclude,
+																			string pConcludeStr) {
 			var q1Params = new Dictionary<string, string>();
 			q1Params.Add("_P0", "first");
 			q1Params.Add("_P1", "second");
@@ -45,13 +47,22 @@ namespace Weaver.Test.Fixtures {
 			tx.AddQuery(mockQ1.Object);
 			tx.AddQuery(mockQ2.Object);
 			tx.AddQuery(mockQ3.Object);
-			tx.Finish(pConclude);
 
-			string expectScript = "g.startTransaction();"+
+			string expectScript = 
 				"g.outE(_TP0).inV.inE(_TP1).outV;"+
 				"g.inV.inE(_TP2).inV.inE(_TP3).inE(_TP4);"+
-				"g.inV.inE(_TP5);"+
-				"g.stopTransaction(TransactionalGraph.Conclusion."+pConcludeStr+");";
+				"g.inV.inE(_TP5);";
+
+			if ( pWithStartStop ) {
+				tx.Finish(pConclude);
+
+				expectScript = "g.startTransaction();"+
+					expectScript+
+					"g.stopTransaction(TransactionalGraph.Conclusion."+pConcludeStr+");";
+			}
+			else {
+				tx.FinishWithoutStartStop();
+			}
 
 			var expectParams = new Dictionary<string, string>();
 			expectParams.Add("_TP0", q1Params["_P0"]);

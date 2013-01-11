@@ -302,18 +302,37 @@ namespace Weaver.Test.Fixtures {
 		
 		////////////////////////////////////////////////////////////////////////////////////////////////
 		/*--------------------------------------------------------------------------------------------*/
-		[Test]
-		public void InitListVar() {
+		[TestCase(null, "")]
+		[TestCase(0, "")]
+		[TestCase(1, "x0")]
+		[TestCase(2, "x0,x1")]
+		[TestCase(10, "x0,x1,x2,x3,x4,x5,x6,x7,x8,x9")]
+		public void InitListVar(int? pItems, string pExpectList) {
 			const string name = "_var0";
 			IWeaverVarAlias setList;
 			
 			var mockTx = new Mock<IWeaverTransaction>();
 			mockTx.Setup(x => x.GetNextVarName()).Returns(name);
-			
-			IWeaverQuery q = WeaverTasks.InitListVar(mockTx.Object, out setList);
+
+			IWeaverQuery q;
+
+			if ( pItems == null ) {
+				q = WeaverTasks.InitListVar(mockTx.Object, out setList);
+			}
+			else {
+				var list = new List<IWeaverVarAlias>();
+
+				for ( int i = 0 ; i < pItems ; ++i ) {
+					var mockVar = new Mock<IWeaverVarAlias>();
+					mockVar.SetupGet(x => x.Name).Returns("x"+i);
+					list.Add(mockVar.Object);
+				}
+
+				q = WeaverTasks.InitListVar(mockTx.Object, list, out setList);
+			}
 			
 			Assert.True(q.IsFinalized, "Incorrect IsFinalized.");
-			Assert.AreEqual(name+"=[];", q.Script, "Incorrect Script.");
+			Assert.AreEqual(name+"=["+pExpectList+"];", q.Script, "Incorrect Script.");
 			Assert.NotNull(setList, "The out WeaverListVar should not be null.");
 		}
 

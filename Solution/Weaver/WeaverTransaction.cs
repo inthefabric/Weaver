@@ -58,7 +58,6 @@ namespace Weaver {
 		}
 
 		/*--------------------------------------------------------------------------------------------*/
-		//TEST: WeaverTx.FinishWithoutStartStop()
 		public void FinishWithoutStartStop() {
 			EnsureUnfinished();
 

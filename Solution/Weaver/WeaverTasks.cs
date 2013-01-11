@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq.Expressions;
 using Weaver.Exceptions;
 using Weaver.Interfaces;
@@ -150,12 +151,24 @@ namespace Weaver {
 		
 		////////////////////////////////////////////////////////////////////////////////////////////////
 		/*--------------------------------------------------------------------------------------------*/
-		public static IWeaverQuery InitListVar(IWeaverTransaction pCurrentTx, out IWeaverVarAlias pVar){
+		public static IWeaverQuery InitListVar(IWeaverTransaction pCurrentTx,
+											IList<IWeaverVarAlias> pVars, out IWeaverVarAlias pVar) {
 			pVar = new WeaverVarAlias(pCurrentTx);
 			
+			string list = "";
+
+			foreach ( IWeaverVarAlias var in pVars ) {
+				list += (list == "" ? "" : ",")+var.Name;
+			}
+
 			var q = new WeaverQuery();
-			q.FinalizeQuery(pVar.Name+"=[]");
+			q.FinalizeQuery(pVar.Name+"=["+list+"]");
 			return q;
+		}
+
+		/*--------------------------------------------------------------------------------------------*/
+		public static IWeaverQuery InitListVar(IWeaverTransaction pCurrentTx, out IWeaverVarAlias pVar){
+			return InitListVar(pCurrentTx, new List<IWeaverVarAlias>(), out pVar);
 		}
 
 		/*--------------------------------------------------------------------------------------------*/
