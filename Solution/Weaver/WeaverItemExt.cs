@@ -107,15 +107,32 @@ namespace Weaver {
 		/*--------------------------------------------------------------------------------------------*/
 		public static T Limit<T>(this T pCallingItem, int pStartIndex, int pEndIndex)
 																		where T : IWeaverItemIndexable {
-			var func = new WeaverFuncCustom("["+pStartIndex+".."+pEndIndex+"]");
+			var func = new WeaverFuncCustom("["+pStartIndex+".."+pEndIndex+"]", true);
 			pCallingItem.Path.AddItem(func);
 			return pCallingItem;
 		}
 		
 		/*--------------------------------------------------------------------------------------------*/
-		public static T CustomStep<T>(this T pCallingItem, string pScript)
+		//TEST: WeaverItemExt.AtIndex()
+		public static T AtIndex<T>(this T pCallingItem, int pStartIndex)
 																		where T : IWeaverItemIndexable {
-			var func = new WeaverFuncCustom(pScript);
+			var func = new WeaverFuncCustom("["+pStartIndex+"]", true);
+			pCallingItem.Path.AddItem(func);
+			return pCallingItem;
+		}
+
+		/*--------------------------------------------------------------------------------------------*/
+		//TEST: WeaverItemExt.Count()
+		public static T Count<T>(this T pCallingItem) where T : IWeaverItemIndexable {
+			var func = new WeaverFuncCustom("count()", true);
+			pCallingItem.Path.AddItem(func);
+			return pCallingItem;
+		}
+		
+		/*--------------------------------------------------------------------------------------------*/
+		public static T CustomStep<T>(this T pCallingItem, string pScript, bool pSkipDotPrefix=false)
+																		where T : IWeaverItemIndexable {
+			var func = new WeaverFuncCustom(pScript, pSkipDotPrefix);
 			pCallingItem.Path.AddItem(func);
 			return pCallingItem;
 		}

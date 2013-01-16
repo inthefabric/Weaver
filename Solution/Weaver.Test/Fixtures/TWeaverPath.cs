@@ -131,6 +131,7 @@ namespace Weaver.Test.Fixtures {
 			var lastItem = path.BaseNode
 				.OutHasPerson.ToNode
 				.InRootHas.FromNode
+					.Limit(0, 6)
 				.OutHasPerson.ToNode
 					.As(out personAlias)
 				.OutKnowsPerson.ToNode
@@ -145,13 +146,13 @@ namespace Weaver.Test.Fixtures {
 
 			const string expect = "g.v(0)"+
 				".outE('RootHasPerson').inV"+
-				".inE('RootHasPerson').outV"+
+				".inE('RootHasPerson').outV[0..6]"+
 				".outE('RootHasPerson').inV"+
-					".as('step7')"+
+					".as('step8')"+
 				".outE('PersonKnowsPerson').inV"+
 					".has('PersonId',Tokens.T.lte,5)"+
 				".inE('PersonKnowsPerson').outV"+
-					".back('step7')"+
+					".back('step8')"+
 				".outE('PersonLikesCandy')"+
 					".has('Enjoyment',Tokens.T.gte,0.2D)"+
 					".inV"+

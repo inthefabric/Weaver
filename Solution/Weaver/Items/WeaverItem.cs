@@ -49,6 +49,7 @@ namespace Weaver.Items {
 		////////////////////////////////////////////////////////////////////////////////////////////////
 		/*--------------------------------------------------------------------------------------------*/
 		public virtual string ItemIdentifier { get { return GetType().Name+""; } }
+		public bool SkipDotPrefix { get; protected set; }
 
 		/*--------------------------------------------------------------------------------------------*/
 		public abstract string BuildParameterizedString();

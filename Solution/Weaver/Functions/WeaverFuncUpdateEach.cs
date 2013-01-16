@@ -28,7 +28,8 @@ namespace Weaver.Functions {
 
 			for ( int i = 0 ; i < vUpdates.Count ; ++i ) {
 				KeyValuePair<string, WeaverQueryVal> pair = vUpdates[i];
-				each += (i == 0 ? "" : ";")+"it."+pair.Key+"="+q.AddParamIfString(pair.Value);
+				each += (i == 0 ? "" : ";")+"it.setProperty('"+pair.Key+"',"+
+					q.AddParamIfString(pair.Value)+")";
 			}
 
 			return each+"}";

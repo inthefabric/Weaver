@@ -10,8 +10,9 @@ namespace Weaver.Functions {
 
 		////////////////////////////////////////////////////////////////////////////////////////////////
 		/*--------------------------------------------------------------------------------------------*/
-		public WeaverFuncCustom(string pScript) {
+		public WeaverFuncCustom(string pScript, bool pSkipDotPrefix=false) {
 			vScript = pScript;
+			SkipDotPrefix = pSkipDotPrefix;
 		}
 
 		/*--------------------------------------------------------------------------------------------*/

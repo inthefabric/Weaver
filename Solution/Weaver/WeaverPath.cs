@@ -33,7 +33,7 @@ namespace Weaver {
 			string s = "g";
 
 			foreach ( IWeaverItem item in vItems ) {
-				s += (s == "" ? "" : ".")+item.BuildParameterizedString();
+				s += (s == "" || item.SkipDotPrefix ? "" : ".")+item.BuildParameterizedString();
 			}
 
 			return s;

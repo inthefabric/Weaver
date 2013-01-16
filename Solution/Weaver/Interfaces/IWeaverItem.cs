@@ -15,6 +15,7 @@ namespace Weaver.Interfaces {
 
 		/*--------------------------------------------------------------------------------------------*/
 		string ItemIdentifier { get; }
+		bool SkipDotPrefix { get; }
 
 		/*--------------------------------------------------------------------------------------------*/
 		string BuildParameterizedString();

@@ -29,7 +29,7 @@ namespace Weaver.Test.Fixtures.Functions {
 			mockVar.SetupGet(x => x.Name).Returns("_V0");
 
 			var f = new WeaverFuncToNodeVar<Person>(mockVar.Object);
-			Assert.AreEqual("each{_V0=g.v(it.id)}", f.BuildParameterizedString(), "Incorrect result.");
+			Assert.AreEqual("each{_V0=g.v(it)}", f.BuildParameterizedString(), "Incorrect result.");
 		}
 
 	}

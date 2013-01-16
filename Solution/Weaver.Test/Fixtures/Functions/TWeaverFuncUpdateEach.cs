@@ -51,7 +51,8 @@ namespace Weaver.Test.Fixtures.Functions {
 			var f = new WeaverFuncUpdateEach<Person>(updates);
 			f.Path = mockPath.Object;
 
-			Assert.AreEqual("each{it.PersonId=321}", f.BuildParameterizedString(), "Incorrect result.");
+			Assert.AreEqual("each{it.setProperty('PersonId',321)}", f.BuildParameterizedString(),
+				"Incorrect result.");
 		}
 
 		/*--------------------------------------------------------------------------------------------*/
@@ -75,8 +76,9 @@ namespace Weaver.Test.Fixtures.Functions {
 
 			var f = new WeaverFuncUpdateEach<Person>(updates);
 			f.Path = mockPath.Object;
-			
-			Assert.AreEqual("each{it.PersonId=321;it.Name=_P0;it.IsMale=true;it.Age=27.3}",
+
+			Assert.AreEqual("each{it.setProperty('PersonId',321);it.setProperty('Name',_P0);"+
+				"it.setProperty('IsMale',true);it.setProperty('Age',27.3)}",
 				f.BuildParameterizedString(), "Incorrect result.");
 		}
 

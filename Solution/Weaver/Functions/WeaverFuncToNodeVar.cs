@@ -17,7 +17,7 @@ namespace Weaver.Functions {
 
 		/*--------------------------------------------------------------------------------------------*/
 		public override string BuildParameterizedString() {
-			return "each{"+vNodeVar.Name+"=g.v(it.id)}";
+			return "each{"+vNodeVar.Name+"=g.v(it)}";
 		}
 
 	}
