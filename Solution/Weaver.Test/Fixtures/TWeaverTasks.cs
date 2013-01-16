@@ -29,6 +29,19 @@ namespace Weaver.Test.Fixtures {
 
 		/*--------------------------------------------------------------------------------------------*/
 		[Test]
+		public void BeginPathVarAlias() {
+			const string varName = "_V0";
+			var mockVar = new Mock<IWeaverVarAlias<Person>>();
+			mockVar.SetupGet(x => x.Name).Returns(varName);
+
+			IWeaverPathFromVarAlias<Person> p = WeaverTasks.BeginPath(mockVar.Object);
+
+			Assert.NotNull(p.Query, "Query should not be null.");
+			Assert.AreEqual(mockVar.Object, p.BaseVar, "Incorrect BaseNode.");
+		}
+
+		/*--------------------------------------------------------------------------------------------*/
+		[Test]
 		public void BeginPathFromManualIndex() {
 			const string name = "Person";
 			const int perId = 123;

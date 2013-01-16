@@ -29,7 +29,7 @@ namespace Weaver {
 		}
 
 		/*--------------------------------------------------------------------------------------------*/
-		public string BuildParameterizedScript() {
+		public virtual string BuildParameterizedScript() {
 			string s = "g";
 
 			foreach ( IWeaverItem item in vItems ) {
@@ -112,6 +112,29 @@ namespace Weaver {
 		public WeaverPath(IWeaverQuery pQuery, TBase pBaseNode) : this(pQuery) {
 			BaseNode = pBaseNode;
 			AddItem(BaseNode);
+		}
+
+	}
+
+
+	/*================================================================================================*/
+	public class WeaverPathFromVarAlias<TBase> : WeaverPath<TBase>, IWeaverPathFromVarAlias<TBase>
+													where TBase : class, IWeaverItemIndexable, new() {
+
+		public IWeaverVarAlias<TBase> BaseVar { get; private set; }
+		
+
+		////////////////////////////////////////////////////////////////////////////////////////////////
+		/*--------------------------------------------------------------------------------------------*/
+		public WeaverPathFromVarAlias(IWeaverQuery pQuery, IWeaverVarAlias<TBase> pBaseVar)
+																						: base(pQuery) {
+			BaseNode = new TBase { Path = this };
+			BaseVar = pBaseVar;
+		}
+
+		/*--------------------------------------------------------------------------------------------*/
+		public override string BuildParameterizedScript() {
+			return BaseVar.Name+base.BuildParameterizedScript().Substring(1);
 		}
 
 	}

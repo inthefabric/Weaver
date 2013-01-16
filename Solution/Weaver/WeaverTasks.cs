@@ -20,6 +20,12 @@ namespace Weaver {
 		public static IWeaverPath<T> BeginPath<T>(T pBaseNode) where T : class, IWeaverItem, new() {
 			return new WeaverPath<T>(new WeaverQuery(), pBaseNode);
 		}
+
+		/*--------------------------------------------------------------------------------------------*/
+		public static IWeaverPathFromVarAlias<T> BeginPath<T>(IWeaverVarAlias<T> pBaseNodeAlias)
+														where T : class, IWeaverItemIndexable, new() {
+			return new WeaverPathFromVarAlias<T>(new WeaverQuery(), pBaseNodeAlias);
+		}
 		
 		/*--------------------------------------------------------------------------------------------*/
 		public static IWeaverPathFromManualIndex<T> BeginPath<T>(string pIndexName,

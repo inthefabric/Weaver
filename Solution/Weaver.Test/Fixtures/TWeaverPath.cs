@@ -36,11 +36,29 @@ namespace Weaver.Test.Fixtures {
 
 			Assert.NotNull(p.BaseNode, "BaseNode should be filled.");
 			Assert.AreEqual(p, p.BaseNode.Path, "Incorrect BaseNode.Path.");
-
 			Assert.AreEqual(q, p.Query, "Incorrect Query.");
-
 			Assert.AreEqual(1, p.Length, "Incorrect Length.");
 			Assert.AreEqual(r, p.ItemAtIndex(0), "Incorrect item at index 0.");
+		}
+
+		/*--------------------------------------------------------------------------------------------*/
+		[Test]
+		public void NewVarAlias() {
+			IWeaverQuery q = new Mock<WeaverQuery>().Object;
+			const string varName = "_V0";
+
+			var mockVar = new Mock<IWeaverVarAlias<Person>>();
+			mockVar.SetupGet(x => x.Name).Returns(varName);
+
+			var p = new WeaverPathFromVarAlias<Person>(q, mockVar.Object);
+
+			Assert.NotNull(p.BaseNode, "BaseNode should be filled.");
+			Assert.AreEqual(p, p.BaseNode.Path, "Incorrect BaseNode.Path.");
+			
+			Assert.AreEqual(q, p.Query, "Incorrect Query.");
+			Assert.AreEqual(mockVar.Object, p.BaseVar, "Incorrect BaseVar.");
+
+			Assert.AreEqual(0, p.Length, "Incorrect Length.");
 		}
 
 		/*--------------------------------------------------------------------------------------------*/
@@ -107,7 +125,7 @@ namespace Weaver.Test.Fixtures {
 		[Test]
 		public void BuildParamScriptBase() {
 			IWeaverFuncAs<Person> personAlias;
-			IWeaverQuery q = new WeaverQuery();
+			IWeaverQuery q = new Mock<WeaverQuery>().Object;
 			IWeaverPath<Root> path = GetPathWithRootNode(q);
 
 			var lastItem = path.BaseNode
@@ -146,7 +164,7 @@ namespace Weaver.Test.Fixtures {
 		/*--------------------------------------------------------------------------------------------*/
 		[Test]
 		public void BuildParamScriptIndex() {
-			IWeaverQuery q = new WeaverQuery();
+			IWeaverQuery q = new Mock<WeaverQuery>().Object;
 			var path = new WeaverPathFromManualIndex<Person>(q, "Person", p => p.PersonId, 123);
 
 			var lastItem = path.BaseNode
@@ -158,6 +176,28 @@ namespace Weaver.Test.Fixtures {
 				".outE('PersonKnowsPerson').inV"+
 				".outE('PersonLikesCandy').inV"+
 					".property('Name')";
+
+			Assert.AreEqual(expect, path.BuildParameterizedScript(), "Incorrect result.");
+		}
+
+		/*--------------------------------------------------------------------------------------------*/
+		[Test]
+		public void BuildParamScriptVarAlias() {
+			IWeaverQuery q = new Mock<WeaverQuery>().Object;
+			const string varName = "_V0";
+
+			var mockVar = new Mock<IWeaverVarAlias<Person>>();
+			mockVar.SetupGet(x => x.Name).Returns(varName);
+
+			var path = new WeaverPathFromVarAlias<Person>(q, mockVar.Object);
+
+			var lastItem = path.BaseNode
+				.OutLikesCandy.ToNode
+					.Has(h => h.IsChocolate, WeaverFuncHasOp.EqualTo, false);
+
+			const string expect = varName+
+				".outE('PersonLikesCandy').inV"+
+					".has('IsChocolate',Tokens.T.eq,false)";
 
 			Assert.AreEqual(expect, path.BuildParameterizedScript(), "Incorrect result.");
 		}

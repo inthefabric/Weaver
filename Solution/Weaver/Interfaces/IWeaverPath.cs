@@ -35,6 +35,15 @@ namespace Weaver.Interfaces {
 
 
 	/*================================================================================================*/
+	public interface IWeaverPathFromVarAlias<TBase> : IWeaverPath<TBase>
+													where TBase : class, IWeaverItemIndexable, new() {
+
+		IWeaverVarAlias<TBase> BaseVar { get; }
+
+	}
+
+
+	/*================================================================================================*/
 	public interface IWeaverPathFromManualIndex<TBase> : IWeaverPath<TBase>
 													where TBase : class, IWeaverItemIndexable, new() {
 
