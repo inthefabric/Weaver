@@ -22,9 +22,9 @@ namespace Weaver {
 		}
 
 		/*--------------------------------------------------------------------------------------------*/
-		public static IWeaverPathFromVarAlias<T> BeginPath<T>(IWeaverVarAlias<T> pBaseNodeAlias)
-														where T : class, IWeaverItemIndexable, new() {
-			return new WeaverPathFromVarAlias<T>(new WeaverQuery(), pBaseNodeAlias);
+		public static IWeaverPathFromVarAlias<T> BeginPath<T>(IWeaverVarAlias<T> pBaseNodeAlias,
+										bool pCopyItem) where T : class, IWeaverItemIndexable, new() {
+			return new WeaverPathFromVarAlias<T>(new WeaverQuery(), pBaseNodeAlias, pCopyItem);
 		}
 		
 		/*--------------------------------------------------------------------------------------------*/

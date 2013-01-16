@@ -39,6 +39,7 @@ namespace Weaver.Interfaces {
 													where TBase : class, IWeaverItemIndexable, new() {
 
 		IWeaverVarAlias<TBase> BaseVar { get; }
+		bool CopyItem { get; }
 
 	}
 

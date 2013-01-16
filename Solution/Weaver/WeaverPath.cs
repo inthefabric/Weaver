@@ -122,19 +122,31 @@ namespace Weaver {
 													where TBase : class, IWeaverItemIndexable, new() {
 
 		public IWeaverVarAlias<TBase> BaseVar { get; private set; }
+		public bool CopyItem { get; private set; }
 		
 
 		////////////////////////////////////////////////////////////////////////////////////////////////
 		/*--------------------------------------------------------------------------------------------*/
-		public WeaverPathFromVarAlias(IWeaverQuery pQuery, IWeaverVarAlias<TBase> pBaseVar)
-																						: base(pQuery) {
+		public WeaverPathFromVarAlias(IWeaverQuery pQuery, IWeaverVarAlias<TBase> pBaseVar,
+																		bool pCopyItem) : base(pQuery) {
 			BaseNode = new TBase { Path = this };
 			BaseVar = pBaseVar;
+			CopyItem = pCopyItem;
 		}
 
 		/*--------------------------------------------------------------------------------------------*/
 		public override string BuildParameterizedScript() {
-			return BaseVar.Name+base.BuildParameterizedScript().Substring(1);
+			string s;
+
+			if ( CopyItem ) {
+				char type = (typeof(IWeaverRel).IsAssignableFrom(typeof(TBase)) ? 'e' : 'v');
+				s = "g."+type+"("+BaseVar.Name+")";
+			}
+			else {
+				s = BaseVar.Name;
+			}
+
+			return s+base.BuildParameterizedScript().Substring(1);
 		}
 
 	}

@@ -28,16 +28,18 @@ namespace Weaver.Test.Fixtures {
 		}
 
 		/*--------------------------------------------------------------------------------------------*/
-		[Test]
-		public void BeginPathVarAlias() {
+		[TestCase(true)]
+		[TestCase(false)]
+		public void BeginPathNodeVarAlias(bool pCopyItem) {
 			const string varName = "_V0";
 			var mockVar = new Mock<IWeaverVarAlias<Person>>();
 			mockVar.SetupGet(x => x.Name).Returns(varName);
 
-			IWeaverPathFromVarAlias<Person> p = WeaverTasks.BeginPath(mockVar.Object);
+			IWeaverPathFromVarAlias<Person> p = WeaverTasks.BeginPath(mockVar.Object, pCopyItem);
 
 			Assert.NotNull(p.Query, "Query should not be null.");
 			Assert.AreEqual(mockVar.Object, p.BaseVar, "Incorrect BaseNode.");
+			Assert.AreEqual(pCopyItem, p.CopyItem, "Incorrect CopyItem.");
 		}
 
 		/*--------------------------------------------------------------------------------------------*/
