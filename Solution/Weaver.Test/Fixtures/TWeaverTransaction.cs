@@ -152,7 +152,7 @@ namespace Weaver.Test.Fixtures {
 				() => tx.Finish(WeaverTransaction.ConclusionType.Success));
 		}
 		
-		/*--------------------------------------------------------------------------------------------*/
+		/*--------------------------------------------------------------------------------------------* /
 		[Test]
 		public void FinishNoQueries() {
 			var tx = new WeaverTransaction();

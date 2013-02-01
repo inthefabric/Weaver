@@ -61,9 +61,9 @@ namespace Weaver {
 		public void FinishWithoutStartStop(IWeaverVarAlias pFinalOutput=null) {
 			EnsureUnfinished();
 
-			if ( vQueries.Count == 0 ) {
+			/*if ( vQueries.Count == 0 ) {
 				throw new WeaverException("Could not finish transaction; no queries were added.");
-			}
+			}*/
 
 			Script = "";
 			Params = new Dictionary<string, string>();
