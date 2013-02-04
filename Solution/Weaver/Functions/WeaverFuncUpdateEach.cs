@@ -24,15 +24,15 @@ namespace Weaver.Functions {
 		/*--------------------------------------------------------------------------------------------*/
 		public override string BuildParameterizedString() {
 			IWeaverQuery q = Path.Query;
-			string each = "each{";
+			string sideEff = "sideEffect{";
 
 			for ( int i = 0 ; i < vUpdates.Count ; ++i ) {
 				KeyValuePair<string, WeaverQueryVal> pair = vUpdates[i];
-				each += (i == 0 ? "" : ";")+"it.setProperty('"+pair.Key+"',"+
+				sideEff += (i == 0 ? "" : ";")+"it.setProperty('"+pair.Key+"',"+
 					q.AddParamIfString(pair.Value)+")";
 			}
 
-			return each+"}";
+			return sideEff+"}";
 		}
 
 	}

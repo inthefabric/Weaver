@@ -29,7 +29,7 @@ namespace Weaver.Test.Fixtures.Functions {
 		[Test]
 		public void BuildParameterizedStringNode() {
 			var f = new WeaverFuncRemoveEach<Person>();
-			Assert.AreEqual("each{g.removeVertex(it)}", f.BuildParameterizedString(),
+			Assert.AreEqual("sideEffect{g.removeVertex(it)}", f.BuildParameterizedString(),
 				"Incorrect result.");
 		}
 
@@ -37,7 +37,7 @@ namespace Weaver.Test.Fixtures.Functions {
 		[Test]
 		public void BuildParameterizedStringRel() {
 			var f = new WeaverFuncRemoveEach<PersonLikesCandy>();
-			Assert.AreEqual("each{g.removeEdge(it)}", f.BuildParameterizedString(),
+			Assert.AreEqual("sideEffect{g.removeEdge(it)}", f.BuildParameterizedString(),
 				"Incorrect result.");
 		}
 

@@ -17,7 +17,7 @@ namespace Weaver.Functions {
 
 		/*--------------------------------------------------------------------------------------------*/
 		public override string BuildParameterizedString() {
-			return "each{g.remove"+(RemoveNode ? "Vertex" : "Edge")+"(it)}";
+			return "sideEffect{g.remove"+(RemoveNode ? "Vertex" : "Edge")+"(it)}";
 		}
 
 	}
