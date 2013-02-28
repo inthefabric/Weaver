@@ -57,6 +57,15 @@ namespace Weaver {
 			pCallingItem.Path.AddItem(func);
 			return pCallingItem;
 		}
+
+		/*--------------------------------------------------------------------------------------------*/
+		//TEST: WeaverItemExt.Table()
+		public static T Table<T>(this T pCallingItem, IWeaverTableVarAlias pAlias,
+													WeaverTableColumns pColumns) where T : IWeaverItem {
+			var func = new WeaverFuncTable(pAlias, pColumns);
+			pCallingItem.Path.AddItem(func);
+			return pCallingItem;
+		}
 		
 		
 		////////////////////////////////////////////////////////////////////////////////////////////////

@@ -15,4 +15,9 @@ namespace Weaver.Interfaces {
 		
 	}
 
+	/*================================================================================================*/
+	public interface IWeaverTableVarAlias : IWeaverVarAlias {
+
+	}
+
 }

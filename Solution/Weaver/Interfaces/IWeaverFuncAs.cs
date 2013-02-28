@@ -1,10 +1,19 @@
-﻿namespace Weaver.Interfaces {
+﻿using System;
+
+namespace Weaver.Interfaces {
 
 	/*================================================================================================*/
-	public interface IWeaverFuncAs<out TItem> : IWeaverFunc where TItem : IWeaverItemIndexable {
+	public interface IWeaverFuncAs : IWeaverFunc {
+
+		string Label { get; }
+		Type ItemType { get; }
+
+	}
+	
+	/*================================================================================================*/
+	public interface IWeaverFuncAs<out TItem> : IWeaverFuncAs where TItem : IWeaverItemIndexable {
 
 		TItem Item { get; }
-		string Label { get; }
 
 	}
 

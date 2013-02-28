@@ -1,4 +1,5 @@
-﻿using Weaver.Interfaces;
+﻿using System;
+using Weaver.Interfaces;
 using Weaver.Items;
 
 namespace Weaver.Functions {
@@ -8,6 +9,7 @@ namespace Weaver.Functions {
 																where TItem : IWeaverItemIndexable {
 
 		public TItem Item { get; private set; }
+		public Type ItemType { get; private set; }
 
 		private readonly string vLabel;
 
@@ -16,6 +18,7 @@ namespace Weaver.Functions {
 		/*--------------------------------------------------------------------------------------------*/
 		public WeaverFuncAs(TItem pItem) {
 			Item = pItem;
+			ItemType = typeof(TItem);
 			vLabel = "step"+pItem.Path.Length;
 		}
 

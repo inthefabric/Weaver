@@ -37,4 +37,15 @@ namespace Weaver {
 		
 	}
 
+
+	/*================================================================================================*/
+	public class WeaverTableVarAlias : WeaverVarAlias, IWeaverTableVarAlias {
+
+
+		////////////////////////////////////////////////////////////////////////////////////////////////
+		/*--------------------------------------------------------------------------------------------*/
+		public WeaverTableVarAlias(IWeaverTransaction pCurrentTx) : base(pCurrentTx) {}
+
+	}
+
 }

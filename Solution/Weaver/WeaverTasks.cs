@@ -178,6 +178,17 @@ namespace Weaver {
 		}
 
 		/*--------------------------------------------------------------------------------------------*/
+		//TEST: WeaverTasks.InitTableVar()
+		public static IWeaverQuery InitTableVar(IWeaverTransaction pCurrentTx,
+																		out IWeaverTableVarAlias pVar) {
+			pVar = new WeaverTableVarAlias(pCurrentTx);
+
+			var q = new WeaverQuery();
+			q.FinalizeQuery(pVar.Name+"=new Table()");
+			return q;
+		}
+
+		/*--------------------------------------------------------------------------------------------*/
 		public static IWeaverQuery StoreQueryResultAsVar(IWeaverTransaction pCurrentTx,
 														IWeaverQuery pQuery, out IWeaverVarAlias pVar) {
 			pVar = new WeaverVarAlias(pCurrentTx);

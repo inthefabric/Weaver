@@ -30,6 +30,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="WeaverTableColumns.cs" />
+    <Compile Include="WeaverTableColumn.cs" />
+    <Compile Include="Functions\WeaverFuncTable.cs" />
     <Compile Include="Interfaces\IWeaverItemWithId.cs" />
     <Compile Include="WeaverNodeExt.cs" />
     <Compile Include="Functions\WeaverFuncToNodeVar.cs" />
