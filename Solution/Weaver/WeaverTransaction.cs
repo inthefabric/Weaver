@@ -58,19 +58,6 @@ namespace Weaver {
 		}
 
 		/*--------------------------------------------------------------------------------------------*/
-		//TEST: WeaverTransaction.FinishWithConclusion()
-		public void FinishWithConclusion(ConclusionType pConclusion, IWeaverVarAlias pFinalOutput=null){
-			FinishWithoutStartStop();
-
-			Script = Script+"g.stopTransaction(TransactionalGraph.Conclusion." +
-				pConclusion.ToString().ToUpper() + ");";
-
-			if ( pFinalOutput != null ) {
-				Script += pFinalOutput.Name+";";
-			}
-		}
-
-		/*--------------------------------------------------------------------------------------------*/
 		public void FinishWithoutStartStop(IWeaverVarAlias pFinalOutput=null) {
 			EnsureUnfinished();
 

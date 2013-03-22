@@ -4,20 +4,14 @@ using Weaver.Items;
 namespace Weaver.Functions {
 
 	/*================================================================================================*/
-	public class WeaverFuncRemoveEach<TItem> : WeaverFunc where TItem : IWeaverItemIndexable {
-
-		public bool RemoveNode { get; private set; }
+	public class WeaverFuncRemoveEach<TItem> : WeaverFunc, IWeaverPathEnder	
+																	where TItem : IWeaverItemIndexable {
 
 
 		////////////////////////////////////////////////////////////////////////////////////////////////
 		/*--------------------------------------------------------------------------------------------*/
-		public WeaverFuncRemoveEach() {
-			RemoveNode = (typeof(IWeaverNode).IsAssignableFrom(typeof(TItem)));
-		}
-
-		/*--------------------------------------------------------------------------------------------*/
 		public override string BuildParameterizedString() {
-			return "sideEffect{g.remove"+(RemoveNode ? "Vertex" : "Edge")+"(it)}";
+			return "remove()";
 		}
 
 	}

@@ -24,6 +24,13 @@ namespace Weaver {
 
 		/*--------------------------------------------------------------------------------------------*/
 		public void AddItem(IWeaverItem pItem) {
+			int n = vItems.Count;
+
+			if ( n > 0 && vItems[n-1] is IWeaverPathEnder ) {
+				throw new WeaverPathException(this,
+					"This path was ended by the previous item ("+vItems[n-1]+").");
+			}
+
 			vItems.Add(pItem);
 			pItem.Path = this;
 		}

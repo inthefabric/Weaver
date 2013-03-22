@@ -122,6 +122,14 @@ namespace Weaver.Test.Fixtures {
 			Assert.AreEqual(len, p.Length, "Incorrect Length.");
 			Assert.AreEqual(candy, p.ItemAtIndex(len-1), "Incorrect item at index "+(len-1)+".");
 		}
+		
+		/*--------------------------------------------------------------------------------------------*/
+		[Test]
+		public void AddItemToEndedPath() {
+			IWeaverPath<Root> p = GetPathWithRootNode();
+			p.BaseNode.RemoveEach();
+			WeaverTestUtil.CheckThrows<WeaverPathException>(true, () => p.AddItem(new Candy()));
+		}
 
 		/*--------------------------------------------------------------------------------------------*/
 		[Test]
