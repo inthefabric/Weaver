@@ -21,7 +21,6 @@ namespace Weaver.Functions {
 		/*--------------------------------------------------------------------------------------------*/
 		public string PropertyName {
 			get {
-
 				if ( vPropName != null ) { return vPropName; }
 				vPropName = WeaverUtil.GetPropertyName(this, vProp);
 				return vPropName;
@@ -30,6 +29,10 @@ namespace Weaver.Functions {
 
 		/*--------------------------------------------------------------------------------------------*/
 		public override string BuildParameterizedString() {
+			if ( PropertyName.ToLower() == "id" ) {
+				return "id";
+			}
+
 			return "property('"+PropertyName+"')";
 		}
 

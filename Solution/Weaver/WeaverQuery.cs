@@ -46,12 +46,16 @@ namespace Weaver {
 
 		////////////////////////////////////////////////////////////////////////////////////////////////
 		/*--------------------------------------------------------------------------------------------*/
-		public void AddParam(string pParamName, IWeaverQueryVal pValue) {
+		private void AddParam(string pParamName, IWeaverQueryVal pValue) {
 			Params.Add(pParamName, pValue.GetQuoted());
 		}
 
 		/*--------------------------------------------------------------------------------------------*/
 		public string AddParam(IWeaverQueryVal pValue) {
+			if ( WeaverGlobalSettings.AddStringsToQueryScript ) {
+				return (pValue.IsString ? pValue.GetQuotedForce() : pValue.FixedText);
+			}
+
 			string p = NextParamName;
 			AddParam(p, pValue);
 			return p;

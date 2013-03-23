@@ -14,6 +14,9 @@ namespace Weaver.Test.Fixtures {
 		[TestCase(123.456f, false, "123.456F")]
 		[TestCase(123.456789, false, "123.456789D")]
 		[TestCase("1234", true, "1234")]
+		[TestCase("with 'inner' quote", true, "with \'inner\' quote")]
+		[TestCase("'outer quotes'", true, "\'outer quotes\'")]
+		[TestCase("1234", true, "1234")]
 		[TestCase(true, false, "true")]
 		[TestCase(null, false, "null")]
 		public void New(object pValue, bool pIsString, string pFixedText) {

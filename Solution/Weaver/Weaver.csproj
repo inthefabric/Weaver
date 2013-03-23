@@ -30,6 +30,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="WeaverGlobalSettings.cs" />
     <Compile Include="Interfaces\IWeaverPathEnder.cs" />
     <Compile Include="WeaverTableColumns.cs" />
     <Compile Include="WeaverTableColumn.cs" />

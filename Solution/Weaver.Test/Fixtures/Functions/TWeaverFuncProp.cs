@@ -37,6 +37,13 @@ namespace Weaver.Test.Fixtures.Functions {
 			Assert.AreEqual("property('PersonId')", f.BuildParameterizedString(), "Incorrect result.");
 		}
 
+		/*--------------------------------------------------------------------------------------------*/
+		[Test]
+		public void BuildParameterizedStringId() {
+			var f = new WeaverFuncProp<Person>(n => n.Id);
+			Assert.AreEqual("id", f.BuildParameterizedString(), "Incorrect result.");
+		}
+
 	}
 
 }

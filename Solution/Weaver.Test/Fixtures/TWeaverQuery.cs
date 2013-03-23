@@ -84,7 +84,7 @@ namespace Weaver.Test.Fixtures {
 		
 		
 		////////////////////////////////////////////////////////////////////////////////////////////////
-		/*--------------------------------------------------------------------------------------------*/
+		/*--------------------------------------------------------------------------------------------* /
 		[Test]
 		public void AddParam() {
 			const string key = "ParamA";
@@ -117,6 +117,34 @@ namespace Weaver.Test.Fixtures {
 			Assert.AreEqual(1, q.Params.Keys.Count, "Incorrect Params count.");
 			Assert.True(q.Params.ContainsKey(key), "Params should contain this key.");
 			Assert.AreEqual(val, q.Params[key], "Incorrect Params value for this key.");
+		}
+
+		/*--------------------------------------------------------------------------------------------*/
+		[TestCase(true)]
+		[TestCase(false)]
+		public void AddParamWithAddStringsToQueryScript(bool pIsString) {
+			const string value = "1234";
+			string expect;
+
+			var mockVal = new Mock<IWeaverQueryVal>();
+			mockVal.SetupGet(x => x.IsString).Returns(pIsString);
+
+			if ( pIsString ) {
+				expect = "'"+value+"'";
+				mockVal.Setup(x => x.GetQuotedForce()).Returns(expect);
+			}
+			else {
+				expect = value;
+				mockVal.SetupGet(x => x.FixedText).Returns(expect);
+			}
+
+			WeaverGlobalSettings.AddStringsToQueryScript = true;
+			var q = new WeaverQuery();
+			string result = q.AddParam(mockVal.Object);
+			WeaverGlobalSettings.AddStringsToQueryScript = false;
+
+			Assert.AreEqual(expect, result, "Incorrect result.");
+			Assert.AreEqual(0, q.Params.Keys.Count, "Incorrect Params count.");
 		}
 
 		/*--------------------------------------------------------------------------------------------*/
