@@ -110,6 +110,31 @@ namespace Weaver.Test.Fixtures {
 			expectParams.Add(pairMap["Name"], "Zach K");
 			WeaverTestUtil.CheckQueryParams(q, expectParams);
 		}
+		
+		/*--------------------------------------------------------------------------------------------*/
+		[Test]
+		public void AddNodeWithAddStringsToQueryScript() {
+			var person = new Person();
+			person.Id = 98765;
+			person.PersonId = 1234;
+			person.Name = "Zach 'Test' K";
+			person.Age = 27.1f;
+			person.IsMale = true;
+
+			WeaverGlobalSettings.AddStringsToQueryScript = true;
+			IWeaverQuery q = WeaverTasks.AddNode(person);
+			string script = q.Script;
+			WeaverGlobalSettings.AddStringsToQueryScript = false;
+
+			int bracketI = script.IndexOf('[');
+			int bracketIClose = script.LastIndexOf(']');
+			string vals = script.Substring(bracketI+1, bracketIClose-bracketI-1);
+			Dictionary<string, string> pairMap = WeaverTestUtil.GetPropListDictionary(vals);
+			Assert.True(pairMap.ContainsKey("Name"), "Missing Name key.");
+			Assert.AreEqual("'Zach \\'Test\\' K'", pairMap["Name"], "Incorrect Name value.");
+
+			WeaverTestUtil.CheckQueryParams(q, new Dictionary<string, string>());
+		}
 
 		/*--------------------------------------------------------------------------------------------*/
 		[TestCase(WeaverTasks.ItemType.Node, "Vertex")]

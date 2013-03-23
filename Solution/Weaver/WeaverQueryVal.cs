@@ -28,7 +28,7 @@ namespace Weaver {
 				FixedText = "null";
 			}
 			else if ( IsString ) {
-				FixedText = FixedText.Replace("'", "\'");
+				FixedText = FixedText.Replace("'", "\\'");
 			}
 			else if ( Original is bool ) {
 				FixedText = RawText.ToLower();

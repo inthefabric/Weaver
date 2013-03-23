@@ -20,11 +20,24 @@ namespace Weaver {
 
 			foreach ( PropertyInfo prop in pItem.GetType().GetProperties() ) {
 				object[] propAtts = prop.GetCustomAttributes(typeof(WeaverItemPropertyAttribute), true);
-				if ( propAtts.Length == 0 ) { continue; }
-				if ( !pIncludeId && prop.Name == "Id" ) { continue; }
+
+				if ( propAtts.Length == 0 ) {
+					continue;
+				}
+
+				if ( !pIncludeId && prop.Name == "Id" ) {
+					continue;
+				}
+
 				object val = prop.GetValue(pItem, null);
-				if ( val == null ) { continue; }
-				if ( i++ > 0 ) { list += ","; }
+
+				if ( val == null ) {
+					continue;
+				}
+
+				if ( i++ > 0 ) {
+					list += ",";
+				}
 
 				var valVal = new WeaverQueryVal(val, false);
 				list += prop.Name+":"+pQuery.AddParamIfString(valVal);
