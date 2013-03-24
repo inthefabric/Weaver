@@ -31,9 +31,9 @@ namespace Weaver {
 		}
 
 		/*--------------------------------------------------------------------------------------------*/
-		public void AddPropertyColumn<T>(Expression<Func<T, object>> pItemProperty)
-																		where T : IWeaverItemIndexable {
-			vCols.Add(WeaverTableColumn.Build(pItemProperty));
+		public void AddPropertyColumn<T>(Expression<Func<T, object>> pItemProperty,
+										string pPropertyScript=null) where T : IWeaverItemIndexable {
+			vCols.Add(WeaverTableColumn.Build(pItemProperty, pPropertyScript));
 		}
 
 

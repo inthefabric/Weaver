@@ -9,6 +9,7 @@ namespace Weaver {
 
 		public bool IsNull { get; protected set; }
 		public string PropName { get; protected set; }
+		public string PropScript { get; protected set; }
 		public Type PropForType { get; protected set; }
 		
 		
@@ -27,10 +28,11 @@ namespace Weaver {
 		}
 		
 		/*--------------------------------------------------------------------------------------------*/
-		public static WeaverTableColumn Build<T>(Expression<Func<T, object>> pItemProperty)
-																		where T : IWeaverItemIndexable {
+		public static WeaverTableColumn Build<T>(Expression<Func<T, object>> pItemProperty,
+										string pPropertyScript=null) where T : IWeaverItemIndexable {
 			var col = new WeaverTableColumn();
 			col.PropName = WeaverUtil.GetPropertyName(pItemProperty);
+			col.PropScript = pPropertyScript;
 			col.PropForType = typeof(T);
 			return col;
 		}

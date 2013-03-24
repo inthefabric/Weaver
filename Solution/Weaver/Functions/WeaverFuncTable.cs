@@ -49,13 +49,18 @@ namespace Weaver.Functions {
 					script += "{}";
 				}
 				else if ( col.PropName != null ) {
-					script += "{it."+col.PropName+"}";
+					script += "{it."+col.PropName+(col.PropScript ?? "")+"}";
 				}
 				else {
 					script += "{it}";
 				}
 
 				colI++;
+			}
+
+			if ( colI != Columns.Count ) {
+				throw new WeaverFuncException(this, colI+" of "+Columns.Count+" column(s) were added "+
+					"to the table. Ensure that an 'As' alias exists for each table column.");
 			}
 
 			return script;

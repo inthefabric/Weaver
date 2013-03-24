@@ -64,7 +64,13 @@ namespace Weaver {
 			MemberExpression me = GetMemberExpr(pExp);
 
 			if ( me != null ) {
-				return (me).Member.Name;
+				string prop = (me).Member.Name;
+
+				if ( prop == "Id" || prop == "Label" ) { //TEST: lowercase logic
+					return prop.ToLower();
+				}
+
+				return prop;
 			}
 
 			throw new WeaverException("Item property expression body was of type "+

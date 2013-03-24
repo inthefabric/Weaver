@@ -8,10 +8,9 @@ namespace Weaver.Functions {
 	public class WeaverFuncAs<TItem> : WeaverFunc, IWeaverFuncAs<TItem>
 																where TItem : IWeaverItemIndexable {
 
+		public string Label { get; set; }
 		public TItem Item { get; private set; }
 		public Type ItemType { get; private set; }
-
-		private readonly string vLabel;
 
 
 		////////////////////////////////////////////////////////////////////////////////////////////////
@@ -19,17 +18,12 @@ namespace Weaver.Functions {
 		public WeaverFuncAs(TItem pItem) {
 			Item = pItem;
 			ItemType = typeof(TItem);
-			vLabel = "step"+pItem.Path.Length;
-		}
-
-		/*--------------------------------------------------------------------------------------------*/
-		public string Label {
-			get { return vLabel+""; }
+			Label = "step"+pItem.Path.Length;
 		}
 
 		/*--------------------------------------------------------------------------------------------*/
 		public override string BuildParameterizedString() {
-			return "as('"+vLabel+"')";
+			return "as('"+Label+"')";
 		}
 
 	}

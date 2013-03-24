@@ -5,7 +5,7 @@ namespace Weaver.Interfaces {
 	/*================================================================================================*/
 	public interface IWeaverFuncAs : IWeaverFunc {
 
-		string Label { get; }
+		string Label { get; set; }
 		Type ItemType { get; }
 
 	}
