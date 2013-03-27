@@ -3,15 +3,12 @@
 	/*================================================================================================*/
 	public interface IWeaverTransaction : IWeaverScript {
 	
-		WeaverTransaction.ConclusionType Conclusion { get; set; }
-		
 		
 		////////////////////////////////////////////////////////////////////////////////////////////////
 		/*--------------------------------------------------------------------------------------------*/
-		void AddQuery(IWeaverQuery pQuery);
+		IWeaverQuery AddQuery(IWeaverQuery pQuery);
 		string GetNextVarName();
-		void Finish(WeaverTransaction.ConclusionType pConclusion, IWeaverVarAlias pFinalOutput=null);
-		void FinishWithoutStartStop(IWeaverVarAlias pFinalOutput=null);
+		IWeaverTransaction Finish(IWeaverVarAlias pFinalOutput=null);
 		
 	}
 

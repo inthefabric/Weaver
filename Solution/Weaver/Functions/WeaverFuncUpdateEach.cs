@@ -29,7 +29,7 @@ namespace Weaver.Functions {
 			for ( int i = 0 ; i < vUpdates.Count ; ++i ) {
 				KeyValuePair<string, WeaverQueryVal> pair = vUpdates[i];
 				sideEff += (i == 0 ? "" : ";")+"it.setProperty('"+pair.Key+"',"+
-					q.AddParamIfString(pair.Value)+")";
+					q.AddParam(pair.Value)+")";
 			}
 
 			return sideEff+"}";

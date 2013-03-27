@@ -14,22 +14,20 @@ namespace Weaver.Test.Fixtures {
 
 		////////////////////////////////////////////////////////////////////////////////////////////////
 		/*--------------------------------------------------------------------------------------------*/
-		[TestCase(false, WeaverTransaction.ConclusionType.Success, null)]
-		[TestCase(true, WeaverTransaction.ConclusionType.Success, "SUCCESS")]
-		[TestCase(true, WeaverTransaction.ConclusionType.Failure, "FAILURE")]
-		public void Finish(bool pWithStartStop, WeaverTransaction.ConclusionType pConclude,
-																			string pConcludeStr) {
-			var q1Params = new Dictionary<string, string>();
-			q1Params.Add("_P0", "first");
-			q1Params.Add("_P1", "second");
-			
-			var q2Params = new Dictionary<string, string>();
-			q2Params.Add("_P0", "third");
-			q2Params.Add("_P1", "fourth");
-			q2Params.Add("_P2", "fifth");
-			
-			var q3Params = new Dictionary<string, string>();
-			q3Params.Add("_P0", "sixth");
+		[TestCase(null)]
+		[TestCase("_endVar")]
+		public void Finish(string pFinalOutput) {
+			var q1Params = new Dictionary<string, IWeaverQueryVal>();
+			q1Params.Add("_P0", new WeaverQueryVal("first"));
+			q1Params.Add("_P1", new WeaverQueryVal("second"));
+
+			var q2Params = new Dictionary<string, IWeaverQueryVal>();
+			q2Params.Add("_P0", new WeaverQueryVal("third"));
+			q2Params.Add("_P1", new WeaverQueryVal("fourth"));
+			q2Params.Add("_P2", new WeaverQueryVal("fifth"));
+
+			var q3Params = new Dictionary<string, IWeaverQueryVal>();
+			q3Params.Add("_P0", new WeaverQueryVal("sixth"));
 
 			var mockQ1 = new Mock<IWeaverQuery>();
 			mockQ1.SetupGet(x => x.Script).Returns("g.outE(_P0).inV.inE(_P1).outV;");
@@ -48,23 +46,23 @@ namespace Weaver.Test.Fixtures {
 			tx.AddQuery(mockQ2.Object);
 			tx.AddQuery(mockQ3.Object);
 
-			string expectScript = 
+			IWeaverVarAlias finalVar = null;
+
+			if ( pFinalOutput != null ) {
+				var mockVar = new Mock<IWeaverVarAlias>();
+				mockVar.SetupGet(x => x.Name).Returns(pFinalOutput);
+				finalVar = mockVar.Object;
+			}
+
+			string expectScript =
 				"g.outE(_TP0).inV.inE(_TP1).outV;"+
 				"g.inV.inE(_TP2).inV.inE(_TP3).inE(_TP4);"+
-				"g.inV.inE(_TP5);";
+				"g.inV.inE(_TP5);"+
+				(pFinalOutput == null ? "" : pFinalOutput+";");
 
-			if ( pWithStartStop ) {
-				tx.Finish(pConclude);
+			tx.Finish(finalVar);
 
-				expectScript = "g.startTransaction();"+
-					expectScript+
-					"g.stopTransaction(TransactionalGraph.Conclusion."+pConcludeStr+");";
-			}
-			else {
-				tx.FinishWithoutStartStop();
-			}
-
-			var expectParams = new Dictionary<string, string>();
+			var expectParams = new Dictionary<string, IWeaverQueryVal>();
 			expectParams.Add("_TP0", q1Params["_P0"]);
 			expectParams.Add("_TP1", q1Params["_P1"]);
 			expectParams.Add("_TP2", q2Params["_P0"]);
@@ -74,39 +72,6 @@ namespace Weaver.Test.Fixtures {
 
 			Assert.AreEqual(expectScript, tx.Script, "Incorrect Script.");
 			Assert.AreEqual(expectParams, tx.Params, "Incorrect Params.");
-		}
-		
-		/*--------------------------------------------------------------------------------------------*/
-		[TestCase(true)]
-		[TestCase(false)]
-		public void FinishWithVar(bool pWithStartStop) {
-			const string name = "_var0";
-		
-			var mockVar = new Mock<IWeaverVarAlias>();
-			mockVar.SetupGet(x => x.Name).Returns(name);
-			
-			var mockQ1 = new Mock<IWeaverQuery>();
-			mockQ1.SetupGet(x => x.Script).Returns("g.V;");
-			mockQ1.SetupGet(x => x.Params).Returns(new Dictionary<string,string>());
-			
-			var tx = new WeaverTransaction();
-			tx.AddQuery(mockQ1.Object);
-			
-			string expectScript = "g.V;";
-
-			if ( pWithStartStop ) {
-				tx.Finish(WeaverTransaction.ConclusionType.Success, mockVar.Object);
-
-				expectScript = "g.startTransaction();"+expectScript+
-					"g.stopTransaction(TransactionalGraph.Conclusion.SUCCESS);";
-			}
-			else {
-				tx.FinishWithoutStartStop(mockVar.Object);
-			}
-
-			expectScript += name+";";
-
-			Assert.AreEqual(expectScript, tx.Script, "Incorrect Script.");
 		}
 		
 		
@@ -125,7 +90,7 @@ namespace Weaver.Test.Fixtures {
 
 			var tx = new WeaverTransaction();
 			tx.AddQuery(wq);
-			tx.Finish(WeaverTransaction.ConclusionType.Success);
+			tx.Finish();
 			WeaverTestUtil.CheckThrows<WeaverException>(true, () => tx.AddQuery(wq));
 		}
 
@@ -147,17 +112,9 @@ namespace Weaver.Test.Fixtures {
 
 			var tx = new WeaverTransaction();
 			tx.AddQuery(wq);
-			tx.Finish(WeaverTransaction.ConclusionType.Success);
+			tx.Finish();
 			WeaverTestUtil.CheckThrows<WeaverException>(true,
-				() => tx.Finish(WeaverTransaction.ConclusionType.Success));
-		}
-		
-		/*--------------------------------------------------------------------------------------------* /
-		[Test]
-		public void FinishNoQueries() {
-			var tx = new WeaverTransaction();
-			WeaverTestUtil.CheckThrows<WeaverException>(true,
-				() => tx.Finish(WeaverTransaction.ConclusionType.Success));
+				() => tx.Finish());
 		}
 		
 		
@@ -166,7 +123,7 @@ namespace Weaver.Test.Fixtures {
 		private IWeaverQuery GetBasicQuery() {
 			var q = new Mock<IWeaverQuery>();
 			q.SetupGet(x => x.Script).Returns("g.V;");
-			q.SetupGet(x => x.Params).Returns(new Dictionary<string, string>());
+			q.SetupGet(x => x.Params).Returns(new Dictionary<string, IWeaverQueryVal>());
 			return q.Object;
 		}
 

@@ -129,23 +129,23 @@ namespace Weaver {
 													where TBase : class, IWeaverItemIndexable, new() {
 
 		public IWeaverVarAlias<TBase> BaseVar { get; private set; }
-		public bool CopyItem { get; private set; }
+		public bool CopyItemIntoVar { get; private set; }
 		
 
 		////////////////////////////////////////////////////////////////////////////////////////////////
 		/*--------------------------------------------------------------------------------------------*/
 		public WeaverPathFromVarAlias(IWeaverQuery pQuery, IWeaverVarAlias<TBase> pBaseVar,
-																		bool pCopyItem) : base(pQuery) {
+																bool pCopyItemIntoVar) : base(pQuery) {
 			BaseNode = new TBase { Path = this };
 			BaseVar = pBaseVar;
-			CopyItem = pCopyItem;
+			CopyItemIntoVar = pCopyItemIntoVar;
 		}
 
 		/*--------------------------------------------------------------------------------------------*/
 		public override string BuildParameterizedScript() {
 			string s;
 
-			if ( CopyItem ) {
+			if ( CopyItemIntoVar ) {
 				char type = (typeof(IWeaverRel).IsAssignableFrom(typeof(TBase)) ? 'e' : 'v');
 				s = "g."+type+"("+BaseVar.Name+")";
 			}
@@ -154,26 +154,6 @@ namespace Weaver {
 			}
 
 			return s+base.BuildParameterizedScript().Substring(1);
-		}
-
-	}
-
-
-	/*================================================================================================*/
-	public class WeaverPathFromManualIndex<TBase> : WeaverPath<TBase>, IWeaverPathFromManualIndex<TBase>
-													where TBase : class, IWeaverItemIndexable, new() {
-
-		public WeaverFuncManualIndex<TBase> BaseIndex { get; protected set; }
-
-
-		////////////////////////////////////////////////////////////////////////////////////////////////
-		/*--------------------------------------------------------------------------------------------*/
-		public WeaverPathFromManualIndex(IWeaverQuery pQuery, string pIndexName,
-												Expression<Func<TBase, object>> pPropFunc, object pValue,
-															bool pSingleResult=true) : base(pQuery) {
-			BaseNode = new TBase { Path = this };
-			BaseIndex = new WeaverFuncManualIndex<TBase>(pIndexName, pPropFunc, pValue, pSingleResult);
-			AddItem(BaseIndex);
 		}
 
 	}

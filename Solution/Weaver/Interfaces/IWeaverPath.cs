@@ -39,16 +39,7 @@ namespace Weaver.Interfaces {
 													where TBase : class, IWeaverItemIndexable, new() {
 
 		IWeaverVarAlias<TBase> BaseVar { get; }
-		bool CopyItem { get; }
-
-	}
-
-
-	/*================================================================================================*/
-	public interface IWeaverPathFromManualIndex<TBase> : IWeaverPath<TBase>
-													where TBase : class, IWeaverItemIndexable, new() {
-
-		WeaverFuncManualIndex<TBase> BaseIndex { get; }
+		bool CopyItemIntoVar { get; }
 
 	}
 

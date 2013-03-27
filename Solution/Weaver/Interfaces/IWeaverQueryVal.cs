@@ -8,6 +8,7 @@
 
 		string RawText { get; }
 		string FixedText { get; }
+		//string NumericSuffixText { get; }
 		bool IsString { get; }
 		
 

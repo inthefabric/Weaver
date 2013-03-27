@@ -44,7 +44,7 @@ namespace Weaver.Functions {
 		/*--------------------------------------------------------------------------------------------*/
 		public override string BuildParameterizedString() {
 			var qvVal = new WeaverQueryVal(Value, false);
-			return "V('"+IndexName+"',"+Path.Query.AddParamIfString(qvVal)+")"+
+			return "V('"+IndexName+"',"+Path.Query.AddParam(qvVal)+")"+
 				(SingleResult ? "[0]" : "");
 		}
 

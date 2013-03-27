@@ -36,15 +36,16 @@ namespace Weaver.Test.Utils {
 		}
 
 		/*--------------------------------------------------------------------------------------------*/
-		public static void CheckQueryParams(IWeaverQuery pQuery, Dictionary<string, string> pExpect) {
+		public static void CheckQueryParamsOriginalVal(IWeaverQuery pQuery, 
+														Dictionary<string, IWeaverQueryVal> pExpect) {
 			Assert.NotNull(pQuery.Params, "Query.Params should not be null.");
 			Assert.AreEqual(pExpect.Keys.Count, pQuery.Params.Keys.Count,
 				"Incorrect Query.Params count.");
 
 			foreach ( string key in pExpect.Keys ) {
 				Assert.True(pQuery.Params.ContainsKey(key), "Missing Query.Params["+key+"].");
-				Assert.AreEqual(pExpect[key], pQuery.Params[key],
-					"Incorrect value for Query.Params["+key+"].");
+				Assert.AreEqual(pExpect[key].Original, pQuery.Params[key].Original,
+					"Incorrect value for Query.Params["+key+"].Original.");
 			}
 		}
 

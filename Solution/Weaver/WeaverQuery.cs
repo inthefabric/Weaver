@@ -9,14 +9,14 @@ namespace Weaver {
 
 		public bool IsFinalized { get; private set; }
 		public string Script { get; private set; }
-		public Dictionary<string, string> Params { get; private set; }
+		public Dictionary<string, IWeaverQueryVal> Params { get; private set; }
 		public IWeaverVarAlias ResultVar { get; private set; }
 
 		
 		////////////////////////////////////////////////////////////////////////////////////////////////
 		/*--------------------------------------------------------------------------------------------*/
 		public WeaverQuery() {
-			Params = new Dictionary<string, string>();
+			Params = new Dictionary<string, IWeaverQueryVal>();
 		}
 
 		/*--------------------------------------------------------------------------------------------*/
@@ -46,30 +46,20 @@ namespace Weaver {
 
 		////////////////////////////////////////////////////////////////////////////////////////////////
 		/*--------------------------------------------------------------------------------------------*/
-		private void AddParam(string pParamName, IWeaverQueryVal pValue) {
-			Params.Add(pParamName, pValue.GetQuoted());
+		public string AddStringParam(string pValue, bool pAllowQuote=true) {
+			return AddParamInner(new WeaverQueryVal(pValue, pAllowQuote));
 		}
 
 		/*--------------------------------------------------------------------------------------------*/
 		public string AddParam(IWeaverQueryVal pValue) {
-			if ( WeaverGlobalSettings.AddStringsToQueryScript ) {
-				return (pValue.IsString ? pValue.GetQuotedForce() : pValue.FixedText);
-			}
+			return AddParamInner(pValue);
+		}
 
-			string p = NextParamName;
-			AddParam(p, pValue);
+		/*--------------------------------------------------------------------------------------------*/
+		private string AddParamInner(IWeaverQueryVal pValue) {
+			string p = "_P"+Params.Keys.Count;
+			Params.Add(p, pValue);
 			return p;
-		}
-
-		/*--------------------------------------------------------------------------------------------*/
-		public string AddParamIfString(IWeaverQueryVal pValue) {
-			if ( !pValue.IsString ) { return pValue.FixedText; }
-			return AddParam(pValue);
-		}
-
-		/*--------------------------------------------------------------------------------------------*/
-		public string NextParamName {
-			get { return "_P"+Params.Keys.Count; }
 		}
 
 	}

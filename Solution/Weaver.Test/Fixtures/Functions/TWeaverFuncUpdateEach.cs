@@ -43,7 +43,7 @@ namespace Weaver.Test.Fixtures.Functions {
 			updates.AddUpdate(person, p => p.PersonId);
 
 			var mockQuery = new Mock<IWeaverQuery>();
-			mockQuery.Setup(x => x.AddParamIfString(updates[0].Value)).Returns("321");
+			mockQuery.Setup(x => x.AddParam(updates[0].Value)).Returns("321");
 
 			var mockPath = new Mock<IWeaverPath>();
 			mockPath.SetupGet(x => x.Query).Returns(mockQuery.Object);
@@ -66,10 +66,10 @@ namespace Weaver.Test.Fixtures.Functions {
 			updates.AddUpdate(person, p => p.Age);
 			
 			var mockQuery = new Mock<IWeaverQuery>();
-			mockQuery.Setup(x => x.AddParamIfString(updates[0].Value)).Returns("321");
-			mockQuery.Setup(x => x.AddParamIfString(updates[1].Value)).Returns("_P0");
-			mockQuery.Setup(x => x.AddParamIfString(updates[2].Value)).Returns("true");
-			mockQuery.Setup(x => x.AddParamIfString(updates[3].Value)).Returns("27.3");
+			mockQuery.Setup(x => x.AddParam(updates[0].Value)).Returns("321");
+			mockQuery.Setup(x => x.AddParam(updates[1].Value)).Returns("_P0");
+			mockQuery.Setup(x => x.AddParam(updates[2].Value)).Returns("true");
+			mockQuery.Setup(x => x.AddParam(updates[3].Value)).Returns("27.3");
 
 			var mockPath = new Mock<IWeaverPath>();
 			mockPath.SetupGet(x => x.Query).Returns(mockQuery.Object);

@@ -84,31 +84,29 @@ namespace Weaver.Test.Fixtures {
 		
 		
 		////////////////////////////////////////////////////////////////////////////////////////////////
-		/*--------------------------------------------------------------------------------------------* /
+		/*--------------------------------------------------------------------------------------------*/
 		[Test]
-		public void AddParam() {
-			const string key = "ParamA";
+		public void AddStringParam() {
+			const string key = "_P0";
 			const string val = "ValueA";
 
-			var mockVal = new Mock<IWeaverQueryVal>();
-			mockVal.Setup(x => x.GetQuoted()).Returns(val);
-
 			var q = new WeaverQuery();
-			q.AddParam(key, mockVal.Object);
+			string result = q.AddStringParam(val);
 
+			Assert.AreEqual(key, result, "Incorrect result.");
 			Assert.AreEqual(1, q.Params.Keys.Count, "Incorrect Params count.");
 			Assert.True(q.Params.ContainsKey(key), "Params should contain this key.");
-			Assert.AreEqual(val, q.Params[key], "Incorrect Params value for this key.");
+			Assert.AreEqual(val, q.Params[key].Original, "Incorrect Params.Original.");
 		}
 
 		/*--------------------------------------------------------------------------------------------*/
 		[Test]
-		public void AddParamUnnamed() {
+		public void AddParamIntVal() {
 			const string key = "_P0";
-			const string val = "ValueA";
+			const int val = 235632;
 
 			var mockVal = new Mock<IWeaverQueryVal>();
-			mockVal.Setup(x => x.GetQuoted()).Returns(val);
+			mockVal.SetupGet(x => x.Original).Returns(val);
 
 			var q = new WeaverQuery();
 			string result = q.AddParam(mockVal.Object);
@@ -116,76 +114,21 @@ namespace Weaver.Test.Fixtures {
 			Assert.AreEqual(key, result, "Incorrect result.");
 			Assert.AreEqual(1, q.Params.Keys.Count, "Incorrect Params count.");
 			Assert.True(q.Params.ContainsKey(key), "Params should contain this key.");
-			Assert.AreEqual(val, q.Params[key], "Incorrect Params value for this key.");
-		}
-
-		/*--------------------------------------------------------------------------------------------*/
-		[TestCase(true)]
-		[TestCase(false)]
-		public void AddParamWithAddStringsToQueryScript(bool pIsString) {
-			const string value = "1234";
-			string expect;
-
-			var mockVal = new Mock<IWeaverQueryVal>();
-			mockVal.SetupGet(x => x.IsString).Returns(pIsString);
-
-			if ( pIsString ) {
-				expect = "'"+value+"'";
-				mockVal.Setup(x => x.GetQuotedForce()).Returns(expect);
-			}
-			else {
-				expect = value;
-				mockVal.SetupGet(x => x.FixedText).Returns(expect);
-			}
-
-			WeaverGlobalSettings.AddStringsToQueryScript = true;
-			var q = new WeaverQuery();
-			string result = q.AddParam(mockVal.Object);
-			WeaverGlobalSettings.AddStringsToQueryScript = false;
-
-			Assert.AreEqual(expect, result, "Incorrect result.");
-			Assert.AreEqual(0, q.Params.Keys.Count, "Incorrect Params count.");
-		}
-
-		/*--------------------------------------------------------------------------------------------*/
-		[TestCase(true)]
-		[TestCase(false)]
-		public void AddParamIfString(bool pIsStr) {
-			const string key = "_P0";
-			const string val = "ValueA";
-			const string fix = "FixedA";
-
-			var mockVal = new Mock<IWeaverQueryVal>();
-			mockVal.Setup(x => x.GetQuoted()).Returns(val);
-			mockVal.SetupGet(x => x.FixedText).Returns(fix);
-			mockVal.SetupGet(x => x.IsString).Returns(pIsStr);
-
-			var q = new WeaverQuery();
-			string result = q.AddParamIfString(mockVal.Object);
-
-			if ( pIsStr ) {
-				Assert.AreEqual(key, result, "Incorrect result.");
-				Assert.AreEqual(1, q.Params.Keys.Count, "Incorrect Params count.");
-				Assert.True(q.Params.ContainsKey(key), "Params should contain this key.");
-				Assert.AreEqual(val, q.Params[key], "Incorrect Params value for this key.");
-			}
-			else {
-				Assert.AreEqual(fix, result, "Incorrect result.");
-				Assert.AreEqual(0, q.Params.Keys.Count, "Incorrect Params count.");
-			}
+			Assert.AreEqual(val, q.Params[key].Original, "Incorrect Params value for this key.");
 		}
 
 		/*--------------------------------------------------------------------------------------------*/
 		[Test]
-		public void NextParamName() {
+		public void AddParamName() {
 			var q = new WeaverQuery();
 
 			var mockVal = new Mock<IWeaverQueryVal>();
 			mockVal.Setup(x => x.GetQuoted()).Returns("fake");
 
 			for ( int i = 0 ; i <= 101 ; ++i ) {
-				Assert.AreEqual("_P"+i, q.NextParamName, "Incorrect result at count "+i+".");
-				q.AddParam(mockVal.Object);
+				string name = q.AddStringParam("fake");
+				Assert.AreEqual("_P"+i, name, "Incorrect result at count "+i+".");
+				
 			}
 		}
 

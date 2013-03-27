@@ -58,33 +58,9 @@ namespace Weaver.Test.Fixtures {
 			
 			Assert.AreEqual(q, p.Query, "Incorrect Query.");
 			Assert.AreEqual(mockVar.Object, p.BaseVar, "Incorrect BaseVar.");
-			Assert.AreEqual(copyItem, p.CopyItem, "Incorrect CopyItem.");
+			Assert.AreEqual(copyItem, p.CopyItemIntoVar, "Incorrect CopyItem.");
 
 			Assert.AreEqual(0, p.Length, "Incorrect Length.");
-		}
-
-		/*--------------------------------------------------------------------------------------------*/
-		[Test]
-		public void NewManualIndex() {
-			const int perId = 99;
-			const string indexName = "Person";
-
-			IWeaverQuery q = new Mock<WeaverQuery>().Object;
-			var p = new WeaverPathFromManualIndex<Person>(q, "Person", x => x.PersonId, perId);
-
-			Assert.NotNull(p.BaseNode, "BaseNode should be filled.");
-			Assert.AreEqual(p, p.BaseNode.Path, "Incorrect BaseNode.Path.");
-			Assert.NotNull(p.BaseIndex, "BaseIndex should be filled.");
-
-			Assert.AreEqual(indexName, p.BaseIndex.IndexName, "Incorrect BaseIndex.IndexName.");
-			Assert.AreEqual(indexName+"Id", p.BaseIndex.PropertyName,
-				"Incorrect BaseIndex.PropertyName.");
-			Assert.AreEqual(perId, p.BaseIndex.Value, "Incorrect BaseIndex.Value.");
-
-			Assert.AreEqual(q, p.Query, "Incorrect Query.");
-
-			Assert.AreEqual(1, p.Length, "Incorrect Length.");
-			Assert.AreEqual(p.BaseIndex, p.ItemAtIndex(0), "Incorrect item at index 0.");
 		}
 
 		/*--------------------------------------------------------------------------------------------*/
@@ -160,35 +136,21 @@ namespace Weaver.Test.Fixtures {
 				".outE('RootHasPerson').inV"+
 					".as('step8')"+
 				".outE('PersonKnowsPerson').inV"+
-					".has('PersonId',Tokens.T.lte,5)"+
+					".has('PersonId',Tokens.T.lte,_P0)"+
 				".inE('PersonKnowsPerson').outV"+
 					".back('step8')"+
 				".outE('PersonLikesCandy')"+
-					".has('Enjoyment',Tokens.T.gte,0.2D)"+
+					".has('Enjoyment',Tokens.T.gte,_P1)"+
 					".inV"+
 				".inE('PersonLikesCandy').outV"+
 					".property('Name')";
 			
 			Assert.AreEqual(expect, path.BuildParameterizedScript(), "Incorrect result.");
-		}
 
-		/*--------------------------------------------------------------------------------------------*/
-		[Test]
-		public void BuildParamScriptIndex() {
-			IWeaverQuery q = new Mock<WeaverQuery>().Object;
-			var path = new WeaverPathFromManualIndex<Person>(q, "Person", p => p.PersonId, 123);
-
-			var lastItem = path.BaseNode
-				.OutKnowsPerson.ToNode
-				.OutLikesCandy.ToNode
-				.Prop(p => p.Name);
-
-			const string expect = "g.idx(_P0).get('PersonId',123)[0]"+
-				".outE('PersonKnowsPerson').inV"+
-				".outE('PersonLikesCandy').inV"+
-					".property('Name')";
-
-			Assert.AreEqual(expect, path.BuildParameterizedScript(), "Incorrect result.");
+			var expectParams = new Dictionary<string, IWeaverQueryVal>();
+			expectParams.Add("_P0", new WeaverQueryVal(5));
+			expectParams.Add("_P1", new WeaverQueryVal(0.2));
+			WeaverTestUtil.CheckQueryParamsOriginalVal(q, expectParams);
 		}
 
 		/*--------------------------------------------------------------------------------------------*/
@@ -208,9 +170,13 @@ namespace Weaver.Test.Fixtures {
 
 			string expect = (pCopyItem ? "g.v("+varName+")" : varName)+
 				".outE('PersonLikesCandy').inV"+
-					".has('IsChocolate',Tokens.T.eq,false)";
+					".has('IsChocolate',Tokens.T.eq,_P0)";
 
 			Assert.AreEqual(expect, path.BuildParameterizedScript(), "Incorrect result.");
+
+			var expectParams = new Dictionary<string, IWeaverQueryVal>();
+			expectParams.Add("_P0", new WeaverQueryVal(false));
+			WeaverTestUtil.CheckQueryParamsOriginalVal(q, expectParams);
 		}
 
 		/*--------------------------------------------------------------------------------------------*/

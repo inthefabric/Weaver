@@ -10,6 +10,7 @@ namespace Weaver {
 
 		public string RawText { get; private set; }
 		public string FixedText { get; private set; }
+		//public string NumericSuffixText { get; private set; }
 		public bool IsString { get; private set; }
 		
 
@@ -27,20 +28,23 @@ namespace Weaver {
 				AllowQuote = false;
 				FixedText = "null";
 			}
-			else if ( IsString ) {
+			/*else if ( IsString ) {
 				FixedText = FixedText.Replace("'", "\\'");
-			}
+			}*/
 			else if ( Original is bool ) {
 				FixedText = RawText.ToLower();
 			}
 			else if ( Original is double ) {
-				FixedText = RawText+"D";
+				FixedText = RawText;
+				//NumericSuffixText = RawText+"D";
 			}
 			else if ( Original is float ) {
-				FixedText = RawText+"F";
+				FixedText = RawText;
+				//NumericSuffixText = RawText+"F";
 			}
 			else if ( Original is long ) {
-				FixedText = RawText+"L";
+				FixedText = RawText;
+				//NumericSuffixText = RawText+"L";
 			}
 		}
 

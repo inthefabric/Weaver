@@ -4,6 +4,7 @@ using System.Linq.Expressions;
 using NUnit.Framework;
 using Weaver.Exceptions;
 using Weaver.Functions;
+using Weaver.Interfaces;
 using Weaver.Test.Common.Nodes;
 using Weaver.Test.Utils;
 
@@ -43,21 +44,29 @@ namespace Weaver.Test.Fixtures {
 			Assert.AreEqual(pIncludeId, pairMap.ContainsKey("Id"), "Incorrect Id key.");
 			Assert.AreEqual((pName != null), pairMap.ContainsKey("Name"), "Incorrect Name key.");
 
-			Assert.AreEqual("3456789", pairMap["PersonId"], "Incorrect PersonId value.");
-			Assert.AreEqual("27.3F", pairMap["Age"], "Incorrect Age value.");
-			Assert.AreEqual("true", pairMap["IsMale"], "Incorrect IsMale value.");
+			Assert.AreEqual("_P0", pairMap["PersonId"], "Incorrect PersonId value.");
+			Assert.AreEqual("_P1", pairMap["IsMale"], "Incorrect IsMale value.");
+			Assert.AreEqual("_P2", pairMap["Age"], "Incorrect Age value.");
 
-			if ( pIncludeId ) {
-				Assert.AreEqual("123456789123L", pairMap["Id"], "Incorrect Id value.");
-			}
+			var expectParams = new Dictionary<string, IWeaverQueryVal>();
+			expectParams.Add("_P0", new WeaverQueryVal(p.PersonId));
+			expectParams.Add("_P1", new WeaverQueryVal(p.IsMale));
+			expectParams.Add("_P2", new WeaverQueryVal(p.Age));
+
+			int pi = 3;
 
 			if ( pName != null ) {
-				Assert.AreEqual("_P0", pairMap["Name"], "Incorrect Name value.");
-
-				var expectParams = new Dictionary<string, string>();
-				expectParams.Add("_P0", pName);
-				WeaverTestUtil.CheckQueryParams(q, expectParams);
+				Assert.AreEqual("_P3", pairMap["Name"], "Incorrect Name value.");
+				expectParams.Add("_P3", new WeaverQueryVal(pName));
+				pi++;
 			}
+
+			if ( pIncludeId ) {
+				Assert.AreEqual("_P"+pi, pairMap["Id"], "Incorrect Id value.");
+				expectParams.Add("_P"+pi, new WeaverQueryVal(p.Id));
+			}
+
+			WeaverTestUtil.CheckQueryParamsOriginalVal(q, expectParams);
 		}
 
 

@@ -13,9 +13,8 @@
 		void StoreResultAsVar(IWeaverVarAlias pVarAlias);
 
 		/*--------------------------------------------------------------------------------------------*/
+		string AddStringParam(string pValue, bool pAllowQuote=true);
 		string AddParam(IWeaverQueryVal pValue);
-		string AddParamIfString(IWeaverQueryVal pValue);
-		string NextParamName { get; }
 
 	}
 

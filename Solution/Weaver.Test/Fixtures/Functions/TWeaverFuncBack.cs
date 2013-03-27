@@ -1,4 +1,5 @@
-﻿using Moq;
+﻿using System.Collections.Generic;
+using Moq;
 using NUnit.Framework;
 using Weaver.Exceptions;
 using Weaver.Functions;
@@ -75,13 +76,18 @@ namespace Weaver.Test.Fixtures.Functions {
 			
 			const string expect = "g.v(0)"+
 				".outE('RootHasPerson').inV"+
-					".has('PersonId',Tokens.T.eq,22)"+
-					".has('Name',Tokens.T.eq,_P0)"+
+					".has('PersonId',Tokens.T.eq,_P0)"+
+					".has('Name',Tokens.T.eq,_P1)"+
 					".as('step5')"+
 				".outE('PersonLikesCandy').inV"+
 				".back('step5');";
 			
 			Assert.AreEqual(expect, q.Script, "Incorrect Query.Script.");
+			
+			var expectParams = new Dictionary<string, IWeaverQueryVal>();
+			expectParams.Add("_P0", new WeaverQueryVal(22));
+			expectParams.Add("_P1", new WeaverQueryVal("test"));
+			WeaverTestUtil.CheckQueryParamsOriginalVal(q, expectParams);
 		}
 
 	}

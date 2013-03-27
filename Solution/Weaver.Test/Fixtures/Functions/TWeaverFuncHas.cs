@@ -57,7 +57,7 @@ namespace Weaver.Test.Fixtures.Functions {
 			if ( pValue == null ) { val = "null"; }
 
 			var mockQuery = new Mock<IWeaverQuery>();
-			mockQuery.Setup(x => x.AddParamIfString(It.IsAny<WeaverQueryVal>())).Returns(val);
+			mockQuery.Setup(x => x.AddParam(It.IsAny<WeaverQueryVal>())).Returns(val);
 
 			var mockPath = new Mock<IWeaverPath>();
 			mockPath.SetupGet(x => x.Query).Returns(mockQuery.Object);

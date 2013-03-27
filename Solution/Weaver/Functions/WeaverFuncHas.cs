@@ -70,7 +70,7 @@ namespace Weaver.Functions {
 		public override string BuildParameterizedString() {
 			var qv = new WeaverQueryVal(Value, false);
 			return "has('"+PropertyName+"',Tokens.T."+WeaverFuncHas.GremlinOpMap[Operation]+","+
-				Path.Query.AddParamIfString(qv)+")";
+				Path.Query.AddParam(qv)+")";
 		}
 
 	}

@@ -30,7 +30,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="WeaverGlobalSettings.cs" />
     <Compile Include="Interfaces\IWeaverPathEnder.cs" />
     <Compile Include="WeaverTableColumns.cs" />
     <Compile Include="WeaverTableColumn.cs" />
@@ -50,7 +49,6 @@
     <Compile Include="WeaverItemExt.cs" />
     <Compile Include="WeaverQueryVal.cs" />
     <Compile Include="WeaverUpdates.cs" />
-    <Compile Include="Functions\WeaverFuncManualIndex.cs" />
     <Compile Include="Interfaces\IWeaverQuery.cs" />
     <Compile Include="Items\WeaverItemPropertyAttribute.cs" />
     <Compile Include="WeaverQuery.cs" />

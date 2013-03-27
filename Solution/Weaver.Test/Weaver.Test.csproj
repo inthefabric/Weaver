@@ -79,7 +79,6 @@
     <Compile Include="Fixtures\Schema\TWeaverPropSchema.cs" />
     <Compile Include="Fixtures\Schema\TWeaverNodeSchema.cs" />
     <Compile Include="Fixtures\TWeaverQuery.cs" />
-    <Compile Include="Fixtures\Functions\TWeaverFuncManualIndex.cs" />
     <Compile Include="Fixtures\Items\TWeaverRel.cs" />
     <Compile Include="Fixtures\Functions\TWeaverFuncAs.cs" />
     <Compile Include="Fixtures\Functions\TWeaverFuncBack.cs" />

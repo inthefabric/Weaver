@@ -7,14 +7,8 @@ namespace Weaver {
 	/*================================================================================================*/
 	public class WeaverTransaction : IWeaverTransaction {
 
-		public enum ConclusionType {
-			Success = 1,
-			Failure
-		}
-
 		public string Script { get; set; }
-		public Dictionary<string, string> Params { get; set; }
-		public ConclusionType Conclusion { get; set; }
+		public Dictionary<string, IWeaverQueryVal> Params { get; set; }
 
 		private readonly List<IWeaverQuery> vQueries;
 		private int vVarCount;
@@ -28,7 +22,7 @@ namespace Weaver {
 		}
 
 		/*--------------------------------------------------------------------------------------------*/
-		public void AddQuery(IWeaverQuery pQuery) {
+		public IWeaverQuery AddQuery(IWeaverQuery pQuery) {
 			EnsureUnfinished();
 
 			if ( pQuery == null ) {
@@ -36,6 +30,7 @@ namespace Weaver {
 			}
 
 			vQueries.Add(pQuery);
+			return pQuery;
 		}
 
 		/*--------------------------------------------------------------------------------------------*/
@@ -44,33 +39,15 @@ namespace Weaver {
 		}
 
 		/*--------------------------------------------------------------------------------------------*/
-		public void Finish(ConclusionType pConclusion, IWeaverVarAlias pFinalOutput=null) {
-			FinishWithoutStartStop();
-
-			Script = "g.startTransaction();"+
-				Script+
-				"g.stopTransaction(TransactionalGraph.Conclusion." +
-				pConclusion.ToString().ToUpper() + ");";
-
-			if ( pFinalOutput != null ) {
-				Script += pFinalOutput.Name+";";
-			}
-		}
-
-		/*--------------------------------------------------------------------------------------------*/
-		public void FinishWithoutStartStop(IWeaverVarAlias pFinalOutput=null) {
+		public IWeaverTransaction Finish(IWeaverVarAlias pFinalOutput=null) {
 			EnsureUnfinished();
 
-			/*if ( vQueries.Count == 0 ) {
-				throw new WeaverException("Could not finish transaction; no queries were added.");
-			}*/
-
 			Script = "";
-			Params = new Dictionary<string, string>();
+			Params = new Dictionary<string, IWeaverQueryVal>();
 
 			foreach ( IWeaverQuery wq in vQueries ) {
 				string queryScript = wq.Script + "";
-				Dictionary<string, string> pars = wq.Params;
+				Dictionary<string, IWeaverQueryVal> pars = wq.Params;
 
 				foreach ( string key in pars.Keys ) {
 					string newKey = "_TP" + Params.Keys.Count;
@@ -84,6 +61,8 @@ namespace Weaver {
 			if ( pFinalOutput != null ) {
 				Script += pFinalOutput.Name+";";
 			}
+
+			return this;
 		}
 
 
