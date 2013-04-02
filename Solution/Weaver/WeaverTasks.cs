@@ -79,12 +79,12 @@ namespace Weaver {
 		/*--------------------------------------------------------------------------------------------*/
 		public static IWeaverQuery AddRel<TRel>(IWeaverVarAlias pFromVar, TRel pRel,
 													IWeaverVarAlias pToVar) where TRel : IWeaverRel {
-			if ( pRel.FromNodeType != pFromVar.VarType ) {
+			if ( !pRel.FromNodeType.IsAssignableFrom(pFromVar.VarType) ) {
 				throw new WeaverException("Invalid From VarType: '"+pFromVar.VarType.Name+
 					"', expected '"+pRel.FromNodeType.Name+"'.");
 			}
-			
-			if ( pRel.ToNodeType != pToVar.VarType ) {
+
+			if ( !pRel.ToNodeType.IsAssignableFrom(pToVar.VarType) ) {
 				throw new WeaverException("Invalid To VarType: '"+pToVar.VarType.Name+
 					"', expected '"+pRel.ToNodeType.Name+"'.");
 			}
