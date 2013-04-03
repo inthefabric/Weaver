@@ -57,12 +57,12 @@ namespace Weaver {
 		/*--------------------------------------------------------------------------------------------*/
 		public static IWeaverQuery AddRel<TFrom, TRel, TTo>(TFrom pFromNode, TRel pRel, TTo pToNode)
 							where TFrom : IWeaverNode where TRel : IWeaverRel where TTo : IWeaverNode {
-			if ( pFromNode.Id < 0 ) {
-				throw new WeaverException("FromNode.Id cannot be less than zero: "+pFromNode.Id);
+			if ( pFromNode.Id == null ) {
+				throw new WeaverException("FromNode.Id cannot be null.");
 			}
 
-			if ( pToNode.Id < 0 ) {
-				throw new WeaverException("ToNode.Id cannot be less than zero: "+pToNode.Id);
+			if ( pToNode.Id == null ) {
+				throw new WeaverException("ToNode.Id cannot be null.");
 			}
 
 			var q = new WeaverQuery();

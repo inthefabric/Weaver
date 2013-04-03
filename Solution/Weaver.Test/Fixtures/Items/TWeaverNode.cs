@@ -50,7 +50,7 @@ namespace Weaver.Test.Fixtures.Items {
 		/*--------------------------------------------------------------------------------------------*/
 		[Test]
 		public void ItemIdentifier() {
-			const int id = 99;
+			const string id = "1234:3465:99";
 			var p = new Person() { Id = id };
 			Assert.AreEqual("Person(Id="+id+")", p.ItemIdentifier, "Incorrect Node.ItemIdentifier.");
 		}

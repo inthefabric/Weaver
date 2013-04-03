@@ -116,8 +116,9 @@ namespace Weaver.Test.Fixtures.Items {
 		/*--------------------------------------------------------------------------------------------*/
 		[Test]
 		public void ItemIdentifier() {
-			var r = new RootHasCandy { Id = 123 };
-			Assert.AreEqual("RootHasCandy(Id=123)", r.ItemIdentifier, "Incorrect ItemIdentifier.");
+			var r = new RootHasCandy { Id = "abc-123" };
+			Assert.AreEqual("RootHasCandy(Id='"+r.Id+"')", r.ItemIdentifier,
+				"Incorrect ItemIdentifier.");
 		}
 
 

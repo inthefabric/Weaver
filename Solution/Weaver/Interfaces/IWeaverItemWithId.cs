@@ -3,7 +3,7 @@
 	/*================================================================================================*/
 	public interface IWeaverItemWithId : IWeaverItemIndexable {
 
-		long Id { get; set; }
+		string Id { get; set; }
 
 	}
 

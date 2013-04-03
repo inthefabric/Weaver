@@ -25,7 +25,7 @@ namespace Weaver.Test.Fixtures {
 		[TestCase(true, null)]
 		public void BuildPropListPerson(bool pIncludeId, string pName) {
 			var p = new Person();
-			p.Id = 123456789123;
+			p.Id = "123456789123ABC";
 			p.PersonId = 3456789;
 			p.Name = pName;
 			p.Age = 27.3f;

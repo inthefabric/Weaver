@@ -62,7 +62,7 @@ namespace Weaver.Test.Fixtures {
 		[Test]
 		public void AddNode() {
 			var person = new Person();
-			person.Id = 98765;
+			person.Id = "ABC98-765";
 			person.PersonId = 1234;
 			person.Name = "Zach K";
 			person.Age = 27.1f;
@@ -129,8 +129,8 @@ namespace Weaver.Test.Fixtures {
 			plc.TimesEaten = 54;
 			plc.Notes = "Tastes great!";
 
-			const long perId = 99;
-			const long candyId = 1234;
+			const string perId = "a99";
+			const string candyId = "x1234";
 
 			var person = new Person { Id = perId };
 			var candy = new Candy() { Id = candyId };
@@ -216,8 +216,8 @@ namespace Weaver.Test.Fixtures {
 		[Test]
 		public void AddRelNoProps() {
 			var rhp = new RootHasPerson();
-			var root = new Root { Id = 0 };
-			var per = new Person { Id = 99 };
+			var root = new Root { Id = "V0" };
+			var per = new Person { Id = "eee99" };
 
 			IWeaverQuery q = WeaverTasks.AddRel(root, rhp, per);
 
@@ -226,16 +226,16 @@ namespace Weaver.Test.Fixtures {
 			Assert.AreEqual("f=g.v(_P0);t=g.v(_P1);g.addEdge(f,t,_P2);", q.Script, "Incorrect Script.");
 
 			var expectParams = new Dictionary<string, IWeaverQueryVal>();
-			expectParams.Add("_P0", new WeaverQueryVal(0));
-			expectParams.Add("_P1", new WeaverQueryVal(99));
+			expectParams.Add("_P0", new WeaverQueryVal(root.Id));
+			expectParams.Add("_P1", new WeaverQueryVal(per.Id));
 			expectParams.Add("_P2", new WeaverQueryVal("RootHasPerson"));
 			WeaverTestUtil.CheckQueryParamsOriginalVal(q, expectParams);
 		}
 
 		/*--------------------------------------------------------------------------------------------*/
-		[TestCase(-1, 0)]
-		[TestCase(0, -1)]
-		public void AddRelFail(int pPerId, int pCanId) {
+		[TestCase(null, "x0")]
+		[TestCase("x0", null)]
+		public void AddRelFail(string pPerId, string pCanId) {
 			var per = new Person { Id = pPerId };
 			var can = new Candy { Id = pCanId };
 

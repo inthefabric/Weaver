@@ -25,7 +25,7 @@ namespace Weaver.Items {
 																	where TType : IWeaverRelType, new()
 																	where TTo : IWeaverNode, new() {
 
-		public long Id { get; set; }
+		public string Id { get; set; }
 		public bool IsFromManyNodes { get; private set; }
 		public bool IsToManyNodes { get; private set; }
 		public bool IsOutgoing { get; private set; }
@@ -35,9 +35,7 @@ namespace Weaver.Items {
 
 		////////////////////////////////////////////////////////////////////////////////////////////////
 		/*--------------------------------------------------------------------------------------------*/
-		protected WeaverRel() {
-			Id = -1;
-		}
+		protected WeaverRel() {}
 
 		/*--------------------------------------------------------------------------------------------*/
 		protected WeaverRel(WeaverRelConn pConnection) : this() {
@@ -111,7 +109,7 @@ namespace Weaver.Items {
 		}
 
 		/*--------------------------------------------------------------------------------------------*/
-		public override string ItemIdentifier { get { return Label+"(Id="+Id+")"; } }
+		public override string ItemIdentifier { get { return Label+"(Id='"+Id+"')"; } }
 
 
 		////////////////////////////////////////////////////////////////////////////////////////////////
