@@ -66,11 +66,9 @@ namespace Weaver {
 			}
 
 			var q = new WeaverQuery();
-			var fromNodeVal= new WeaverQueryVal(pFromNode.Id);
-			var toNodeVal = new WeaverQueryVal(pToNode.Id);
 
-			string script = "f=g.v("+q.AddParam(fromNodeVal)+");"+
-				"t=g.v("+q.AddParam(toNodeVal)+");"+
+			string script = "f=g.v("+q.AddStringParam(pFromNode.Id, false)+");"+
+				"t=g.v("+q.AddStringParam(pToNode.Id, false)+");"+
 				"g.addEdge(f,t,"+q.AddStringParam(pRel.Label, false);
 
 			return FinishRel(q, pRel, script);
