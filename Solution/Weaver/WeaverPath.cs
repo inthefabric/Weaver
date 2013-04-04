@@ -125,6 +125,30 @@ namespace Weaver {
 
 
 	/*================================================================================================*/
+	public class WeaverPathFromNodeId<TBase> : WeaverPath<TBase>, IWeaverPathFromNodeId<TBase>
+													where TBase : class, IWeaverItemIndexable, new() {
+
+		public string NodeId { get; private set; }
+
+
+		////////////////////////////////////////////////////////////////////////////////////////////////
+		/*--------------------------------------------------------------------------------------------*/
+		public WeaverPathFromNodeId(IWeaverQuery pQuery, string pNodeId) : base(pQuery) {
+			BaseNode = new TBase { Path = this };
+			NodeId = pNodeId;
+		}
+
+		/*--------------------------------------------------------------------------------------------*/
+		public override string BuildParameterizedScript() {
+			char type = (typeof(IWeaverRel).IsAssignableFrom(typeof(TBase)) ? 'e' : 'v');
+			return "g."+type+"("+Query.AddStringParam(NodeId)+")"+
+				base.BuildParameterizedScript().Substring(1);
+		}
+
+	}
+
+
+	/*================================================================================================*/
 	public class WeaverPathFromVarAlias<TBase> : WeaverPath<TBase>, IWeaverPathFromVarAlias<TBase>
 													where TBase : class, IWeaverItemIndexable, new() {
 

@@ -35,8 +35,6 @@
     <Compile Include="WeaverTableColumn.cs" />
     <Compile Include="Functions\WeaverFuncTable.cs" />
     <Compile Include="Interfaces\IWeaverItemWithId.cs" />
-    <Compile Include="WeaverNodeExt.cs" />
-    <Compile Include="Functions\WeaverFuncToNodeVar.cs" />
     <Compile Include="Functions\WeaverFuncKeyIndex.cs" />
     <Compile Include="Functions\WeaverFuncRemoveEach.cs" />
     <Compile Include="Interfaces\IWeaverScript.cs" />

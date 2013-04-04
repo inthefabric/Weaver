@@ -43,6 +43,20 @@ namespace Weaver.Test.Fixtures {
 
 		/*--------------------------------------------------------------------------------------------*/
 		[Test]
+		public void NewNodeId() {
+			IWeaverQuery q = new Mock<WeaverQuery>().Object;
+			const string id = "x123";
+			var p = new WeaverPathFromNodeId<Person>(q, id);
+
+			Assert.NotNull(p.BaseNode, "BaseNode should be filled.");
+			Assert.AreEqual(p, p.BaseNode.Path, "Incorrect BaseNode.Path.");
+			Assert.AreEqual(q, p.Query, "Incorrect Query.");
+			Assert.AreEqual(id, p.NodeId, "Incorrect NodeId.");
+			Assert.AreEqual(0, p.Length, "Incorrect Length.");
+		}
+
+		/*--------------------------------------------------------------------------------------------*/
+		[Test]
 		public void NewVarAlias() {
 			IWeaverQuery q = new Mock<WeaverQuery>().Object;
 			const string varName = "_V0";
@@ -150,6 +164,26 @@ namespace Weaver.Test.Fixtures {
 			var expectParams = new Dictionary<string, IWeaverQueryVal>();
 			expectParams.Add("_P0", new WeaverQueryVal(5));
 			expectParams.Add("_P1", new WeaverQueryVal(0.2));
+			WeaverTestUtil.CheckQueryParamsOriginalVal(q, expectParams);
+		}
+
+		/*--------------------------------------------------------------------------------------------*/
+		[Test]
+		public void BuildParamScriptNodeId() {
+			IWeaverQuery q = new Mock<WeaverQuery>().Object;
+			const string id = "x123";
+
+			var path = new WeaverPathFromNodeId<Person>(q, id);
+			var lastItem = path.BaseNode
+				.OutLikesCandy.ToNode;;
+
+			const string expect = "g.v(_P0)"+
+				".outE('PersonLikesCandy').inV";
+
+			Assert.AreEqual(expect, path.BuildParameterizedScript(), "Incorrect result.");
+
+			var expectParams = new Dictionary<string, IWeaverQueryVal>();
+			expectParams.Add("_P0", new WeaverQueryVal(id));
 			WeaverTestUtil.CheckQueryParamsOriginalVal(q, expectParams);
 		}
 

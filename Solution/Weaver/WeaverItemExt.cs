@@ -137,6 +137,14 @@ namespace Weaver {
 			pCallingItem.Path.AddItem(func);
 			return pCallingItem;
 		}
+
+		//TEST: WeaverItemExt.Next()
+		/*--------------------------------------------------------------------------------------------*/
+		public static T Next<T>(this T pCallingItem) where T : IWeaverItemIndexable {
+			var func = new WeaverFuncCustom("next()");
+			pCallingItem.Path.AddItem(func);
+			return pCallingItem;
+		}
 		
 		/*--------------------------------------------------------------------------------------------*/
 		public static T CustomStep<T>(this T pCallingItem, string pScript, bool pSkipDotPrefix=false)

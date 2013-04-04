@@ -5,5 +5,5 @@ using System.Resources;
 [assembly: AssemblyDescription("A library for building strongly-typed Gremlin queries.")]
 [assembly: AssemblyCompanyAttribute("Aesthetic Interactive")]
 [assembly: AssemblyProductAttribute("")]
-[assembly: AssemblyVersionAttribute("0.1.19.0")]
+[assembly: AssemblyVersionAttribute("0.1.20.0")]
 [assembly: NeutralResourcesLanguageAttribute("en")]
