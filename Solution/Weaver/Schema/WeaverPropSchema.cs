@@ -21,6 +21,7 @@ namespace Weaver.Schema {
 		public long? Min { get; set; }
 		public long? Max { get; set; }
 		public string ValidRegex { get; set; }
+		public string PartOfObjectNamed { get; set; }
 
 
 		////////////////////////////////////////////////////////////////////////////////////////////////

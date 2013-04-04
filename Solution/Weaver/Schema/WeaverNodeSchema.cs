@@ -8,6 +8,7 @@ namespace Weaver.Schema {
 		public string Name { get; private set; }
 		public string Short { get; private set; }
 		public WeaverNodeSchema BaseNode { get; set; }
+		public bool IsBaseClass { get; set; }
 		public bool IsAbstract { get; set; }
 		public bool IsRoot { get; set; }
 		public bool IsInternal { get; set; }
