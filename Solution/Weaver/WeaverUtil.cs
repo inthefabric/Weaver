@@ -39,8 +39,7 @@ namespace Weaver {
 					list += ",";
 				}
 
-				var valVal = new WeaverQueryVal(val, false);
-				list += prop.Name+":"+pQuery.AddParam(valVal);
+				list += prop.Name+":"+pQuery.AddParam(new WeaverQueryVal(val));
 			}
 
 			return list;

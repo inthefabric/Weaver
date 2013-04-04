@@ -6,7 +6,6 @@ namespace Weaver {
 	public class WeaverQueryVal : IWeaverQueryVal {
 
 		public object Original { get; private set; }
-		public bool AllowQuote { get; private set; }
 
 		public string RawText { get; private set; }
 		public string FixedText { get; private set; }
@@ -16,16 +15,14 @@ namespace Weaver {
 
 		////////////////////////////////////////////////////////////////////////////////////////////////
 		/*--------------------------------------------------------------------------------------------*/
-		public WeaverQueryVal(object pValue, bool pAllowQuote=true) {
+		public WeaverQueryVal(object pValue) {
 			Original = pValue;
-			AllowQuote = pAllowQuote;
 
 			RawText = pValue+"";
 			FixedText = RawText;
 			IsString = (pValue is string);
 
 			if ( Original == null ) {
-				AllowQuote = false;
 				FixedText = "null";
 			}
 			/*else if ( IsString ) {
@@ -46,20 +43,6 @@ namespace Weaver {
 				FixedText = RawText;
 				//NumericSuffixText = RawText+"L";
 			}
-		}
-
-		/*--------------------------------------------------------------------------------------------*/
-		public string GetQuoted() {
-			if ( IsString && AllowQuote ) {
-				return "'"+FixedText+"'";
-			}
-
-			return FixedText;
-		}
-
-		/*--------------------------------------------------------------------------------------------*/
-		public string GetQuotedForce() {
-			return "'"+FixedText+"'";
 		}
 
 	}

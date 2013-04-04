@@ -16,7 +16,6 @@ namespace Weaver.Test.Fixtures {
 			Assert.AreEqual("PersonId", u.PropName, "Incorrect PropName.");
 			Assert.NotNull(u.PropValue, "PropVal should not be null.");
 			Assert.AreEqual(123, u.PropValue.Original, "Incorrect PropVal.Original.");
-			Assert.False(u.PropValue.AllowQuote, "Incorrect PropVal.AllowQuote.");
 		}
 
 		/*--------------------------------------------------------------------------------------------*/
@@ -26,7 +25,6 @@ namespace Weaver.Test.Fixtures {
 			Assert.AreEqual("Name", u.PropName, "Incorrect PropName.");
 			Assert.NotNull(u.PropValue, "PropVal should not be null.");
 			Assert.AreEqual("test", u.PropValue.Original, "Incorrect PropVal.Original.");
-			Assert.False(u.PropValue.AllowQuote, "Incorrect PropVal.AllowQuote.");
 		}
 
 		/*--------------------------------------------------------------------------------------------*/
@@ -36,7 +34,6 @@ namespace Weaver.Test.Fixtures {
 			Assert.AreEqual("Name", u.PropName, "Incorrect PropName.");
 			Assert.NotNull(u.PropValue, "PropVal should not be null.");
 			Assert.AreEqual("", u.PropValue.Original, "Incorrect PropVal.Original.");
-			Assert.False(u.PropValue.AllowQuote, "Incorrect PropVal.AllowQuote.");
 		}
 
 	}

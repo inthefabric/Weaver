@@ -46,8 +46,8 @@ namespace Weaver {
 
 		////////////////////////////////////////////////////////////////////////////////////////////////
 		/*--------------------------------------------------------------------------------------------*/
-		public string AddStringParam(string pValue, bool pAllowQuote=true) {
-			return AddParamInner(new WeaverQueryVal(pValue, pAllowQuote));
+		public string AddStringParam(string pValue) {
+			return AddParamInner(new WeaverQueryVal(pValue));
 		}
 
 		/*--------------------------------------------------------------------------------------------*/

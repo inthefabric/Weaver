@@ -48,7 +48,7 @@ namespace Weaver {
 			var q = new WeaverQuery();
 			string type = (pType == ItemType.Rel ? "Edge" : "Vertex");
 			q.FinalizeQuery("g.createKeyIndex("+
-				q.AddStringParam(WeaverUtil.GetPropertyName(pProp), false)+","+type+".class)");
+				q.AddStringParam(WeaverUtil.GetPropertyName(pProp))+","+type+".class)");
 			return q;
 		}
 
@@ -67,9 +67,9 @@ namespace Weaver {
 
 			var q = new WeaverQuery();
 
-			string script = "f=g.v("+q.AddStringParam(pFromNode.Id, false)+");"+
-				"t=g.v("+q.AddStringParam(pToNode.Id, false)+");"+
-				"g.addEdge(f,t,"+q.AddStringParam(pRel.Label, false);
+			string script = "f=g.v("+q.AddStringParam(pFromNode.Id)+");"+
+				"t=g.v("+q.AddStringParam(pToNode.Id)+");"+
+				"g.addEdge(f,t,"+q.AddStringParam(pRel.Label);
 
 			return FinishRel(q, pRel, script);
 		}
@@ -89,7 +89,7 @@ namespace Weaver {
 			
 			var q = new WeaverQuery();
 			string script = "g.addEdge("+pFromVar.Name+","+pToVar.Name+","+
-				q.AddStringParam(pRel.Label, false);
+				q.AddStringParam(pRel.Label);
 			return FinishRel(q, pRel, script);
 		}
 

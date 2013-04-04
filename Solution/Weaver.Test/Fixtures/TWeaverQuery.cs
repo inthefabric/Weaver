@@ -122,9 +122,6 @@ namespace Weaver.Test.Fixtures {
 		public void AddParamName() {
 			var q = new WeaverQuery();
 
-			var mockVal = new Mock<IWeaverQueryVal>();
-			mockVal.Setup(x => x.GetQuoted()).Returns("fake");
-
 			for ( int i = 0 ; i <= 101 ; ++i ) {
 				string name = q.AddStringParam("fake");
 				Assert.AreEqual("_P"+i, name, "Incorrect result at count "+i+".");
