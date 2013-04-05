@@ -9,7 +9,6 @@ namespace Weaver.Functions {
 	public abstract class WeaverFuncKeyIndex : WeaverFunc {
 
 		public object Value { get; protected set; }
-		public bool SingleResult { get; protected set; }
 
 		public abstract string IndexName { get; }
 
@@ -24,11 +23,9 @@ namespace Weaver.Functions {
 
 		////////////////////////////////////////////////////////////////////////////////////////////////
 		/*--------------------------------------------------------------------------------------------*/
-		public WeaverFuncKeyIndex(Expression<Func<T, object>> pPropFunc, object pValue,
-																				bool pSingleResult) {
+		public WeaverFuncKeyIndex(Expression<Func<T, object>> pPropFunc, object pValue) {
 			vPropFunc = pPropFunc;
 			Value = pValue;
-			SingleResult = pSingleResult;
 		}
 
 
@@ -44,8 +41,7 @@ namespace Weaver.Functions {
 		/*--------------------------------------------------------------------------------------------*/
 		public override string BuildParameterizedString() {
 			var qvVal = new WeaverQueryVal(Value);
-			return "V('"+IndexName+"',"+Path.Query.AddParam(qvVal)+")"+
-				(SingleResult ? "[0]" : "");
+			return "V('"+IndexName+"',"+Path.Query.AddParam(qvVal)+")";
 		}
 
 	}

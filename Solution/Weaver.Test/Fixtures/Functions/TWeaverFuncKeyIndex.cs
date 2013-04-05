@@ -19,14 +19,14 @@ namespace Weaver.Test.Fixtures.Functions {
 		/*--------------------------------------------------------------------------------------------*/
 		[Test]
 		public void New() {
-			var q = new WeaverFuncKeyIndex<Person>(x => x.PersonId, 123, false);
+			var q = new WeaverFuncKeyIndex<Person>(x => x.PersonId, 123);
 			Assert.AreEqual(123, q.Value, "Incorrect Value.");
 		}
 
 		/*--------------------------------------------------------------------------------------------*/
 		[Test]
 		public void IndexName() {
-			var q = new WeaverFuncKeyIndex<Person>(x => x.PersonId, 123, false);
+			var q = new WeaverFuncKeyIndex<Person>(x => x.PersonId, 123);
 			Assert.AreEqual("PersonId", q.IndexName, "Incorrect IndexName.");
 			Assert.AreEqual("PersonId", q.IndexName, "Incorrect cached IndexName.");
 		}
@@ -34,7 +34,7 @@ namespace Weaver.Test.Fixtures.Functions {
 		/*--------------------------------------------------------------------------------------------*/
 		[Test]
 		public void IndexNameInvalid() {
-			var q = new WeaverFuncKeyIndex<Person>(x => (x.ExpectOneNode == false), 123, false);
+			var q = new WeaverFuncKeyIndex<Person>(x => (x.ExpectOneNode == false), 123);
 
 			WeaverTestUtil.CheckThrows<WeaverFuncException>(true, () => {
 				var p = q.IndexName;
@@ -42,12 +42,11 @@ namespace Weaver.Test.Fixtures.Functions {
 		}
 		
 		/*--------------------------------------------------------------------------------------------*/
-		[TestCase("PersonId", 123, true, "V('PersonId',123)[0]")]
-		[TestCase("Name", "zach", false, "V('Name',_P0)")]
-		[TestCase("Age", 27.1f, true, "V('Age',27.1)[0]")]
-		[TestCase("Name", null, false, "V('Name',null)")]
-		public void BuildParameterizedString(string pPropName, object pValue, bool pSingle, 
-																					string pExpect) {
+		[TestCase("PersonId", 123, "V('PersonId',123)")]
+		[TestCase("Name", "zach", "V('Name',_P0)")]
+		[TestCase("Age", 27.1f, "V('Age',27.1)")]
+		[TestCase("Name", null, "V('Name',null)")]
+		public void BuildParameterizedString(string pPropName, object pValue, string pExpect) {
 			Expression<Func<Person, object>> func = null;
 
 			switch ( pPropName ) {
@@ -65,7 +64,7 @@ namespace Weaver.Test.Fixtures.Functions {
 			var mockPath = new Mock<IWeaverPath>();
 			mockPath.SetupGet(x => x.Query).Returns(mockQuery.Object);
 
-			var f = new WeaverFuncKeyIndex<Person>(func, pValue, pSingle);
+			var f = new WeaverFuncKeyIndex<Person>(func, pValue);
 			f.Path = mockPath.Object;
 
 			Assert.AreEqual(pExpect, f.BuildParameterizedString(), "Incorrect result.");

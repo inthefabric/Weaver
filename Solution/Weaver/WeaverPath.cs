@@ -193,9 +193,9 @@ namespace Weaver {
 		////////////////////////////////////////////////////////////////////////////////////////////////
 		/*--------------------------------------------------------------------------------------------*/
 		public WeaverPathFromKeyIndex(IWeaverQuery pQuery, Expression<Func<TBase, object>> pPropFunc,
-												object pValue, bool pSingleResult=true) : base(pQuery) {
+												object pValue) : base(pQuery) {
 			BaseNode = new TBase { Path = this };
-			BaseIndex = new WeaverFuncKeyIndex<TBase>(pPropFunc, pValue, pSingleResult);
+			BaseIndex = new WeaverFuncKeyIndex<TBase>(pPropFunc, pValue);
 			AddItem(BaseIndex);
 		}
 
