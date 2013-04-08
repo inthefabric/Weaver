@@ -29,11 +29,6 @@ namespace Weaver.Schema {
 		public WeaverPropSchema(string pName, Type pType) {
 			Name = pName;
 			Type = pType;
-			
-			if ( pName.Substring(pName.Length-2) == "Id" ) {
-				IsPrimaryKey = true;
-				IsUnique = true;
-			}
 		}
 
 	}
