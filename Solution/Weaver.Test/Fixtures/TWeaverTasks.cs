@@ -59,16 +59,18 @@ namespace Weaver.Test.Fixtures {
 		
 		////////////////////////////////////////////////////////////////////////////////////////////////
 		/*--------------------------------------------------------------------------------------------*/
-		[Test]
-		public void AddNode() {
+		[TestCase(true)]
+		[TestCase(false)]
+		public void AddNode(bool pIncludeNulls) {
 			var person = new Person();
 			person.Id = "ABC98-765";
 			person.PersonId = 1234;
 			person.Name = "Zach K";
 			person.Age = 27.1f;
 			person.IsMale = true;
+			person.Note = null;
 
-			IWeaverQuery q = WeaverTasks.AddNode(person);
+			IWeaverQuery q = WeaverTasks.AddNode(person, pIncludeNulls);
 
 			int bracketI = q.Script.IndexOf('[');
 			int bracketIClose = q.Script.LastIndexOf(']');
@@ -84,23 +86,37 @@ namespace Weaver.Test.Fixtures {
 			string vals = q.Script.Substring(bracketI+1, bracketIClose-bracketI-1);
 			Dictionary<string, string> pairMap = WeaverTestUtil.GetPropListDictionary(vals);
 
-			Assert.AreEqual(4, pairMap.Keys.Count, "Incorrect Key count.");
+			Assert.AreEqual((pIncludeNulls ? 5 : 4), pairMap.Keys.Count, "Incorrect Key count.");
 			Assert.False(pairMap.ContainsKey("Id"), "Should not include Id key.");
 			Assert.True(pairMap.ContainsKey("PersonId"), "Missing PersonId key.");
 			Assert.True(pairMap.ContainsKey("Name"), "Missing Name key.");
 			Assert.True(pairMap.ContainsKey("Age"), "Missing Age key.");
 			Assert.True(pairMap.ContainsKey("IsMale"), "Missing IsMale key.");
+			Assert.AreEqual(pIncludeNulls, pairMap.ContainsKey("Note"), "Incorrect Note key.");
 
-			Assert.AreEqual("_P0", pairMap["PersonId"], "Incorrect PersonId value.");
-			Assert.AreEqual("_P1", pairMap["IsMale"], "Incorrect IsMale value.");
-			Assert.AreEqual("_P2", pairMap["Age"], "Incorrect Age value.");
-			Assert.AreEqual("_P3", pairMap["Name"], "Incorrect Name value.");
+			int i = -1;
+			Assert.AreEqual("_P"+(++i), pairMap["PersonId"], "Incorrect PersonId value.");
+			Assert.AreEqual("_P"+(++i), pairMap["IsMale"], "Incorrect IsMale value.");
+			Assert.AreEqual("_P"+(++i), pairMap["Age"], "Incorrect Age value.");
 
+			if ( pIncludeNulls ) {
+				Assert.AreEqual("_P"+(++i), pairMap["Note"], "Incorrect Note value.");
+			}
+
+			Assert.AreEqual("_P"+(++i), pairMap["Name"], "Incorrect Name value.");
+
+			i = -1;
 			var expectParams = new Dictionary<string, IWeaverQueryVal>();
-			expectParams.Add("_P0", new WeaverQueryVal(person.PersonId));
-			expectParams.Add("_P1", new WeaverQueryVal(person.IsMale));
-			expectParams.Add("_P2", new WeaverQueryVal(person.Age));
-			expectParams.Add("_P3", new WeaverQueryVal(person.Name));
+			expectParams.Add("_P"+(++i), new WeaverQueryVal(person.PersonId));
+			expectParams.Add("_P"+(++i), new WeaverQueryVal(person.IsMale));
+			expectParams.Add("_P"+(++i), new WeaverQueryVal(person.Age));
+
+			if ( pIncludeNulls ) {
+				expectParams.Add("_P"+(++i), new WeaverQueryVal(person.Note));
+			}
+
+			expectParams.Add("_P"+(++i), new WeaverQueryVal(person.Name));
+
 			WeaverTestUtil.CheckQueryParamsOriginalVal(q, expectParams);
 		}
 

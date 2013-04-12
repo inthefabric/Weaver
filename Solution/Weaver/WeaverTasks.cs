@@ -42,9 +42,10 @@ namespace Weaver {
 
 		////////////////////////////////////////////////////////////////////////////////////////////////
 		/*--------------------------------------------------------------------------------------------*/
-		public static IWeaverQuery AddNode<T>(T pNode) where T : IWeaverItem {
+		public static IWeaverQuery AddNode<T>(T pNode, bool pIncludeNulls=false) where T : IWeaverItem {
 			var q = new WeaverQuery();
-			q.FinalizeQuery("g.addVertex(["+WeaverUtil.BuildPropList(q, pNode)+"])");
+			string props = WeaverUtil.BuildPropList(q, pNode, false, 0, pIncludeNulls);
+			q.FinalizeQuery("g.addVertex(["+props+"])");
 			return q;
 		}
 

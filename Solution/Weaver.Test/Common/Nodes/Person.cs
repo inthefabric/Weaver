@@ -15,6 +15,9 @@ namespace Weaver.Test.Common.Nodes {
 		[WeaverItemProperty]
 		public float Age { get; set; }
 
+		[WeaverItemProperty]
+		public string Note { get; set; }
+
 
 		////////////////////////////////////////////////////////////////////////////////////////////////
 		/*--------------------------------------------------------------------------------------------*/

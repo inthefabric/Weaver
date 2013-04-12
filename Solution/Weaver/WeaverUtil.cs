@@ -14,7 +14,8 @@ namespace Weaver {
 		////////////////////////////////////////////////////////////////////////////////////////////////
 		/*--------------------------------------------------------------------------------------------*/
 		public static string BuildPropList<TItem>(IWeaverQuery pQuery, TItem pItem,
-								bool pIncludeId=false, int pStartParamI=0) where TItem : IWeaverItem {
+									bool pIncludeId=false, int pStartParamI=0, bool pIncludeNulls=false)
+									where TItem : IWeaverItem {
 			string list = "";
 			int i = pStartParamI;
 
@@ -31,15 +32,11 @@ namespace Weaver {
 
 				object val = prop.GetValue(pItem, null);
 
-				if ( val == null ) {
+				if ( val == null && !pIncludeNulls ) {
 					continue;
 				}
 
-				if ( i++ > 0 ) {
-					list += ",";
-				}
-
-				list += prop.Name+":"+pQuery.AddParam(new WeaverQueryVal(val));
+				list += (i++ > 0 ? "," : "")+prop.Name+":"+pQuery.AddParam(new WeaverQueryVal(val));
 			}
 
 			return list;

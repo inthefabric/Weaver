@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Text.RegularExpressions;
 using Weaver.Exceptions;
 using Weaver.Interfaces;
 
@@ -44,18 +45,20 @@ namespace Weaver {
 
 			Script = "";
 			Params = new Dictionary<string, IWeaverQueryVal>();
+			
+			const string end = @"(?=$|[^\d])";
 
 			foreach ( IWeaverQuery wq in vQueries ) {
-				string queryScript = wq.Script + "";
+				string s = wq.Script + "";
 				Dictionary<string, IWeaverQueryVal> pars = wq.Params;
 
 				foreach ( string key in pars.Keys ) {
-					string newKey = "_TP" + Params.Keys.Count;
-					queryScript = queryScript.Replace(key, newKey);
+					string newKey = "_TP"+Params.Keys.Count;
+					s = Regex.Replace(s, key+end, newKey);
 					Params.Add(newKey, pars[key]);
 				}
 
-				Script += queryScript;
+				Script += s;
 			}
 
 			if ( pFinalOutput != null ) {
