@@ -7,7 +7,7 @@ using Weaver.Schema;
 namespace Weaver {
 	
 	/*================================================================================================*/
-	public class WeaverInstance {
+	public class WeaverInstance { //TEST: WeaverInstance
 
 		public WeaverConfig Config { get; private set; }
 
@@ -68,8 +68,8 @@ namespace Weaver {
 
 		////////////////////////////////////////////////////////////////////////////////////////////////
 		/*--------------------------------------------------------------------------------------------*/
-		public IWeaverQuery AddNode<T>(T pNode, bool pIncludeNulls=false) where T : IWeaverItem {
-			return WeaverTasks.AddNode(pNode, pIncludeNulls);
+		public IWeaverQuery AddNode<T>(T pNode, bool pIncludeNulls=false) where T : IWeaverNode {
+			return WeaverTasks.AddNode(Config, pNode, pIncludeNulls);
 		}
 
 		/*--------------------------------------------------------------------------------------------* /
@@ -83,19 +83,19 @@ namespace Weaver {
 		/*--------------------------------------------------------------------------------------------*/
 		public IWeaverQuery AddRel<TFrom, TRel, TTo>(TFrom pFromNode, TRel pRel, TTo pToNode)
 							where TFrom : IWeaverNode where TRel : IWeaverRel where TTo : IWeaverNode {
-			return WeaverTasks.AddRel(pFromNode, pRel, pToNode);
+			return WeaverTasks.AddRel(Config, pFromNode, pRel, pToNode);
 		}
 
 		/*--------------------------------------------------------------------------------------------*/
 		public IWeaverQuery AddRel<TRel>(IWeaverVarAlias pFromVar, TRel pRel,
 													IWeaverVarAlias pToVar) where TRel : IWeaverRel {
-			return WeaverTasks.AddRel(pFromVar, pRel, pToVar);
+														return WeaverTasks.AddRel(Config, pFromVar, pRel, pToVar);
 		}
 
 		/*--------------------------------------------------------------------------------------------*/
 		public IWeaverQuery FinishRel<TRel>(IWeaverQuery pQuery, TRel pRel,
 															string pScript) where TRel : IWeaverRel {
-			return WeaverTasks.FinishRel(pQuery, pRel, pScript);
+			return WeaverTasks.FinishRel(Config, pQuery, pRel, pScript);
 		}
 
 

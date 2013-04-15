@@ -13,13 +13,14 @@ namespace Weaver {
 
 		////////////////////////////////////////////////////////////////////////////////////////////////
 		/*--------------------------------------------------------------------------------------------*/
-		public static string BuildPropList<TItem>(IWeaverQuery pQuery, TItem pItem,
-									bool pIncludeId=false, int pStartParamI=0, bool pIncludeNulls=false)
-									where TItem : IWeaverItem {
+		public static string BuildPropList<TItem>(IWeaverConfig pConfig, IWeaverQuery pQuery,
+										TItem pItem, bool pIncludeId=false, int pStartParamI=0,
+										bool pIncludeNulls=false) where TItem : IWeaverItemIndexable {
 			string list = "";
 			int i = pStartParamI;
+			PropertyInfo[] props = pItem.GetType().GetProperties();
 
-			foreach ( PropertyInfo prop in pItem.GetType().GetProperties() ) {
+			foreach ( PropertyInfo prop in props ) {
 				object[] propAtts = prop.GetCustomAttributes(typeof(WeaverItemPropertyAttribute), true);
 
 				if ( propAtts.Length == 0 ) {
@@ -36,7 +37,9 @@ namespace Weaver {
 					continue;
 				}
 
-				list += (i++ > 0 ? "," : "")+prop.Name+":"+pQuery.AddParam(new WeaverQueryVal(val));
+				list += (i++ > 0 ? "," : "")+
+					pConfig.GetPropertyName<TItem>(prop.Name)+":"+
+					pQuery.AddParam(new WeaverQueryVal(val));
 			}
 
 			return list;

@@ -40,9 +40,10 @@ namespace Weaver {
 
 		////////////////////////////////////////////////////////////////////////////////////////////////
 		/*--------------------------------------------------------------------------------------------*/
-		public static IWeaverQuery AddNode<T>(T pNode, bool pIncludeNulls=false) where T : IWeaverItem {
+		public static IWeaverQuery AddNode<T>(IWeaverConfig pConfig, T pNode,
+													bool pIncludeNulls=false) where T : IWeaverNode {
 			var q = new WeaverQuery();
-			string props = WeaverUtil.BuildPropList(q, pNode, false, 0, pIncludeNulls);
+			string props = WeaverUtil.BuildPropList(pConfig, q, pNode, false, 0, pIncludeNulls);
 			q.FinalizeQuery("g.addVertex(["+props+"])");
 			return q;
 		}
@@ -60,8 +61,9 @@ namespace Weaver {
 
 		////////////////////////////////////////////////////////////////////////////////////////////////
 		/*--------------------------------------------------------------------------------------------*/
-		public static IWeaverQuery AddRel<TFrom, TRel, TTo>(TFrom pFromNode, TRel pRel, TTo pToNode)
-							where TFrom : IWeaverNode where TRel : IWeaverRel where TTo : IWeaverNode {
+		public static IWeaverQuery AddRel<TFrom, TRel, TTo>(IWeaverConfig pConfig, TFrom pFromNode,
+													TRel pRel, TTo pToNode) where TFrom : IWeaverNode 
+													where TRel : IWeaverRel where TTo : IWeaverNode {
 			if ( pFromNode.Id == null ) {
 				throw new WeaverException("FromNode.Id cannot be null.");
 			}
@@ -76,12 +78,12 @@ namespace Weaver {
 				"t=g.v("+q.AddStringParam(pToNode.Id)+");"+
 				"g.addEdge(f,t,"+q.AddStringParam(pRel.Label);
 
-			return FinishRel(q, pRel, script);
+			return FinishRel(pConfig, q, pRel, script);
 		}
 		
 		/*--------------------------------------------------------------------------------------------*/
-		public static IWeaverQuery AddRel<TRel>(IWeaverVarAlias pFromVar, TRel pRel,
-													IWeaverVarAlias pToVar) where TRel : IWeaverRel {
+		public static IWeaverQuery AddRel<TRel>(IWeaverConfig pConfig, IWeaverVarAlias pFromVar,
+											TRel pRel, IWeaverVarAlias pToVar) where TRel : IWeaverRel {
 			if ( !pRel.FromNodeType.IsAssignableFrom(pFromVar.VarType) ) {
 				throw new WeaverException("Invalid From VarType: '"+pFromVar.VarType.Name+
 					"', expected '"+pRel.FromNodeType.Name+"'.");
@@ -95,13 +97,13 @@ namespace Weaver {
 			var q = new WeaverQuery();
 			string script = "g.addEdge("+pFromVar.Name+","+pToVar.Name+","+
 				q.AddStringParam(pRel.Label);
-			return FinishRel(q, pRel, script);
+			return FinishRel(pConfig, q, pRel, script);
 		}
 
 		/*--------------------------------------------------------------------------------------------*/
-		public static IWeaverQuery FinishRel<TRel>(IWeaverQuery pQuery, TRel pRel,
-															string pScript) where TRel : IWeaverRel {
-			string propList = WeaverUtil.BuildPropList(pQuery, pRel);
+		public static IWeaverQuery FinishRel<TRel>(IWeaverConfig pConfig, IWeaverQuery pQuery,
+													TRel pRel, string pScript) where TRel : IWeaverRel {
+			string propList = WeaverUtil.BuildPropList(pConfig, pQuery, pRel);
 			pScript += (propList.Length > 0 ? ",["+propList+"]" : "")+")";
 
 			pQuery.FinalizeQuery(pScript);
