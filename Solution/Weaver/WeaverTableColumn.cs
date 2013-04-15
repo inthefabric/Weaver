@@ -32,7 +32,7 @@ namespace Weaver {
 								Expression<Func<T, object>> pItemProperty, string pPropertyScript=null)
 								where T : IWeaverItemIndexable {
 			var col = new WeaverTableColumn();
-			col.PropName = pConfig.GetPropertyName(pItemProperty);
+			col.PropName = pConfig.GetPropertyDbName(pItemProperty);
 			col.PropScript = pPropertyScript;
 			col.PropForType = typeof(T);
 			return col;

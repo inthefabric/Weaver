@@ -76,7 +76,7 @@ namespace Weaver.Functions {
 				IWeaverFuncAs fa = (item as IWeaverFuncAs);
 
 				if ( fa != null ) {
-					list.Add(fa.Label);
+					list.Add(Path.Config.GetItemDbName(fa.Label));
 				}
 			}
 

@@ -183,7 +183,7 @@ namespace Weaver.Test.Fixtures {
 			var expectParams = new Dictionary<string, IWeaverQueryVal>();
 			expectParams.Add("_P0", new WeaverQueryVal(person.Id));
 			expectParams.Add("_P1", new WeaverQueryVal(candy.Id));
-			expectParams.Add("_P2", new WeaverQueryVal("PersonLikesCandy"));
+			expectParams.Add("_P2", new WeaverQueryVal(TestSchema.PersonLikesCandy));
 			expectParams.Add("_P3", new WeaverQueryVal(plc.TimesEaten));
 			expectParams.Add("_P4", new WeaverQueryVal(plc.Enjoyment));
 			expectParams.Add("_P5", new WeaverQueryVal(plc.Notes));
@@ -213,7 +213,7 @@ namespace Weaver.Test.Fixtures {
 				"Incorrect Script.");
 
 			var expectParams = new Dictionary<string, IWeaverQueryVal>();
-			expectParams.Add("_P0", new WeaverQueryVal("RootHasPerson"));
+			expectParams.Add("_P0", new WeaverQueryVal(TestSchema.RootHasPerson));
 			WeaverTestUtil.CheckQueryParamsOriginalVal(q, expectParams);
 		}
 
@@ -248,7 +248,7 @@ namespace Weaver.Test.Fixtures {
 			var expectParams = new Dictionary<string, IWeaverQueryVal>();
 			expectParams.Add("_P0", new WeaverQueryVal(root.Id));
 			expectParams.Add("_P1", new WeaverQueryVal(per.Id));
-			expectParams.Add("_P2", new WeaverQueryVal("RootHasPerson"));
+			expectParams.Add("_P2", new WeaverQueryVal(TestSchema.RootHasPerson));
 			WeaverTestUtil.CheckQueryParamsOriginalVal(q, expectParams);
 		}
 
@@ -342,14 +342,14 @@ namespace Weaver.Test.Fixtures {
 				.End();
 
 			const string expectScript = "g.v(0)"+
-				".outE('RootHasPerson').inV"+
+				".outE('"+TestSchema.RootHasPerson+"').inV"+
 					".as('step3')"+
-				".inE('PersonKnowsPerson').outV"+
+				".inE('"+TestSchema.PersonKnowsPerson+"').outV"+
 					".has('"+TestSchema.Person_PersonId+"',Tokens.T.gt,_P0)"+
 					".has('Name',Tokens.T.neq,_P1)"+
 					".has('Name',Tokens.T.neq,_P2)"+
 					".back('step3')"+
-				".outE('PersonLikesCandy').inV"+
+				".outE('"+TestSchema.PersonLikesCandy+"').inV"+
 					".property('"+TestSchema.Candy_Calories+"');";
 
 			var expectParams = new Dictionary<string, IWeaverQueryVal>();

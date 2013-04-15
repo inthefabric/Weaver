@@ -38,7 +38,7 @@ namespace Weaver {
 				}
 
 				list += (i++ > 0 ? "," : "")+
-					pConfig.GetPropertyName<TItem>(prop.Name)+":"+
+					pConfig.GetPropertyDbName<TItem>(prop.Name)+":"+
 					pQuery.AddParam(new WeaverQueryVal(val));
 			}
 
@@ -70,7 +70,7 @@ namespace Weaver {
 					return prop.ToLower();
 				}
 
-				return pConfig.GetPropertyName<T>(prop);
+				return pConfig.GetPropertyDbName<T>(prop);
 			}
 
 			throw new WeaverException("Item property expression body was of type "+

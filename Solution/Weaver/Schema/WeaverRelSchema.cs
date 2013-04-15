@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using Weaver.Exceptions;
+﻿using Weaver.Exceptions;
 using Weaver.Items;
 
 namespace Weaver.Schema {

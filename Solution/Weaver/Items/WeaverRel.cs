@@ -115,7 +115,7 @@ namespace Weaver.Items {
 		////////////////////////////////////////////////////////////////////////////////////////////////
 		/*--------------------------------------------------------------------------------------------*/
 		public override string BuildParameterizedString() {
-			return (IsOutgoing ? "out" : "in")+"E('"+Label+"')";
+			return (IsOutgoing ? "out" : "in")+"E('"+Path.Config.GetItemDbName(Label)+"')";
 		}
 
 	}

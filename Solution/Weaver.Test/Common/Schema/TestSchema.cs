@@ -17,6 +17,10 @@ namespace Weaver.Test.Common.Schema {
 		public const string Candy_IsChocolate = "IsChoc";
 		public const string Candy_Calories = "Calories";
 
+		public const string RootHasPerson = "RHP";
+		public const string PersonLikesCandy = "PLC";
+		public const string PersonKnowsPerson = "PKP";
+
 		public IList<WeaverNodeSchema> Nodes;
 		public IList<WeaverRelSchema> Rels;
 
@@ -88,7 +92,7 @@ namespace Weaver.Test.Common.Schema {
 
 			////
 
-			var rootHasPer = new WeaverRelSchema(root, "RootHasPerson", "RHP", per);
+			var rootHasPer = new WeaverRelSchema(root, "RootHasPerson", RootHasPerson, per);
 			Rels.Add(rootHasPer);
 
 			////
@@ -98,7 +102,7 @@ namespace Weaver.Test.Common.Schema {
 
 			////
 
-			var perKnowsPer = new WeaverRelSchema(per, "PersonKnowsPerson", "PKP", per);
+			var perKnowsPer = new WeaverRelSchema(per, "PersonKnowsPerson", PersonKnowsPerson, per);
 			Rels.Add(perKnowsPer);
 
 				ps = new WeaverPropSchema("MetOnDate", "Met", typeof(string));
@@ -109,7 +113,7 @@ namespace Weaver.Test.Common.Schema {
 
 			////
 
-			var perLikesCan = new WeaverRelSchema(root, "PersonLikesCandy", "PLC", per);
+			var perLikesCan = new WeaverRelSchema(root, "PersonLikesCandy", PersonLikesCandy, per);
 			Rels.Add(perLikesCan);
 
 				ps = new WeaverPropSchema("TimesEaten", Plc_TimesEaten, typeof(int));

@@ -14,7 +14,7 @@ namespace Weaver {
 		////////////////////////////////////////////////////////////////////////////////////////////////
 		/*--------------------------------------------------------------------------------------------*/
 		public WeaverUpdate(IWeaverConfig pConfig, T pNode, Expression<Func<T, object>> pItemProperty) {
-			PropName = pConfig.GetPropertyName(pItemProperty);
+			PropName = pConfig.GetPropertyDbName(pItemProperty);
 			PropValue = new WeaverQueryVal(pItemProperty.Compile()(pNode));
 		}
 

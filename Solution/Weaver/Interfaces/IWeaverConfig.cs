@@ -11,20 +11,24 @@ namespace Weaver.Interfaces {
 		IList<WeaverNodeSchema> Nodes { get; }
 		IList<WeaverRelSchema> Rels { get; }
 
-		IDictionary<string, WeaverItemSchema> ItemNameMap { get; }
-		IDictionary<string, WeaverPropSchema> ItemPropNameMap { get; }
+
+		////////////////////////////////////////////////////////////////////////////////////////////////
+		/*--------------------------------------------------------------------------------------------*/
+		string GetItemDbName<T>(T pItem) where T : IWeaverItemIndexable;
+		string GetItemDbName<T>() where T : IWeaverItemIndexable;
+		string GetItemDbName(string pItemName);
 
 
 		////////////////////////////////////////////////////////////////////////////////////////////////
 		/*--------------------------------------------------------------------------------------------*/
-		string GetPropertyName<T>(IWeaverFunc pFunc, Expression<Func<T, object>> pExp)
+		string GetPropertyDbName<T>(IWeaverFunc pFunc, Expression<Func<T, object>> pExp)
 																		where T : IWeaverItemIndexable;
 
 		/*--------------------------------------------------------------------------------------------*/
-		string GetPropertyName<T>(Expression<Func<T, object>> pExp) where T : IWeaverItemIndexable;
+		string GetPropertyDbName<T>(Expression<Func<T, object>> pExp) where T : IWeaverItemIndexable;
 		
 		/*--------------------------------------------------------------------------------------------*/
-		string GetPropertyName<T>(string pProp) where T : IWeaverItemIndexable;
+		string GetPropertyDbName<T>(string pProp) where T : IWeaverItemIndexable;
 
 	}
 

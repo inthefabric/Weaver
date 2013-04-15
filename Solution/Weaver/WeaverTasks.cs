@@ -76,7 +76,7 @@ namespace Weaver {
 
 			string script = "f=g.v("+q.AddStringParam(pFromNode.Id)+");"+
 				"t=g.v("+q.AddStringParam(pToNode.Id)+");"+
-				"g.addEdge(f,t,"+q.AddStringParam(pRel.Label);
+				"g.addEdge(f,t,"+q.AddStringParam(pConfig.GetItemDbName<TRel>());
 
 			return FinishRel(pConfig, q, pRel, script);
 		}
@@ -96,7 +96,7 @@ namespace Weaver {
 			
 			var q = new WeaverQuery();
 			string script = "g.addEdge("+pFromVar.Name+","+pToVar.Name+","+
-				q.AddStringParam(pRel.Label);
+				q.AddStringParam(pConfig.GetItemDbName<TRel>());
 			return FinishRel(pConfig, q, pRel, script);
 		}
 
