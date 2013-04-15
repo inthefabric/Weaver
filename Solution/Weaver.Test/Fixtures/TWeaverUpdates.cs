@@ -14,7 +14,7 @@ namespace Weaver.Test.Fixtures {
 		/*--------------------------------------------------------------------------------------------*/
 		[Test]
 		public void AddUpdate() {
-			var u = new WeaverUpdates<Person>();
+			var u = WeavInst.NewUpdates<Person>();
 			Assert.AreEqual(0, u.Count, "Incorrect pre-Count.");
 
 			u.AddUpdate(new Person(), x => x.PersonId);
@@ -27,7 +27,7 @@ namespace Weaver.Test.Fixtures {
 		/*--------------------------------------------------------------------------------------------*/
 		[Test]
 		public void PairByIndex() {
-			var u = new WeaverUpdates<Person>();
+			var u = WeavInst.NewUpdates<Person>();
 			var p = new Person { PersonId = 123, Name = "Zach" };
 
 			u.AddUpdate(p, x => x.PersonId);
@@ -41,7 +41,7 @@ namespace Weaver.Test.Fixtures {
 		[TestCase(-1)]
 		[TestCase(1)]
 		public void PairByIndexBounds(int pIndex) {
-			var u = new WeaverUpdates<Person>();
+			var u = WeavInst.NewUpdates<Person>();
 			u.AddUpdate(new Person(), x => x.PersonId);
 
 			WeaverTestUtil.CheckThrows<WeaverException>(true, () => {

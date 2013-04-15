@@ -9,12 +9,14 @@ namespace Weaver {
 	/*================================================================================================*/
 	public class WeaverTableColumns { //TEST: WeaverTableColumns
 
+		private readonly IWeaverConfig vConfig;
 		private readonly List<WeaverTableColumn> vCols;
 		
 		
 		////////////////////////////////////////////////////////////////////////////////////////////////
 		/*--------------------------------------------------------------------------------------------*/
-		public WeaverTableColumns() {
+		internal WeaverTableColumns(IWeaverConfig pConfig) {
+			vConfig = pConfig;
 			vCols = new List<WeaverTableColumn>();
 		}
 
@@ -33,7 +35,7 @@ namespace Weaver {
 		/*--------------------------------------------------------------------------------------------*/
 		public void AddPropertyColumn<T>(Expression<Func<T, object>> pItemProperty,
 										string pPropertyScript=null) where T : IWeaverItemIndexable {
-			vCols.Add(WeaverTableColumn.Build(pItemProperty, pPropertyScript));
+			vCols.Add(WeaverTableColumn.Build(vConfig, pItemProperty, pPropertyScript));
 		}
 
 

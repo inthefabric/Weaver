@@ -20,7 +20,7 @@ namespace Weaver {
 
 		////////////////////////////////////////////////////////////////////////////////////////////////
 		/*--------------------------------------------------------------------------------------------*/
-		public static WeaverTableColumn Build<T>(bool pIsNull) where T : IWeaverItemIndexable {
+		internal static WeaverTableColumn Build<T>(bool pIsNull) where T : IWeaverItemIndexable {
 			var col = new WeaverTableColumn();
 			col.IsNull = pIsNull;
 			col.PropForType = typeof(T);
@@ -28,10 +28,11 @@ namespace Weaver {
 		}
 		
 		/*--------------------------------------------------------------------------------------------*/
-		public static WeaverTableColumn Build<T>(Expression<Func<T, object>> pItemProperty,
-										string pPropertyScript=null) where T : IWeaverItemIndexable {
+		internal static WeaverTableColumn Build<T>(IWeaverConfig pConfig, 
+								Expression<Func<T, object>> pItemProperty, string pPropertyScript=null)
+								where T : IWeaverItemIndexable {
 			var col = new WeaverTableColumn();
-			col.PropName = WeaverUtil.GetPropertyName(pItemProperty);
+			col.PropName = pConfig.GetPropertyName(pItemProperty);
 			col.PropScript = pPropertyScript;
 			col.PropForType = typeof(T);
 			return col;

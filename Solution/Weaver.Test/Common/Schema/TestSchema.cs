@@ -1,0 +1,119 @@
+﻿using System.Collections.Generic;
+using Weaver.Schema;
+
+namespace Weaver.Test.Common.Schema {
+
+	/*================================================================================================*/
+	public class TestSchema {
+
+		public const string Person_PersonId = "PerId";
+		public const string Plc_Enjoyment = "Enj";
+		public const string Node_Name = "Name";
+		public const string Candy_IsChocolate = "IsChoc";
+		public const string Candy_Calories = "Calories";
+
+		public IList<WeaverNodeSchema> Nodes;
+		public IList<WeaverRelSchema> Rels;
+
+
+		////////////////////////////////////////////////////////////////////////////////////////////////
+		/*--------------------------------------------------------------------------------------------*/
+		public TestSchema() {
+			Nodes = new List<WeaverNodeSchema>();
+			Rels = new List<WeaverRelSchema>();
+
+			WeaverPropSchema ps;
+
+			////
+			
+			var node = new WeaverNodeSchema("TestNode", "Tn");
+			Nodes.Add(node);
+
+				ps = new WeaverPropSchema("Name", Node_Name, typeof(string));
+				node.Props.Add(ps);
+			
+			////
+			
+			var item = new WeaverNodeSchema("TestItem", "Ti");
+			Nodes.Add(item);
+
+				ps = new WeaverPropSchema("Value", "Val", typeof(string));
+				item.Props.Add(ps);
+			
+			////
+			
+			var root = new WeaverNodeSchema("Root", "Root");
+			Nodes.Add(root);
+
+			////
+
+			var per = new WeaverNodeSchema("Person", "Per");
+			per.BaseNode = node;
+			Nodes.Add(per);
+
+				ps = new WeaverPropSchema("PersonId", Person_PersonId, typeof(int));
+				per.Props.Add(ps);
+
+				ps = new WeaverPropSchema("IsMale", "IsMale", typeof(bool));
+				per.Props.Add(ps);
+
+				ps = new WeaverPropSchema("Age", "Age", typeof(float));
+				per.Props.Add(ps);
+
+				ps = new WeaverPropSchema("Note", "Note", typeof(string));
+				per.Props.Add(ps);
+
+			////
+
+			var can = new WeaverNodeSchema("Candy", "Can");
+			can.BaseNode = node;
+			Nodes.Add(can);
+
+				ps = new WeaverPropSchema("CandyId", "CanId", typeof(int));
+				can.Props.Add(ps);
+
+				ps = new WeaverPropSchema("IsChocolate", Candy_IsChocolate, typeof(bool));
+				can.Props.Add(ps);
+
+				ps = new WeaverPropSchema("Calories", Candy_Calories, typeof(int));
+				can.Props.Add(ps);
+
+			////
+
+			var rootHasPer = new WeaverRelSchema(root, "RootHasPerson", "RHP", per);
+			Rels.Add(rootHasPer);
+
+			////
+
+			var rootHasCan = new WeaverRelSchema(root, "RootHasCandy", "RHC", per);
+			Rels.Add(rootHasCan);
+
+			////
+
+			var perKnowsPer = new WeaverRelSchema(per, "PersonKnowsPerson", "PKP", per);
+			Rels.Add(perKnowsPer);
+
+				ps = new WeaverPropSchema("MetOnDate", "Met", typeof(string));
+				perKnowsPer.Props.Add(ps);
+
+				ps = new WeaverPropSchema("Amount", "Amt", typeof(float));
+				perKnowsPer.Props.Add(ps);
+
+			////
+
+			var perLikesCan = new WeaverRelSchema(root, "PersonLikesCandy", "PLC", per);
+			Rels.Add(perLikesCan);
+
+				ps = new WeaverPropSchema("TimesEaten", "Te", typeof(int));
+				perLikesCan.Props.Add(ps);
+
+				ps = new WeaverPropSchema("Enjoyment", Plc_Enjoyment, typeof(float));
+				perLikesCan.Props.Add(ps);
+
+				ps = new WeaverPropSchema("Notes", "Notes", typeof(string));
+				perLikesCan.Props.Add(ps);
+		}
+		
+	}
+
+}

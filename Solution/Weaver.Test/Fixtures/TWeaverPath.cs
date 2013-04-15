@@ -6,6 +6,7 @@ using Weaver.Functions;
 using Weaver.Interfaces;
 using Weaver.Test.Common.Nodes;
 using Weaver.Test.Common.Rels;
+using Weaver.Test.Common.Schema;
 using Weaver.Test.Utils;
 
 namespace Weaver.Test.Fixtures {
@@ -18,25 +19,12 @@ namespace Weaver.Test.Fixtures {
 		////////////////////////////////////////////////////////////////////////////////////////////////
 		/*--------------------------------------------------------------------------------------------*/
 		[Test]
-		public void New() {
-			IWeaverQuery q = new Mock<WeaverQuery>().Object;
-			var p = new WeaverPath<Root>(q);
-
-			Assert.Null(p.BaseNode, "BaseNode should be null.");
-			Assert.AreEqual(q, p.Query, "Incorrect Query.");
-			Assert.AreEqual(0, p.Length, "Incorrect Length.");
-		}
-
-		/*--------------------------------------------------------------------------------------------*/
-		[Test]
 		public void NewRoot() {
-			IWeaverQuery q = new Mock<WeaverQuery>().Object;
 			var r = new Root();
-			var p = new WeaverPath<Root>(q, r);
+			IWeaverPath<Root> p = WeavInst.BeginPath(r);
 
 			Assert.NotNull(p.BaseNode, "BaseNode should be filled.");
 			Assert.AreEqual(p, p.BaseNode.Path, "Incorrect BaseNode.Path.");
-			Assert.AreEqual(q, p.Query, "Incorrect Query.");
 			Assert.AreEqual(1, p.Length, "Incorrect Length.");
 			Assert.AreEqual(r, p.ItemAtIndex(0), "Incorrect item at index 0.");
 		}
@@ -44,13 +32,12 @@ namespace Weaver.Test.Fixtures {
 		/*--------------------------------------------------------------------------------------------*/
 		[Test]
 		public void NewNodeId() {
-			IWeaverQuery q = new Mock<WeaverQuery>().Object;
 			const string id = "x123";
-			var p = new WeaverPathFromNodeId<Person>(q, id);
+			IWeaverPathFromNodeId<Person> p = WeavInst.BeginPath<Person>(id);
 
 			Assert.NotNull(p.BaseNode, "BaseNode should be filled.");
 			Assert.AreEqual(p, p.BaseNode.Path, "Incorrect BaseNode.Path.");
-			Assert.AreEqual(q, p.Query, "Incorrect Query.");
+			Assert.NotNull(p.Query, "Incorrect Query.");
 			Assert.AreEqual(id, p.NodeId, "Incorrect NodeId.");
 			Assert.AreEqual(0, p.Length, "Incorrect Length.");
 		}
@@ -58,19 +45,17 @@ namespace Weaver.Test.Fixtures {
 		/*--------------------------------------------------------------------------------------------*/
 		[Test]
 		public void NewVarAlias() {
-			IWeaverQuery q = new Mock<WeaverQuery>().Object;
 			const string varName = "_V0";
 			const bool copyItem = true;
 
 			var mockVar = new Mock<IWeaverVarAlias<Person>>();
 			mockVar.SetupGet(x => x.Name).Returns(varName);
 
-			var p = new WeaverPathFromVarAlias<Person>(q, mockVar.Object, copyItem);
+			IWeaverPathFromVarAlias<Person> p = WeavInst.BeginPath(mockVar.Object, copyItem);
 
 			Assert.NotNull(p.BaseNode, "BaseNode should be filled.");
 			Assert.AreEqual(p, p.BaseNode.Path, "Incorrect BaseNode.Path.");
 			
-			Assert.AreEqual(q, p.Query, "Incorrect Query.");
 			Assert.AreEqual(mockVar.Object, p.BaseVar, "Incorrect BaseVar.");
 			Assert.AreEqual(copyItem, p.CopyItemIntoVar, "Incorrect CopyItem.");
 
@@ -82,17 +67,17 @@ namespace Weaver.Test.Fixtures {
 		public void NewKeyIndex() {
 			const int perId = 99;
 
-			IWeaverQuery q = new Mock<WeaverQuery>().Object;
-			var p = new WeaverPathFromKeyIndex<Person>(q, x => x.PersonId, perId);
+			IWeaverPathFromKeyIndex<Person> p = WeavInst.BeginPath<Person>(x => x.PersonId, perId);
 
 			Assert.NotNull(p.BaseNode, "BaseNode should be filled.");
 			Assert.AreEqual(p, p.BaseNode.Path, "Incorrect BaseNode.Path.");
 			Assert.NotNull(p.BaseIndex, "BaseIndex should be filled.");
 
-			Assert.AreEqual("PersonId", p.BaseIndex.IndexName, "Incorrect BaseIndex.IndexName.");
+			Assert.AreEqual(TestSchema.Person_PersonId, p.BaseIndex.IndexName,
+				"Incorrect BaseIndex.IndexName.");
 			Assert.AreEqual(perId, p.BaseIndex.Value, "Incorrect BaseIndex.Value.");
 
-			Assert.AreEqual(q, p.Query, "Incorrect Query.");
+			Assert.NotNull(p.Query, "Incorrect Query.");
 
 			Assert.AreEqual(1, p.Length, "Incorrect Length.");
 			Assert.AreEqual(p.BaseIndex, p.ItemAtIndex(0), "Incorrect item at index 0.");
@@ -125,8 +110,7 @@ namespace Weaver.Test.Fixtures {
 		[Test]
 		public void BuildParamScriptBase() {
 			IWeaverFuncAs<Person> personAlias;
-			IWeaverQuery q = new Mock<WeaverQuery>().Object;
-			IWeaverPath<Root> path = GetPathWithRootNode(q);
+			IWeaverPath<Root> path = GetPathWithRootNode();
 
 			var lastItem = path.BaseNode
 				.OutHasPerson.ToNode
@@ -150,30 +134,29 @@ namespace Weaver.Test.Fixtures {
 				".outE('RootHasPerson').inV"+
 					".as('step8')"+
 				".outE('PersonKnowsPerson').inV"+
-					".has('PersonId',Tokens.T.lte,_P0)"+
+					".has('"+TestSchema.Person_PersonId+"',Tokens.T.lte,_P0)"+
 				".inE('PersonKnowsPerson').outV"+
 					".back('step8')"+
 				".outE('PersonLikesCandy')"+
-					".has('Enjoyment',Tokens.T.gte,_P1)"+
+					".has('"+TestSchema.Plc_Enjoyment+"',Tokens.T.gte,_P1)"+
 					".inV"+
 				".inE('PersonLikesCandy').outV"+
-					".property('Name')";
+					".property('"+TestSchema.Node_Name+"')";
 			
 			Assert.AreEqual(expect, path.BuildParameterizedScript(), "Incorrect result.");
 
 			var expectParams = new Dictionary<string, IWeaverQueryVal>();
 			expectParams.Add("_P0", new WeaverQueryVal(5));
 			expectParams.Add("_P1", new WeaverQueryVal(0.2));
-			WeaverTestUtil.CheckQueryParamsOriginalVal(q, expectParams);
+			WeaverTestUtil.CheckQueryParamsOriginalVal(path.Query, expectParams);
 		}
 
 		/*--------------------------------------------------------------------------------------------*/
 		[Test]
 		public void BuildParamScriptNodeId() {
-			IWeaverQuery q = new Mock<WeaverQuery>().Object;
 			const string id = "x123";
 
-			var path = new WeaverPathFromNodeId<Person>(q, id);
+			IWeaverPathFromNodeId<Person> path = WeavInst.BeginPath<Person>(id);
 			var lastItem = path.BaseNode
 				.OutLikesCandy.ToNode;;
 
@@ -184,46 +167,45 @@ namespace Weaver.Test.Fixtures {
 
 			var expectParams = new Dictionary<string, IWeaverQueryVal>();
 			expectParams.Add("_P0", new WeaverQueryVal(id));
-			WeaverTestUtil.CheckQueryParamsOriginalVal(q, expectParams);
+			WeaverTestUtil.CheckQueryParamsOriginalVal(path.Query, expectParams);
 		}
 
 		/*--------------------------------------------------------------------------------------------*/
 		[TestCase(true)]
 		[TestCase(false)]
 		public void BuildParamScriptNodeVarAlias(bool pCopyItem) {
-			IWeaverQuery q = new Mock<WeaverQuery>().Object;
 			const string varName = "_V0";
 
 			var mockVar = new Mock<IWeaverVarAlias<Person>>();
 			mockVar.SetupGet(x => x.Name).Returns(varName);
 
-			var path = new WeaverPathFromVarAlias<Person>(q, mockVar.Object, pCopyItem);
+			IWeaverPathFromVarAlias<Person> path = WeavInst.BeginPath(mockVar.Object, pCopyItem);
 			var lastItem = path.BaseNode
 				.OutLikesCandy.ToNode
 					.Has(h => h.IsChocolate, WeaverFuncHasOp.EqualTo, false);
 
 			string expect = (pCopyItem ? "g.v("+varName+")" : varName)+
 				".outE('PersonLikesCandy').inV"+
-					".has('IsChocolate',Tokens.T.eq,_P0)";
+					".has('"+TestSchema.Candy_IsChocolate+"',Tokens.T.eq,_P0)";
 
 			Assert.AreEqual(expect, path.BuildParameterizedScript(), "Incorrect result.");
 
 			var expectParams = new Dictionary<string, IWeaverQueryVal>();
 			expectParams.Add("_P0", new WeaverQueryVal(false));
-			WeaverTestUtil.CheckQueryParamsOriginalVal(q, expectParams);
+			WeaverTestUtil.CheckQueryParamsOriginalVal(path.Query, expectParams);
 		}
 
 		/*--------------------------------------------------------------------------------------------*/
 		[TestCase(true)]
 		[TestCase(false)]
 		public void BuildParamScriptRelVarAlias(bool pCopyItem) {
-			IWeaverQuery q = new Mock<WeaverQuery>().Object;
 			const string varName = "_V0";
 
 			var mockVar = new Mock<IWeaverVarAlias<PersonLikesCandy>>();
 			mockVar.SetupGet(x => x.Name).Returns(varName);
 
-			var path = new WeaverPathFromVarAlias<PersonLikesCandy>(q, mockVar.Object, pCopyItem);
+			IWeaverPathFromVarAlias<PersonLikesCandy> path = WeavInst.BeginPath(
+				mockVar.Object, pCopyItem);
 			var lastItem = path.BaseNode.ToNode;
 
 			string expect = (pCopyItem ? "g.e("+varName+")" : varName)+".inV";
@@ -379,7 +361,7 @@ namespace Weaver.Test.Fixtures {
 			var mockQ = new Mock<IWeaverQuery>();
 			IWeaverQuery q = (pQuery ?? mockQ.Object);
 			Root r = (pRoot ?? new Root());
-			return new WeaverPath<Root>(q, r);
+			return WeavInst.BeginPath(r);
 		}
 		
 		/*--------------------------------------------------------------------------------------------*/

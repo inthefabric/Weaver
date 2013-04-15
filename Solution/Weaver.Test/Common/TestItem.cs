@@ -9,6 +9,9 @@ namespace Weaver.Test.Common {
 
 		public Mock<IWeaverPath> MockPath { get; private set; }
 
+		[WeaverItemProperty]
+		public int Value { get; set; }
+
 
 		////////////////////////////////////////////////////////////////////////////////////////////////
 		/*--------------------------------------------------------------------------------------------*/

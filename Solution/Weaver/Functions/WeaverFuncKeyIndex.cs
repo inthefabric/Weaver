@@ -33,7 +33,7 @@ namespace Weaver.Functions {
 		public override string IndexName {
 			get {
 				if ( vPropName != null ) { return vPropName; }
-				vPropName = WeaverUtil.GetPropertyName(this, vPropFunc);
+				vPropName = Path.Config.GetPropertyName(this, vPropFunc);
 				return vPropName;
 			}
 		}

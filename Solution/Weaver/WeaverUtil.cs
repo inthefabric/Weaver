@@ -45,9 +45,10 @@ namespace Weaver {
 
 		////////////////////////////////////////////////////////////////////////////////////////////////
 		/*--------------------------------------------------------------------------------------------*/
-		public static string GetPropertyName<T>(IWeaverFunc pFunc, Expression<Func<T, object>> pExp) {
+		public static string GetPropertyName<T>(IWeaverConfig pConfig, IWeaverFunc pFunc,
+									Expression<Func<T, object>> pExp) where T : IWeaverItemIndexable {
 			try {
-				return GetPropertyName(pExp);
+				return GetPropertyName(pConfig, pExp);
 			}
 			catch ( WeaverException we ) {
 				throw new WeaverFuncException(pFunc, we.Message);
@@ -55,8 +56,8 @@ namespace Weaver {
 		}
 
 		/*--------------------------------------------------------------------------------------------*/
-		public static string GetPropertyName<T>(Expression<Func<T, object>> pExp) {
-
+		public static string GetPropertyName<T>(IWeaverConfig pConfig, Expression<Func<T, object>> pExp)
+																		where T : IWeaverItemIndexable {
 			MemberExpression me = GetMemberExpr(pExp);
 
 			if ( me != null ) {
@@ -66,7 +67,7 @@ namespace Weaver {
 					return prop.ToLower();
 				}
 
-				return prop;
+				return pConfig.GetPropertyName<T>(prop);
 			}
 
 			throw new WeaverException("Item property expression body was of type "+

@@ -48,7 +48,7 @@ namespace Weaver.Test.Fixtures {
 		[Test]
 		public void Prop() {
 			var item = new TestItem();
-			IWeaverItemWithPath result = item.Prop(x => x.ItemIdentifier);
+			IWeaverItemWithPath result = item.Prop(x => x.Value);
 
 			Assert.NotNull(result, "Result should be filled.");
 			item.MockPath.Verify(x => x.AddItem(It.IsAny<WeaverFuncProp<TestItem>>()), Times.Once());
@@ -58,7 +58,7 @@ namespace Weaver.Test.Fixtures {
 		[Test]
 		public void Has() {
 			var item = new TestItem();
-			TestItem result = item.Has(x => x.ItemIdentifier, WeaverFuncHasOp.EqualTo, 1);
+			TestItem result = item.Has(x => x.Value, WeaverFuncHasOp.EqualTo, 1);
 
 			Assert.AreEqual(item, result, "Incorrect result.");
 			item.MockPath.Verify(x => x.AddItem(It.IsAny<WeaverFuncHas<TestItem>>()), Times.Once());
@@ -68,8 +68,8 @@ namespace Weaver.Test.Fixtures {
 		[Test]
 		public void UpdateEach() {
 			var item = new TestItem();
-			var updates = new WeaverUpdates<TestItem>();
-			updates.AddUpdate(item, p => p.ItemIdentifier);
+			var updates = WeavInst.NewUpdates<TestItem>();
+			updates.AddUpdate(item, p => p.Value);
 
 			TestItem result = item.UpdateEach(updates);
 

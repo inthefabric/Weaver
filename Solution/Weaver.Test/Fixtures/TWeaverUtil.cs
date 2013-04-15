@@ -6,6 +6,7 @@ using Weaver.Exceptions;
 using Weaver.Functions;
 using Weaver.Interfaces;
 using Weaver.Test.Common.Nodes;
+using Weaver.Test.Common.Schema;
 using Weaver.Test.Utils;
 
 namespace Weaver.Test.Fixtures {
@@ -76,7 +77,7 @@ namespace Weaver.Test.Fixtures {
 		public void PropNamePassLong() {
 			vPropExpr = (p => p.PersonId);
 			TryPropExpr();
-			Assert.AreEqual("PersonId", vPropExprResult, "Incorrect property name.");
+			Assert.AreEqual(TestSchema.Person_PersonId, vPropExprResult, "Incorrect property name.");
 		}
 
 		/*--------------------------------------------------------------------------------------------*/
@@ -147,7 +148,9 @@ namespace Weaver.Test.Fixtures {
 
 		/*--------------------------------------------------------------------------------------------*/
 		private void TryPropExpr() {
-			vPropExprResult = WeaverUtil.GetPropertyName(new WeaverFuncProp<Person>(null), vPropExpr);
+			var cfg = new WeaverConfig(Schema.Nodes, Schema.Rels);
+			vPropExprResult = WeaverUtil.GetPropertyName(cfg,
+				new WeaverFuncProp<Person>(null), vPropExpr);
 		}
 
 	}

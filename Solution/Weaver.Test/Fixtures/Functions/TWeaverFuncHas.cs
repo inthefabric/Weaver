@@ -4,6 +4,7 @@ using Weaver.Exceptions;
 using Weaver.Functions;
 using Weaver.Interfaces;
 using Weaver.Test.Common.Nodes;
+using Weaver.Test.Common.Schema;
 using Weaver.Test.Utils;
 
 namespace Weaver.Test.Fixtures.Functions {
@@ -12,6 +13,25 @@ namespace Weaver.Test.Fixtures.Functions {
 	[TestFixture]
 	public class TWeaverFuncHas : WeaverTestBase {
 
+		private Mock<IWeaverQuery> vMockQuery;
+		private Mock<IWeaverPath> vMockPath;
+		private WeaverFuncHas<Person> vFuncHas;
+
+
+		////////////////////////////////////////////////////////////////////////////////////////////////
+		/*--------------------------------------------------------------------------------------------*/
+		protected override void SetUp() {
+			base.SetUp();
+			vMockQuery = new Mock<IWeaverQuery>();
+
+			vMockPath = new Mock<IWeaverPath>();
+			vMockPath.SetupGet(x => x.Query).Returns(vMockQuery.Object);
+			vMockPath.SetupGet(x => x.Config).Returns(WeavInst.Config);
+
+			vFuncHas = new WeaverFuncHas<Person>(n => n.PersonId, WeaverFuncHasOp.EqualTo, 1);
+			vFuncHas.Path = vMockPath.Object;
+		}
+
 
 		////////////////////////////////////////////////////////////////////////////////////////////////
 		/*--------------------------------------------------------------------------------------------*/
@@ -19,8 +39,7 @@ namespace Weaver.Test.Fixtures.Functions {
 		public void New() {
 			const WeaverFuncHasOp op = WeaverFuncHasOp.EqualTo;
 			const string val = "test";
-
-			var f = new WeaverFuncHas<Person>(n => n.ExpectOneNode, op, val);
+			var f = new WeaverFuncHas<Person>(n => n.PersonId, op, val);
 
 			Assert.AreEqual(op, f.Operation, "Incorrect Operation.");
 			Assert.AreEqual(val, f.Value, "Incorrect Value.");
@@ -29,19 +48,20 @@ namespace Weaver.Test.Fixtures.Functions {
 		/*--------------------------------------------------------------------------------------------*/
 		[Test]
 		public void PropertyName() {
-			var f = new WeaverFuncHas<Person>(n => n.ExpectOneNode, WeaverFuncHasOp.EqualTo, 1);
-			Assert.AreEqual("ExpectOneNode", f.PropertyName, "Incorrect PropertyName.");
-			Assert.AreEqual("ExpectOneNode", f.PropertyName, "Incorrect cached PropertyName.");
+			Assert.AreEqual(TestSchema.Person_PersonId, vFuncHas.PropertyName,
+				"Incorrect PropertyName.");
+			Assert.AreEqual(TestSchema.Person_PersonId, vFuncHas.PropertyName,
+				"Incorrect cached PropertyName.");
 		}
 
 		/*--------------------------------------------------------------------------------------------*/
 		[Test]
 		public void PropertyNameInvalid() {
-			var f = new WeaverFuncHas<Person>(x => (x.ExpectOneNode == false),
-				WeaverFuncHasOp.EqualTo, 1);
+			vFuncHas = new WeaverFuncHas<Person>(n => (n.PersonId == 99), WeaverFuncHasOp.EqualTo,1);
+			vFuncHas.Path = vMockPath.Object;
 
 			WeaverTestUtil.CheckThrows<WeaverFuncException>(true, () => {
-				var p = f.PropertyName;
+				var p = vFuncHas.PropertyName;
 			});
 		}
 
@@ -56,17 +76,13 @@ namespace Weaver.Test.Fixtures.Functions {
 			var val = (pValue is string ? "_P0" : pValue+"");
 			if ( pValue == null ) { val = "null"; }
 
-			var mockQuery = new Mock<IWeaverQuery>();
-			mockQuery.Setup(x => x.AddParam(It.IsAny<WeaverQueryVal>())).Returns(val);
+			vMockQuery.Setup(x => x.AddParam(It.IsAny<WeaverQueryVal>())).Returns(val);
 
-			var mockPath = new Mock<IWeaverPath>();
-			mockPath.SetupGet(x => x.Query).Returns(mockQuery.Object);
+			vFuncHas = new WeaverFuncHas<Person>(n => n.PersonId, pOperation, pValue);
+			vFuncHas.Path = vMockPath.Object;
 
-			var f = new WeaverFuncHas<Person>(n => n.ExpectOneNode, pOperation, pValue);
-			f.Path = mockPath.Object;
-
-			Assert.AreEqual("has('ExpectOneNode',Tokens.T."+pExpect+")",
-				f.BuildParameterizedString(), "Incorrect result.");
+			Assert.AreEqual("has('"+TestSchema.Person_PersonId+"',Tokens.T."+pExpect+")",
+				vFuncHas.BuildParameterizedString(), "Incorrect result.");
 		}
 
 	}

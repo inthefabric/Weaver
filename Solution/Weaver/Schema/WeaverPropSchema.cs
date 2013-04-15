@@ -6,6 +6,7 @@ namespace Weaver.Schema {
 	public class WeaverPropSchema {
 
 		public string Name { get; private set; }
+		public string DbName { get; private set; }
 		public Type Type { get; private set; }
 
 		public bool? IsPrimaryKey { get; set; }
@@ -26,8 +27,9 @@ namespace Weaver.Schema {
 
 		////////////////////////////////////////////////////////////////////////////////////////////////
 		/*--------------------------------------------------------------------------------------------*/
-		public WeaverPropSchema(string pName, Type pType) {
+		public WeaverPropSchema(string pName, string pDbName, Type pType) {
 			Name = pName;
+			DbName = pDbName;
 			Type = pType;
 		}
 

@@ -6,6 +6,7 @@ namespace Weaver.Interfaces {
 	/*================================================================================================*/
 	public interface IWeaverPath {
 
+		IWeaverConfig Config { get; }
 		IWeaverQuery Query { get; }
 
 

@@ -17,7 +17,7 @@ namespace Weaver.Test.Fixtures.Schema {
 		public void Constructor() {
 			var fromNode = new WeaverNodeSchema("FROM", "F");
 			var toNode = new WeaverNodeSchema("TO", "T");
-			var rs = new WeaverRelSchema(fromNode, "FromLikesTo", toNode);
+			var rs = new WeaverRelSchema(fromNode, "FromLikesTo", "FLT", toNode);
 
 			Assert.AreEqual(fromNode, rs.FromNode, "Incorrect FromNode.");
 			Assert.AreEqual("FromLikesTo", rs.Name, "Incorrect Name.");
@@ -29,7 +29,7 @@ namespace Weaver.Test.Fixtures.Schema {
 		/*--------------------------------------------------------------------------------------------*/
 		[Test]
 		public void FromNodeConnFail() {
-			var rs = new WeaverRelSchema(null, "Test", null);
+			var rs = new WeaverRelSchema(null, "Test", "T", null);
 
 			WeaverTestUtil.CheckThrows<WeaverException>(true,
 				() => rs.FromNodeConn = WeaverRelConn.InFromOne
@@ -39,7 +39,7 @@ namespace Weaver.Test.Fixtures.Schema {
 		/*--------------------------------------------------------------------------------------------*/
 		[Test]
 		public void ToNodeConnFail() {
-			var rs = new WeaverRelSchema(null, "Test", null);
+			var rs = new WeaverRelSchema(null, "Test", "T", null);
 
 			WeaverTestUtil.CheckThrows<WeaverException>(true,
 				() => rs.ToNodeConn = WeaverRelConn.OutToOne

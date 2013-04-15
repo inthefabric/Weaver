@@ -10,6 +10,7 @@ namespace Weaver {
 	/*================================================================================================*/
 	public abstract class WeaverPath : IWeaverPath {
 
+		public IWeaverConfig Config { get; private set; }
 		public IWeaverQuery Query { get; private set; }
 
 		protected readonly IList<IWeaverItem> vItems;
@@ -17,7 +18,8 @@ namespace Weaver {
 
 		////////////////////////////////////////////////////////////////////////////////////////////////
 		/*--------------------------------------------------------------------------------------------*/
-		protected WeaverPath(IWeaverQuery pQuery) {
+		protected WeaverPath(IWeaverConfig pConfig, IWeaverQuery pQuery) {
+			Config = pConfig;
 			Query = pQuery;
 			vItems = new List<IWeaverItem>();
 		}
@@ -105,7 +107,7 @@ namespace Weaver {
 
 
 	/*================================================================================================*/
-	public class WeaverPath<TBase> : WeaverPath, IWeaverPath<TBase>
+	internal class WeaverPath<TBase> : WeaverPath, IWeaverPath<TBase>
 															where TBase : class, IWeaverItem, new() {
 
 		public TBase BaseNode { get; protected set; }
@@ -113,10 +115,11 @@ namespace Weaver {
 
 		////////////////////////////////////////////////////////////////////////////////////////////////
 		/*--------------------------------------------------------------------------------------------*/
-		public WeaverPath(IWeaverQuery pQuery) : base(pQuery) {}
+		public WeaverPath(IWeaverConfig pConfig, IWeaverQuery pQuery) : base(pConfig, pQuery) { }
 
 		/*--------------------------------------------------------------------------------------------*/
-		public WeaverPath(IWeaverQuery pQuery, TBase pBaseNode) : this(pQuery) {
+		public WeaverPath(IWeaverConfig pConfig, IWeaverQuery pQuery, TBase pBaseNode) :
+																				this(pConfig, pQuery) {
 			BaseNode = pBaseNode;
 			AddItem(BaseNode);
 		}
@@ -125,7 +128,7 @@ namespace Weaver {
 
 
 	/*================================================================================================*/
-	public class WeaverPathFromNodeId<TBase> : WeaverPath<TBase>, IWeaverPathFromNodeId<TBase>
+	internal class WeaverPathFromNodeId<TBase> : WeaverPath<TBase>, IWeaverPathFromNodeId<TBase>
 													where TBase : class, IWeaverItemIndexable, new() {
 
 		public string NodeId { get; private set; }
@@ -133,7 +136,8 @@ namespace Weaver {
 
 		////////////////////////////////////////////////////////////////////////////////////////////////
 		/*--------------------------------------------------------------------------------------------*/
-		public WeaverPathFromNodeId(IWeaverQuery pQuery, string pNodeId) : base(pQuery) {
+		public WeaverPathFromNodeId(IWeaverConfig pConfig, IWeaverQuery pQuery, string pNodeId) : 
+																				base(pConfig, pQuery) {
 			BaseNode = new TBase { Path = this };
 			NodeId = pNodeId;
 		}
@@ -149,7 +153,7 @@ namespace Weaver {
 
 
 	/*================================================================================================*/
-	public class WeaverPathFromVarAlias<TBase> : WeaverPath<TBase>, IWeaverPathFromVarAlias<TBase>
+	internal class WeaverPathFromVarAlias<TBase> : WeaverPath<TBase>, IWeaverPathFromVarAlias<TBase>
 													where TBase : class, IWeaverItemIndexable, new() {
 
 		public IWeaverVarAlias<TBase> BaseVar { get; private set; }
@@ -158,8 +162,8 @@ namespace Weaver {
 
 		////////////////////////////////////////////////////////////////////////////////////////////////
 		/*--------------------------------------------------------------------------------------------*/
-		public WeaverPathFromVarAlias(IWeaverQuery pQuery, IWeaverVarAlias<TBase> pBaseVar,
-																bool pCopyItemIntoVar) : base(pQuery) {
+		public WeaverPathFromVarAlias(IWeaverConfig pConfig, IWeaverQuery pQuery, 
+					IWeaverVarAlias<TBase> pBaseVar, bool pCopyItemIntoVar) : base(pConfig, pQuery) {
 			BaseNode = new TBase { Path = this };
 			BaseVar = pBaseVar;
 			CopyItemIntoVar = pCopyItemIntoVar;
@@ -184,7 +188,7 @@ namespace Weaver {
 
 
 	/*================================================================================================*/
-	public class WeaverPathFromKeyIndex<TBase> : WeaverPath<TBase>, IWeaverPathFromKeyIndex<TBase>
+	internal class WeaverPathFromKeyIndex<TBase> : WeaverPath<TBase>, IWeaverPathFromKeyIndex<TBase>
 													where TBase : class, IWeaverItemIndexable, new() {
 
 		public WeaverFuncKeyIndex<TBase> BaseIndex { get; protected set; }
@@ -192,8 +196,8 @@ namespace Weaver {
 
 		////////////////////////////////////////////////////////////////////////////////////////////////
 		/*--------------------------------------------------------------------------------------------*/
-		public WeaverPathFromKeyIndex(IWeaverQuery pQuery, Expression<Func<TBase, object>> pPropFunc,
-												object pValue) : base(pQuery) {
+		public WeaverPathFromKeyIndex(IWeaverConfig pConfig, IWeaverQuery pQuery, 
+					Expression<Func<TBase, object>> pPropFunc, object pValue) : base(pConfig, pQuery) {
 			BaseNode = new TBase { Path = this };
 			BaseIndex = new WeaverFuncKeyIndex<TBase>(pPropFunc, pValue);
 			AddItem(BaseIndex);

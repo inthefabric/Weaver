@@ -22,7 +22,7 @@ namespace Weaver.Functions {
 		public string PropertyName {
 			get {
 				if ( vPropName != null ) { return vPropName; }
-				vPropName = WeaverUtil.GetPropertyName(this, vProp);
+				vPropName = Path.Config.GetPropertyName(this, vProp);
 				return vPropName;
 			}
 		}

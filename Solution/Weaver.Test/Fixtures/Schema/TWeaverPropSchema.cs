@@ -13,9 +13,10 @@ namespace Weaver.Test.Fixtures.Schema {
 		[TestCase("Name")]
 		[TestCase("ItemId")]
 		public void Constructor(string pName) {
-			var ps = new WeaverPropSchema(pName, typeof(string));
+			var ps = new WeaverPropSchema(pName, pName+"Db", typeof(string));
 			
 			Assert.AreEqual(pName, ps.Name, "Incorrect Name.");
+			Assert.AreEqual(pName+"Db", ps.DbName, "Incorrect DbName.");
 			Assert.AreEqual("String", ps.Type.Name, "Incorrect Type.");
 
 			Assert.Null(ps.IsPrimaryKey, "Incorrect default IsPrimaryKey.");

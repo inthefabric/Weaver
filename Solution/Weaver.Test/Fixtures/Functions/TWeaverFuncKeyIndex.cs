@@ -6,6 +6,7 @@ using Weaver.Exceptions;
 using Weaver.Functions;
 using Weaver.Interfaces;
 using Weaver.Test.Common.Nodes;
+using Weaver.Test.Common.Schema;
 using Weaver.Test.Utils;
 
 namespace Weaver.Test.Fixtures.Functions {
@@ -14,35 +15,55 @@ namespace Weaver.Test.Fixtures.Functions {
 	[TestFixture]
 	public class TWeaverFuncKeyIndex : WeaverTestBase {
 
+		private Mock<IWeaverQuery> vMockQuery;
+		private Mock<IWeaverPath> vMockPath;
+		private WeaverFuncKeyIndex<Person> vKeyIndex;
+
+
+		////////////////////////////////////////////////////////////////////////////////////////////////
+		/*--------------------------------------------------------------------------------------------*/
+		protected override void SetUp() {
+			base.SetUp();
+			vMockQuery = new Mock<IWeaverQuery>();
+
+			vMockPath = new Mock<IWeaverPath>();
+			vMockPath.SetupGet(x => x.Query).Returns(vMockQuery.Object);
+			vMockPath.SetupGet(x => x.Config).Returns(WeavInst.Config);
+
+			vKeyIndex = new WeaverFuncKeyIndex<Person>(x => x.PersonId, 123);
+			vKeyIndex.Path = vMockPath.Object;
+		}
+
 
 		////////////////////////////////////////////////////////////////////////////////////////////////
 		/*--------------------------------------------------------------------------------------------*/
 		[Test]
 		public void New() {
-			var q = new WeaverFuncKeyIndex<Person>(x => x.PersonId, 123);
-			Assert.AreEqual(123, q.Value, "Incorrect Value.");
+			Assert.AreEqual(123, vKeyIndex.Value, "Incorrect Value.");
 		}
 
 		/*--------------------------------------------------------------------------------------------*/
 		[Test]
 		public void IndexName() {
-			var q = new WeaverFuncKeyIndex<Person>(x => x.PersonId, 123);
-			Assert.AreEqual("PersonId", q.IndexName, "Incorrect IndexName.");
-			Assert.AreEqual("PersonId", q.IndexName, "Incorrect cached IndexName.");
+			Assert.AreEqual(TestSchema.Person_PersonId, vKeyIndex.IndexName,
+				"Incorrect IndexName.");
+			Assert.AreEqual(TestSchema.Person_PersonId, vKeyIndex.IndexName,
+				"Incorrect cached IndexName.");
 		}
 
 		/*--------------------------------------------------------------------------------------------*/
 		[Test]
 		public void IndexNameInvalid() {
-			var q = new WeaverFuncKeyIndex<Person>(x => (x.ExpectOneNode == false), 123);
+			vKeyIndex = new WeaverFuncKeyIndex<Person>(n => (n.PersonId == 99), 1);
+			vKeyIndex.Path = vMockPath.Object;
 
 			WeaverTestUtil.CheckThrows<WeaverFuncException>(true, () => {
-				var p = q.IndexName;
+				var p = vKeyIndex.IndexName;
 			});
 		}
 		
 		/*--------------------------------------------------------------------------------------------*/
-		[TestCase("PersonId", 123, "V('PersonId',123)")]
+		[TestCase("PersonId", 123, "V('"+TestSchema.Person_PersonId+"',123)")]
 		[TestCase("Name", "zach", "V('Name',_P0)")]
 		[TestCase("Age", 27.1f, "V('Age',27.1)")]
 		[TestCase("Name", null, "V('Name',null)")]
@@ -58,16 +79,12 @@ namespace Weaver.Test.Fixtures.Functions {
 			var val = (pValue is string ? "_P0" : pValue+"");
 			if ( pValue == null ) { val = "null"; }
 
-			var mockQuery = new Mock<IWeaverQuery>();
-			mockQuery.Setup(x => x.AddParam(It.IsAny<WeaverQueryVal>())).Returns(val);
+			vMockQuery.Setup(x => x.AddParam(It.IsAny<WeaverQueryVal>())).Returns(val);
 
-			var mockPath = new Mock<IWeaverPath>();
-			mockPath.SetupGet(x => x.Query).Returns(mockQuery.Object);
+			vKeyIndex = new WeaverFuncKeyIndex<Person>(func, pValue+"");
+			vKeyIndex.Path = vMockPath.Object;
 
-			var f = new WeaverFuncKeyIndex<Person>(func, pValue);
-			f.Path = mockPath.Object;
-
-			Assert.AreEqual(pExpect, f.BuildParameterizedString(), "Incorrect result.");
+			Assert.AreEqual(pExpect, vKeyIndex.BuildParameterizedString(), "Incorrect result.");
 		}
 
 	}

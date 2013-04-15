@@ -5,6 +5,7 @@ using Weaver.Exceptions;
 using Weaver.Functions;
 using Weaver.Interfaces;
 using Weaver.Test.Common.Nodes;
+using Weaver.Test.Common.Schema;
 using Weaver.Test.Utils;
 
 namespace Weaver.Test.Fixtures.Functions {
@@ -63,8 +64,8 @@ namespace Weaver.Test.Fixtures.Functions {
 		[Category("Integration")]
 		public void ComplexPath() {
 			IWeaverFuncAs<Person> personAlias;
-			
-			IWeaverQuery q = WeaverTasks.BeginPath(new Root())
+
+			IWeaverQuery q = WeavInst.BeginPath(new Root())
 				.BaseNode
 				.OutHasPerson.ToNode
 					.Has(x => x.PersonId, WeaverFuncHasOp.EqualTo, 22)
@@ -76,8 +77,8 @@ namespace Weaver.Test.Fixtures.Functions {
 			
 			const string expect = "g.v(0)"+
 				".outE('RootHasPerson').inV"+
-					".has('PersonId',Tokens.T.eq,_P0)"+
-					".has('Name',Tokens.T.eq,_P1)"+
+					".has('"+TestSchema.Person_PersonId+"',Tokens.T.eq,_P0)"+
+					".has('"+TestSchema.Node_Name+"',Tokens.T.eq,_P1)"+
 					".as('step5')"+
 				".outE('PersonLikesCandy').inV"+
 				".back('step5');";

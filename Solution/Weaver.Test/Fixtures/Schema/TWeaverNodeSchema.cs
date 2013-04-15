@@ -15,7 +15,7 @@ namespace Weaver.Test.Fixtures.Schema {
 			var ns = new WeaverNodeSchema("Person", "P");
 			
 			Assert.AreEqual("Person", ns.Name, "Incorrect Name.");
-			Assert.AreEqual("P", ns.Short, "Incorrect Short.");
+			Assert.AreEqual("P", ns.DbName, "Incorrect Short.");
 			Assert.NotNull(ns.Props, "Props should not be null.");
 
 			Assert.Null(ns.BaseNode, "BaseNode should be null by default.");

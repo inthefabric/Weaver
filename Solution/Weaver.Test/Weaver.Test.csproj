@@ -51,12 +51,13 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Common\Schema\TestSchema.cs" />
     <Compile Include="Common\TestItem.cs" />
     <Compile Include="Common\Rels\RootHasCandy.cs" />
     <Compile Include="Common\Rels\RootHasPerson.cs" />
     <Compile Include="Common\RelTypes\Has.cs" />
     <Compile Include="Common\Nodes\Root.cs" />
-    <Compile Include="Common\Nodes\TestNode.cs" />
+    <Compile Include="Fixtures\TestNode.cs" />
     <Compile Include="Common\RelTypes\Likes.cs" />
     <Compile Include="Common\Nodes\Candy.cs" />
     <Compile Include="Common\Rels\PersonLikesCandy.cs" />

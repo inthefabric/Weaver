@@ -1,13 +1,13 @@
-﻿using Weaver.Exceptions;
+﻿using System.Collections.Generic;
+using Weaver.Exceptions;
 using Weaver.Items;
 
 namespace Weaver.Schema {
 
 	/*================================================================================================*/
-	public class WeaverRelSchema {
+	public class WeaverRelSchema : WeaverItemSchema {
 
 		public WeaverNodeSchema FromNode { get; private set; }
-		public string Name { get; private set; }
 		public WeaverNodeSchema ToNode { get; private set; }
 
 		private WeaverRelConn vFromNodeConn;
@@ -16,9 +16,9 @@ namespace Weaver.Schema {
 
 		////////////////////////////////////////////////////////////////////////////////////////////////
 		/*--------------------------------------------------------------------------------------------*/
-		public WeaverRelSchema(WeaverNodeSchema pFromNode, string pName, WeaverNodeSchema pToNode) {
+		public WeaverRelSchema(WeaverNodeSchema pFromNode, string pName, string pDbName,
+													WeaverNodeSchema pToNode) : base(pName, pDbName) {
 			FromNode = pFromNode;
-			Name = pName;
 			ToNode = pToNode;
 			FromNodeConn = WeaverRelConn.OutToZeroOrMore;
 			ToNodeConn = WeaverRelConn.InFromZeroOrMore;

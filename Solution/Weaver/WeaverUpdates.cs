@@ -7,22 +7,26 @@ using Weaver.Interfaces;
 namespace Weaver {
 
 	/*================================================================================================*/
-	public class WeaverUpdates<T> where T : IWeaverItem {
+	public class WeaverUpdates<T> where T : IWeaverItemIndexable {
 
+		private readonly IWeaverConfig vConfig;
 		private readonly List<WeaverUpdate<T>> vUpdates;
 		
 		
 		////////////////////////////////////////////////////////////////////////////////////////////////
 		/*--------------------------------------------------------------------------------------------*/
-		public WeaverUpdates() {
+		internal WeaverUpdates(IWeaverConfig pConfig) {
+			vConfig = pConfig;
 			vUpdates = new List<WeaverUpdate<T>>();
 		}
 
 		/*--------------------------------------------------------------------------------------------*/
 		public void AddUpdate(T pNode, Expression<Func<T,object>> pItemProperty) {
-			vUpdates.Add(new WeaverUpdate<T>(pNode, pItemProperty));
+			vUpdates.Add(new WeaverUpdate<T>(vConfig, pNode, pItemProperty));
 		}
 
+
+		////////////////////////////////////////////////////////////////////////////////////////////////
 		/*--------------------------------------------------------------------------------------------*/
 		public int Count {
 			get { return vUpdates.Count; }

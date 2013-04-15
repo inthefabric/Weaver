@@ -7,36 +7,34 @@ using Weaver.Interfaces;
 namespace Weaver {
 
 	/*================================================================================================*/
-	public static class WeaverTasks {
-
-		public enum ItemType {
-			Node,
-			Rel
-		}
+	internal static class WeaverTasks {
 
 
 		////////////////////////////////////////////////////////////////////////////////////////////////
 		/*--------------------------------------------------------------------------------------------*/
-		public static IWeaverPath<T> BeginPath<T>(T pBaseNode) where T : class, IWeaverItem, new() {
-			return new WeaverPath<T>(new WeaverQuery(), pBaseNode);
+		public static IWeaverPath<T> BeginPath<T>(IWeaverConfig pConfig, T pBaseNode) where T : class, IWeaverItem, new() {
+			return new WeaverPath<T>(pConfig, new WeaverQuery(), pBaseNode);
 		}
 		
 		/*--------------------------------------------------------------------------------------------*/
-		public static IWeaverPath<T> BeginPath<T>(string pNodeId) 
+		public static IWeaverPathFromNodeId<T> BeginPath<T>(IWeaverConfig pConfig, string pNodeId) 
 														where T : class, IWeaverItemIndexable, new() {
-			return new WeaverPathFromNodeId<T>(new WeaverQuery(), pNodeId);
+			return new WeaverPathFromNodeId<T>(pConfig, new WeaverQuery(), pNodeId);
 		}
 
 		/*--------------------------------------------------------------------------------------------*/
-		public static IWeaverPathFromVarAlias<T> BeginPath<T>(IWeaverVarAlias<T> pBaseNodeAlias,
-								bool pCopyItemIntoVar) where T : class, IWeaverItemIndexable, new() {
-			return new WeaverPathFromVarAlias<T>(new WeaverQuery(), pBaseNodeAlias, pCopyItemIntoVar);
+		public static IWeaverPathFromVarAlias<T> BeginPath<T>(IWeaverConfig pConfig, 
+										IWeaverVarAlias<T> pBaseNodeAlias, bool pCopyItemIntoVar=false)
+										where T : class, IWeaverItemIndexable, new() {
+			return new WeaverPathFromVarAlias<T>(
+				pConfig, new WeaverQuery(), pBaseNodeAlias, pCopyItemIntoVar);
 		}
 		
 		/*--------------------------------------------------------------------------------------------*/
-		public static IWeaverPathFromKeyIndex<T> BeginPath<T>(Expression<Func<T, object>> pProp,
-										object pValue) where T : class, IWeaverItemIndexable, new() {
-			return new WeaverPathFromKeyIndex<T>(new WeaverQuery(), pProp, pValue);
+		public static IWeaverPathFromKeyIndex<T> BeginPath<T>(IWeaverConfig pConfig, 
+													Expression<Func<T, object>> pProp, object pValue)
+													where T : class, IWeaverItemIndexable, new() {
+			return new WeaverPathFromKeyIndex<T>(pConfig, new WeaverQuery(), pProp, pValue);
 		}
 
 
@@ -49,7 +47,7 @@ namespace Weaver {
 			return q;
 		}
 
-		/*--------------------------------------------------------------------------------------------*/
+		/*--------------------------------------------------------------------------------------------* /
 		public static IWeaverQuery CreateKeyIndex<T>(Expression<Func<T, object>> pProp,
 														ItemType pType) where T : IWeaverItemIndexable {
 			var q = new WeaverQuery();
