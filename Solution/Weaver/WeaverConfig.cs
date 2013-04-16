@@ -119,7 +119,7 @@ namespace Weaver {
 			WeaverException firstEx = null;
 
 			while ( true ) {
-				if ( t == typeof(Object) ) {
+				if ( t == null || t == typeof(Object) ) {
 					if ( firstEx == null ) {
 						throw new WeaverException("Unknown property "+typeof(T).Name+"."+pProp);
 					}
@@ -130,7 +130,8 @@ namespace Weaver {
 				//Console.WriteLine("GetPropName: "+t.Name+" / "+pProp);
 
 				if ( !vItemNameMap.ContainsKey(t.Name) ) {
-					firstEx = new WeaverException("Unknown item type: "+t.Name);
+					firstEx = new WeaverException("Unknown item type '"+t.Name+"' while looking for "+
+						"property "+typeof(T).Name+"."+pProp);
 					t = t.BaseType;
 					continue;
 				}
