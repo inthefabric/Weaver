@@ -76,11 +76,11 @@ namespace Weaver.Test.Fixtures.Functions {
 				.End();
 			
 			const string expect = "g.v(0)"+
-				".outE('RootHasPerson').inV"+
+				".outE('"+TestSchema.RootHasPerson+"').inV"+
 					".has('"+TestSchema.Person_PersonId+"',Tokens.T.eq,_P0)"+
 					".has('"+TestSchema.Node_Name+"',Tokens.T.eq,_P1)"+
 					".as('step5')"+
-				".outE('PersonLikesCandy').inV"+
+				".outE('"+TestSchema.PersonLikesCandy+"').inV"+
 				".back('step5');";
 			
 			Assert.AreEqual(expect, q.Script, "Incorrect Query.Script.");

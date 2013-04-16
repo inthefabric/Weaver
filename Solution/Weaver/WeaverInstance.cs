@@ -7,7 +7,7 @@ using Weaver.Schema;
 namespace Weaver {
 	
 	/*================================================================================================*/
-	public class WeaverInstance { //TEST: WeaverInstance
+	public class WeaverInstance : IWeaverInstance { //TEST: WeaverInstance
 
 		public WeaverConfig Config { get; private set; }
 

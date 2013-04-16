@@ -6,6 +6,7 @@ using Weaver.Items;
 using Weaver.Test.Common.Nodes;
 using Weaver.Test.Common.Rels;
 using Weaver.Test.Common.RelTypes;
+using Weaver.Test.Common.Schema;
 using Weaver.Test.Utils;
 
 namespace Weaver.Test.Fixtures.Items {
@@ -124,16 +125,20 @@ namespace Weaver.Test.Fixtures.Items {
 
 		////////////////////////////////////////////////////////////////////////////////////////////////
 		/*--------------------------------------------------------------------------------------------*/
-		[TestCase(WeaverRelConn.InFromOne, "inE('RootHasCandy')")]
-		[TestCase(WeaverRelConn.InFromZeroOrOne, "inE('RootHasCandy')")]
-		[TestCase(WeaverRelConn.InFromOneOrMore, "inE('RootHasCandy')")]
-		[TestCase(WeaverRelConn.InFromZeroOrMore, "inE('RootHasCandy')")]
-		[TestCase(WeaverRelConn.OutToOne, "outE('RootHasCandy')")]
-		[TestCase(WeaverRelConn.OutToZeroOrOne, "outE('RootHasCandy')")]
-		[TestCase(WeaverRelConn.OutToOneOrMore, "outE('RootHasCandy')")]
-		[TestCase(WeaverRelConn.OutToZeroOrMore, "outE('RootHasCandy')")]
+		[TestCase(WeaverRelConn.InFromOne, "inE('"+TestSchema.RootHasPerson+"')")]
+		[TestCase(WeaverRelConn.InFromZeroOrOne, "inE('"+TestSchema.RootHasPerson+"')")]
+		[TestCase(WeaverRelConn.InFromOneOrMore, "inE('"+TestSchema.RootHasPerson+"')")]
+		[TestCase(WeaverRelConn.InFromZeroOrMore, "inE('"+TestSchema.RootHasPerson+"')")]
+		[TestCase(WeaverRelConn.OutToOne, "outE('"+TestSchema.RootHasPerson+"')")]
+		[TestCase(WeaverRelConn.OutToZeroOrOne, "outE('"+TestSchema.RootHasPerson+"')")]
+		[TestCase(WeaverRelConn.OutToOneOrMore, "outE('"+TestSchema.RootHasPerson+"')")]
+		[TestCase(WeaverRelConn.OutToZeroOrMore, "outE('"+TestSchema.RootHasPerson+"')")]
 		public void BuildParameterizedString(WeaverRelConn pConn, string pExpectScript) {
-			var r = new RootHasCandy { Connection = pConn };
+			var mockPath = new Mock<IWeaverPath>();
+			mockPath.SetupGet(x => x.Config).Returns(WeavInst.Config);
+
+			var r = new RootHasPerson() { Connection = pConn };
+			r.Path = mockPath.Object;
 			Assert.AreEqual(pExpectScript, r.BuildParameterizedString(), "Incorrect result.");
 		}
 

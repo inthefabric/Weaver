@@ -129,18 +129,18 @@ namespace Weaver.Test.Fixtures {
 					.Prop(p => p.Name);
 
 			const string expect = "g.v(0)"+
-				".outE('RootHasPerson').inV"+
-				".inE('RootHasPerson').outV[0..6]"+
-				".outE('RootHasPerson').inV"+
+				".outE('"+TestSchema.RootHasPerson+"').inV"+
+				".inE('"+TestSchema.RootHasPerson+"').outV[0..6]"+
+				".outE('"+TestSchema.RootHasPerson+"').inV"+
 					".as('step8')"+
-				".outE('PersonKnowsPerson').inV"+
+				".outE('"+TestSchema.PersonKnowsPerson+"').inV"+
 					".has('"+TestSchema.Person_PersonId+"',Tokens.T.lte,_P0)"+
-				".inE('PersonKnowsPerson').outV"+
+				".inE('"+TestSchema.PersonKnowsPerson+"').outV"+
 					".back('step8')"+
-				".outE('PersonLikesCandy')"+
+				".outE('"+TestSchema.PersonLikesCandy+"')"+
 					".has('"+TestSchema.Plc_Enjoyment+"',Tokens.T.gte,_P1)"+
 					".inV"+
-				".inE('PersonLikesCandy').outV"+
+				".inE('"+TestSchema.PersonLikesCandy+"').outV"+
 					".property('"+TestSchema.Node_Name+"')";
 			
 			Assert.AreEqual(expect, path.BuildParameterizedScript(), "Incorrect result.");
@@ -161,7 +161,7 @@ namespace Weaver.Test.Fixtures {
 				.OutLikesCandy.ToNode;;
 
 			const string expect = "g.v(_P0)"+
-				".outE('PersonLikesCandy').inV";
+				".outE('"+TestSchema.PersonLikesCandy+"').inV";
 
 			Assert.AreEqual(expect, path.BuildParameterizedScript(), "Incorrect result.");
 
@@ -185,7 +185,7 @@ namespace Weaver.Test.Fixtures {
 					.Has(h => h.IsChocolate, WeaverFuncHasOp.EqualTo, false);
 
 			string expect = (pCopyItem ? "g.v("+varName+")" : varName)+
-				".outE('PersonLikesCandy').inV"+
+				".outE('"+TestSchema.PersonLikesCandy+"').inV"+
 					".has('"+TestSchema.Candy_IsChocolate+"',Tokens.T.eq,_P0)";
 
 			Assert.AreEqual(expect, path.BuildParameterizedScript(), "Incorrect result.");

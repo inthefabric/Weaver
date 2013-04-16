@@ -8,6 +8,7 @@ namespace Weaver.Schema {
 
 		public WeaverNodeSchema FromNode { get; private set; }
 		public WeaverNodeSchema ToNode { get; private set; }
+		public string RelType { get; private set; }
 
 		private WeaverRelConn vFromNodeConn;
 		private WeaverRelConn vToNodeConn;
@@ -15,10 +16,12 @@ namespace Weaver.Schema {
 
 		////////////////////////////////////////////////////////////////////////////////////////////////
 		/*--------------------------------------------------------------------------------------------*/
-		public WeaverRelSchema(WeaverNodeSchema pFromNode, string pName, string pDbName,
-													WeaverNodeSchema pToNode) : base(pName, pDbName) {
+		public WeaverRelSchema(WeaverNodeSchema pFromNode, string pName, string pDbName, 
+									string pRelType, WeaverNodeSchema pToNode) : base(pName, pDbName) {
 			FromNode = pFromNode;
 			ToNode = pToNode;
+			RelType = pRelType;
+
 			FromNodeConn = WeaverRelConn.OutToZeroOrMore;
 			ToNodeConn = WeaverRelConn.InFromZeroOrMore;
 		}

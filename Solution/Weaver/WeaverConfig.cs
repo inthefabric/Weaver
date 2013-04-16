@@ -27,28 +27,54 @@ namespace Weaver {
 
 			vItemNameMap = new Dictionary<string, WeaverItemSchema>();
 			vItemPropNameMap = new Dictionary<string, WeaverPropSchema>();
+			string key;
 
 			foreach ( WeaverNodeSchema ns in Nodes ) {
-				vItemNameMap.Add(ns.Name, ns);
-				Console.WriteLine("WcNode: "+ns.Name+" / "+ns.DbName);
+				key = CheckItemKey(ns.Name);
+				vItemNameMap.Add(key, ns);
+				//Console.WriteLine("WcNode: "+ns.Name+" / "+ns.DbName);
 
 				foreach ( WeaverPropSchema ps in ns.Props ) {
-					vItemPropNameMap.Add(ns.Name+Delim+ps.Name, ps);
-					Console.WriteLine(" - "+ps.Name+" / "+ps.DbName);
+					key = CheckItemPropKey(ns.Name, ps.Name);
+					vItemPropNameMap.Add(key, ps);
+					//Console.WriteLine(" - "+ps.Name+" / "+ps.DbName);
 				}
 			}
 
 			foreach ( WeaverRelSchema rs in Rels ) {
-				vItemNameMap.Add(rs.Name, rs);
-				Console.WriteLine("WcRel: "+rs.Name+" / "+rs.DbName);
+				key = CheckItemKey(rs.Name);
+				vItemNameMap.Add(key, rs);
+				//Console.WriteLine("WcRel: "+rs.Name+" / "+rs.DbName+" ... "+key);
 
 				foreach ( WeaverPropSchema ps in rs.Props ) {
-					vItemPropNameMap.Add(rs.Name+Delim+ps.Name, ps);
-					Console.WriteLine(" - "+ps.Name+" / "+ps.DbName);
+					key = CheckItemPropKey(rs.Name, ps.Name);
+					vItemPropNameMap.Add(key, ps);
+					//Console.WriteLine(" - "+ps.Name+" / "+ps.DbName+" ... "+key);
 				}
 			}
 
-			Console.WriteLine("==============================");
+			//Console.WriteLine("==============================");
+		}
+
+		/*--------------------------------------------------------------------------------------------*/
+		private string CheckItemKey(string pName) {
+			if ( vItemNameMap.ContainsKey(pName) ) {
+				throw new WeaverException("An item with name '"+pName+"' has already been added.");
+			}
+
+			return pName;
+		}
+
+		/*--------------------------------------------------------------------------------------------*/
+		private string CheckItemPropKey(string pItemName, string pPropName) {
+			string key = pItemName+Delim+pPropName;
+
+			if ( vItemPropNameMap.ContainsKey(key) ) {
+				throw new WeaverException("An item property with full name '"+pItemName+"."+pPropName+
+					"' has already been added.");
+			}
+
+			return key;
 		}
 
 
@@ -101,7 +127,7 @@ namespace Weaver {
 					throw firstEx;
 				}
 
-				Console.WriteLine("GetPropName: "+t.Name+" / "+pProp);
+				//Console.WriteLine("GetPropName: "+t.Name+" / "+pProp);
 
 				if ( !vItemNameMap.ContainsKey(t.Name) ) {
 					firstEx = new WeaverException("Unknown item type: "+t.Name);
@@ -118,7 +144,7 @@ namespace Weaver {
 					continue;
 				}
 
-				Console.WriteLine(" - Item: "+pProp);
+				//Console.WriteLine(" - Item: "+pProp);
 				WeaverPropSchema ps = vItemPropNameMap[propKey];
 				dbName = ps.DbName;
 				break;
