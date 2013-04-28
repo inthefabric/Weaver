@@ -5,7 +5,7 @@ namespace Weaver.Interfaces {
 	/*================================================================================================*/
 	public interface IWeaverVarAlias {
 
-		string Name { get; }
+		string Name { get; set; }
 		Type VarType { get; }
 
 	}

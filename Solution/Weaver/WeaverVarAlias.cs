@@ -1,21 +1,19 @@
-﻿using Weaver.Interfaces;
-using System;
+﻿using System;
+using Weaver.Interfaces;
 
 namespace Weaver {
 	
 	/*================================================================================================*/
 	public class WeaverVarAlias : IWeaverVarAlias {
 
-		public string Name { get { return vName+""; } }
+		public string Name { get; set; }
 		public Type VarType { get; private set; }
-		
-		private readonly string vName;
 		
 
 		////////////////////////////////////////////////////////////////////////////////////////////////
 		/*--------------------------------------------------------------------------------------------*/
 		public WeaverVarAlias(IWeaverTransaction pCurrentTx) {
-			vName = pCurrentTx.GetNextVarName();
+			Name = pCurrentTx.GetNextVarName();
 			VarType = typeof(object);
 		}
 		

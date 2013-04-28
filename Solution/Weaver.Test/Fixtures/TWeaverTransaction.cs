@@ -3,6 +3,7 @@ using Moq;
 using NUnit.Framework;
 using Weaver.Exceptions;
 using Weaver.Interfaces;
+using Weaver.Schema;
 using Weaver.Test.Utils;
 
 namespace Weaver.Test.Fixtures {
@@ -149,6 +150,30 @@ namespace Weaver.Test.Fixtures {
 			tx.Finish();
 			WeaverTestUtil.CheckThrows<WeaverException>(true,
 				() => tx.Finish());
+		}
+
+
+		////////////////////////////////////////////////////////////////////////////////////////////////
+		/*--------------------------------------------------------------------------------------------*/
+		[Test]
+		[Category("Integration")]
+		public void CustomVarName() {
+			var inst = new WeaverInstance(new List<WeaverNodeSchema>(), new List<WeaverRelSchema>());
+			var tx = inst.NewTx();
+			const string custom = "_Custom";
+			IWeaverVarAlias alias = new WeaverVarAlias(tx) { Name = custom };
+
+			var q = new WeaverQuery();
+			q.FinalizeQuery("g.V[0]");
+			q.StoreResultAsVar(alias);
+			tx.AddQuery(q);
+			tx.Finish(alias);
+
+			const string expect = custom+"=g.V[0];"+custom+";";
+			Assert.AreEqual(expect, tx.Script, "Incorrect tx.Script.");
+
+			alias.Name = "_Ignored";
+			Assert.AreEqual(expect, tx.Script, "Incorrect tx.Script.");
 		}
 		
 		
