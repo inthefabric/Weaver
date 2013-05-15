@@ -204,5 +204,26 @@ namespace Weaver {
 		}
 
 	}
+	
+	
+	/*================================================================================================*/
+	internal class WeaverPathWithContainsIndex<TBase> : WeaverPath<TBase>, 
+													IWeaverPathWithContainsIndex<TBase>
+													where TBase : class, IWeaverItemIndexable, new() {
+		
+		public WeaverFuncContainsIndex<TBase> BaseIndex { get; protected set; }
+		
+		
+		////////////////////////////////////////////////////////////////////////////////////////////////
+		/*--------------------------------------------------------------------------------------------*/
+		public WeaverPathWithContainsIndex(IWeaverConfig pConfig, IWeaverQuery pQuery, 
+			                              Expression<Func<TBase, object>> pPropFunc, string pValue) : 
+			                              base(pConfig, pQuery) {
+			BaseNode = new TBase { Path = this };
+			BaseIndex = new WeaverFuncContainsIndex<TBase>(pPropFunc, pValue);
+			AddItem(BaseIndex);
+		}
+		
+	}
 
 }

@@ -87,6 +87,7 @@
     <Compile Include="Interfaces\IWeaverVarAlias.cs" />
     <Compile Include="Functions\WeaverFuncCustom.cs" />
     <Compile Include="Interfaces\IWeaverFuncAs.cs" />
+    <Compile Include="Functions\WeaverFuncContainsIndex.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />

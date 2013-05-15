@@ -89,6 +89,7 @@
     <Compile Include="WeaverTestBase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Fixtures\TWeaverTransaction.cs" />
+    <Compile Include="Fixtures\Functions\TWeaverFuncContainsIndex.cs" />
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Service References\" />

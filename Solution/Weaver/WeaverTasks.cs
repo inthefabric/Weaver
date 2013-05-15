@@ -36,6 +36,13 @@ namespace Weaver {
 													where T : class, IWeaverItemIndexable, new() {
 			return new WeaverPathFromKeyIndex<T>(pConfig, new WeaverQuery(), pProp, pValue);
 		}
+		
+		/*--------------------------------------------------------------------------------------------*/
+		public static IWeaverPathWithContainsIndex<T> BeginWithContains<T>(IWeaverConfig pConfig, 
+													Expression<Func<T, object>> pProp, string pValue)
+													where T : class, IWeaverItemIndexable, new() {
+			return new WeaverPathWithContainsIndex<T>(pConfig, new WeaverQuery(), pProp, pValue);
+		}
 
 
 		////////////////////////////////////////////////////////////////////////////////////////////////

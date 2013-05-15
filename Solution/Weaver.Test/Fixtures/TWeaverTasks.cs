@@ -57,6 +57,21 @@ namespace Weaver.Test.Fixtures {
 				"Incorrect BaseIndex.IndexName.");
 			Assert.AreEqual(perId, p.BaseIndex.Value, "Incorrect BaseIndex.Value.");
 		}
+		
+		/*--------------------------------------------------------------------------------------------*/
+		[Test]
+		public void BeginPathWithContainsIndex() {
+			const string name = "abc";
+			
+			IWeaverPathWithContainsIndex<Person> p =
+				WeavInst.BeginWithContains<Person>(x => x.Name, name);
+			
+			Assert.NotNull(p.Query, "Query should be filled.");
+			Assert.NotNull(p.BaseIndex, "BaseIndex should be filled.");
+			Assert.AreEqual(TestSchema.Node_Name, p.BaseIndex.IndexName,
+				"Incorrect BaseIndex.IndexName.");
+			Assert.AreEqual(name, p.BaseIndex.Value, "Incorrect BaseIndex.Value.");
+		}
 
 		
 		////////////////////////////////////////////////////////////////////////////////////////////////

@@ -64,6 +64,12 @@ namespace Weaver {
 										object pValue) where T : class, IWeaverItemIndexable, new() {
 			return WeaverTasks.BeginPath(Config, pProp, pValue);
 		}
+		
+		/*--------------------------------------------------------------------------------------------*/
+		public IWeaverPathWithContainsIndex<T> BeginWithContains<T>(Expression<Func<T, object>> pProp,
+										string pValue) where T : class, IWeaverItemIndexable, new() {
+			return WeaverTasks.BeginWithContains(Config, pProp, pValue);
+		}
 
 
 		////////////////////////////////////////////////////////////////////////////////////////////////

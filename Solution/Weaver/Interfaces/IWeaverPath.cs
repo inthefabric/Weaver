@@ -61,5 +61,14 @@ namespace Weaver.Interfaces {
 		WeaverFuncKeyIndex<TBase> BaseIndex { get; }
 
 	}
+	
+	
+	/*================================================================================================*/
+	public interface IWeaverPathWithContainsIndex<TBase> : IWeaverPath<TBase>
+													where TBase : class, IWeaverItemIndexable, new() {
+		
+		WeaverFuncContainsIndex<TBase> BaseIndex { get; }
+		
+	}
 
 }

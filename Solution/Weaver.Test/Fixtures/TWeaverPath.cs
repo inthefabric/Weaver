@@ -82,6 +82,28 @@ namespace Weaver.Test.Fixtures {
 			Assert.AreEqual(1, p.Length, "Incorrect Length.");
 			Assert.AreEqual(p.BaseIndex, p.ItemAtIndex(0), "Incorrect item at index 0.");
 		}
+		
+		/*--------------------------------------------------------------------------------------------*/
+		[Test]
+		public void NewContainsIndex() {
+			const string name = "abc";
+			
+			IWeaverPathWithContainsIndex<Person> p = 
+				WeavInst.BeginWithContains<Person>(x => x.Name, name);
+			
+			Assert.NotNull(p.BaseNode, "BaseNode should be filled.");
+			Assert.AreEqual(p, p.BaseNode.Path, "Incorrect BaseNode.Path.");
+			Assert.NotNull(p.BaseIndex, "BaseIndex should be filled.");
+			
+			Assert.AreEqual(TestSchema.Node_Name, p.BaseIndex.IndexName,
+				"Incorrect BaseIndex.IndexName.");
+			Assert.AreEqual(name, p.BaseIndex.Value, "Incorrect BaseIndex.Value.");
+			
+			Assert.NotNull(p.Query, "Incorrect Query.");
+			
+			Assert.AreEqual(1, p.Length, "Incorrect Length.");
+			Assert.AreEqual(p.BaseIndex, p.ItemAtIndex(0), "Incorrect item at index 0.");
+		}
 
 		
 		////////////////////////////////////////////////////////////////////////////////////////////////
