@@ -23,7 +23,7 @@ Weaver was built to support the [Fabric](https://github.com/inthefabric/Fabric) 
 IWeaverFuncAs<Member> memAlias;
 
 IWeaverQuery q = 
-	myWeaverObj.BeginPath<Artifact>(x => x.ArtifactId, 123)
+	myWeaverObj.BeginPath<Artifact>(x => x.ArtifactId, 123).BaseNode
 	.DefinesMemberList.ToMember
 		.As(out memAlias)
 	.InAppDefines.FromApp
