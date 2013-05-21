@@ -27,7 +27,7 @@ A slightly-modified example from Fabric [code](https://github.com/inthefabric/Fa
 IWeaverFuncAs<Member> memAlias;
 
 IWeaverQuery q = 
-	myWeaverObj.BeginPath<Artifact>(x => x.ArtifactId, 123).BaseNode
+	myWeaverObj.BeginPath<User>(x => x.ArtifactId, 123).BaseNode
 	.DefinesMemberList.ToMember
 		.As(out memAlias)
 	.InAppDefines.FromApp
