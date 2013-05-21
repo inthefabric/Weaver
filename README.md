@@ -2,6 +2,8 @@
 
 Weaver provides a fluent, strongly-typed interface for generating Gremlin scripts (for .NET/C#).
 
+It requires a full graph schema (with [nodes](https://github.com/inthefabric/Weaver/blob/master/Solution/Weaver/Schema/WeaverNodeSchema.cs) and [relationships](https://github.com/inthefabric/Weaver/blob/master/Solution/Weaver/Schema/WeaverRelSchema.cs)) to function correctly.
+
 #### Basic Usage
 
 Weaver converts C# code:
@@ -18,7 +20,9 @@ The Gremlin script can also be parameterized (enabled by default) to achieve mor
 
 #### Fabric
 
-Weaver was built to support the [Fabric](https://github.com/inthefabric/Fabric) project, which provides several [useful examples](https://github.com/inthefabric/Fabric/blob/master/Solution/Fabric.Api.Modify/Tasks/ModifyTasks.cs) of Weaver usage. A slightly-modified example from Fabric code:
+Weaver was built to support the [Fabric](https://github.com/inthefabric/Fabric) project, which provides several [useful examples](https://github.com/inthefabric/Fabric/blob/master/Solution/Fabric.Api.Modify/Tasks/ModifyTasks.cs) of Weaver configuration, setup, and usage. 
+
+A slightly-modified example from Fabric [code](https://github.com/inthefabric/Fabric/blob/master/Solution/Fabric.Api.Modify/Tasks/ModifyTasks.cs#L50):
 ```cs
 IWeaverFuncAs<Member> memAlias;
 
@@ -27,7 +31,7 @@ IWeaverQuery q =
 	.DefinesMemberList.ToMember
 		.As(out memAlias)
 	.InAppDefines.FromApp
-		.Has(x => x.ArtifactId, WeaverFuncHasOp.EqualTo, pApiCtx.AppId)
+		.Has(x => x.ArtifactId, WeaverFuncHasOp.EqualTo, 456)
 	.Back(memAlias)
 	.HasMemberTypeAssign.ToMemberTypeAssign
 		.Has(x => x.MemberTypeId, WeaverFuncHasOp.NotEqualTo, (byte)MemberTypeId.None)
