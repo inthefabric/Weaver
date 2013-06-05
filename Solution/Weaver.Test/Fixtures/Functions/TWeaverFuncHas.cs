@@ -28,19 +28,22 @@ namespace Weaver.Test.Fixtures.Functions {
 			vMockPath.SetupGet(x => x.Query).Returns(vMockQuery.Object);
 			vMockPath.SetupGet(x => x.Config).Returns(WeavInst.Config);
 
-			vFuncHas = new WeaverFuncHas<Person>(n => n.PersonId, WeaverFuncHasOp.EqualTo, 1);
+			vFuncHas = new WeaverFuncHas<Person>(n => n.PersonId, WeaverFuncHasMode.Has, 
+				WeaverFuncHasOp.EqualTo, 1);
 			vFuncHas.Path = vMockPath.Object;
 		}
 
 
 		////////////////////////////////////////////////////////////////////////////////////////////////
 		/*--------------------------------------------------------------------------------------------*/
-		[Test]
-		public void New() {
+		[TestCase(WeaverFuncHasMode.Has)]
+		[TestCase(WeaverFuncHasMode.HasNot)]
+		public void New(WeaverFuncHasMode pMode) {
 			const WeaverFuncHasOp op = WeaverFuncHasOp.EqualTo;
 			const string val = "test";
-			var f = new WeaverFuncHas<Person>(n => n.PersonId, op, val);
+			var f = new WeaverFuncHas<Person>(n => n.PersonId, pMode, op, val);
 
+			Assert.AreEqual(pMode, f.Mode, "Incorrect Mode.");
 			Assert.AreEqual(op, f.Operation, "Incorrect Operation.");
 			Assert.AreEqual(val, f.Value, "Incorrect Value.");
 		}
@@ -57,7 +60,8 @@ namespace Weaver.Test.Fixtures.Functions {
 		/*--------------------------------------------------------------------------------------------*/
 		[Test]
 		public void PropertyNameInvalid() {
-			vFuncHas = new WeaverFuncHas<Person>(n => (n.PersonId == 99), WeaverFuncHasOp.EqualTo,1);
+			vFuncHas = new WeaverFuncHas<Person>(n => (n.PersonId == 99), WeaverFuncHasMode.Has, 
+				WeaverFuncHasOp.EqualTo, 1);
 			vFuncHas.Path = vMockPath.Object;
 
 			WeaverTestUtil.CheckThrows<WeaverFuncException>(true, () => {
@@ -77,12 +81,16 @@ namespace Weaver.Test.Fixtures.Functions {
 			if ( pValue == null ) { val = "null"; }
 
 			vMockQuery.Setup(x => x.AddParam(It.IsAny<WeaverQueryVal>())).Returns(val);
+			var modes = new[] { WeaverFuncHasMode.Has, WeaverFuncHasMode.HasNot };
+			var funcs = new[] { "has", "hasNot" };
 
-			vFuncHas = new WeaverFuncHas<Person>(n => n.PersonId, pOperation, pValue);
-			vFuncHas.Path = vMockPath.Object;
+			for ( int i = 0 ; i < modes.Length ; ++i ) {
+				vFuncHas = new WeaverFuncHas<Person>(n => n.PersonId, modes[i], pOperation, pValue);
+				vFuncHas.Path = vMockPath.Object;
 
-			Assert.AreEqual("has('"+TestSchema.Person_PersonId+"',Tokens.T."+pExpect+")",
-				vFuncHas.BuildParameterizedString(), "Incorrect result.");
+				Assert.AreEqual(funcs[i]+"('"+TestSchema.Person_PersonId+"',Tokens.T."+pExpect+")",
+					vFuncHas.BuildParameterizedString(), "Incorrect result.");
+			}
 		}
 
 	}

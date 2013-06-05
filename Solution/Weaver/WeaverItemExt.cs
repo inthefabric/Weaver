@@ -38,7 +38,15 @@ namespace Weaver {
 		/*--------------------------------------------------------------------------------------------*/
 		public static T Has<T>(this T pCallingItem, Expression<Func<T, object>> pItemProperty,
 							WeaverFuncHasOp pOperation, object pValue) where T : IWeaverItemIndexable {
-			var func = new WeaverFuncHas<T>(pItemProperty, pOperation, pValue);
+			var func = new WeaverFuncHas<T>(pItemProperty, WeaverFuncHasMode.Has, pOperation, pValue);
+			pCallingItem.Path.AddItem(func);
+			return pCallingItem;
+		}
+
+		/*--------------------------------------------------------------------------------------------*/
+		public static T HasNot<T>(this T pCallingItem, Expression<Func<T, object>> pItemProperty,
+							WeaverFuncHasOp pOperation, object pValue) where T : IWeaverItemIndexable {
+			var func = new WeaverFuncHas<T>(pItemProperty, WeaverFuncHasMode.HasNot, pOperation,pValue);
 			pCallingItem.Path.AddItem(func);
 			return pCallingItem;
 		}
