@@ -66,9 +66,29 @@ namespace Weaver.Test.Fixtures {
 
 		/*--------------------------------------------------------------------------------------------*/
 		[Test]
+		public void HasProp() {
+			var item = new TestItem();
+			TestItem result = item.Has(x => x.Value);
+
+			Assert.AreEqual(item, result, "Incorrect result.");
+			item.MockPath.Verify(x => x.AddItem(It.IsAny<WeaverFuncHas<TestItem>>()), Times.Once());
+		}
+
+		/*--------------------------------------------------------------------------------------------*/
+		[Test]
 		public void HasNot() {
 			var item = new TestItem();
 			TestItem result = item.HasNot(x => x.Value, WeaverFuncHasOp.EqualTo, 1);
+
+			Assert.AreEqual(item, result, "Incorrect result.");
+			item.MockPath.Verify(x => x.AddItem(It.IsAny<WeaverFuncHas<TestItem>>()), Times.Once());
+		}
+
+		/*--------------------------------------------------------------------------------------------*/
+		[Test]
+		public void HasNotProp() {
+			var item = new TestItem();
+			TestItem result = item.HasNot(x => x.Value);
 
 			Assert.AreEqual(item, result, "Incorrect result.");
 			item.MockPath.Verify(x => x.AddItem(It.IsAny<WeaverFuncHas<TestItem>>()), Times.Once());

@@ -12,6 +12,7 @@ namespace Weaver.Functions {
 		HasNot
 	};
 
+
 	/*================================================================================================*/
 	public enum WeaverFuncHasOp {
 		EqualTo = 1,
@@ -51,14 +52,14 @@ namespace Weaver.Functions {
 		private string vPropName;
 
 		public WeaverFuncHasMode Mode { get; private set; }
-		public WeaverFuncHasOp Operation { get; private set; }
+		public WeaverFuncHasOp? Operation { get; private set; }
 		public object Value { get; private set; }
 
 
 		////////////////////////////////////////////////////////////////////////////////////////////////
 		/*--------------------------------------------------------------------------------------------*/
 		public WeaverFuncHas(Expression<Func<TItem, object>> pItemProperty, WeaverFuncHasMode pMode,
-															WeaverFuncHasOp pOperation, object pValue) {
+												WeaverFuncHasOp? pOperation=null, object pValue=null) {
 			vProp = pItemProperty;
 			Mode = pMode;
 			Operation = pOperation;
@@ -77,8 +78,14 @@ namespace Weaver.Functions {
 		/*--------------------------------------------------------------------------------------------*/
 		public override string BuildParameterizedString() {
 			var qv = new WeaverQueryVal(Value);
-			return "has"+(Mode == WeaverFuncHasMode.Has ? "" : "Not")+"('"+PropertyName+"',Tokens.T."+
-				WeaverFuncHas.GremlinOpMap[Operation]+","+Path.Query.AddParam(qv)+")";
+			string func = "has"+(Mode == WeaverFuncHasMode.Has ? "" : "Not");
+
+			if ( Operation == null ) {
+				return func+"('"+PropertyName+"')";
+			}
+
+			string op = WeaverFuncHas.GremlinOpMap[(WeaverFuncHasOp)Operation];
+			return func+"('"+PropertyName+"',Tokens.T."+op+","+Path.Query.AddParam(qv)+")";
 		}
 
 	}
