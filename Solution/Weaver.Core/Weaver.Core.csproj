@@ -1,0 +1,98 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{3904484B-9C06-4CC1-9D52-5DD57B8EDC46}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Weaver.Core</RootNamespace>
+    <AssemblyName>Weaver.Core</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Exceptions\WeaverException.cs" />
+    <Compile Include="Exceptions\WeaverPathException.cs" />
+    <Compile Include="Exceptions\WeaverEdgeException.cs" />
+    <Compile Include="Items\IWeaverItem.cs" />
+    <Compile Include="Items\IWeaverItemIndexable.cs" />
+    <Compile Include="Items\IWeaverItemWithId.cs" />
+    <Compile Include="Items\IWeaverItemWithPath.cs" />
+    <Compile Include="Items\IWeaverProperty.cs" />
+    <Compile Include="Items\IWeaverVertex.cs" />
+    <Compile Include="Items\IWeaverEdge.cs" />
+    <Compile Include="Items\IWeaverEdgeType.cs" />
+    <Compile Include="Items\WeaverItem.cs" />
+    <Compile Include="Items\WeaverItemPropertyAttribute.cs" />
+    <Compile Include="Items\WeaverVertex.cs" />
+    <Compile Include="Items\WeaverProperty.cs" />
+    <Compile Include="Items\WeaverEdge.cs" />
+    <Compile Include="IWeaverConfig.cs" />
+    <Compile Include="Graph\WeaverGraph.cs" />
+    <Compile Include="IWeaverInstance.cs" />
+    <Compile Include="Path\IWeaverPath.cs" />
+    <Compile Include="Path\IWeaverPathEnder.cs" />
+    <Compile Include="Graph\WeaverAllEdges.cs" />
+    <Compile Include="Graph\WeaverAllItems.cs" />
+    <Compile Include="Graph\IWeaverAllEdges.cs" />
+    <Compile Include="Graph\IWeaverAllItems.cs" />
+    <Compile Include="Graph\IWeaverAllVertices.cs" />
+    <Compile Include="Graph\WeaverAllVertices.cs" />
+    <Compile Include="Path\WeaverPath.cs" />
+    <Compile Include="Query\IWeaverQuery.cs" />
+    <Compile Include="Query\IWeaverQueryVal.cs" />
+    <Compile Include="Query\IWeaverScript.cs" />
+    <Compile Include="Query\IWeaverTransaction.cs" />
+    <Compile Include="Query\IWeaverVarAlias.cs" />
+    <Compile Include="Query\WeaverQuery.cs" />
+    <Compile Include="Query\WeaverQueryVal.cs" />
+    <Compile Include="Query\WeaverVarAlias.cs" />
+    <Compile Include="Schema\WeaverItemSchema.cs" />
+    <Compile Include="Schema\WeaverVertexSchema.cs" />
+    <Compile Include="Schema\WeaverPropSchema.cs" />
+    <Compile Include="Schema\WeaverEdgeSchema.cs" />
+    <Compile Include="Util\WeaverUtil.cs" />
+    <Compile Include="WeaverConfig.cs" />
+    <Compile Include="WeaverEnums.cs" />
+    <Compile Include="Graph\IWeaverGraph.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="WeaverInstance.cs" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

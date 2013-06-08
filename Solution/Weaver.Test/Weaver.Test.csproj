@@ -57,6 +57,7 @@
     <Compile Include="Common\Rels\RootHasPerson.cs" />
     <Compile Include="Common\RelTypes\Has.cs" />
     <Compile Include="Common\Nodes\Root.cs" />
+    <Compile Include="Fixtures\Core\TWeaverInstance.cs" />
     <Compile Include="Fixtures\TestNode.cs" />
     <Compile Include="Common\RelTypes\Likes.cs" />
     <Compile Include="Common\Nodes\Candy.cs" />
@@ -95,6 +96,10 @@
     <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Weaver.Core\Weaver.Core.csproj">
+      <Project>{3904484B-9C06-4CC1-9D52-5DD57B8EDC46}</Project>
+      <Name>Weaver.Core</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Weaver\Weaver.csproj">
       <Project>{3952A0F1-6FA9-4B6C-8658-BC83285B0BA7}</Project>
       <Name>Weaver</Name>

@@ -5,6 +5,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Weaver.Test", "Weaver.Test\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Weaver", "Weaver\Weaver.csproj", "{3952A0F1-6FA9-4B6C-8658-BC83285B0BA7}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Weaver.Core", "Weaver.Core\Weaver.Core.csproj", "{3904484B-9C06-4CC1-9D52-5DD57B8EDC46}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -47,6 +49,21 @@ Global
 		{3952A0F1-6FA9-4B6C-8658-BC83285B0BA7}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{3952A0F1-6FA9-4B6C-8658-BC83285B0BA7}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{3952A0F1-6FA9-4B6C-8658-BC83285B0BA7}.Release|x86.ActiveCfg = Release|Any CPU
+		{3904484B-9C06-4CC1-9D52-5DD57B8EDC46}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3904484B-9C06-4CC1-9D52-5DD57B8EDC46}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3904484B-9C06-4CC1-9D52-5DD57B8EDC46}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{3904484B-9C06-4CC1-9D52-5DD57B8EDC46}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{3904484B-9C06-4CC1-9D52-5DD57B8EDC46}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{3904484B-9C06-4CC1-9D52-5DD57B8EDC46}.DebugLive|Any CPU.ActiveCfg = Debug|Any CPU
+		{3904484B-9C06-4CC1-9D52-5DD57B8EDC46}.DebugLive|Any CPU.Build.0 = Debug|Any CPU
+		{3904484B-9C06-4CC1-9D52-5DD57B8EDC46}.DebugLive|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{3904484B-9C06-4CC1-9D52-5DD57B8EDC46}.DebugLive|Mixed Platforms.Build.0 = Debug|Any CPU
+		{3904484B-9C06-4CC1-9D52-5DD57B8EDC46}.DebugLive|x86.ActiveCfg = Debug|Any CPU
+		{3904484B-9C06-4CC1-9D52-5DD57B8EDC46}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3904484B-9C06-4CC1-9D52-5DD57B8EDC46}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3904484B-9C06-4CC1-9D52-5DD57B8EDC46}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{3904484B-9C06-4CC1-9D52-5DD57B8EDC46}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{3904484B-9C06-4CC1-9D52-5DD57B8EDC46}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
