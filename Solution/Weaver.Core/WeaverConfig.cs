@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using Weaver.Core.Exceptions;
+using Weaver.Core.Func;
 using Weaver.Core.Items;
 using Weaver.Core.Schema;
 using Weaver.Core.Util;
@@ -102,7 +103,7 @@ namespace Weaver.Core {
 
 
 		////////////////////////////////////////////////////////////////////////////////////////////////
-		/*--------------------------------------------------------------------------------------------* /
+		/*--------------------------------------------------------------------------------------------*/
 		public string GetPropertyDbName<T>(IWeaverFunc pFunc, Expression<Func<T, object>> pExp)
 																		where T : IWeaverItemIndexable {
 			return WeaverUtil.GetPropertyName(this, pFunc, pExp);

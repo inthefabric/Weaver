@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq.Expressions;
+using Weaver.Core.Func;
 using Weaver.Core.Items;
 
 namespace Weaver.Core.Graph {
@@ -15,9 +16,11 @@ namespace Weaver.Core.Graph {
 		}
 
 		/*--------------------------------------------------------------------------------------------*/
-		protected IWeaverItem FromIndex<T>(Expression<Func<T, object>> pProperty, object pExactValue)
-														where T : class, IWeaverItemIndexable, new() {
-			return null;
+		protected IWeaverItem FromIndex<T>(Expression<Func<T, object>> pProperty, 
+									object pExactValue) where T : class, IWeaverItemIndexable, new() {
+			var ei = new WeaverFuncExactIndex<T>(pProperty, pExactValue);
+			Path.AddItem(ei);
+			return ei; //TODO return next item ?
 		}
 
 	}

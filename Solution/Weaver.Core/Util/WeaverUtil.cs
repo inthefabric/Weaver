@@ -2,6 +2,7 @@
 using System.Linq.Expressions;
 using System.Reflection;
 using Weaver.Core.Exceptions;
+using Weaver.Core.Func;
 using Weaver.Core.Items;
 using Weaver.Core.Query;
 
@@ -47,7 +48,7 @@ namespace Weaver.Core.Util {
 
 
 		////////////////////////////////////////////////////////////////////////////////////////////////
-		/*--------------------------------------------------------------------------------------------* /
+		/*--------------------------------------------------------------------------------------------*/
 		public static string GetPropertyName<T>(IWeaverConfig pConfig, IWeaverFunc pFunc,
 									Expression<Func<T, object>> pExp) where T : IWeaverItemIndexable {
 			try {

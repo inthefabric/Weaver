@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
+using Weaver.Core.Func;
 using Weaver.Core.Items;
 using Weaver.Core.Schema;
 
@@ -21,7 +22,7 @@ namespace Weaver.Core {
 
 
 		////////////////////////////////////////////////////////////////////////////////////////////////
-		/*--------------------------------------------------------------------------------------------* /
+		/*--------------------------------------------------------------------------------------------*/
 		string GetPropertyDbName<T>(IWeaverFunc pFunc, Expression<Func<T, object>> pExp)
 																		where T : IWeaverItemIndexable;
 
