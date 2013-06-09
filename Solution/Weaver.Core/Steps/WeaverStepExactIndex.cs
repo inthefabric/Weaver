@@ -26,6 +26,7 @@ namespace Weaver.Core.Steps {
 		public WeaverStepExactIndex(Expression<Func<T, object>> pProp, object pValue) {
 			vProp = pProp;
 			Value = pValue;
+			SkipDotPrefix = true;
 		}
 
 

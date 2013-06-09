@@ -12,9 +12,9 @@ namespace Weaver.Core.Graph {
 
 		////////////////////////////////////////////////////////////////////////////////////////////////
 		/*--------------------------------------------------------------------------------------------*/
-		protected T FromIndex<T>(Expression<Func<T, object>> pProperty, object pExactValue)
-																where T : IWeaverElement, new() {
-			var ei = new WeaverStepExactIndex<T>(pProperty, pExactValue);
+		protected T ExactIndexInner<T>(Expression<Func<T, object>> pProperty, object pValue)
+																	where T : IWeaverElement, new() {
+			var ei = new WeaverStepExactIndex<T>(pProperty, pValue);
 			Path.AddItem(ei);
 			return new T { Path = Path };
 		}
