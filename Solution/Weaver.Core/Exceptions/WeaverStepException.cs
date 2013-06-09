@@ -1,18 +1,18 @@
-﻿using Weaver.Core.Func;
+﻿using Weaver.Core.Steps;
 
 namespace Weaver.Core.Exceptions {
 
 	/*================================================================================================*/
-	public class WeaverFuncException : WeaverException {
+	public class WeaverStepException : WeaverException {
 
-		public IWeaverFunc Func { get; private set; }
+		public IWeaverStep Step { get; private set; }
 
 
 		////////////////////////////////////////////////////////////////////////////////////////////////
 		/*--------------------------------------------------------------------------------------------*/
-		public WeaverFuncException(IWeaverFunc pFunc, string pMessage) :
-														base("Func", pFunc.ItemIdentifier, pMessage) {
-			Func = pFunc;
+		public WeaverStepException(IWeaverStep pStep, string pMessage) :
+														base("Step", pStep.ItemIdentifier, pMessage) {
+			Step = pStep;
 		}
 
 	}

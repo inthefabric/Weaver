@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Linq.Expressions;
 using System.Reflection;
+using Weaver.Core.Elements;
 using Weaver.Core.Exceptions;
-using Weaver.Core.Func;
-using Weaver.Core.Items;
 using Weaver.Core.Query;
+using Weaver.Core.Steps;
 
 namespace Weaver.Core.Util {
 
@@ -16,7 +16,7 @@ namespace Weaver.Core.Util {
 		/*--------------------------------------------------------------------------------------------*/
 		public static string BuildPropList<TItem>(IWeaverConfig pConfig, IWeaverQuery pQuery,
 												TItem pItem, bool pIncludeId=false, int pStartParamI=0)
-																	where TItem : IWeaverItemIndexable {
+																	where TItem : IWeaverElement {
 			string list = "";
 			int i = pStartParamI;
 			PropertyInfo[] props = pItem.GetType().GetProperties();
@@ -49,19 +49,19 @@ namespace Weaver.Core.Util {
 
 		////////////////////////////////////////////////////////////////////////////////////////////////
 		/*--------------------------------------------------------------------------------------------*/
-		public static string GetPropertyName<T>(IWeaverConfig pConfig, IWeaverFunc pFunc,
-									Expression<Func<T, object>> pExp) where T : IWeaverItemIndexable {
+		public static string GetPropertyName<T>(IWeaverConfig pConfig, IWeaverStep pStep,
+									Expression<Func<T, object>> pExp) where T : IWeaverElement {
 			try {
 				return GetPropertyName(pConfig, pExp);
 			}
 			catch ( WeaverException we ) {
-				throw new WeaverFuncException(pFunc, we.Message);
+				throw new WeaverStepException(pStep, we.Message);
 			}
 		}
 
 		/*--------------------------------------------------------------------------------------------*/
 		public static string GetPropertyName<T>(IWeaverConfig pConfig, Expression<Func<T, object>> pExp)
-																		where T : IWeaverItemIndexable {
+																		where T : IWeaverElement {
 			MemberExpression me = GetMemberExpr(pExp);
 
 			if ( me != null ) {

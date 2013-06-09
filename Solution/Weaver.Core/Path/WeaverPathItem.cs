@@ -1,10 +1,9 @@
 ﻿using Weaver.Core.Exceptions;
-using Weaver.Core.Path;
 
-namespace Weaver.Core.Items {
+namespace Weaver.Core.Path {
 
 	/*================================================================================================*/
-	public abstract class WeaverItem : IWeaverItem {
+	public abstract class WeaverPathItem : WeaverPathPipe, IWeaverPathItem {
 		
 
 		////////////////////////////////////////////////////////////////////////////////////////////////

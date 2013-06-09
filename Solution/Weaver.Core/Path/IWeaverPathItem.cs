@@ -1,22 +1,20 @@
-﻿namespace Weaver.Core.Func {
+﻿namespace Weaver.Core.Path {
 
 	/*================================================================================================*/
-	public class WeaverFuncCustom : WeaverFunc {
-
-		private readonly string vScript;
+	public interface IWeaverPathItem : IWeaverPathPipe {
 
 
 		////////////////////////////////////////////////////////////////////////////////////////////////
 		/*--------------------------------------------------------------------------------------------*/
-		public WeaverFuncCustom(string pScript, bool pSkipDotPrefix=false) {
-			vScript = pScript;
-			SkipDotPrefix = pSkipDotPrefix;
-		}
+		IWeaverPath Path { get; set; }
+		int PathIndex { get; }
 
 		/*--------------------------------------------------------------------------------------------*/
-		public override string BuildParameterizedString() {
-			return vScript;
-		}
+		string ItemIdentifier { get; }
+		bool SkipDotPrefix { get; }
+
+		/*--------------------------------------------------------------------------------------------*/
+		string BuildParameterizedString();
 
 	}
 

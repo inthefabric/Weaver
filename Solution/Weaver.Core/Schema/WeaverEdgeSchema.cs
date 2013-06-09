@@ -1,5 +1,5 @@
-﻿using Weaver.Core.Exceptions;
-using Weaver.Core.Items;
+﻿using Weaver.Core.Elements;
+using Weaver.Core.Exceptions;
 
 namespace Weaver.Core.Schema {
 
@@ -8,7 +8,7 @@ namespace Weaver.Core.Schema {
 
 		public WeaverVertexSchema FromNode { get; private set; }
 		public WeaverVertexSchema ToNode { get; private set; }
-		public string RelType { get; private set; }
+		public string EdgeType { get; private set; }
 
 		private WeaverEdgeConn vFromNodeConn;
 		private WeaverEdgeConn vToNodeConn;
@@ -20,7 +20,7 @@ namespace Weaver.Core.Schema {
 									string pRelType, WeaverVertexSchema pToNode) : base(pName, pDbName) {
 			FromNode = pFromNode;
 			ToNode = pToNode;
-			RelType = pRelType;
+			EdgeType = pRelType;
 
 			FromNodeConn = WeaverEdgeConn.OutToZeroOrMore;
 			ToNodeConn = WeaverEdgeConn.InFromZeroOrMore;

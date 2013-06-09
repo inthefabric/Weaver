@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using Weaver.Core.Items;
 using Weaver.Core.Query;
 
 namespace Weaver.Core.Path {
@@ -13,17 +12,17 @@ namespace Weaver.Core.Path {
 
 		////////////////////////////////////////////////////////////////////////////////////////////////
 		/*--------------------------------------------------------------------------------------------*/
-		void AddItem(IWeaverItem pItem);
+		void AddItem(IWeaverPathItem pItem);
 		string BuildParameterizedScript();
 
 		/*--------------------------------------------------------------------------------------------*/
 		int Length { get; }
-		IWeaverItem ItemAtIndex(int pIndex);
-		IList<IWeaverItem> PathToIndex(int pIndex, bool pInclusive=true);
-		IList<IWeaverItem> PathFromIndex(int pIndex, bool pInclusive=true);
+		IWeaverPathItem ItemAtIndex(int pIndex);
+		IList<IWeaverPathItem> PathToIndex(int pIndex, bool pInclusive=true);
+		IList<IWeaverPathItem> PathFromIndex(int pIndex, bool pInclusive=true);
 
 		/*--------------------------------------------------------------------------------------------*/
-		int IndexOfItem(IWeaverItem pItem);
+		int IndexOfItem(IWeaverPathItem pItem);
 
 	}
 

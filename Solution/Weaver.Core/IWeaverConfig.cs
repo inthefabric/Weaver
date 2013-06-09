@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
-using Weaver.Core.Func;
-using Weaver.Core.Items;
+using Weaver.Core.Elements;
 using Weaver.Core.Schema;
+using Weaver.Core.Steps;
 
 namespace Weaver.Core {
 
@@ -16,21 +16,21 @@ namespace Weaver.Core {
 
 		////////////////////////////////////////////////////////////////////////////////////////////////
 		/*--------------------------------------------------------------------------------------------*/
-		string GetItemDbName<T>(T pItem) where T : IWeaverItemIndexable;
-		string GetItemDbName<T>() where T : IWeaverItemIndexable;
+		string GetItemDbName<T>(T pItem) where T : IWeaverElement;
+		string GetItemDbName<T>() where T : IWeaverElement;
 		string GetItemDbName(string pItemName);
 
 
 		////////////////////////////////////////////////////////////////////////////////////////////////
 		/*--------------------------------------------------------------------------------------------*/
-		string GetPropertyDbName<T>(IWeaverFunc pFunc, Expression<Func<T, object>> pExp)
-																		where T : IWeaverItemIndexable;
+		string GetPropertyDbName<T>(IWeaverStep pStep, Expression<Func<T, object>> pExp)
+																			where T : IWeaverElement;
 
 		/*--------------------------------------------------------------------------------------------*/
-		string GetPropertyDbName<T>(Expression<Func<T, object>> pExp) where T : IWeaverItemIndexable;
+		string GetPropertyDbName<T>(Expression<Func<T, object>> pExp) where T : IWeaverElement;
 		
 		/*--------------------------------------------------------------------------------------------*/
-		string GetPropertyDbName<T>(string pProp) where T : IWeaverItemIndexable;
+		string GetPropertyDbName<T>(string pProp) where T : IWeaverElement;
 
 	}
 

@@ -1,7 +1,7 @@
 ﻿using System;
 using Weaver.Core.Exceptions;
 
-namespace Weaver.Core.Items {
+namespace Weaver.Core.Elements {
 	
 	/*================================================================================================*/
 	public enum WeaverEdgeConn {
@@ -19,12 +19,11 @@ namespace Weaver.Core.Items {
 	}
 
 	/*================================================================================================*/
-	public abstract class WeaverRel<TFrom, TType, TTo> : WeaverItem, IWeaverRel<TFrom, TTo>
+	public abstract class WeaverEdge<TFrom, TType, TTo> : WeaverGraphElement, IWeaverEdge<TFrom, TTo>
 																	where TFrom : IWeaverVertex, new()
 																	where TType : IWeaverEdgeType, new()
 																	where TTo : IWeaverVertex, new() {
 
-		public string Id { get; set; }
 		public bool IsFromManyNodes { get; private set; }
 		public bool IsToManyNodes { get; private set; }
 		public bool IsOutgoing { get; private set; }
@@ -34,10 +33,10 @@ namespace Weaver.Core.Items {
 
 		////////////////////////////////////////////////////////////////////////////////////////////////
 		/*--------------------------------------------------------------------------------------------*/
-		protected WeaverRel() {}
+		protected WeaverEdge() {}
 
 		/*--------------------------------------------------------------------------------------------*/
-		protected WeaverRel(WeaverEdgeConn pConnection) : this() {
+		protected WeaverEdge(WeaverEdgeConn pConnection) : this() {
 			Connection = pConnection;
 		}
 
@@ -96,7 +95,7 @@ namespace Weaver.Core.Items {
 		public Type ToNodeType { get { return typeof(TTo); } }
 
 		/*--------------------------------------------------------------------------------------------*/
-		public IWeaverEdgeType RelType {
+		public IWeaverEdgeType EdgeType {
 			get {
 				return new TType();
 			}

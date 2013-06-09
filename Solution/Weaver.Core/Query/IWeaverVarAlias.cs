@@ -1,5 +1,5 @@
 ﻿using System;
-using Weaver.Core.Items;
+using Weaver.Core.Elements;
 
 namespace Weaver.Core.Query {
 	
@@ -13,7 +13,7 @@ namespace Weaver.Core.Query {
 
 	
 	/*================================================================================================*/
-	public interface IWeaverVarAlias<T> : IWeaverVarAlias where T : IWeaverItemIndexable {
+	public interface IWeaverVarAlias<T> : IWeaverVarAlias where T : IWeaverElement {
 		
 	}
 

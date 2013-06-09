@@ -1,28 +1,21 @@
-﻿using System;
-using Weaver.Core.Items;
-
-namespace Weaver.Core.Func {
+﻿namespace Weaver.Core.Steps {
 
 	/*================================================================================================*/
-	public class WeaverFuncAs<TItem> : WeaverFunc, IWeaverFuncAs<TItem>
-																where TItem : IWeaverItemIndexable {
+	public class WeaverStepCustom : WeaverStep {
 
-		public string Label { get; set; }
-		public TItem Item { get; private set; }
-		public Type ItemType { get; private set; }
+		private readonly string vScript;
 
 
 		////////////////////////////////////////////////////////////////////////////////////////////////
 		/*--------------------------------------------------------------------------------------------*/
-		public WeaverFuncAs(TItem pItem) {
-			Item = pItem;
-			ItemType = typeof(TItem);
-			Label = "step"+pItem.Path.Length;
+		public WeaverStepCustom(string pScript, bool pSkipDotPrefix=false) {
+			vScript = pScript;
+			SkipDotPrefix = pSkipDotPrefix;
 		}
 
 		/*--------------------------------------------------------------------------------------------*/
 		public override string BuildParameterizedString() {
-			return "as('"+Label+"')";
+			return vScript;
 		}
 
 	}

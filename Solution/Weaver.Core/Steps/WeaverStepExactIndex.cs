@@ -1,24 +1,36 @@
 ﻿using System;
 using System.Linq.Expressions;
-using Weaver.Core.Items;
+using Weaver.Core.Elements;
+using Weaver.Core.Query;
 
-namespace Weaver.Core.Func {
+namespace Weaver.Core.Steps {
+	
+	/*================================================================================================*/
+	public abstract class WeaverStepExactIndex : WeaverStep {
+
+		public object Value { get; protected set; }
+		public abstract string IndexName { get; }
+
+	}
+
 
 	/*================================================================================================*/
-	public class WeaverFuncProp<TItem> : WeaverFunc where TItem : IWeaverItemIndexable {
+	public class WeaverStepExactIndex<T> : WeaverStepExactIndex where T : IWeaverElement {
 
-		private readonly Expression<Func<TItem, object>> vProp;
+		private readonly Expression<Func<T, object>> vProp;
 		private string vPropName;
 
 
 		////////////////////////////////////////////////////////////////////////////////////////////////
 		/*--------------------------------------------------------------------------------------------*/
-		public WeaverFuncProp(Expression<Func<TItem, object>> pItemProperty) {
-			vProp = pItemProperty;
+		public WeaverStepExactIndex(Expression<Func<T, object>> pProp, object pValue) {
+			vProp = pProp;
+			Value = pValue;
 		}
 
+
 		/*--------------------------------------------------------------------------------------------*/
-		public string PropertyName {
+		public override string IndexName {
 			get {
 				if ( vPropName != null ) { return vPropName; }
 				vPropName = Path.Config.GetPropertyDbName(this, vProp);
@@ -28,11 +40,8 @@ namespace Weaver.Core.Func {
 
 		/*--------------------------------------------------------------------------------------------*/
 		public override string BuildParameterizedString() {
-			if ( PropertyName.ToLower() == "id" ) {
-				return "id";
-			}
-
-			return "property('"+PropertyName+"')";
+			var qvVal = new WeaverQueryVal(Value);
+			return "('"+IndexName+"',"+Path.Query.AddParam(qvVal)+")";
 		}
 
 	}

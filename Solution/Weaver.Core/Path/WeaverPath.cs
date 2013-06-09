@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using Weaver.Core.Exceptions;
-using Weaver.Core.Items;
 using Weaver.Core.Query;
 
 namespace Weaver.Core.Path {
@@ -11,7 +10,7 @@ namespace Weaver.Core.Path {
 		public IWeaverConfig Config { get; private set; }
 		public IWeaverQuery Query { get; private set; }
 
-		protected readonly IList<IWeaverItem> vItems;
+		protected readonly IList<IWeaverPathItem> vItems;
 
 
 		////////////////////////////////////////////////////////////////////////////////////////////////
@@ -19,11 +18,11 @@ namespace Weaver.Core.Path {
 		public WeaverPath(IWeaverConfig pConfig, IWeaverQuery pQuery) {
 			Config = pConfig;
 			Query = pQuery;
-			vItems = new List<IWeaverItem>();
+			vItems = new List<IWeaverPathItem>();
 		}
 
 		/*--------------------------------------------------------------------------------------------*/
-		public void AddItem(IWeaverItem pItem) {
+		public void AddItem(IWeaverPathItem pItem) {
 			int n = vItems.Count;
 
 			if ( n > 0 && vItems[n-1] is IWeaverPathEnder ) {
@@ -39,7 +38,7 @@ namespace Weaver.Core.Path {
 		public virtual string BuildParameterizedScript() {
 			string s = "g";
 
-			foreach ( IWeaverItem item in vItems ) {
+			foreach ( IWeaverPathItem item in vItems ) {
 				s += (s == "" || item.SkipDotPrefix ? "" : ".")+item.BuildParameterizedString();
 			}
 
@@ -52,17 +51,17 @@ namespace Weaver.Core.Path {
 		public int Length { get { return vItems.Count; } }
 
 		/*--------------------------------------------------------------------------------------------*/
-		public IWeaverItem ItemAtIndex(int pIndex) {
+		public IWeaverPathItem ItemAtIndex(int pIndex) {
 			ThrowIfOutOfBounds(pIndex);
 			return vItems[pIndex];
 		}
 
 		/*--------------------------------------------------------------------------------------------*/
-		public IList<IWeaverItem> PathToIndex(int pIndex, bool pInclusive=true) {
+		public IList<IWeaverPathItem> PathToIndex(int pIndex, bool pInclusive=true) {
 			pIndex -= (pInclusive ? 0 : 1);
 			ThrowIfOutOfBounds(pIndex);
 
-			var path = new List<IWeaverItem>();
+			var path = new List<IWeaverPathItem>();
 
 			for ( int i = 0 ; i <= pIndex ; ++i ) {
 				path.Add(vItems[i]);
@@ -72,11 +71,11 @@ namespace Weaver.Core.Path {
 		}
 
 		/*--------------------------------------------------------------------------------------------*/
-		public IList<IWeaverItem> PathFromIndex(int pIndex, bool pInclusive=true) {
+		public IList<IWeaverPathItem> PathFromIndex(int pIndex, bool pInclusive=true) {
 			pIndex += (pInclusive ? 0 : 1);
 			ThrowIfOutOfBounds(pIndex);
 
-			var path = new List<IWeaverItem>();
+			var path = new List<IWeaverPathItem>();
 			var n = vItems.Count;
 
 			for ( int i = pIndex ; i < n ; ++i ) {
@@ -97,7 +96,7 @@ namespace Weaver.Core.Path {
 
 		////////////////////////////////////////////////////////////////////////////////////////////////
 		/*--------------------------------------------------------------------------------------------*/
-		public int IndexOfItem(IWeaverItem pItem) {
+		public int IndexOfItem(IWeaverPathItem pItem) {
 			return vItems.IndexOf(pItem);
 		}
 		

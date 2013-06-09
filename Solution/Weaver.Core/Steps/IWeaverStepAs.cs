@@ -1,10 +1,10 @@
 ﻿using System;
-using Weaver.Core.Items;
+using Weaver.Core.Elements;
 
-namespace Weaver.Core.Func {
+namespace Weaver.Core.Steps {
 
 	/*================================================================================================*/
-	public interface IWeaverFuncAs : IWeaverFunc {
+	public interface IWeaverStepAs : IWeaverStep {
 
 		string Label { get; set; }
 		Type ItemType { get; }
@@ -12,7 +12,7 @@ namespace Weaver.Core.Func {
 	}
 	
 	/*================================================================================================*/
-	public interface IWeaverFuncAs<out TItem> : IWeaverFuncAs where TItem : IWeaverItemIndexable {
+	public interface IWeaverStepAs<out TItem> : IWeaverStepAs where TItem : IWeaverElement {
 
 		TItem Item { get; }
 

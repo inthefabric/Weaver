@@ -1,26 +1,22 @@
 ﻿using System;
 using System.Linq.Expressions;
-using Weaver.Core.Func;
-using Weaver.Core.Items;
+using Weaver.Core.Elements;
+using Weaver.Core.Path;
+using Weaver.Core.Steps;
 
 namespace Weaver.Core.Graph {
 
 	/*================================================================================================*/
-	public abstract class WeaverAllItems : WeaverItem, IWeaverAllItems {
+	public abstract class WeaverAllItems : WeaverPathItem, IWeaverAllItems {
 
 
 		////////////////////////////////////////////////////////////////////////////////////////////////
 		/*--------------------------------------------------------------------------------------------*/
-		protected WeaverAllItems() {
-
-		}
-
-		/*--------------------------------------------------------------------------------------------*/
-		protected IWeaverItem FromIndex<T>(Expression<Func<T, object>> pProperty, 
-									object pExactValue) where T : class, IWeaverItemIndexable, new() {
-			var ei = new WeaverFuncExactIndex<T>(pProperty, pExactValue);
+		protected T FromIndex<T>(Expression<Func<T, object>> pProperty, object pExactValue)
+																where T : IWeaverElement, new() {
+			var ei = new WeaverStepExactIndex<T>(pProperty, pExactValue);
 			Path.AddItem(ei);
-			return ei; //TODO return next item ?
+			return new T { Path = Path };
 		}
 
 	}

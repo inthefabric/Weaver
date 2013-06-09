@@ -1,4 +1,4 @@
-﻿namespace Weaver.Core.Items {
+﻿namespace Weaver.Core.Elements {
 
 	/*================================================================================================*/
 	public interface IWeaverProperty {

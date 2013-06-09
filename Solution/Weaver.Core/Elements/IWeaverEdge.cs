@@ -1,9 +1,9 @@
 ﻿using System;
 
-namespace Weaver.Core.Items {
+namespace Weaver.Core.Elements {
 
 	/*================================================================================================*/
-	public interface IWeaverEdge : IWeaverItemWithId {
+	public interface IWeaverEdge : IWeaverElement {
 
 
 		////////////////////////////////////////////////////////////////////////////////////////////////
@@ -14,7 +14,7 @@ namespace Weaver.Core.Items {
 		WeaverEdgeConn Connection { get; set; }
 
 		/*--------------------------------------------------------------------------------------------*/
-		IWeaverEdgeType RelType { get; }
+		IWeaverEdgeType EdgeType { get; }
 		bool IsFromManyNodes { get; }
 		bool IsToManyNodes { get; }
 		bool IsOutgoing { get; }
@@ -27,7 +27,7 @@ namespace Weaver.Core.Items {
 	
 
 	/*================================================================================================*/
-	public interface IWeaverRel<out TFrom, out TTo> : IWeaverEdge where TFrom : IWeaverVertex
+	public interface IWeaverEdge<out TFrom, out TTo> : IWeaverEdge where TFrom : IWeaverVertex
 																			where TTo : IWeaverVertex {
 
 

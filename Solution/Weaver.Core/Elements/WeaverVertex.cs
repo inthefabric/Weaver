@@ -1,10 +1,7 @@
-﻿namespace Weaver.Core.Items {
+﻿namespace Weaver.Core.Elements {
 
 	/*================================================================================================*/
-	public abstract class WeaverVertex : WeaverItem, IWeaverVertex {
-
-		[WeaverItemProperty]
-		public string Id { get; set; }
+	public abstract class WeaverVertex : WeaverGraphElement, IWeaverVertex {
 
 		public virtual bool IsFromNode { get; set; }
 		public virtual bool ExpectOneNode { get; set; }
@@ -13,11 +10,8 @@
 
 		////////////////////////////////////////////////////////////////////////////////////////////////
 		/*--------------------------------------------------------------------------------------------*/
-		protected WeaverVertex() {}
-
-		/*--------------------------------------------------------------------------------------------*/
-		protected TRel NewRel<TRel>(WeaverEdgeConn pConn) where TRel : IWeaverEdge, new() {
-			var rel = new TRel { Connection = pConn };
+		protected TEdge NewEdge<TEdge>(WeaverEdgeConn pConn) where TEdge : IWeaverEdge, new() {
+			var rel = new TEdge { Connection = pConn };
 			Path.AddItem(rel);
 			return rel;
 		}

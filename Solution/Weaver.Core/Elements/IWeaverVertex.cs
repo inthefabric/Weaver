@@ -1,7 +1,7 @@
-﻿namespace Weaver.Core.Items {
+﻿namespace Weaver.Core.Elements {
 
 	/*================================================================================================*/
-	public interface IWeaverVertex : IWeaverItemWithId {
+	public interface IWeaverVertex : IWeaverElement {
 
 		bool IsFromNode { get; set; }
 		bool ExpectOneNode { get; set; }

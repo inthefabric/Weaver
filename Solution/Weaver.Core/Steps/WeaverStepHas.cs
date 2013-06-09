@@ -1,20 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
-using Weaver.Core.Items;
+using Weaver.Core.Elements;
 using Weaver.Core.Query;
 
-namespace Weaver.Core.Func {
+namespace Weaver.Core.Steps {
 
 	/*================================================================================================*/
-	public enum WeaverFuncHasMode {
+	public enum WeaverStepHasMode {
 		Has = 1,
 		HasNot
 	};
 
 
 	/*================================================================================================*/
-	public enum WeaverFuncHasOp {
+	public enum WeaverStepHasOp {
 		EqualTo = 1,
 		NotEqualTo,
 		GreaterThan,
@@ -25,41 +25,41 @@ namespace Weaver.Core.Func {
 
 
 	/*================================================================================================*/
-	public abstract class WeaverFuncHas {
+	public abstract class WeaverStepHas {
 
-		public static Dictionary<WeaverFuncHasOp, string> GremlinOpMap = BuildOpMap();
+		public static Dictionary<WeaverStepHasOp, string> GremlinOpMap = BuildOpMap();
 
 
 		////////////////////////////////////////////////////////////////////////////////////////////////
 		/*--------------------------------------------------------------------------------------------*/
-		private static Dictionary<WeaverFuncHasOp, string> BuildOpMap() {
-			var map = new Dictionary<WeaverFuncHasOp, string>();
-			map.Add(WeaverFuncHasOp.EqualTo, "eq");
-			map.Add(WeaverFuncHasOp.NotEqualTo, "neq");
-			map.Add(WeaverFuncHasOp.GreaterThan, "gt");
-			map.Add(WeaverFuncHasOp.GreterThanOrEqualTo, "gte");
-			map.Add(WeaverFuncHasOp.LessThan, "lt");
-			map.Add(WeaverFuncHasOp.LessThanOrEqualTo, "lte");
+		private static Dictionary<WeaverStepHasOp, string> BuildOpMap() {
+			var map = new Dictionary<WeaverStepHasOp, string>();
+			map.Add(WeaverStepHasOp.EqualTo, "eq");
+			map.Add(WeaverStepHasOp.NotEqualTo, "neq");
+			map.Add(WeaverStepHasOp.GreaterThan, "gt");
+			map.Add(WeaverStepHasOp.GreterThanOrEqualTo, "gte");
+			map.Add(WeaverStepHasOp.LessThan, "lt");
+			map.Add(WeaverStepHasOp.LessThanOrEqualTo, "lte");
 			return map;
 		}
 
 	}
 
 	/*================================================================================================*/
-	public class WeaverFuncHas<TItem> : WeaverFunc where TItem : IWeaverItemIndexable {
+	public class WeaverStepHas<TItem> : WeaverStep where TItem : IWeaverElement {
 
 		private readonly Expression<Func<TItem, object>> vProp;
 		private string vPropName;
 
-		public WeaverFuncHasMode Mode { get; private set; }
-		public WeaverFuncHasOp? Operation { get; private set; }
+		public WeaverStepHasMode Mode { get; private set; }
+		public WeaverStepHasOp? Operation { get; private set; }
 		public object Value { get; private set; }
 
 
 		////////////////////////////////////////////////////////////////////////////////////////////////
 		/*--------------------------------------------------------------------------------------------*/
-		public WeaverFuncHas(Expression<Func<TItem, object>> pItemProperty, WeaverFuncHasMode pMode,
-												WeaverFuncHasOp? pOperation=null, object pValue=null) {
+		public WeaverStepHas(Expression<Func<TItem, object>> pItemProperty, WeaverStepHasMode pMode,
+												WeaverStepHasOp? pOperation=null, object pValue=null) {
 			vProp = pItemProperty;
 			Mode = pMode;
 			Operation = pOperation;
@@ -78,13 +78,13 @@ namespace Weaver.Core.Func {
 		/*--------------------------------------------------------------------------------------------*/
 		public override string BuildParameterizedString() {
 			var qv = new WeaverQueryVal(Value);
-			string func = "has"+(Mode == WeaverFuncHasMode.Has ? "" : "Not");
+			string func = "has"+(Mode == WeaverStepHasMode.Has ? "" : "Not");
 
 			if ( Operation == null ) {
 				return func+"('"+PropertyName+"')";
 			}
 
-			string op = WeaverFuncHas.GremlinOpMap[(WeaverFuncHasOp)Operation];
+			string op = WeaverStepHas.GremlinOpMap[(WeaverStepHasOp)Operation];
 			return func+"('"+PropertyName+"',Tokens.T."+op+","+Path.Query.AddParam(qv)+")";
 		}
 

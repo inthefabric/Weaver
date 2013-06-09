@@ -1,7 +1,9 @@
-﻿namespace Weaver.Core.Items {
+﻿namespace Weaver.Core.Elements {
 
 	/*================================================================================================*/
-	public interface IWeaverItemIndexable : IWeaverItem {
+	public interface IWeaverEdgeType {
+
+		string Label { get; }
 
 	}
 

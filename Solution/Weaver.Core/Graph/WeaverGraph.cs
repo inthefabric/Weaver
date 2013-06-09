@@ -1,12 +1,13 @@
-﻿using Weaver.Core.Exceptions;
-using Weaver.Core.Items;
+﻿using Weaver.Core.Elements;
+using Weaver.Core.Exceptions;
+using Weaver.Core.Path;
 using Weaver.Core.Query;
 using Weaver.Core.Util;
 
 namespace Weaver.Core.Graph {
 	
 	/*================================================================================================*/
-	public class WeaverGraph : WeaverItem, IWeaverGraph {
+	public class WeaverGraph : WeaverPathItem, IWeaverGraph {
 
 
 		////////////////////////////////////////////////////////////////////////////////////////////////
@@ -52,7 +53,7 @@ namespace Weaver.Core.Graph {
 				throw new WeaverException("ToNode.Id cannot be null.");
 			}
 
-			return FinishRel(pEdge, "g.addEdge("+
+			return FinishEdge(pEdge, "g.addEdge("+
 				"g.v("+Path.Query.AddStringParam(pOutVertex.Id)+"),"+
 				"g.v("+Path.Query.AddStringParam(pInVertex.Id)+"),"
 			);
@@ -71,11 +72,11 @@ namespace Weaver.Core.Graph {
 					"', expected '"+pEdge.ToNodeType.Name+"'.");
 			}
 
-			return FinishRel(pEdge, "g.addEdge("+pOutVertexVar.Name+","+pInVertexVar.Name+",");
+			return FinishEdge(pEdge, "g.addEdge("+pOutVertexVar.Name+","+pInVertexVar.Name+",");
 		}
 
 		/*--------------------------------------------------------------------------------------------*/
-		private IWeaverQuery FinishRel<TEdge>(TEdge pEdge, string pScript) where TEdge : IWeaverEdge {
+		private IWeaverQuery FinishEdge<TEdge>(TEdge pEdge, string pScript) where TEdge : IWeaverEdge {
 			string propList = WeaverUtil.BuildPropList(Path.Config, Path.Query, pEdge);
 
 			pScript += 

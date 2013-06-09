@@ -1,7 +1,9 @@
-﻿namespace Weaver.Core.Items {
+﻿using Weaver.Core.Path;
+
+namespace Weaver.Core.Elements {
 
 	/*================================================================================================*/
-	public interface IWeaverItemWithId : IWeaverItemIndexable {
+	public interface IWeaverElement : IWeaverPathItem {
 
 		string Id { get; set; }
 

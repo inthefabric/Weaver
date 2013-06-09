@@ -41,31 +41,32 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Exceptions\WeaverException.cs" />
-    <Compile Include="Exceptions\WeaverFuncException.cs" />
+    <Compile Include="Exceptions\WeaverStepException.cs" />
     <Compile Include="Exceptions\WeaverPathException.cs" />
     <Compile Include="Exceptions\WeaverEdgeException.cs" />
-    <Compile Include="Func\IWeaverFunc.cs" />
-    <Compile Include="Func\IWeaverFuncAs.cs" />
-    <Compile Include="Func\WeaverFunc.cs" />
-    <Compile Include="Func\WeaverFuncAs.cs" />
-    <Compile Include="Func\WeaverFuncBack.cs" />
-    <Compile Include="Func\WeaverFuncCustom.cs" />
-    <Compile Include="Func\WeaverFuncHas.cs" />
-    <Compile Include="Func\WeaverFuncExactIndex.cs" />
-    <Compile Include="Func\WeaverFuncProp.cs" />
-    <Compile Include="Items\IWeaverItem.cs" />
-    <Compile Include="Items\IWeaverItemIndexable.cs" />
-    <Compile Include="Items\IWeaverItemWithId.cs" />
-    <Compile Include="Items\IWeaverItemWithPath.cs" />
-    <Compile Include="Items\IWeaverProperty.cs" />
-    <Compile Include="Items\IWeaverVertex.cs" />
-    <Compile Include="Items\IWeaverEdge.cs" />
-    <Compile Include="Items\IWeaverEdgeType.cs" />
-    <Compile Include="Items\WeaverItem.cs" />
-    <Compile Include="Items\WeaverItemPropertyAttribute.cs" />
-    <Compile Include="Items\WeaverVertex.cs" />
-    <Compile Include="Items\WeaverProperty.cs" />
-    <Compile Include="Items\WeaverEdge.cs" />
+    <Compile Include="Path\WeaverPathPipe.cs" />
+    <Compile Include="Steps\IWeaverStep.cs" />
+    <Compile Include="Steps\IWeaverStepAs.cs" />
+    <Compile Include="Steps\WeaverStep.cs" />
+    <Compile Include="Steps\WeaverStepAs.cs" />
+    <Compile Include="Steps\WeaverStepBack.cs" />
+    <Compile Include="Steps\WeaverStepCustom.cs" />
+    <Compile Include="Steps\WeaverStepHas.cs" />
+    <Compile Include="Steps\WeaverStepExactIndex.cs" />
+    <Compile Include="Steps\WeaverStepProp.cs" />
+    <Compile Include="Elements\WeaverGraphElement.cs" />
+    <Compile Include="Path\IWeaverPathPipe.cs" />
+    <Compile Include="Path\IWeaverPathItem.cs" />
+    <Compile Include="Elements\IWeaverElement.cs" />
+    <Compile Include="Elements\IWeaverProperty.cs" />
+    <Compile Include="Elements\IWeaverVertex.cs" />
+    <Compile Include="Elements\IWeaverEdge.cs" />
+    <Compile Include="Elements\IWeaverEdgeType.cs" />
+    <Compile Include="Path\WeaverPathItem.cs" />
+    <Compile Include="Elements\WeaverItemPropertyAttribute.cs" />
+    <Compile Include="Elements\WeaverVertex.cs" />
+    <Compile Include="Elements\WeaverProperty.cs" />
+    <Compile Include="Elements\WeaverEdge.cs" />
     <Compile Include="IWeaverConfig.cs" />
     <Compile Include="Graph\WeaverGraph.cs" />
     <Compile Include="IWeaverInstance.cs" />
@@ -97,7 +98,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="WeaverInstance.cs" />
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

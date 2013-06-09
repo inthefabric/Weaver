@@ -1,12 +1,9 @@
 ﻿using Weaver.Core.Path;
 
-namespace Weaver.Core.Items {
+namespace Weaver.Core.Steps {
 
 	/*================================================================================================*/
-	public interface IWeaverItemWithPath {
-
-		IWeaverPath Path { get; set; }
-		int PathIndex { get; }
+	public interface IWeaverStep : IWeaverPathItem {
 
 	}
 

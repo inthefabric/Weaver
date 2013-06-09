@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
+using Weaver.Core.Elements;
 using Weaver.Core.Exceptions;
-using Weaver.Core.Func;
-using Weaver.Core.Items;
 using Weaver.Core.Schema;
+using Weaver.Core.Steps;
 using Weaver.Core.Util;
 
 namespace Weaver.Core {
@@ -83,12 +83,12 @@ namespace Weaver.Core {
 
 		////////////////////////////////////////////////////////////////////////////////////////////////
 		/*--------------------------------------------------------------------------------------------*/
-		public string GetItemDbName<T>(T pItem) where T : IWeaverItemIndexable {
+		public string GetItemDbName<T>(T pItem) where T : IWeaverElement {
 			return GetItemDbName<T>();
 		}
 		
 		/*--------------------------------------------------------------------------------------------*/
-		public string GetItemDbName<T>() where T : IWeaverItemIndexable {
+		public string GetItemDbName<T>() where T : IWeaverElement {
 			return GetItemDbName(typeof(T).Name);
 		}
 
@@ -104,19 +104,19 @@ namespace Weaver.Core {
 
 		////////////////////////////////////////////////////////////////////////////////////////////////
 		/*--------------------------------------------------------------------------------------------*/
-		public string GetPropertyDbName<T>(IWeaverFunc pFunc, Expression<Func<T, object>> pExp)
-																		where T : IWeaverItemIndexable {
-			return WeaverUtil.GetPropertyName(this, pFunc, pExp);
+		public string GetPropertyDbName<T>(IWeaverStep pStep, Expression<Func<T, object>> pExp)
+																		where T : IWeaverElement {
+			return WeaverUtil.GetPropertyName(this, pStep, pExp);
 		}
 
 		/*--------------------------------------------------------------------------------------------*/
 		public string GetPropertyDbName<T>(Expression<Func<T, object>> pExp)
-																		where T : IWeaverItemIndexable {
+																		where T : IWeaverElement {
 			return WeaverUtil.GetPropertyName(this, pExp);
 		}
 
 		/*--------------------------------------------------------------------------------------------*/
-		public string GetPropertyDbName<T>(string pProp) where T : IWeaverItemIndexable {
+		public string GetPropertyDbName<T>(string pProp) where T : IWeaverElement {
 			Type t = typeof(T);
 			string dbName;
 			WeaverException firstEx = null;
