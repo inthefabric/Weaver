@@ -1,30 +1,58 @@
 ﻿using System;
 using System.Linq.Expressions;
 using Weaver.Core.Elements;
+using Weaver.Core.Exceptions;
 using Weaver.Core.Query;
 using Weaver.Core.Steps;
 
 namespace Weaver.Core.Path {
-
+	
 	/*================================================================================================*/
-	public abstract class WeaverPathPipe<T> : WeaverPathItem, IWeaverPathPipe<T>
-																			where T : IWeaverElement {
+	public abstract class WeaverPathPipe : WeaverPathItem, IWeaverPathPipe {
 
 
 		////////////////////////////////////////////////////////////////////////////////////////////////
 		/*--------------------------------------------------------------------------------------------*/
-		public IWeaverPathPipeEnd<T> Count() {
-			throw new NotImplementedException();
+		public IWeaverPathPipeEnd Count() {
+			var f = new WeaverStepCustom("count()");
+			Path.AddItem(f);
+			return f;
 		}
 
 		/*--------------------------------------------------------------------------------------------*/
-		public IWeaverPathPipeEnd<T> Iterate() {
-			throw new NotImplementedException();
+		public IWeaverPathPipeEnd Iterate() {
+			var f = new WeaverStepCustom("iterate()");
+			Path.AddItem(f);
+			return f;
 		}
 
 		/*--------------------------------------------------------------------------------------------*/
 		public IWeaverQuery ToQuery() {
-			throw new NotImplementedException();
+			Path.Query.FinalizeQuery(Path.BuildParameterizedScript());
+			return Path.Query;
+		}
+
+	}
+
+
+	/*================================================================================================*/
+	public abstract class WeaverPathPipe<T> : WeaverPathPipe, IWeaverPathPipe<T>
+																	where T : class, IWeaverElement {
+
+		
+		////////////////////////////////////////////////////////////////////////////////////////////////
+		/*--------------------------------------------------------------------------------------------*/
+		public T Self {
+			get {
+				T self = (this as T);
+
+				if ( self == null ) {
+					throw new WeaverPathException(Path, "Invalid type for path item "+PathIndex+": "+
+					GetType().Name+". Expected type: "+typeof(T)+".");
+				}
+
+				return self;
+			}
 		}
 
 
@@ -65,7 +93,9 @@ namespace Weaver.Core.Path {
 		////////////////////////////////////////////////////////////////////////////////////////////////
 		/*--------------------------------------------------------------------------------------------*/
 		public T Next(int pCount) {
-			throw new NotImplementedException();
+			var f = new WeaverStepCustom("next("+pCount+")");
+			Path.AddItem(f);
+			return Self;
 		}
 
 		/*--------------------------------------------------------------------------------------------*/

@@ -3,7 +3,7 @@
 namespace Weaver.Core.Steps {
 
 	/*================================================================================================*/
-	public abstract class WeaverStep : WeaverPathItem, IWeaverStep {
+	public abstract class WeaverStep : WeaverPathPipe, IWeaverStep {
 		
 	}
 

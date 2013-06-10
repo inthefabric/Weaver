@@ -11,7 +11,7 @@ namespace Weaver.Core.Elements {
 
 
 	/*================================================================================================*/
-	public interface IWeaverElement<T> : IWeaverPathPipe<T> where T : IWeaverElement {
+	public interface IWeaverElement<T> : IWeaverPathPipe<T> where T : class, IWeaverElement {
 
 	}
 

@@ -16,7 +16,7 @@ namespace Weaver.Test.Core.Fixtures {
 		public void Basic() {
 			IWeaverQuery q = WeavInst.Graph.V.ExactIndex<Person>(x => x.Name, "Zach")
 				.InPersonKnows.FromNode
-				.Has(x => x.IsMale, WeaverStepHasOp.EqualTo, true)
+				//.Has(x => x.IsMale, WeaverStepHasOp.EqualTo, true)
 				.ToQuery();
 
 			Assert.Fail(q.Script);

@@ -3,7 +3,7 @@
 namespace Weaver.Test.Core.Common.Vertices {
 
 	/*================================================================================================*/
-	public abstract class TestVertex<T> : WeaverVertex<T> where T : IWeaverVertex {
+	public abstract class TestVertex<T> : WeaverVertex<T> where T : class, IWeaverVertex {
 
 		[WeaverItemProperty]
 		public string Name { get; set; }

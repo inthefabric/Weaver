@@ -7,16 +7,24 @@ using Weaver.Core.Steps;
 namespace Weaver.Core.Path {
 	
 	/*================================================================================================*/
-	public interface IWeaverPathPipe<T> : IWeaverPathPipeEnd<T> where T : IWeaverElement {
+	public interface IWeaverPathPipe : IWeaverPathPipeEnd {
 
 
 		////////////////////////////////////////////////////////////////////////////////////////////////
 		/*--------------------------------------------------------------------------------------------*/
-		IWeaverPathPipeEnd<T> Count();
+		IWeaverPathPipeEnd Count();
 
 		/*--------------------------------------------------------------------------------------------*/
-		IWeaverPathPipeEnd<T> Iterate();
+		IWeaverPathPipeEnd Iterate();
 
+	}
+
+
+	/*================================================================================================*/
+	public interface IWeaverPathPipe<T> : IWeaverPathPipe where T : class, IWeaverElement {
+
+
+		////////////////////////////////////////////////////////////////////////////////////////////////
 		/*--------------------------------------------------------------------------------------------* /
 		IWeaverQuery Prop(Expression<Func<T, object>> pProperty);
 
