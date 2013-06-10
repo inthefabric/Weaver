@@ -1,7 +1,7 @@
 ﻿using System;
 
 namespace Weaver.Core.Elements {
-
+	
 	/*================================================================================================*/
 	public interface IWeaverEdge : IWeaverElement {
 
@@ -24,11 +24,17 @@ namespace Weaver.Core.Elements {
 		Type ToNodeType { get; }
 
 	}
+
+
+	/*================================================================================================*/
+	public interface IWeaverEdge<T> : IWeaverEdge, IWeaverElement<T> where T : IWeaverEdge {
+
+	}
 	
 
 	/*================================================================================================*/
-	public interface IWeaverEdge<out TFrom, out TTo> : IWeaverEdge where TFrom : IWeaverVertex
-																			where TTo : IWeaverVertex {
+	public interface IWeaverEdge<TEdge, out TFrom, out TTo> : IWeaverEdge<TEdge>
+					where TEdge : IWeaverEdge where TFrom : IWeaverVertex where TTo : IWeaverVertex {
 
 
 		////////////////////////////////////////////////////////////////////////////////////////////////

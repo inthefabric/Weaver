@@ -7,83 +7,75 @@ using Weaver.Core.Steps;
 namespace Weaver.Core.Path {
 	
 	/*================================================================================================*/
-	public interface IWeaverPathPipe {
+	public interface IWeaverPathPipe<T> : IWeaverPathPipeEnd<T> where T : IWeaverElement {
 
 
 		////////////////////////////////////////////////////////////////////////////////////////////////
 		/*--------------------------------------------------------------------------------------------*/
-		IWeaverQuery Count();
+		IWeaverPathPipeEnd<T> Count();
 
 		/*--------------------------------------------------------------------------------------------*/
-		IWeaverQuery Iterate();
+		IWeaverPathPipeEnd<T> Iterate();
 
 		/*--------------------------------------------------------------------------------------------* /
-		IWeaverQuery Prop<T>(Expression<Func<T, object>> pProperty) where T : IWeaverElement;
-
-		/*--------------------------------------------------------------------------------------------*/
-		IWeaverQuery ToQuery();
+		IWeaverQuery Prop(Expression<Func<T, object>> pProperty);
 
 
 		////////////////////////////////////////////////////////////////////////////////////////////////
 		/*--------------------------------------------------------------------------------------------*/
-		T As<T>(out IWeaverStepAs<T> pAlias) where T : IWeaverElement;
+		T As(out IWeaverStepAs<T> pAlias);
 
 		/*--------------------------------------------------------------------------------------------*/
-		T Back<T>(IWeaverStepAs<T> pAlias) where T : IWeaverElement;
+		T Back(IWeaverStepAs<T> pAlias);
 
 		/*--------------------------------------------------------------------------------------------*/
-		T Has<T>(Expression<Func<T, object>> pProperty, WeaverStepHasOp pOperation, object pValue)
-																			where T : IWeaverElement;
+		T Has(Expression<Func<T, object>> pProperty, WeaverStepHasOp pOperation, object pValue);
 
 		/*--------------------------------------------------------------------------------------------*/
-		T Has<T>(Expression<Func<T, object>> pProperty) where T : IWeaverElement;
+		T Has(Expression<Func<T, object>> pProperty);
 
 		/*--------------------------------------------------------------------------------------------*/
-		T HasNot<T>(Expression<Func<T, object>> pProperty, WeaverStepHasOp pOperation, object pValue) 
-																			where T : IWeaverElement;
+		T HasNot(Expression<Func<T, object>> pProperty, WeaverStepHasOp pOperation, object pValue);
 
 		/*--------------------------------------------------------------------------------------------*/
-		T HasNot<T>(Expression<Func<T, object>> pProperty)where T : IWeaverElement;
+		T HasNot(Expression<Func<T, object>> pProperty);
 
 		/*--------------------------------------------------------------------------------------------* /
-		T UpdateEach<T>(WeaverUpdates<T> pUpdates) where T : IWeaverElement;
+		T UpdateEach(WeaverUpdates<T> pUpdates);
 
 		/*--------------------------------------------------------------------------------------------* /
-		T RemoveEach<T>() where T : IWeaverElement;
+		T RemoveEach();
 
 		/*--------------------------------------------------------------------------------------------* /
-		T Table<T>(IWeaverTableVarAlias pAlias, WeaverTableColumns pColumns) where T : IWeaverPathItem;
+		T Table(IWeaverTableVarAlias pAlias, WeaverTableColumns pColumns) where T : IWeaverPathItem;
 
 
 		////////////////////////////////////////////////////////////////////////////////////////////////
 		/*--------------------------------------------------------------------------------------------*/
-		T Next<T>(int pCount) where T : IWeaverElement;
+		T Next(int pCount);
 
 		/*--------------------------------------------------------------------------------------------*/
-		T Aggregate<T>(IWeaverVarAlias pVar) where T : IWeaverElement;
+		T Aggregate(IWeaverVarAlias pVar);
 
 		/*--------------------------------------------------------------------------------------------*/
-		T Retain<T>(IWeaverVarAlias pVar) where T : IWeaverElement;
+		T Retain(IWeaverVarAlias pVar);
 
 		/*--------------------------------------------------------------------------------------------*/
-		T Except<T>(IWeaverVarAlias pVar) where T : IWeaverElement;
+		T Except(IWeaverVarAlias pVar);
 
 		/*--------------------------------------------------------------------------------------------*/
-		T Iterate<T>() where T : IWeaverElement;
+		T Dedup();
 
 		/*--------------------------------------------------------------------------------------------*/
-		T Dedup<T>() where T : IWeaverElement;
+		T Limit(int pStartIndex, int pEndIndex);
 
 		/*--------------------------------------------------------------------------------------------*/
-		T Limit<T>(int pStartIndex, int pEndIndex) where T : IWeaverElement;
-
-		/*--------------------------------------------------------------------------------------------*/
-		T AtIndex<T>(int pStartIndex) where T : IWeaverElement;
+		T AtIndex(int pStartIndex);
 
 
 		////////////////////////////////////////////////////////////////////////////////////////////////
 		/*--------------------------------------------------------------------------------------------*/
-		T CustomStep<T>(string pScript, bool pSkipDotPrefix=false) where T : IWeaverElement;
+		T CustomStep(string pScript, bool pSkipDotPrefix=false);
 
 	}
 

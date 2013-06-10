@@ -1,7 +1,7 @@
 ﻿namespace Weaver.Core.Path {
 
 	/*================================================================================================*/
-	public interface IWeaverPathItem : IWeaverPathPipe {
+	public interface IWeaverPathItem {
 
 
 		////////////////////////////////////////////////////////////////////////////////////////////////

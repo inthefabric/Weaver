@@ -3,7 +3,7 @@
 namespace Weaver.Core.Path {
 
 	/*================================================================================================*/
-	public abstract class WeaverPathItem : WeaverPathPipe, IWeaverPathItem {
+	public abstract class WeaverPathItem : IWeaverPathItem {
 		
 
 		////////////////////////////////////////////////////////////////////////////////////////////////

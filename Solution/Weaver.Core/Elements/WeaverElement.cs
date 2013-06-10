@@ -3,7 +3,8 @@
 namespace Weaver.Core.Elements {
 
 	/*================================================================================================*/
-	public abstract class WeaverElement : WeaverPathItem, IWeaverElement {
+	public abstract class WeaverElement<T> : WeaverPathPipe<T>, IWeaverElement<T>
+																			where T : IWeaverElement {
 
 		[WeaverItemProperty]
 		public string Id { get; set; }

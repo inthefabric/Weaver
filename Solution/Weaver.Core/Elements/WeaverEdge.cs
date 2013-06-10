@@ -18,11 +18,11 @@ namespace Weaver.Core.Elements {
 
 	}
 
+
 	/*================================================================================================*/
-	public abstract class WeaverEdge<TFrom, TType, TTo> : WeaverElement, IWeaverEdge<TFrom, TTo>
-																	where TFrom : IWeaverVertex, new()
-																	where TType : IWeaverEdgeType, new()
-																	where TTo : IWeaverVertex, new() {
+	public abstract class WeaverEdge<TEdge, TFrom, TType, TTo> : WeaverElement<TEdge>,
+			IWeaverEdge<TEdge, TFrom, TTo> where TEdge : IWeaverEdge where TFrom : IWeaverVertex, new()
+			where TType : IWeaverEdgeType, new() where TTo : IWeaverVertex, new() {
 
 		public bool IsFromManyNodes { get; private set; }
 		public bool IsToManyNodes { get; private set; }
@@ -117,6 +117,7 @@ namespace Weaver.Core.Elements {
 		}
 
 	}
+
 
 	/*================================================================================================*/
 	public static class WeaverEdge {

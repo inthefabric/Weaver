@@ -5,7 +5,7 @@ using Weaver.Test.Core.Common.Vertices;
 namespace Weaver.Test.Core.Common.Edges {
 
 	/*================================================================================================*/
-	public class RootHasPerson : WeaverEdge<Root, Has, Person> {
+	public class RootHasPerson : WeaverEdge<RootHasPerson, Root, Has, Person> {
 
 	}
 

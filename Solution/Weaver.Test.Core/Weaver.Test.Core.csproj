@@ -43,7 +43,7 @@
     <Compile Include="Common\EdgeTypes\Likes.cs" />
     <Compile Include="Common\Schema\TestSchema.cs" />
     <Compile Include="Common\TestItem.cs" />
-    <Compile Include="Common\Vertices\TestNode.cs" />
+    <Compile Include="Common\Vertices\TestVertex.cs" />
     <Compile Include="Fixtures\TWeaverInstance.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="WeaverTestBase.cs" />

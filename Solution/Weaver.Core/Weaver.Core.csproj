@@ -44,6 +44,7 @@
     <Compile Include="Exceptions\WeaverStepException.cs" />
     <Compile Include="Exceptions\WeaverPathException.cs" />
     <Compile Include="Exceptions\WeaverEdgeException.cs" />
+    <Compile Include="Path\IWeaverPathPipeEnd.cs" />
     <Compile Include="Path\WeaverPathPipe.cs" />
     <Compile Include="Steps\IWeaverStep.cs" />
     <Compile Include="Steps\IWeaverStepAs.cs" />
@@ -93,7 +94,6 @@
     <Compile Include="Schema\WeaverEdgeSchema.cs" />
     <Compile Include="Util\WeaverUtil.cs" />
     <Compile Include="WeaverConfig.cs" />
-    <Compile Include="WeaverEnums.cs" />
     <Compile Include="Graph\IWeaverGraph.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="WeaverInstance.cs" />

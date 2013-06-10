@@ -5,7 +5,7 @@ using Weaver.Test.Core.Common.Vertices;
 namespace Weaver.Test.Core.Common.Edges {
 
 	/*================================================================================================*/
-	public class PersonKnowsPerson : WeaverEdge<Person, Knows, Person> {
+	public class PersonKnowsPerson : WeaverEdge<PersonKnowsPerson, Person, Knows, Person> {
 
 		[WeaverItemProperty]
 		public string MetOnDate { get; set; }
