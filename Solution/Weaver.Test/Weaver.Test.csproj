@@ -57,7 +57,6 @@
     <Compile Include="Common\Rels\RootHasPerson.cs" />
     <Compile Include="Common\RelTypes\Has.cs" />
     <Compile Include="Common\Nodes\Root.cs" />
-    <Compile Include="Fixtures\Core\TWeaverInstance.cs" />
     <Compile Include="Fixtures\TestNode.cs" />
     <Compile Include="Common\RelTypes\Likes.cs" />
     <Compile Include="Common\Nodes\Candy.cs" />

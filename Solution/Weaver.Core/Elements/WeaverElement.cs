@@ -3,7 +3,7 @@
 namespace Weaver.Core.Elements {
 
 	/*================================================================================================*/
-	public abstract class WeaverGraphElement : WeaverPathItem, IWeaverElement {
+	public abstract class WeaverElement : WeaverPathItem, IWeaverElement {
 
 		[WeaverItemProperty]
 		public string Id { get; set; }

@@ -3,7 +3,7 @@
 	/*================================================================================================*/
 	public class WeaverVertexSchema : WeaverItemSchema {
 
-		public WeaverVertexSchema BaseNode { get; set; }
+		public WeaverVertexSchema BaseVertex { get; set; }
 		public bool IsBaseClass { get; set; }
 		public bool IsAbstract { get; set; }
 		public bool IsRoot { get; set; }

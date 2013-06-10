@@ -54,7 +54,7 @@
     <Compile Include="Steps\WeaverStepHas.cs" />
     <Compile Include="Steps\WeaverStepExactIndex.cs" />
     <Compile Include="Steps\WeaverStepProp.cs" />
-    <Compile Include="Elements\WeaverGraphElement.cs" />
+    <Compile Include="Elements\WeaverElement.cs" />
     <Compile Include="Path\IWeaverPathPipe.cs" />
     <Compile Include="Path\IWeaverPathItem.cs" />
     <Compile Include="Elements\IWeaverElement.cs" />

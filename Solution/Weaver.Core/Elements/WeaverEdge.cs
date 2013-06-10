@@ -19,7 +19,7 @@ namespace Weaver.Core.Elements {
 	}
 
 	/*================================================================================================*/
-	public abstract class WeaverEdge<TFrom, TType, TTo> : WeaverGraphElement, IWeaverEdge<TFrom, TTo>
+	public abstract class WeaverEdge<TFrom, TType, TTo> : WeaverElement, IWeaverEdge<TFrom, TTo>
 																	where TFrom : IWeaverVertex, new()
 																	where TType : IWeaverEdgeType, new()
 																	where TTo : IWeaverVertex, new() {
