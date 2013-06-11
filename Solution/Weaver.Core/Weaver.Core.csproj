@@ -46,6 +46,7 @@
     <Compile Include="Exceptions\WeaverEdgeException.cs" />
     <Compile Include="Path\IWeaverPathPipeEnd.cs" />
     <Compile Include="Path\WeaverPathPipe.cs" />
+    <Compile Include="Query\WeaverTransaction.cs" />
     <Compile Include="Steps\IWeaverStep.cs" />
     <Compile Include="Steps\IWeaverStepAs.cs" />
     <Compile Include="Steps\WeaverStep.cs" />
