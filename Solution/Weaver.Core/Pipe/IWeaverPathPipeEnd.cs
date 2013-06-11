@@ -1,6 +1,7 @@
-﻿using Weaver.Core.Query;
+﻿using Weaver.Core.Path;
+using Weaver.Core.Query;
 
-namespace Weaver.Core.Path {
+namespace Weaver.Core.Pipe {
 	
 	/*================================================================================================*/
 	public interface IWeaverPathPipeEnd : IWeaverPathItem{

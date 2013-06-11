@@ -1,4 +1,5 @@
 ﻿using Weaver.Core.Path;
+using Weaver.Core.Pipe;
 
 namespace Weaver.Core.Elements {
 

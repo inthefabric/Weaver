@@ -2,10 +2,11 @@
 using System.Linq.Expressions;
 using Weaver.Core.Elements;
 using Weaver.Core.Exceptions;
+using Weaver.Core.Path;
 using Weaver.Core.Query;
 using Weaver.Core.Steps;
 
-namespace Weaver.Core.Path {
+namespace Weaver.Core.Pipe {
 	
 	/*================================================================================================*/
 	public abstract class WeaverPathPipe : WeaverPathItem, IWeaverPathPipe {

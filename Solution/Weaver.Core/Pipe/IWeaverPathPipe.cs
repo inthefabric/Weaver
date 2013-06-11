@@ -4,7 +4,7 @@ using Weaver.Core.Elements;
 using Weaver.Core.Query;
 using Weaver.Core.Steps;
 
-namespace Weaver.Core.Path {
+namespace Weaver.Core.Pipe {
 	
 	/*================================================================================================*/
 	public interface IWeaverPathPipe : IWeaverPathPipeEnd {
