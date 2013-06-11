@@ -4,16 +4,16 @@ using Weaver.Core.Exceptions;
 namespace Weaver.Core.Steps {
 
 	/*================================================================================================*/
-	public class WeaverStepBack<TBack> : WeaverStep where TBack : IWeaverElement {
+	public class WeaverStepBack<T> : WeaverStep where T : IWeaverElement {
 
-		public IWeaverStepAs<TBack> BackToItem { get; private set; }
+		public IWeaverStepAs<T> BackToItem { get; private set; }
 
 		private readonly string vLabel;
 
 
 		////////////////////////////////////////////////////////////////////////////////////////////////
 		/*--------------------------------------------------------------------------------------------*/
-		public WeaverStepBack(IWeaverStepAs<TBack> pBackToItem) {
+		public WeaverStepBack(IWeaverStepAs<T> pBackToItem) {
 			int i = pBackToItem.PathIndex;
 
 			if ( i < 0 ) {

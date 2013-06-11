@@ -29,11 +29,13 @@ namespace Weaver.Core.Steps {
 			SkipDotPrefix = true;
 		}
 
-
 		/*--------------------------------------------------------------------------------------------*/
 		public override string IndexName {
 			get {
-				if ( vPropName != null ) { return vPropName; }
+				if ( vPropName != null ) {
+					return vPropName;
+				}
+
 				vPropName = Path.Config.GetPropertyDbName(this, vProp);
 				return vPropName;
 			}

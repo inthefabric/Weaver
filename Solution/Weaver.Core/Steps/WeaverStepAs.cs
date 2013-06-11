@@ -4,19 +4,18 @@ using Weaver.Core.Elements;
 namespace Weaver.Core.Steps {
 
 	/*================================================================================================*/
-	public class WeaverStepAs<TItem> : WeaverStep, IWeaverStepAs<TItem>
-																where TItem : IWeaverElement {
+	public class WeaverStepAs<T> : WeaverStep, IWeaverStepAs<T> where T : IWeaverElement {
 
 		public string Label { get; set; }
-		public TItem Item { get; private set; }
+		public T Item { get; private set; }
 		public Type ItemType { get; private set; }
 
 
 		////////////////////////////////////////////////////////////////////////////////////////////////
 		/*--------------------------------------------------------------------------------------------*/
-		public WeaverStepAs(TItem pItem) {
+		public WeaverStepAs(T pItem) {
 			Item = pItem;
-			ItemType = typeof(TItem);
+			ItemType = typeof(T);
 			Label = "step"+pItem.Path.Length;
 		}
 

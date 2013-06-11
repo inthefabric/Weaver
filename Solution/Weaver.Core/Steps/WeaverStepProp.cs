@@ -5,15 +5,15 @@ using Weaver.Core.Elements;
 namespace Weaver.Core.Steps {
 
 	/*================================================================================================*/
-	public class WeaverStepProp<TItem> : WeaverStep where TItem : IWeaverElement {
+	public class WeaverStepProp<T> : WeaverStep where T : IWeaverElement {
 
-		private readonly Expression<Func<TItem, object>> vProp;
+		private readonly Expression<Func<T, object>> vProp;
 		private string vPropName;
 
 
 		////////////////////////////////////////////////////////////////////////////////////////////////
 		/*--------------------------------------------------------------------------------------------*/
-		public WeaverStepProp(Expression<Func<TItem, object>> pItemProperty) {
+		public WeaverStepProp(Expression<Func<T, object>> pItemProperty) {
 			vProp = pItemProperty;
 		}
 

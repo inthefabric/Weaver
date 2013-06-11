@@ -42,13 +42,13 @@ namespace Weaver.Core.Path {
 		
 		////////////////////////////////////////////////////////////////////////////////////////////////
 		/*--------------------------------------------------------------------------------------------*/
-		public T Self {
+		protected T Self {
 			get {
 				T self = (this as T);
 
 				if ( self == null ) {
 					throw new WeaverPathException(Path, "Invalid type for path item "+PathIndex+": "+
-					GetType().Name+". Expected type: "+typeof(T)+".");
+						GetType().Name+". Expected type: "+typeof(T)+".");
 				}
 
 				return self;
@@ -59,80 +59,91 @@ namespace Weaver.Core.Path {
 		////////////////////////////////////////////////////////////////////////////////////////////////
 		/*--------------------------------------------------------------------------------------------*/
 		public T As(out IWeaverStepAs<T> pAlias) {
-			throw new NotImplementedException();
+			pAlias = new WeaverStepAs<T>(Self);
+			Path.AddItem(pAlias);
+			return Self;
 		}
 
 		/*--------------------------------------------------------------------------------------------*/
-		public T Back(IWeaverStepAs<T> pAlias) {
-			throw new NotImplementedException();
+		public TBack Back<TBack>(IWeaverStepAs<TBack> pAlias) where TBack : IWeaverElement {
+			var f = new WeaverStepAs<T>(Self);
+			Path.AddItem(f);
+			return pAlias.Item;
 		}
 
 		/*--------------------------------------------------------------------------------------------*/
-		public T Has(Expression<Func<T, object>> pProperty, WeaverStepHasOp pOperation, 
-															object pValue) {
-			throw new NotImplementedException();
-		}
-
-		/*--------------------------------------------------------------------------------------------*/
-		public T Has(Expression<Func<T, object>> pProperty) {
-			throw new NotImplementedException();
-		}
-
-		/*--------------------------------------------------------------------------------------------*/
-		public T HasNot(Expression<Func<T, object>> pProperty, WeaverStepHasOp pOperation,
-															object pValue) {
-			throw new NotImplementedException();
-		}
-
-		/*--------------------------------------------------------------------------------------------*/
-		public T HasNot(Expression<Func<T, object>> pProperty) {
-			throw new NotImplementedException();
-		}
-
-
-		////////////////////////////////////////////////////////////////////////////////////////////////
-		/*--------------------------------------------------------------------------------------------*/
-		public T Next(int pCount) {
-			var f = new WeaverStepCustom("next("+pCount+")");
+		public T Has(Expression<Func<T, object>> pProperty, WeaverStepHasOp pOperation, object pValue) {
+			var f = new WeaverStepHas<T>(pProperty, WeaverStepHasMode.Has, pOperation, pValue);
 			Path.AddItem(f);
 			return Self;
 		}
 
 		/*--------------------------------------------------------------------------------------------*/
-		public T Aggregate(IWeaverVarAlias pVar) {
-			throw new NotImplementedException();
+		public T Has(Expression<Func<T, object>> pProperty) {
+			var r = new WeaverStepHas<T>(pProperty, WeaverStepHasMode.Has);
+			Path.AddItem(r);
+			return Self;
 		}
 
 		/*--------------------------------------------------------------------------------------------*/
-		public T Retain(IWeaverVarAlias pVar) {
-			throw new NotImplementedException();
+		public T HasNot(Expression<Func<T, object>> pProperty, WeaverStepHasOp pOperation,
+																						object pValue) {
+			var f = new WeaverStepHas<T>(pProperty, WeaverStepHasMode.HasNot, pOperation, pValue);
+			Path.AddItem(f);
+			return Self;
 		}
 
 		/*--------------------------------------------------------------------------------------------*/
-		public T Except(IWeaverVarAlias pVar) {
-			throw new NotImplementedException();
-		}
-
-		/*--------------------------------------------------------------------------------------------*/
-		public T Dedup() {
-			throw new NotImplementedException();
-		}
-
-		/*--------------------------------------------------------------------------------------------*/
-		public T Limit(int pStartIndex, int pEndIndex) {
-			throw new NotImplementedException();
-		}
-
-		/*--------------------------------------------------------------------------------------------*/
-		public T AtIndex(int pStartIndex) {
-			throw new NotImplementedException();
+		public T HasNot(Expression<Func<T, object>> pProperty) {
+			var f = new WeaverStepHas<T>(pProperty, WeaverStepHasMode.HasNot);
+			Path.AddItem(f);
+			return Self;
 		}
 
 
 		////////////////////////////////////////////////////////////////////////////////////////////////
 		/*--------------------------------------------------------------------------------------------*/
-		public T CustomStep(string pScript, bool pSkipDotPrefix = false) {
-			throw new NotImplementedException();
+		public T Next(int? pCount=null) {
+			return CustomStep("next("+(pCount == null ? "" : pCount+"")+")");
+		}
+
+		/*--------------------------------------------------------------------------------------------*/
+		public T Aggregate(IWeaverVarAlias pVar) {
+			return CustomStep("aggregate("+pVar.Name+")");
+		}
+
+		/*--------------------------------------------------------------------------------------------*/
+		public T Retain(IWeaverVarAlias pVar) {
+			return CustomStep("retain("+pVar.Name+")");
+		}
+
+		/*--------------------------------------------------------------------------------------------*/
+		public T Except(IWeaverVarAlias pVar) {
+			return CustomStep("except("+pVar.Name+")");
+		}
+
+		/*--------------------------------------------------------------------------------------------*/
+		public T Dedup() {
+			return CustomStep("dedup");
+		}
+
+		/*--------------------------------------------------------------------------------------------*/
+		public T Limit(int pStartIndex, int pEndIndex) {
+			return CustomStep("["+pStartIndex+".."+pEndIndex+"]", true);
+		}
+
+		/*--------------------------------------------------------------------------------------------*/
+		public T AtIndex(int pIndex) {
+			return CustomStep("["+pIndex+"]", true);
+		}
+
+
+		////////////////////////////////////////////////////////////////////////////////////////////////
+		/*--------------------------------------------------------------------------------------------*/
+		public T CustomStep(string pScript, bool pSkipDotPrefix=false) {
+			var f = new WeaverStepCustom(pScript, pSkipDotPrefix);
+			Path.AddItem(f);
+			return Self;
 		}
 
 	}

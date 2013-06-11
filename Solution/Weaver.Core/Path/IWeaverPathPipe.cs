@@ -34,7 +34,7 @@ namespace Weaver.Core.Path {
 		T As(out IWeaverStepAs<T> pAlias);
 
 		/*--------------------------------------------------------------------------------------------*/
-		T Back(IWeaverStepAs<T> pAlias);
+		TBack Back<TBack>(IWeaverStepAs<TBack> pAlias) where TBack : IWeaverElement;
 
 		/*--------------------------------------------------------------------------------------------*/
 		T Has(Expression<Func<T, object>> pProperty, WeaverStepHasOp pOperation, object pValue);
@@ -60,7 +60,7 @@ namespace Weaver.Core.Path {
 
 		////////////////////////////////////////////////////////////////////////////////////////////////
 		/*--------------------------------------------------------------------------------------------*/
-		T Next(int pCount);
+		T Next(int? pCount=null);
 
 		/*--------------------------------------------------------------------------------------------*/
 		T Aggregate(IWeaverVarAlias pVar);
@@ -78,7 +78,7 @@ namespace Weaver.Core.Path {
 		T Limit(int pStartIndex, int pEndIndex);
 
 		/*--------------------------------------------------------------------------------------------*/
-		T AtIndex(int pStartIndex);
+		T AtIndex(int pIndex);
 
 
 		////////////////////////////////////////////////////////////////////////////////////////////////
