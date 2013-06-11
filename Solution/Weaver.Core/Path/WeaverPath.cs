@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Text;
 using Weaver.Core.Exceptions;
 using Weaver.Core.Query;
 
@@ -36,13 +37,15 @@ namespace Weaver.Core.Path {
 
 		/*--------------------------------------------------------------------------------------------*/
 		public virtual string BuildParameterizedScript() {
-			string s = "g";
+			var sb = new StringBuilder();
+			bool first = true;
 
 			foreach ( IWeaverPathItem item in vItems ) {
-				s += (s == "" || item.SkipDotPrefix ? "" : ".")+item.BuildParameterizedString();
+				sb.Append((first || item.SkipDotPrefix ? "" : ".")+item.BuildParameterizedString());
+				first = false;
 			}
 
-			return s;
+			return sb.ToString();
 		}
 
 

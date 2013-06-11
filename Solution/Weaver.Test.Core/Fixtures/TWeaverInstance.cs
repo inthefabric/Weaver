@@ -19,7 +19,8 @@ namespace Weaver.Test.Core.Fixtures {
 				//.Has(x => x.IsMale, WeaverStepHasOp.EqualTo, true)
 				.ToQuery();
 
-			Assert.Fail(q.Script);
+			const string expect = "g.V('Name',_P0).inE('PKP').outV;"; //.has('IsMale',Tokens.T.eq,_P1)
+			Assert.AreEqual(expect, q.Script, "Incorrect script.");
 		}
 
 	}

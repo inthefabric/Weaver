@@ -105,13 +105,12 @@ namespace Weaver.Core {
 		////////////////////////////////////////////////////////////////////////////////////////////////
 		/*--------------------------------------------------------------------------------------------*/
 		public string GetPropertyDbName<T>(IWeaverStep pStep, Expression<Func<T, object>> pExp)
-																		where T : IWeaverElement {
+																			where T : IWeaverElement {
 			return WeaverUtil.GetPropertyName(this, pStep, pExp);
 		}
 
 		/*--------------------------------------------------------------------------------------------*/
-		public string GetPropertyDbName<T>(Expression<Func<T, object>> pExp)
-																		where T : IWeaverElement {
+		public string GetPropertyDbName<T>(Expression<Func<T, object>> pExp) where T : IWeaverElement {
 			return WeaverUtil.GetPropertyName(this, pExp);
 		}
 
@@ -130,16 +129,17 @@ namespace Weaver.Core {
 					throw firstEx;
 				}
 
-				//Console.WriteLine("GetPropName: "+t.Name+" / "+pProp);
+				string typeName = t.Name.Replace("`1", "");
+				//Console.WriteLine("GetPropName: "+typeName+" / "+pProp);
 
-				if ( !vItemNameMap.ContainsKey(t.Name) ) {
-					firstEx = new WeaverException("Unknown item type '"+t.Name+"' while looking for "+
+				if ( !vItemNameMap.ContainsKey(typeName) ) {
+					firstEx = new WeaverException("Unknown item type '"+typeName+"' while looking for "+
 						"property "+typeof(T).Name+"."+pProp);
 					t = t.BaseType;
 					continue;
 				}
 
-				WeaverItemSchema wis = vItemNameMap[t.Name];
+				WeaverItemSchema wis = vItemNameMap[typeName];
 				string propKey = wis.Name+Delim+pProp;
 
 				if ( !vItemPropNameMap.ContainsKey(propKey) ) {
