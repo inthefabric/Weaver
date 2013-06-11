@@ -44,6 +44,7 @@
     <Compile Include="Common\Schema\TestSchema.cs" />
     <Compile Include="Common\TestItem.cs" />
     <Compile Include="Common\Vertices\TestVertex.cs" />
+    <Compile Include="Fixtures\Pipe\TWeaverPathPipe.cs" />
     <Compile Include="Fixtures\Query\TWeaverTransaction.cs" />
     <Compile Include="Fixtures\TWeaverInstance.cs" />
     <Compile Include="Fixtures\Query\TWeaverQuery.cs" />

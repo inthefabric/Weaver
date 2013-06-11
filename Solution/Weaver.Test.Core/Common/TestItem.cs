@@ -5,7 +5,7 @@ using Weaver.Core.Path;
 namespace Weaver.Test.Core.Common {
 
 	/*================================================================================================*/
-	public class TestElement<T> : WeaverElement<T> where T : class, IWeaverElement {
+	public class TestElement : WeaverElement<TestElement>, IWeaverElement {
 
 		public Mock<IWeaverPath> MockPath { get; private set; }
 
