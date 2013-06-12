@@ -48,6 +48,9 @@ namespace Weaver.Core.Pipe {
 		/*--------------------------------------------------------------------------------------------*/
 		T HasNot(Expression<Func<T, object>> pProperty);
 
+		/*--------------------------------------------------------------------------------------------*/
+		IWeaverPathPipeEnd Property(Expression<Func<T, object>> pProperty);
+
 		/*--------------------------------------------------------------------------------------------* /
 		T UpdateEach(WeaverUpdates<T> pUpdates);
 

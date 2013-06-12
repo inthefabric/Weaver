@@ -101,6 +101,13 @@ namespace Weaver.Core.Pipe {
 			return Self;
 		}
 
+		/*--------------------------------------------------------------------------------------------*/
+		public IWeaverPathPipeEnd Property(Expression<Func<T, object>> pProperty) {
+			var f = new WeaverStepProp<T>(pProperty);
+			Path.AddItem(f);
+			return f;
+		}
+
 
 		////////////////////////////////////////////////////////////////////////////////////////////////
 		/*--------------------------------------------------------------------------------------------*/

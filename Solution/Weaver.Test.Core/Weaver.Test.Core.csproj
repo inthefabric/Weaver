@@ -54,6 +54,12 @@
     <Compile Include="Fixtures\Schema\TWeaverVertexSchema.cs" />
     <Compile Include="Fixtures\Schema\TWeaverPropSchema.cs" />
     <Compile Include="Fixtures\Schema\TWeaverEdgeSchema.cs" />
+    <Compile Include="Fixtures\Steps\TWeaverStepProp.cs" />
+    <Compile Include="Fixtures\Steps\TWeaverStepCustom.cs" />
+    <Compile Include="Fixtures\Steps\TWeaverStepAs.cs" />
+    <Compile Include="Fixtures\Steps\TWeaverStepBack.cs" />
+    <Compile Include="Fixtures\Steps\TWeaverStepHas.cs" />
+    <Compile Include="Fixtures\Steps\TWeaverStepExactIndex.cs" />
     <Compile Include="Fixtures\TWeaverInstance.cs" />
     <Compile Include="Fixtures\Query\TWeaverQuery.cs" />
     <Compile Include="Fixtures\Query\TWeaverQueryVal.cs" />

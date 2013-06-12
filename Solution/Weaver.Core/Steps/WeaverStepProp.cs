@@ -28,7 +28,7 @@ namespace Weaver.Core.Steps {
 
 		/*--------------------------------------------------------------------------------------------*/
 		public override string BuildParameterizedString() {
-			if ( PropertyName.ToLower() == "id" ) {
+			if ( PropertyName == "id" ) {
 				return "id";
 			}
 

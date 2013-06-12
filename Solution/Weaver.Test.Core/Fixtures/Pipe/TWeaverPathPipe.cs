@@ -2,6 +2,7 @@
 using NUnit.Framework;
 using Weaver.Core.Exceptions;
 using Weaver.Core.Path;
+using Weaver.Core.Pipe;
 using Weaver.Core.Query;
 using Weaver.Core.Steps;
 using Weaver.Test.Core.Common;
@@ -122,6 +123,15 @@ namespace Weaver.Test.Core.Fixtures.Pipe {
 
 			Assert.AreEqual(vElem, result, "Incorrect result.");
 			vElem.MockPath.Verify(x => x.AddItem(It.IsAny<WeaverStepHas<TestElement>>()), Times.Once());
+		}
+
+		/*--------------------------------------------------------------------------------------------*/
+		[Test]
+		public void Property() {
+			IWeaverPathPipeEnd result = vElem.Property(x => x.Value);
+
+			Assert.NotNull((result as WeaverStepProp<TestElement>), "Incorrect result.");
+			vElem.MockPath.Verify(x => x.AddItem(It.IsAny<WeaverStepProp<TestElement>>()),Times.Once());
 		}
 
 
