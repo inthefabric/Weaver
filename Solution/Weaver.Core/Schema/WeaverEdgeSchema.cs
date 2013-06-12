@@ -17,7 +17,7 @@ namespace Weaver.Core.Schema {
 		////////////////////////////////////////////////////////////////////////////////////////////////
 		/*--------------------------------------------------------------------------------------------*/
 		public WeaverEdgeSchema(WeaverVertexSchema pFromNode, string pName, string pDbName, 
-									string pRelType, WeaverVertexSchema pToNode) : base(pName, pDbName) {
+									string pRelType, WeaverVertexSchema pToNode) : base(pName, pDbName){
 			FromNode = pFromNode;
 			ToNode = pToNode;
 			EdgeType = pRelType;

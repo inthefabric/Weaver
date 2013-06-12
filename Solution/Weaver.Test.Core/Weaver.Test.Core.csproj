@@ -51,6 +51,9 @@
     <Compile Include="Fixtures\Pipe\TWeaverPathPipe.cs" />
     <Compile Include="Fixtures\Query\TWeaverVarAlias.cs" />
     <Compile Include="Fixtures\Query\TWeaverTransaction.cs" />
+    <Compile Include="Fixtures\Schema\TWeaverVertexSchema.cs" />
+    <Compile Include="Fixtures\Schema\TWeaverPropSchema.cs" />
+    <Compile Include="Fixtures\Schema\TWeaverEdgeSchema.cs" />
     <Compile Include="Fixtures\TWeaverInstance.cs" />
     <Compile Include="Fixtures\Query\TWeaverQuery.cs" />
     <Compile Include="Fixtures\Query\TWeaverQueryVal.cs" />
