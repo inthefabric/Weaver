@@ -67,7 +67,7 @@ namespace Weaver.Core.Pipe {
 
 		/*--------------------------------------------------------------------------------------------*/
 		public TBack Back<TBack>(IWeaverStepAs<TBack> pAlias) where TBack : IWeaverElement {
-			var f = new WeaverStepAs<T>(Self);
+			var f = new WeaverStepBack<TBack>(pAlias);
 			Path.AddItem(f);
 			return pAlias.Item;
 		}
