@@ -28,6 +28,8 @@ namespace Weaver.Core {
 			}
 		}
 
+		//TODO: Init list var, store var, etc.
+
 	}
 
 }

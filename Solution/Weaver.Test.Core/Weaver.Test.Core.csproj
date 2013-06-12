@@ -44,6 +44,7 @@
     <Compile Include="Common\EdgeTypes\Likes.cs" />
     <Compile Include="Common\Schema\TestSchema.cs" />
     <Compile Include="Common\Vertices\TestVertex.cs" />
+    <Compile Include="Fixtures\TWeaverConfig.cs" />
     <Compile Include="Fixtures\Elements\TWeaverVertex.cs" />
     <Compile Include="Fixtures\Elements\TWeaverEdge.cs" />
     <Compile Include="Fixtures\Graph\TWeaverAllEdges.cs" />

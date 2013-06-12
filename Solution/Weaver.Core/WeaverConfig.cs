@@ -118,23 +118,19 @@ namespace Weaver.Core {
 		public string GetPropertyDbName<T>(string pProp) where T : IWeaverElement {
 			Type t = typeof(T);
 			string dbName;
-			WeaverException firstEx = null;
+			string exList = "";
 
 			while ( true ) {
 				if ( t == null || t == typeof(Object) ) {
-					if ( firstEx == null ) {
-						throw new WeaverException("Unknown property "+typeof(T).Name+"."+pProp);
-					}
-
-					throw firstEx;
+					throw new WeaverException(
+						"Could not find property DB name:\n"+exList);
 				}
 
 				string typeName = t.Name.Replace("`1", "");
 				//Console.WriteLine("GetPropName: "+typeName+" / "+pProp);
 
 				if ( !vItemNameMap.ContainsKey(typeName) ) {
-					firstEx = new WeaverException("Unknown item type '"+typeName+"' while looking for "+
-						"property "+typeof(T).Name+"."+pProp);
+					exList += " - Unknown item type: "+typeName+".\n";
 					t = t.BaseType;
 					continue;
 				}
@@ -143,12 +139,11 @@ namespace Weaver.Core {
 				string propKey = wis.Name+Delim+pProp;
 
 				if ( !vItemPropNameMap.ContainsKey(propKey) ) {
-					firstEx = new WeaverException("Unknown property "+propKey);
+					exList += " - Unknown property: "+propKey+".\n";
 					t = t.BaseType;
 					continue;
 				}
 
-				//Console.WriteLine(" - Item: "+pProp);
 				WeaverPropSchema ps = vItemPropNameMap[propKey];
 				dbName = ps.DbName;
 				break;

@@ -6,6 +6,8 @@ namespace Weaver.Test.Core.Common.Schema {
 	/*================================================================================================*/
 	public class TestSchema {
 
+		public const string Person_Vertex = "Per";
+
 		public const string Person_PersonId = "PerId";
 		public const string Person_IsMale = "IsMale";
 		public const string Person_Age = "Age";
@@ -59,7 +61,7 @@ namespace Weaver.Test.Core.Common.Schema {
 
 			////
 
-			var per = new WeaverVertexSchema("Person", "Per");
+			var per = new WeaverVertexSchema("Person", Person_Vertex);
 			per.BaseVertex = vert;
 			Vertices.Add(per);
 
