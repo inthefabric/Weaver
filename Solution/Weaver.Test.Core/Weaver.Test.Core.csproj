@@ -49,6 +49,7 @@
     <Compile Include="Fixtures\Path\TWeaverPath.cs" />
     <Compile Include="Fixtures\Path\TWeaverPathItem.cs" />
     <Compile Include="Fixtures\Pipe\TWeaverPathPipe.cs" />
+    <Compile Include="Fixtures\Query\TWeaverVarAlias.cs" />
     <Compile Include="Fixtures\Query\TWeaverTransaction.cs" />
     <Compile Include="Fixtures\TWeaverInstance.cs" />
     <Compile Include="Fixtures\Query\TWeaverQuery.cs" />
