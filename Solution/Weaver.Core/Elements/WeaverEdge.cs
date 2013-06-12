@@ -27,8 +27,8 @@ namespace Weaver.Core.Elements {
 																	where TType : IWeaverEdgeType, new()
 																	where TTo : IWeaverVertex, new() {
 
-		public bool IsFromManyNodes { get; private set; }
-		public bool IsToManyNodes { get; private set; }
+		public bool IsFromManyVertices { get; private set; }
+		public bool IsToManyVertices { get; private set; }
 		public bool IsOutgoing { get; private set; }
 
 		private WeaverEdgeConn? vConn;
@@ -59,12 +59,12 @@ namespace Weaver.Core.Elements {
 
 				vConn = value;
 				
-				IsFromManyNodes = (
+				IsFromManyVertices = (
 					vConn == WeaverEdgeConn.InFromZeroOrMore || 
 					vConn == WeaverEdgeConn.InFromOneOrMore
 				);
 				
-				IsToManyNodes = (
+				IsToManyVertices = (
 					vConn == WeaverEdgeConn.OutToZeroOrMore ||
 					vConn == WeaverEdgeConn.OutToOneOrMore
 				);
@@ -76,26 +76,26 @@ namespace Weaver.Core.Elements {
 
 		////////////////////////////////////////////////////////////////////////////////////////////////
 		/*--------------------------------------------------------------------------------------------*/
-		public TFrom FromNode {
+		public TFrom FromVertex {
 			get {
-				var n = new TFrom { IsFromNode = true, ExpectOneNode = !IsFromManyNodes };
+				var n = new TFrom { IsFromVertex = true, ExpectOneVertex = !IsFromManyVertices };
 				Path.AddItem(n);
 				return n;
 			}
 		}
 
 		/*--------------------------------------------------------------------------------------------*/
-		public TTo ToNode {
+		public TTo ToVertex {
 			get {
-				var n = new TTo { IsFromNode = false, ExpectOneNode = !IsToManyNodes };
+				var n = new TTo { IsFromVertex = false, ExpectOneVertex = !IsToManyVertices };
 				Path.AddItem(n);
 				return n;
 			}
 		}
 
 		/*--------------------------------------------------------------------------------------------*/
-		public Type FromNodeType { get { return typeof(TFrom); } }
-		public Type ToNodeType { get { return typeof(TTo); } }
+		public Type FromVertexType { get { return typeof(TFrom); } }
+		public Type ToVertexType { get { return typeof(TTo); } }
 
 		/*--------------------------------------------------------------------------------------------*/
 		public IWeaverEdgeType EdgeType {

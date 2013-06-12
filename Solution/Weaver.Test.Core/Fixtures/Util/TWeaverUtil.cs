@@ -7,6 +7,7 @@ using Weaver.Core.Exceptions;
 using Weaver.Core.Query;
 using Weaver.Core.Steps;
 using Weaver.Core.Util;
+using Weaver.Test.Core.Common.Edges;
 using Weaver.Test.Core.Common.Schema;
 using Weaver.Test.Core.Common.Vertices;
 using Weaver.Test.Core.Utils;
@@ -108,6 +109,25 @@ namespace Weaver.Test.Core.Fixtures.Util {
 
 		/*--------------------------------------------------------------------------------------------*/
 		[Test]
+		public void PropNamePassLowerId() {
+			vPropExpr = (p => p.Id);
+			TryPropExpr();
+			Assert.AreEqual("id", vPropExprResult, "Incorrect property name.");
+		}
+
+		/*--------------------------------------------------------------------------------------------*/
+		[Test]
+		public void PropNamePassLowerLabel() {
+			Expression<Func<PersonLikesCandy, object>> expr = (p => p.Label);
+			var cfg = new WeaverConfig(Schema.Vertices, Schema.Edges);
+			vPropExprResult = WeaverUtil.GetPropertyName(cfg,
+				new WeaverStepProp<PersonLikesCandy>(null), expr);
+
+			Assert.AreEqual("label", vPropExprResult, "Incorrect property name.");
+		}
+
+		/*--------------------------------------------------------------------------------------------*/
+		[Test]
 		public void PropNameFailGt() {
 			vPropExpr = (p => p.PersonId > 123);
 			WeaverTestUtil.CheckThrows<WeaverStepException>(true, TryPropExpr);
@@ -137,7 +157,7 @@ namespace Weaver.Test.Core.Fixtures.Util {
 		/*--------------------------------------------------------------------------------------------*/
 		[Test]
 		public void PropNameFailBoolEq() {
-			vPropExpr = (p => (p.ExpectOneNode == false));
+			vPropExpr = (p => (p.ExpectOneVertex == false));
 			WeaverTestUtil.CheckThrows<WeaverStepException>(true, TryPropExpr);
 		}
 

@@ -3,8 +3,8 @@
 	/*================================================================================================*/
 	public interface IWeaverVertex : IWeaverElement {
 
-		bool IsFromNode { get; set; }
-		bool ExpectOneNode { get; set; }
+		bool IsFromVertex { get; set; }
+		bool ExpectOneVertex { get; set; }
 		bool IsRoot { get; }
 
 	}

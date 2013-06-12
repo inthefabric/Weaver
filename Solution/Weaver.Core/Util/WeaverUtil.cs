@@ -67,7 +67,7 @@ namespace Weaver.Core.Util {
 			if ( me != null ) {
 				string prop = (me).Member.Name;
 
-				if ( prop == "Id" || prop == "Label" ) { //TEST: lowercase logic
+				if ( prop == "Id" || prop == "Label" ) {
 					return prop.ToLower();
 				}
 

@@ -4,8 +4,8 @@
 	public abstract class WeaverVertex<T> : WeaverElement<T>, IWeaverVertex<T>
 																		where T : class, IWeaverVertex {
 
-		public virtual bool IsFromNode { get; set; }
-		public virtual bool ExpectOneNode { get; set; }
+		public virtual bool IsFromVertex { get; set; }
+		public virtual bool ExpectOneVertex { get; set; }
 		public virtual bool IsRoot { get; protected set; }
 
 
@@ -28,7 +28,7 @@
 				return "v(0)";
 			}
 
-			return (IsFromNode ? "outV" : "inV");
+			return (IsFromVertex ? "outV" : "inV");
 		}
 
 	}

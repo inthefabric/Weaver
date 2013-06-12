@@ -62,14 +62,14 @@ namespace Weaver.Core.Graph {
 		/*--------------------------------------------------------------------------------------------*/
 		public IWeaverQuery AddEdge<TEdge>(IWeaverVarAlias pOutVertexVar, TEdge pEdge,
 											IWeaverVarAlias pInVertexVar) where TEdge : IWeaverEdge {
-			if ( !pEdge.FromNodeType.IsAssignableFrom(pOutVertexVar.VarType) ) {
+			if ( !pEdge.FromVertexType.IsAssignableFrom(pOutVertexVar.VarType) ) {
 				throw new WeaverException("Invalid From VarType: '"+pOutVertexVar.VarType.Name+
-					"', expected '"+pEdge.FromNodeType.Name+"'.");
+					"', expected '"+pEdge.FromVertexType.Name+"'.");
 			}
 
-			if ( !pEdge.ToNodeType.IsAssignableFrom(pInVertexVar.VarType) ) {
+			if ( !pEdge.ToVertexType.IsAssignableFrom(pInVertexVar.VarType) ) {
 				throw new WeaverException("Invalid To VarType: '"+pInVertexVar.VarType.Name+
-					"', expected '"+pEdge.ToNodeType.Name+"'.");
+					"', expected '"+pEdge.ToVertexType.Name+"'.");
 			}
 
 			return FinishEdge(pEdge, "g.addEdge("+pOutVertexVar.Name+","+pInVertexVar.Name+",");

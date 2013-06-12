@@ -35,15 +35,4 @@ namespace Weaver.Core.Query {
 		
 	}
 
-
-	/*================================================================================================*/
-	public class WeaverTableVarAlias : WeaverVarAlias, IWeaverTableVarAlias {
-
-
-		////////////////////////////////////////////////////////////////////////////////////////////////
-		/*--------------------------------------------------------------------------------------------*/
-		public WeaverTableVarAlias(IWeaverTransaction pCurrentTx) : base(pCurrentTx) {}
-
-	}
-
 }

@@ -15,13 +15,13 @@ namespace Weaver.Core.Elements {
 
 		/*--------------------------------------------------------------------------------------------*/
 		IWeaverEdgeType EdgeType { get; }
-		bool IsFromManyNodes { get; }
-		bool IsToManyNodes { get; }
+		bool IsFromManyVertices { get; }
+		bool IsToManyVertices { get; }
 		bool IsOutgoing { get; }
 
 		/*--------------------------------------------------------------------------------------------*/
-		Type FromNodeType { get; }
-		Type ToNodeType { get; }
+		Type FromVertexType { get; }
+		Type ToVertexType { get; }
 
 	}
 
@@ -41,8 +41,8 @@ namespace Weaver.Core.Elements {
 
 		////////////////////////////////////////////////////////////////////////////////////////////////
 		/*--------------------------------------------------------------------------------------------*/
-		TFrom FromNode { get; }
-		TTo ToNode { get; }
+		TFrom FromVertex { get; }
+		TTo ToVertex { get; }
 
 	}
 
