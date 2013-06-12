@@ -20,12 +20,12 @@ namespace Weaver.Core.Elements {
 
 
 	/*================================================================================================*/
-	public abstract class WeaverEdge<TEdge, TFrom, TType, TTo> : WeaverElement<TEdge>,
-																	IWeaverEdge<TEdge, TFrom, TTo>
+	public abstract class WeaverEdge<TEdge, TOut, TType, TIn> : WeaverElement<TEdge>,
+																	IWeaverEdge<TEdge, TOut, TIn>
 																	where TEdge : class, IWeaverEdge
-																	where TFrom : IWeaverVertex, new()
+																	where TOut : IWeaverVertex, new()
 																	where TType : IWeaverEdgeType, new()
-																	where TTo : IWeaverVertex, new() {
+																	where TIn : IWeaverVertex, new() {
 
 		public bool IsFromManyVertices { get; private set; }
 		public bool IsToManyVertices { get; private set; }
@@ -76,26 +76,26 @@ namespace Weaver.Core.Elements {
 
 		////////////////////////////////////////////////////////////////////////////////////////////////
 		/*--------------------------------------------------------------------------------------------*/
-		public TFrom FromVertex {
+		public TOut OutVertex {
 			get {
-				var n = new TFrom { IsFromVertex = true, ExpectOneVertex = !IsFromManyVertices };
+				var n = new TOut { IsFromVertex = true, ExpectOneVertex = !IsFromManyVertices };
 				Path.AddItem(n);
 				return n;
 			}
 		}
 
 		/*--------------------------------------------------------------------------------------------*/
-		public TTo ToVertex {
+		public TIn InVertex {
 			get {
-				var n = new TTo { IsFromVertex = false, ExpectOneVertex = !IsToManyVertices };
+				var n = new TIn { IsFromVertex = false, ExpectOneVertex = !IsToManyVertices };
 				Path.AddItem(n);
 				return n;
 			}
 		}
 
 		/*--------------------------------------------------------------------------------------------*/
-		public Type FromVertexType { get { return typeof(TFrom); } }
-		public Type ToVertexType { get { return typeof(TTo); } }
+		public Type OutVertexType { get { return typeof(TOut); } }
+		public Type InVertexType { get { return typeof(TIn); } }
 
 		/*--------------------------------------------------------------------------------------------*/
 		public IWeaverEdgeType EdgeType {
@@ -106,7 +106,7 @@ namespace Weaver.Core.Elements {
 
 		/*--------------------------------------------------------------------------------------------*/
 		public virtual string Label {
-			get { return typeof(TFrom).Name+typeof(TType).Name+typeof(TTo).Name; }
+			get { return typeof(TOut).Name+typeof(TType).Name+typeof(TIn).Name; }
 		}
 
 		/*--------------------------------------------------------------------------------------------*/

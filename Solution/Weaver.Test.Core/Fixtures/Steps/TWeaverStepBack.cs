@@ -66,11 +66,11 @@ namespace Weaver.Test.Core.Fixtures.Steps {
 			IWeaverStepAs<Person> personAlias;
 
 			IWeaverQuery q = WeavInst.Graph.V.ExactIndex<Root>(x => x.Id, 0)
-				.OutHasPerson.ToVertex
+				.OutHasPerson.InVertex
 					.Has(x => x.PersonId, WeaverStepHasOp.EqualTo, 22)
 					.Has(x => x.Name, WeaverStepHasOp.EqualTo, "test")
 					.As(out personAlias)
-				.OutLikesCandy.ToVertex
+				.OutLikesCandy.InVertex
 				.Back(personAlias)
 				.ToQuery();
 			

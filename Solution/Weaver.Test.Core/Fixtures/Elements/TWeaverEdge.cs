@@ -64,7 +64,7 @@ namespace Weaver.Test.Core.Fixtures.Elements {
 			var mockPath = new Mock<IWeaverPath>();
 			var r = new RootHasCandy { Path = mockPath.Object };
 
-			Root fromRoot = r.FromVertex;
+			Root fromRoot = r.OutVertex;
 			Assert.NotNull(fromRoot, "FromVertex should be filled.");
 			mockPath.Verify(x => x.AddItem(It.IsAny<Root>()), Times.Once());
 
@@ -79,7 +79,7 @@ namespace Weaver.Test.Core.Fixtures.Elements {
 			var mockPath = new Mock<IWeaverPath>();
 			var r = new RootHasCandy { Path = mockPath.Object };
 
-			Candy toCandy = r.ToVertex;
+			Candy toCandy = r.InVertex;
 			Assert.NotNull(toCandy, "ToVertex should be filled.");
 			mockPath.Verify(x => x.AddItem(It.IsAny<Candy>()), Times.Once());
 
@@ -93,8 +93,8 @@ namespace Weaver.Test.Core.Fixtures.Elements {
 		public void VertexType() {
 			var r = new PersonLikesCandy();
 
-			Assert.AreEqual(typeof(Person), r.FromVertexType, "Incorrect FromVertexType.");
-			Assert.AreEqual(typeof(Candy), r.ToVertexType, "Incorrect ToVertexType.");
+			Assert.AreEqual(typeof(Person), r.OutVertexType, "Incorrect FromVertexType.");
+			Assert.AreEqual(typeof(Candy), r.InVertexType, "Incorrect ToVertexType.");
 		}
 
 		/*--------------------------------------------------------------------------------------------*/

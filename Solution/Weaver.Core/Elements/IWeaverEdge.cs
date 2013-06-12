@@ -20,8 +20,8 @@ namespace Weaver.Core.Elements {
 		bool IsOutgoing { get; }
 
 		/*--------------------------------------------------------------------------------------------*/
-		Type FromVertexType { get; }
-		Type ToVertexType { get; }
+		Type OutVertexType { get; }
+		Type InVertexType { get; }
 
 	}
 
@@ -33,16 +33,16 @@ namespace Weaver.Core.Elements {
 	
 
 	/*================================================================================================*/
-	public interface IWeaverEdge<TEdge, out TFrom, out TTo> : IWeaverEdge<TEdge>
+	public interface IWeaverEdge<TEdge, out TOut, out TIn> : IWeaverEdge<TEdge>
 																		where TEdge : class, IWeaverEdge
-																		where TFrom : IWeaverVertex
-																		where TTo : IWeaverVertex {
+																		where TOut : IWeaverVertex
+																		where TIn : IWeaverVertex {
 
 
 		////////////////////////////////////////////////////////////////////////////////////////////////
 		/*--------------------------------------------------------------------------------------------*/
-		TFrom FromVertex { get; }
-		TTo ToVertex { get; }
+		TOut OutVertex { get; }
+		TIn InVertex { get; }
 
 	}
 

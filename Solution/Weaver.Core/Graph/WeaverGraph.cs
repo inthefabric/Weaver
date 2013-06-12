@@ -1,4 +1,5 @@
-﻿using Weaver.Core.Elements;
+﻿using System;
+using Weaver.Core.Elements;
 using Weaver.Core.Exceptions;
 using Weaver.Core.Path;
 using Weaver.Core.Query;
@@ -36,10 +37,9 @@ namespace Weaver.Core.Graph {
 		////////////////////////////////////////////////////////////////////////////////////////////////
 		/*--------------------------------------------------------------------------------------------*/
 		public IWeaverQuery AddVertex<T>(T pVertex) where T : IWeaverVertex {
-			var q = new WeaverQuery();
-			string props = WeaverUtil.BuildPropList(Path.Config, q, pVertex);
-			q.FinalizeQuery("g.addVertex(["+props+"])");
-			return q;
+			string props = WeaverUtil.BuildPropList(Path.Config, Path.Query, pVertex);
+			Path.Query.FinalizeQuery("g.addVertex(["+props+"])");
+			return Path.Query;
 		}
 
 		/*--------------------------------------------------------------------------------------------*/
@@ -62,14 +62,14 @@ namespace Weaver.Core.Graph {
 		/*--------------------------------------------------------------------------------------------*/
 		public IWeaverQuery AddEdge<TEdge>(IWeaverVarAlias pOutVertexVar, TEdge pEdge,
 											IWeaverVarAlias pInVertexVar) where TEdge : IWeaverEdge {
-			if ( !pEdge.FromVertexType.IsAssignableFrom(pOutVertexVar.VarType) ) {
-				throw new WeaverException("Invalid From VarType: '"+pOutVertexVar.VarType.Name+
-					"', expected '"+pEdge.FromVertexType.Name+"'.");
+			if ( !pEdge.OutVertexType.IsAssignableFrom(pOutVertexVar.VarType) ) {
+				throw new WeaverException("Invalid Out VarType: '"+pOutVertexVar.VarType.Name+
+					"', expected '"+pEdge.OutVertexType.Name+"'.");
 			}
 
-			if ( !pEdge.ToVertexType.IsAssignableFrom(pInVertexVar.VarType) ) {
-				throw new WeaverException("Invalid To VarType: '"+pInVertexVar.VarType.Name+
-					"', expected '"+pEdge.ToVertexType.Name+"'.");
+			if ( !pEdge.InVertexType.IsAssignableFrom(pInVertexVar.VarType) ) {
+				throw new WeaverException("Invalid In VarType: '"+pInVertexVar.VarType.Name+
+					"', expected '"+pEdge.InVertexType.Name+"'.");
 			}
 
 			return FinishEdge(pEdge, "g.addEdge("+pOutVertexVar.Name+","+pInVertexVar.Name+",");
@@ -77,11 +77,9 @@ namespace Weaver.Core.Graph {
 
 		/*--------------------------------------------------------------------------------------------*/
 		private IWeaverQuery FinishEdge<TEdge>(TEdge pEdge, string pScript) where TEdge : IWeaverEdge {
+			string edgeParam = Path.Query.AddStringParam(Path.Config.GetItemDbName<TEdge>());
 			string propList = WeaverUtil.BuildPropList(Path.Config, Path.Query, pEdge);
-
-			pScript += 
-				Path.Query.AddStringParam(Path.Config.GetItemDbName<TEdge>())+
-				(propList.Length > 0 ? ",["+propList+"]" : "")+")";
+			pScript += edgeParam+(propList.Length > 0 ? ",["+propList+"]" : "")+")";
 
 			Path.Query.FinalizeQuery(pScript);
 			return Path.Query;
