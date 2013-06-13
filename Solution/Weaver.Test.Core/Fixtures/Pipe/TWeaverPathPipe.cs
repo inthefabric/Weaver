@@ -5,6 +5,7 @@ using Weaver.Core.Path;
 using Weaver.Core.Pipe;
 using Weaver.Core.Query;
 using Weaver.Core.Steps;
+using Weaver.Core.Steps.Statements;
 using Weaver.Test.Core.Common;
 using Weaver.Test.Core.Common.Vertices;
 using Weaver.Test.Core.Utils;
@@ -39,6 +40,13 @@ namespace Weaver.Test.Core.Fixtures.Pipe {
 		[TestCase("iterate()")]
 		public void Iterate(string pExpect) {
 			vElem.Iterate();
+			VerifyCustom(vElem, pExpect);
+		}
+
+		/*--------------------------------------------------------------------------------------------*/
+		[TestCase("remove()")]
+		public void Remove(string pExpect) {
+			vElem.Remove();
 			VerifyCustom(vElem, pExpect);
 		}
 
@@ -123,6 +131,18 @@ namespace Weaver.Test.Core.Fixtures.Pipe {
 
 			Assert.AreEqual(vElem, result, "Incorrect result.");
 			vElem.MockPath.Verify(x => x.AddItem(It.IsAny<WeaverStepHas<TestElement>>()), Times.Once());
+		}
+
+		/*--------------------------------------------------------------------------------------------*/
+		[Test]
+		public void SideEffect() {
+			var mockStat = new Mock<IWeaverStatement<TestElement>>();
+			TestElement result = vElem.SideEffect(new [] { mockStat.Object });
+
+			Assert.AreEqual(vElem, result, "Incorrect result.");
+
+			vElem.MockPath
+				.Verify(x => x.AddItem(It.IsAny<WeaverStepSideEffect<TestElement>>()), Times.Once());
 		}
 
 		/*--------------------------------------------------------------------------------------------*/

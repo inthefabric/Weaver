@@ -29,7 +29,7 @@ namespace Weaver.Core.Pipe {
 		}
 
 		/*--------------------------------------------------------------------------------------------*/
-		public IWeaverPathPipeEnd Remove() { //TEST: Core
+		public IWeaverPathPipeEnd Remove() {
 			var f = new WeaverStepCustom("remove()");
 			Path.AddItem(f);
 			return f;
@@ -110,7 +110,7 @@ namespace Weaver.Core.Pipe {
 		}
 
 		/*--------------------------------------------------------------------------------------------*/
-		public T SideEffect(params IWeaverStatement<T>[] pStatements) { //TEST: Core
+		public T SideEffect(params IWeaverStatement<T>[] pStatements) {
 			var f = new WeaverStepSideEffect<T>(pStatements);
 			Path.AddItem(f);
 			return Self;
