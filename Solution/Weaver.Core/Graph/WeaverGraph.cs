@@ -42,11 +42,11 @@ namespace Weaver.Core.Graph {
 		public IWeaverQuery AddEdge<TOut, TEdge, TIn>(TOut pOutVertex, TEdge pEdge, TIn pInVertex)
 						where TOut : IWeaverVertex where TEdge : IWeaverEdge where TIn : IWeaverVertex {
 			if ( pOutVertex.Id == null ) {
-				throw new WeaverException("FromNode.Id cannot be null.");
+				throw new WeaverException("OutVertex.Id cannot be null.");
 			}
 
 			if ( pInVertex.Id == null ) {
-				throw new WeaverException("ToNode.Id cannot be null.");
+				throw new WeaverException("InVertex.Id cannot be null.");
 			}
 
 			return FinishEdge(pEdge, "g.addEdge("+

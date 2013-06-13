@@ -6,52 +6,52 @@ namespace Weaver.Core.Schema {
 	/*================================================================================================*/
 	public class WeaverEdgeSchema : WeaverItemSchema {
 
-		public WeaverVertexSchema FromNode { get; private set; }
-		public WeaverVertexSchema ToNode { get; private set; }
+		public WeaverVertexSchema OutVertex { get; private set; }
+		public WeaverVertexSchema InVertex { get; private set; }
 		public string EdgeType { get; private set; }
 
-		private WeaverEdgeConn vFromNodeConn;
-		private WeaverEdgeConn vToNodeConn;
+		private WeaverEdgeConn vOutVertexConn;
+		private WeaverEdgeConn vInVertexConn;
 
 
 		////////////////////////////////////////////////////////////////////////////////////////////////
 		/*--------------------------------------------------------------------------------------------*/
-		public WeaverEdgeSchema(WeaverVertexSchema pFromNode, string pName, string pDbName, 
-									string pRelType, WeaverVertexSchema pToNode) : base(pName, pDbName){
-			FromNode = pFromNode;
-			ToNode = pToNode;
-			EdgeType = pRelType;
+		public WeaverEdgeSchema(WeaverVertexSchema pOutVertex, string pName, string pDbName, 
+								string pEdgeType, WeaverVertexSchema pInVertex) : base(pName, pDbName) {
+			OutVertex = pOutVertex;
+			InVertex = pInVertex;
+			EdgeType = pEdgeType;
 
-			FromNodeConn = WeaverEdgeConn.OutToZeroOrMore;
-			ToNodeConn = WeaverEdgeConn.InFromZeroOrMore;
+			OutVertexConn = WeaverEdgeConn.OutToZeroOrMore;
+			InVertexConn = WeaverEdgeConn.InFromZeroOrMore;
 		}
 
 		/*--------------------------------------------------------------------------------------------*/
-		public WeaverEdgeConn FromNodeConn {
+		public WeaverEdgeConn OutVertexConn {
 			get {
-				return vFromNodeConn;
+				return vOutVertexConn;
 			}
 			set {
-				vFromNodeConn = value;
+				vOutVertexConn = value;
 
-				if ( !WeaverEdge.IsConnOutgoing(vFromNodeConn) ) {
+				if ( !WeaverEdge.IsConnOutgoing(vOutVertexConn) ) {
 					throw new WeaverException("Item '"+Name+"' cannot use an incoming "+
-						"FromNodeConn value.");
+						"OutVertexConn value.");
 				}
 			}
 		}
 
 		/*--------------------------------------------------------------------------------------------*/
-		public WeaverEdgeConn ToNodeConn {
+		public WeaverEdgeConn InVertexConn {
 			get {
-				return vToNodeConn;
+				return vInVertexConn;
 			}
 			set {
-				vToNodeConn = value;
+				vInVertexConn = value;
 
-				if ( WeaverEdge.IsConnOutgoing(vToNodeConn) ) {
+				if ( WeaverEdge.IsConnOutgoing(vInVertexConn) ) {
 					throw new WeaverException("Item '"+Name+"' cannot use an outgoing "+
-						"ToNodeConn value.");
+						"InVertexConn value.");
 				}
 			}
 		}

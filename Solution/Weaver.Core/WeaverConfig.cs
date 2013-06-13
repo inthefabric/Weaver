@@ -35,7 +35,7 @@ namespace Weaver.Core {
 			foreach ( WeaverVertexSchema ns in VertexSchemas ) {
 				key = CheckItemKey(ns.Name);
 				vItemNameMap.Add(key, ns);
-				//Console.WriteLine("WcNode: "+ns.Name+" / "+ns.DbName);
+				//Console.WriteLine("WcVertex: "+ns.Name+" / "+ns.DbName);
 
 				foreach ( WeaverPropSchema ps in ns.Props ) {
 					key = CheckItemPropKey(ns.Name, ps.Name);
@@ -47,7 +47,7 @@ namespace Weaver.Core {
 			foreach ( WeaverEdgeSchema rs in EdgeSchemas ) {
 				key = CheckItemKey(rs.Name);
 				vItemNameMap.Add(key, rs);
-				//Console.WriteLine("WcRel: "+rs.Name+" / "+rs.DbName+" ... "+key);
+				//Console.WriteLine("WcEdge: "+rs.Name+" / "+rs.DbName+" ... "+key);
 
 				foreach ( WeaverPropSchema ps in rs.Props ) {
 					key = CheckItemPropKey(rs.Name, ps.Name);

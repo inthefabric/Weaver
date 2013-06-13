@@ -15,34 +15,34 @@ namespace Weaver.Test.Core.Fixtures.Schema {
 		/*--------------------------------------------------------------------------------------------*/
 		[Test]
 		public void Constructor() {
-			var fromNode = new WeaverVertexSchema("FROM", "F");
-			var toNode = new WeaverVertexSchema("TO", "T");
-			var rs = new WeaverEdgeSchema(fromNode, "FromLikesTo", "FLT", "Likes", toNode);
+			var outVert = new WeaverVertexSchema("FROM", "F");
+			var inVert = new WeaverVertexSchema("TO", "T");
+			var rs = new WeaverEdgeSchema(outVert, "FromLikesTo", "FLT", "Likes", inVert);
 
-			Assert.AreEqual(fromNode, rs.FromNode, "Incorrect FromNode.");
+			Assert.AreEqual(outVert, rs.OutVertex, "Incorrect FromNode.");
 			Assert.AreEqual("FromLikesTo", rs.Name, "Incorrect Name.");
-			Assert.AreEqual(toNode, rs.ToNode, "Incorrect ToNode.");
-			Assert.AreEqual(WeaverEdgeConn.OutToZeroOrMore, rs.FromNodeConn, "Incorrect FromNodeComm.");
-			Assert.AreEqual(WeaverEdgeConn.InFromZeroOrMore, rs.ToNodeConn, "Incorrect ToNodeComm.");
+			Assert.AreEqual(inVert, rs.InVertex, "Incorrect ToNode.");
+			Assert.AreEqual(WeaverEdgeConn.OutToZeroOrMore, rs.OutVertexConn, "Incorrect FromNodeComm.");
+			Assert.AreEqual(WeaverEdgeConn.InFromZeroOrMore, rs.InVertexConn, "Incorrect ToNodeComm.");
 		}
 
 		/*--------------------------------------------------------------------------------------------*/
 		[Test]
-		public void FromNodeConnFail() {
+		public void OutVertexConnFail() {
 			var rs = new WeaverEdgeSchema(null, "TestDoesPass", "TDP", "Does", null);
 
 			WeaverTestUtil.CheckThrows<WeaverException>(true,
-				() => rs.FromNodeConn = WeaverEdgeConn.InFromOne
+				() => rs.OutVertexConn = WeaverEdgeConn.InFromOne
 			);
 		}
 
 		/*--------------------------------------------------------------------------------------------*/
 		[Test]
-		public void ToNodeConnFail() {
+		public void InVertexConnFail() {
 			var rs = new WeaverEdgeSchema(null, "TestDoesPass", "TDP", "Does", null);
 
 			WeaverTestUtil.CheckThrows<WeaverException>(true,
-				() => rs.ToNodeConn = WeaverEdgeConn.OutToOne
+				() => rs.InVertexConn = WeaverEdgeConn.OutToOne
 			);
 		}
 
