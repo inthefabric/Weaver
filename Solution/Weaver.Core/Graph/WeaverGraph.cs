@@ -1,5 +1,4 @@
-﻿using System;
-using Weaver.Core.Elements;
+﻿using Weaver.Core.Elements;
 using Weaver.Core.Exceptions;
 using Weaver.Core.Path;
 using Weaver.Core.Query;
@@ -29,9 +28,6 @@ namespace Weaver.Core.Graph {
 				return e;
 			}
 		}
-
-		//TODO: T WeaverGraph.Vertex<T>(string pVertexId)
-		//TODO: T WeaverGraph.Edge<T>(string pEdgeId)
 
 
 		////////////////////////////////////////////////////////////////////////////////////////////////

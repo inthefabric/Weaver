@@ -10,14 +10,21 @@ namespace Weaver.Core.Graph {
 
 		////////////////////////////////////////////////////////////////////////////////////////////////
 		/*--------------------------------------------------------------------------------------------*/
+		public T Id<T>(string pId) where T : IWeaverEdge, new() {
+			return IdInner<T>(pId);
+		}
+
+		/*--------------------------------------------------------------------------------------------*/
 		public T ExactIndex<T>(Expression<Func<T, object>> pProperty, object pValue)
 																		where T : IWeaverEdge, new() {
 			return ExactIndexInner(pProperty, pValue);
 		}
 
+
+		////////////////////////////////////////////////////////////////////////////////////////////////
 		/*--------------------------------------------------------------------------------------------*/
 		public override string BuildParameterizedString() {
-			return "E";
+			return (ForSpecificId ? "e" : "E");
 		}
 
 	}

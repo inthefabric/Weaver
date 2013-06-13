@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
+using Moq;
 using NUnit.Framework;
+using Weaver.Core;
 using Weaver.Core.Exceptions;
 using Weaver.Core.Path;
 using Weaver.Core.Query;
@@ -18,8 +20,14 @@ namespace Weaver.Test.Core.Fixtures.Path {
 		////////////////////////////////////////////////////////////////////////////////////////////////
 		/*--------------------------------------------------------------------------------------------*/
 		[Test]
-		public void New() {//TODO
-			IWeaverPath p = NewPath();
+		public void New() {
+			var mockConfig = new Mock<IWeaverConfig>();
+			var mockQuery = new Mock<IWeaverQuery>();
+
+			var p = new WeaverPath(mockConfig.Object, mockQuery.Object);
+
+			Assert.AreEqual(mockConfig.Object, p.Config, "Incorrect Config.");
+			Assert.AreEqual(mockQuery.Object, p.Query, "Incorrect Query.");
 		}
 
 		

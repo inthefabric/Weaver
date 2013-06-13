@@ -47,6 +47,19 @@ namespace Weaver.Test.Core.Fixtures {
 		/*--------------------------------------------------------------------------------------------*/
 		[Test]
 		[Category("Integration")]
+		public void VertexById() {
+			IWeaverQuery q = WeavInst.Graph.V.Id<Person>("123").ToQuery();
+
+			var expectParams = new Dictionary<string, IWeaverQueryVal>();
+			expectParams.Add("_P0", new WeaverQueryVal("123"));
+
+			Assert.AreEqual("g.v(_P0);", q.Script, "Incorrect Script.");
+			WeaverTestUtil.CheckQueryParamsOriginalVal(q, expectParams);
+		}
+
+		/*--------------------------------------------------------------------------------------------*/
+		[Test]
+		[Category("Integration")]
 		public void PathBasedQuery() {
 			IWeaverStepAs<Person> personAlias;
 
@@ -79,7 +92,7 @@ namespace Weaver.Test.Core.Fixtures {
 			expectParams.Add("_P2", new WeaverQueryVal("Hello"));
 			expectParams.Add("_P3", new WeaverQueryVal("Goodbye"));
 
-			Assert.AreEqual(expectScript, q.Script);
+			Assert.AreEqual(expectScript, q.Script, "Incorrect Script.");
 			WeaverTestUtil.CheckQueryParamsOriginalVal(q, expectParams);
 		}
 
