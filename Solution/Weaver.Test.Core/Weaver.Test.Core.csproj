@@ -44,6 +44,8 @@
     <Compile Include="Common\EdgeTypes\Likes.cs" />
     <Compile Include="Common\Schema\TestSchema.cs" />
     <Compile Include="Common\Vertices\TestVertex.cs" />
+    <Compile Include="Fixtures\Steps\Parameters\TWeaverParamElastic.cs" />
+    <Compile Include="Fixtures\Steps\TWeaverStepElasticIndex.cs" />
     <Compile Include="Fixtures\Steps\Statements\TWeaverStatementSetProperty.cs" />
     <Compile Include="Fixtures\Steps\TWeaverStepSideEffect.cs" />
     <Compile Include="Fixtures\TWeaverConfig.cs" />
