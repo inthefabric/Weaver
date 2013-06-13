@@ -146,23 +146,23 @@ namespace Weaver.Test.Core.Fixtures.Pipe {
 		}
 
 		/*--------------------------------------------------------------------------------------------*/
-		[TestCase("aggregate(_V0)")]
-		public void Aggregate(string pExpect) {
-			vElem.Aggregate(NewVarAlias());
+		[TestCase("x", "aggregate(x)")]
+		public void Aggregate(string pVarName, string pExpect) {
+			vElem.Aggregate(NewVarAlias(pVarName));
 			VerifyCustom(vElem, pExpect);
 		}
 
 		/*--------------------------------------------------------------------------------------------*/
-		[TestCase("retain(_V0)")]
-		public void Retain(string pExpect) {
-			vElem.Retain(NewVarAlias());
+		[TestCase("y", "retain(y)")]
+		public void Retain(string pVarName, string pExpect) {
+			vElem.Retain(NewVarAlias(pVarName));
 			VerifyCustom(vElem, pExpect);
 		}
 
 		/*--------------------------------------------------------------------------------------------*/
-		[TestCase("except(_V0)")]
-		public void Except(string pExpect) {
-			vElem.Except(NewVarAlias());
+		[TestCase("z", "except(z)")]
+		public void Except(string pVarName, string pExpect) {
+			vElem.Except(NewVarAlias(pVarName));
 			VerifyCustom(vElem, pExpect);
 		}
 
@@ -202,8 +202,8 @@ namespace Weaver.Test.Core.Fixtures.Pipe {
 
 		////////////////////////////////////////////////////////////////////////////////////////////////
 		/*--------------------------------------------------------------------------------------------*/
-		private static IWeaverVarAlias NewVarAlias() {
-			return new WeaverVarAlias(new WeaverTransaction());
+		private static IWeaverVarAlias NewVarAlias(string pName) {
+			return new WeaverVarAlias(pName);
 		}
 		
 		/*--------------------------------------------------------------------------------------------*/

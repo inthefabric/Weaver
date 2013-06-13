@@ -1,7 +1,9 @@
-﻿using Moq;
+﻿using System.Collections.Generic;
+using Moq;
 using NUnit.Framework;
 using Weaver.Core.Exceptions;
 using Weaver.Core.Query;
+using Weaver.Test.Core.Common.Vertices;
 using Weaver.Test.Core.Utils;
 
 namespace Weaver.Test.Core.Fixtures.Query {
@@ -42,44 +44,6 @@ namespace Weaver.Test.Core.Fixtures.Query {
 			var q = new WeaverQuery();
 			q.FinalizeQuery("1");
 			WeaverTestUtil.CheckThrows<WeaverException>(true, () => q.FinalizeQuery("2"));
-		}
-
-		/*--------------------------------------------------------------------------------------------*/
-		[Test]
-		public void StoreResultAsVar() {
-			const string name = "_var0";
-			const string script = "this.is.the.query";
-			const string varScript = name+"="+script;
-
-			var mockVar = new Mock<IWeaverVarAlias>();
-			mockVar.SetupGet(x => x.Name).Returns(name);
-
-			var q = new WeaverQuery();
-			q.FinalizeQuery(script);
-			q.StoreResultAsVar(mockVar.Object);
-
-			Assert.AreEqual(mockVar.Object, q.ResultVar, "Incorrect ResultVar.");
-			Assert.AreEqual(varScript+";", q.Script, "Incorrect Script.");
-		}
-
-		/*--------------------------------------------------------------------------------------------*/
-		[Test]
-		public void StoreResultAsVarNotFinalized() {
-			var q = new WeaverQuery();
-			WeaverTestUtil.CheckThrows<WeaverException>(true, () => q.StoreResultAsVar(null));
-		}
-
-		/*--------------------------------------------------------------------------------------------*/
-		[Test]
-		public void StoreResultAsVarTwice() {
-			var mockVar = new Mock<IWeaverVarAlias>();
-			mockVar.SetupGet(x => x.Name).Returns("x");
-
-			var q = new WeaverQuery();
-			q.FinalizeQuery("script");
-			q.StoreResultAsVar(mockVar.Object);
-
-			WeaverTestUtil.CheckThrows<WeaverException>(true, () => q.StoreResultAsVar(null));
 		}
 		
 		
@@ -127,6 +91,110 @@ namespace Weaver.Test.Core.Fixtures.Query {
 				Assert.AreEqual("_P"+i, name, "Incorrect result at count "+i+".");
 				
 			}
+		}
+
+
+		////////////////////////////////////////////////////////////////////////////////////////////////
+		/*--------------------------------------------------------------------------------------------*/
+		[TestCase(true)]
+		[TestCase(false)]
+		public void StoreResultAsVar(bool pGeneric) {
+			const string name = "xyz";
+			const string script = "this.is.the.query";
+			const string varScript = name+"="+script;
+
+			var q = new WeaverQuery();
+			q.FinalizeQuery(script);
+
+			IWeaverQuery q2;
+
+			if ( pGeneric ) {
+				IWeaverVarAlias<Person> alias;
+				q2 = WeaverQuery.StoreResultAsVar(name, q, out alias);
+				Assert.AreEqual(alias, q2.ResultVar, "Incorrect ResultVar.");
+			}
+			else {
+				IWeaverVarAlias alias;
+				q2 = WeaverQuery.StoreResultAsVar(name, q, out alias);
+				Assert.AreEqual(alias, q2.ResultVar, "Incorrect ResultVar.");
+			}
+
+			Assert.AreEqual(varScript+";", q2.Script, "Incorrect Script.");
+		}
+
+		/*--------------------------------------------------------------------------------------------*/
+		[Test]
+		public void StoreResultAsVarT() {
+			const string name = "xyz";
+			const string script = "this.is.the.query";
+			const string varScript = name+"="+script;
+
+			var q = new WeaverQuery();
+			q.FinalizeQuery(script);
+
+			IWeaverVarAlias<Person> alias;
+			IWeaverQuery q2 = WeaverQuery.StoreResultAsVar(name, q, out alias);
+
+			Assert.AreEqual(alias, q2.ResultVar, "Incorrect ResultVar.");
+			Assert.AreEqual(varScript+";", q2.Script, "Incorrect Script.");
+		}
+
+		/*--------------------------------------------------------------------------------------------*/
+		[Test]
+		public void StoreResultAsVarNotFinalized() {
+			var q = new WeaverQuery();
+			IWeaverVarAlias alias;
+
+			WeaverTestUtil.CheckThrows<WeaverException>(
+				true, () => WeaverQuery.StoreResultAsVar("x", q, out alias)
+			);
+		}
+
+		/*--------------------------------------------------------------------------------------------*/
+		[Test]
+		public void StoreResultAsVarTwice() {
+			var q = new WeaverQuery();
+			q.FinalizeQuery("script");
+
+			IWeaverVarAlias alias;
+			IWeaverQuery q2 = WeaverQuery.StoreResultAsVar("x", q, out alias);
+
+			WeaverTestUtil.CheckThrows<WeaverException>(
+				true, () => WeaverQuery.StoreResultAsVar("x", q2, out alias)
+			);
+		}
+
+
+		////////////////////////////////////////////////////////////////////////////////////////////////
+		/*--------------------------------------------------------------------------------------------*/
+		[TestCase(null, "")]
+		[TestCase(0, "")]
+		[TestCase(1, "x0")]
+		[TestCase(2, "x0,x1")]
+		[TestCase(10, "x0,x1,x2,x3,x4,x5,x6,x7,x8,x9")]
+		public void InitListVar(int? pItems, string pExpectList) {
+			const string name = "_var0";
+			IWeaverVarAlias setList;
+			IWeaverQuery q;
+
+			if ( pItems == null ) {
+				q = WeaverQuery.InitListVar(name, out setList);
+			}
+			else {
+				var list = new List<IWeaverVarAlias>();
+
+				for ( int i = 0 ; i < pItems ; ++i ) {
+					var mockVar = new Mock<IWeaverVarAlias>();
+					mockVar.SetupGet(x => x.Name).Returns("x"+i);
+					list.Add(mockVar.Object);
+				}
+
+				q = WeaverQuery.InitListVar(name, list, out setList);
+			}
+
+			Assert.True(q.IsFinalized, "Incorrect IsFinalized.");
+			Assert.AreEqual(name+"=["+pExpectList+"];", q.Script, "Incorrect Script.");
+			Assert.NotNull(setList, "The out WeaverListVar should not be null.");
 		}
 
 	}

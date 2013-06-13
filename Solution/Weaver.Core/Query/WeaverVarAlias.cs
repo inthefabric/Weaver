@@ -6,20 +6,15 @@ namespace Weaver.Core.Query {
 	/*================================================================================================*/
 	public class WeaverVarAlias : IWeaverVarAlias {
 
-		public string Name { get; set; }
+		public string Name { get; private set; }
 		public Type VarType { get; private set; }
 		
 
 		////////////////////////////////////////////////////////////////////////////////////////////////
 		/*--------------------------------------------------------------------------------------------*/
-		public WeaverVarAlias(IWeaverTransaction pCurrentTx) {
-			Name = pCurrentTx.GetNextVarName();
-			VarType = typeof(object);
-		}
-		
-		/*--------------------------------------------------------------------------------------------*/
-		public WeaverVarAlias(IWeaverTransaction pCurrentTx, Type pVarType) : this(pCurrentTx) {
-			VarType = pVarType;
+		public WeaverVarAlias(string pName, Type pVarType=null) {
+			Name = pName;
+			VarType = (pVarType ?? typeof(object));
 		}
 
 	}
@@ -31,7 +26,7 @@ namespace Weaver.Core.Query {
 		
 		////////////////////////////////////////////////////////////////////////////////////////////////
 		/*--------------------------------------------------------------------------------------------*/
-		public WeaverVarAlias(IWeaverTransaction pCurrentTx) : base(pCurrentTx, typeof(T)) {}
+		public WeaverVarAlias(string pName) : base(pName, typeof(T)) {}
 		
 	}
 

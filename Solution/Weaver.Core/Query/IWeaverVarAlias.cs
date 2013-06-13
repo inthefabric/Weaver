@@ -6,7 +6,7 @@ namespace Weaver.Core.Query {
 	/*================================================================================================*/
 	public interface IWeaverVarAlias {
 
-		string Name { get; set; }
+		string Name { get; }
 		Type VarType { get; }
 
 	}

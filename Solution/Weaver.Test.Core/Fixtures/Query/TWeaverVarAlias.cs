@@ -16,37 +16,34 @@ namespace Weaver.Test.Core.Fixtures.Query {
 		[TestCase(true)]
 		[TestCase(false)]
 		public void New(bool pWithType) {
-			const string varName = "_VAR";
+			const string name = "xyz";
 			Type varType = typeof(object);
-
-			var mockTx = new Mock<IWeaverTransaction>();
-			mockTx.Setup(x => x.GetNextVarName()).Returns(varName);
 
 			WeaverVarAlias va;
 
 			if ( pWithType ) {
-				va = new WeaverVarAlias(mockTx.Object);
+				va = new WeaverVarAlias(name);
 			}
 			else {
 				varType = typeof(Person);
-				va = new WeaverVarAlias(mockTx.Object, varType);
+				va = new WeaverVarAlias(name, varType);
 			}
 
-			Assert.AreEqual(varName, va.Name, "Incorrect Name.");
+			Assert.AreEqual(name, va.Name, "Incorrect Name.");
 			Assert.AreEqual(varType, va.VarType, "Incorrect VarType.");
 		}
 
 		/*--------------------------------------------------------------------------------------------*/
 		[Test]
 		public void NewT() {
-			const string varName = "_VAR_T";
+			const string name = "xyz_T";
 
 			var mockTx = new Mock<IWeaverTransaction>();
-			mockTx.Setup(x => x.GetNextVarName()).Returns(varName);
+			mockTx.Setup(x => x.GetNextVarName()).Returns(name);
 
-			WeaverVarAlias va = new WeaverVarAlias<Person>(mockTx.Object);
+			WeaverVarAlias va = new WeaverVarAlias<Person>(name);
 
-			Assert.AreEqual(varName, va.Name, "Incorrect Name.");
+			Assert.AreEqual(name, va.Name, "Incorrect Name.");
 			Assert.AreEqual(typeof(Person), va.VarType, "Incorrect VarType.");
 		}
 

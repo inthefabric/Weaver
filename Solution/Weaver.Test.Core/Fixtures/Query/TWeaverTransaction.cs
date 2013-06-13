@@ -159,18 +159,15 @@ namespace Weaver.Test.Core.Fixtures.Query {
 		public void CustomVarName() {
 			var tx = new WeaverTransaction();
 			const string custom = "_Custom";
-			IWeaverVarAlias alias = new WeaverVarAlias(tx) { Name = custom };
+			IWeaverVarAlias alias;
 
 			var q = new WeaverQuery();
 			q.FinalizeQuery("g.V[0]");
-			q.StoreResultAsVar(alias);
-			tx.AddQuery(q);
+			var q2 = WeaverQuery.StoreResultAsVar(custom, q, out alias);
+			tx.AddQuery(q2);
 			tx.Finish(alias);
 
 			const string expect = custom+"=g.V[0];"+custom+";";
-			Assert.AreEqual(expect, tx.Script, "Incorrect tx.Script.");
-
-			alias.Name = "_Ignored";
 			Assert.AreEqual(expect, tx.Script, "Incorrect tx.Script.");
 		}
 		
