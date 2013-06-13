@@ -1,12 +1,13 @@
-﻿using System;
-using Moq;
+﻿using Moq;
 using NUnit.Framework;
+using Weaver.Core.Exceptions;
 using Weaver.Core.Path;
 using Weaver.Core.Query;
 using Weaver.Core.Steps;
 using Weaver.Core.Steps.Statements;
 using Weaver.Test.Core.Common.Schema;
 using Weaver.Test.Core.Common.Vertices;
+using Weaver.Test.Core.Utils;
 
 namespace Weaver.Test.Core.Fixtures.Steps {
 
@@ -31,21 +32,36 @@ namespace Weaver.Test.Core.Fixtures.Steps {
 		////////////////////////////////////////////////////////////////////////////////////////////////
 		/*--------------------------------------------------------------------------------------------*/
 		[Test]
-		public void BuildParameterizedString1() {
-			var s0 = new WeaverStatementSetProperty<Person>(vMockPath.Object, x => x.Note, "note");
-			var se = new WeaverStepSideEffect<Person>(s0);
-
-			const string expect =
-				"sideEffect{"+
-					"it.setProperty('"+TestSchema.Person_Note+"',_P0);"+
-				"}";
-
-			Assert.AreEqual(expect, se.BuildParameterizedString(), "Incorrect result.");
+		public void BuildParameterizedStringFail() {
+			var se = new WeaverStepSideEffect<Person>();
+			WeaverTestUtil.CheckThrows<WeaverStepException>(true, () => se.BuildParameterizedString());
 		}
-		
+
+		/*--------------------------------------------------------------------------------------------*/
+		[TestCase(1)]
+		[TestCase(4)]
+		public void BuildParameterizedString(int pCount) {
+			var statements = new IWeaverStatement<Person>[pCount];
+			string expect = "sideEffect{";
+
+			for ( int i = 0 ; i < pCount ; ++i ) {
+				string script = "statement"+i;
+
+				var mockState = new Mock<IWeaverStatement<Person>>();
+				mockState.Setup(x => x.BuildParameterizedString()).Returns(script);
+
+				statements[i] = mockState.Object;
+				expect += script+";";
+			}
+
+			var se = new WeaverStepSideEffect<Person>(statements);
+			Assert.AreEqual(expect+"}", se.BuildParameterizedString(), "Incorrect result.");
+		}
+
 		/*--------------------------------------------------------------------------------------------*/
 		[Test]
-		public void BuildParameterizedString3() {
+		[Category("Integration")]
+		public void BuildParameterizedStringInteg() {
 			var s0 = new WeaverStatementSetProperty<Person>(vMockPath.Object, x => x.Name, "name");
 			var s1 = new WeaverStatementSetProperty<Person>(vMockPath.Object, x => x.Age, 99.9);
 			var s2 = new WeaverStatementSetProperty<Person>(vMockPath.Object, x => x.Note, "note");

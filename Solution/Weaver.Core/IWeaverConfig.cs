@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq.Expressions;
 using Weaver.Core.Elements;
 using Weaver.Core.Schema;
-using Weaver.Core.Steps;
 
 namespace Weaver.Core {
 
@@ -22,10 +21,6 @@ namespace Weaver.Core {
 
 
 		////////////////////////////////////////////////////////////////////////////////////////////////
-		/*--------------------------------------------------------------------------------------------*/
-		string GetPropertyDbName<T>(IWeaverStep pStep, Expression<Func<T, object>> pExp)
-																			where T : IWeaverElement;
-
 		/*--------------------------------------------------------------------------------------------*/
 		string GetPropertyDbName<T>(Expression<Func<T, object>> pExp) where T : IWeaverElement;
 		

@@ -1,12 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using Moq;
 using NUnit.Framework;
 using Weaver.Core;
 using Weaver.Core.Exceptions;
 using Weaver.Core.Schema;
-using Weaver.Core.Steps;
-using Weaver.Test.Core.Common;
 using Weaver.Test.Core.Common.Schema;
 using Weaver.Test.Core.Common.Vertices;
 using Weaver.Test.Core.Utils;
@@ -111,14 +108,6 @@ namespace Weaver.Test.Core.Fixtures {
 
 
 		////////////////////////////////////////////////////////////////////////////////////////////////
-		/*--------------------------------------------------------------------------------------------*/
-		[Test]
-		public void GetPropertyDbNameStep() {
-			var mockStep = new Mock<IWeaverStep>();
-			string name = vConfig.GetPropertyDbName<Person>(mockStep.Object, x => x.PersonId);
-			Assert.AreEqual(TestSchema.Person_PersonId, name, "Incorrect result.");
-		}
-
 		/*--------------------------------------------------------------------------------------------*/
 		[Test]
 		public void GetPropertyDbNameEx() {

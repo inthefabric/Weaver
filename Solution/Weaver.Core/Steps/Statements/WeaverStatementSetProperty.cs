@@ -19,25 +19,27 @@ namespace Weaver.Core.Steps.Statements {
 		/*--------------------------------------------------------------------------------------------*/
 		public WeaverStatementSetProperty(IWeaverPath pPath, Expression<Func<T, object>> pProperty,
 																						object pValue) {
-																							vPath = pPath;
+			vPath = pPath;
 			vProp = pProperty;
 			vValue = pValue;
 		}
 
 		/*--------------------------------------------------------------------------------------------*/
-		private string GetPropertyName() {
-			if ( vPropName != null ) {
+		public string PropertyName {
+			get {
+				if ( vPropName != null ) {
+					return vPropName;
+				}
+
+				vPropName = WrapException(() => vPath.Config.GetPropertyDbName(vProp));
 				return vPropName;
 			}
-
-			vPropName = vPath.Config.GetPropertyDbName(vProp);
-			return vPropName;
 		}
 
 		/*--------------------------------------------------------------------------------------------*/
 		public override string BuildParameterizedString() {
 			var valParam = vPath.Query.AddParam(new WeaverQueryVal(vValue));
-			return "it.setProperty('"+GetPropertyName()+"',"+valParam+")";
+			return "it.setProperty('"+PropertyName+"',"+valParam+")";
 		}
 
 	}

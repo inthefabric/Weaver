@@ -4,7 +4,6 @@ using System.Reflection;
 using Weaver.Core.Elements;
 using Weaver.Core.Exceptions;
 using Weaver.Core.Query;
-using Weaver.Core.Steps;
 
 namespace Weaver.Core.Util {
 
@@ -48,17 +47,6 @@ namespace Weaver.Core.Util {
 
 
 		////////////////////////////////////////////////////////////////////////////////////////////////
-		/*--------------------------------------------------------------------------------------------*/
-		public static string GetPropertyName<T>(IWeaverConfig pConfig, IWeaverStep pStep,
-									Expression<Func<T, object>> pExp) where T : IWeaverElement {
-			try {
-				return GetPropertyName(pConfig, pExp);
-			}
-			catch ( WeaverException we ) {
-				throw new WeaverStepException(pStep, we.Message);
-			}
-		}
-
 		/*--------------------------------------------------------------------------------------------*/
 		public static string GetPropertyName<T>(IWeaverConfig pConfig, Expression<Func<T, object>> pExp)
 																		where T : IWeaverElement {

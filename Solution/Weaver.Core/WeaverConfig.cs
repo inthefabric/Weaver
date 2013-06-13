@@ -104,12 +104,6 @@ namespace Weaver.Core {
 
 		////////////////////////////////////////////////////////////////////////////////////////////////
 		/*--------------------------------------------------------------------------------------------*/
-		public string GetPropertyDbName<T>(IWeaverStep pStep, Expression<Func<T, object>> pExp)
-																			where T : IWeaverElement {
-			return WeaverUtil.GetPropertyName(this, pStep, pExp);
-		}
-
-		/*--------------------------------------------------------------------------------------------*/
 		public string GetPropertyDbName<T>(Expression<Func<T, object>> pExp) where T : IWeaverElement {
 			return WeaverUtil.GetPropertyName(this, pExp);
 		}

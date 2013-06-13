@@ -5,7 +5,6 @@ using NUnit.Framework;
 using Weaver.Core;
 using Weaver.Core.Exceptions;
 using Weaver.Core.Query;
-using Weaver.Core.Steps;
 using Weaver.Core.Util;
 using Weaver.Test.Core.Common.Edges;
 using Weaver.Test.Core.Common.Schema;
@@ -120,8 +119,7 @@ namespace Weaver.Test.Core.Fixtures.Util {
 		public void PropNamePassLowerLabel() {
 			Expression<Func<PersonLikesCandy, object>> expr = (p => p.Label);
 			var cfg = new WeaverConfig(Schema.Vertices, Schema.Edges);
-			vPropExprResult = WeaverUtil.GetPropertyName(cfg,
-				new WeaverStepProp<PersonLikesCandy>(null), expr);
+			vPropExprResult = WeaverUtil.GetPropertyName(cfg, expr);
 
 			Assert.AreEqual("label", vPropExprResult, "Incorrect property name.");
 		}
@@ -130,49 +128,48 @@ namespace Weaver.Test.Core.Fixtures.Util {
 		[Test]
 		public void PropNameFailGt() {
 			vPropExpr = (p => p.PersonId > 123);
-			WeaverTestUtil.CheckThrows<WeaverStepException>(true, TryPropExpr);
+			WeaverTestUtil.CheckThrows<WeaverException>(true, TryPropExpr);
 		}
 
 		/*--------------------------------------------------------------------------------------------*/
 		[Test]
 		public void PropNameFailAdd() {
 			vPropExpr = (p => p.PersonId + 123);
-			WeaverTestUtil.CheckThrows<WeaverStepException>(true, TryPropExpr);
+			WeaverTestUtil.CheckThrows<WeaverException>(true, TryPropExpr);
 		}
 
 		/*--------------------------------------------------------------------------------------------*/
 		[Test]
 		public void PropNameFailSub() {
 			vPropExpr = (p => 987 - p.PersonId);
-			WeaverTestUtil.CheckThrows<WeaverStepException>(true, TryPropExpr);
+			WeaverTestUtil.CheckThrows<WeaverException>(true, TryPropExpr);
 		}
 
 		/*--------------------------------------------------------------------------------------------*/
 		[Test]
 		public void PropNameFailEq() {
 			vPropExpr = (p => "asdf" == p.Name);
-			WeaverTestUtil.CheckThrows<WeaverStepException>(true, TryPropExpr);
+			WeaverTestUtil.CheckThrows<WeaverException>(true, TryPropExpr);
 		}
 
 		/*--------------------------------------------------------------------------------------------*/
 		[Test]
 		public void PropNameFailBoolEq() {
 			vPropExpr = (p => (p.ExpectOneVertex == false));
-			WeaverTestUtil.CheckThrows<WeaverStepException>(true, TryPropExpr);
+			WeaverTestUtil.CheckThrows<WeaverException>(true, TryPropExpr);
 		}
 
 		/*--------------------------------------------------------------------------------------------*/
 		[Test]
 		public void PropNameFailConcat() {
 			vPropExpr = (p => p.Name+p.Name);
-			WeaverTestUtil.CheckThrows<WeaverStepException>(true, TryPropExpr);
+			WeaverTestUtil.CheckThrows<WeaverException>(true, TryPropExpr);
 		}
 
 		/*--------------------------------------------------------------------------------------------*/
 		private void TryPropExpr() {
 			var cfg = new WeaverConfig(Schema.Vertices, Schema.Edges);
-			vPropExprResult = WeaverUtil.GetPropertyName(cfg,
-				new WeaverStepProp<Person>(null), vPropExpr);
+			vPropExprResult = WeaverUtil.GetPropertyName(cfg, vPropExpr);
 		}
 
 	}

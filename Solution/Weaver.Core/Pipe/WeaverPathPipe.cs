@@ -110,7 +110,7 @@ namespace Weaver.Core.Pipe {
 		}
 
 		/*--------------------------------------------------------------------------------------------*/
-		public T SideEffect(params IWeaverStatement<T>[] pStatements) {
+		public T SideEffect(params IWeaverStatement<T>[] pStatements) { //TEST: Core
 			var f = new WeaverStepSideEffect<T>(pStatements);
 			Path.AddItem(f);
 			return Self;

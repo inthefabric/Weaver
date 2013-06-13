@@ -41,6 +41,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Exceptions\WeaverException.cs" />
+    <Compile Include="Exceptions\WeaverStatementException.cs" />
     <Compile Include="Exceptions\WeaverStepException.cs" />
     <Compile Include="Exceptions\WeaverPathException.cs" />
     <Compile Include="Exceptions\WeaverEdgeException.cs" />

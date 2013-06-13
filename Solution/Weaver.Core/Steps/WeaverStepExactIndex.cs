@@ -36,7 +36,7 @@ namespace Weaver.Core.Steps {
 					return vPropName;
 				}
 
-				vPropName = Path.Config.GetPropertyDbName(this, vProp);
+				vPropName = WrapException(() => Path.Config.GetPropertyDbName(vProp));
 				return vPropName;
 			}
 		}

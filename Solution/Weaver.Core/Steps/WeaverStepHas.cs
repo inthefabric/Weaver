@@ -69,8 +69,11 @@ namespace Weaver.Core.Steps {
 		/*--------------------------------------------------------------------------------------------*/
 		public string PropertyName {
 			get {
-				if ( vPropName != null ) { return vPropName; }
-				vPropName = Path.Config.GetPropertyDbName(this, vProp);
+				if ( vPropName != null ) {
+					return vPropName;
+				}
+
+				vPropName = WrapException(() => Path.Config.GetPropertyDbName(vProp));
 				return vPropName;
 			}
 		}
