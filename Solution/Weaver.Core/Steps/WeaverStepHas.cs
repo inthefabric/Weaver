@@ -46,9 +46,9 @@ namespace Weaver.Core.Steps {
 	}
 
 	/*================================================================================================*/
-	public class WeaverStepHas<TItem> : WeaverStep where TItem : IWeaverElement {
+	public class WeaverStepHas<T> : WeaverStep where T : IWeaverElement {
 
-		private readonly Expression<Func<TItem, object>> vProp;
+		private readonly Expression<Func<T, object>> vProp;
 		private string vPropName;
 
 		public WeaverStepHasMode Mode { get; private set; }
@@ -58,9 +58,9 @@ namespace Weaver.Core.Steps {
 
 		////////////////////////////////////////////////////////////////////////////////////////////////
 		/*--------------------------------------------------------------------------------------------*/
-		public WeaverStepHas(Expression<Func<TItem, object>> pItemProperty, WeaverStepHasMode pMode,
+		public WeaverStepHas(Expression<Func<T, object>> pProperty, WeaverStepHasMode pMode,
 												WeaverStepHasOp? pOperation=null, object pValue=null) {
-			vProp = pItemProperty;
+			vProp = pProperty;
 			Mode = pMode;
 			Operation = pOperation;
 			Value = pValue;

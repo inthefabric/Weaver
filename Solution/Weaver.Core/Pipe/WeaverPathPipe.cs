@@ -5,6 +5,7 @@ using Weaver.Core.Exceptions;
 using Weaver.Core.Path;
 using Weaver.Core.Query;
 using Weaver.Core.Steps;
+using Weaver.Core.Steps.Statements;
 
 namespace Weaver.Core.Pipe {
 	
@@ -23,6 +24,13 @@ namespace Weaver.Core.Pipe {
 		/*--------------------------------------------------------------------------------------------*/
 		public IWeaverPathPipeEnd Iterate() {
 			var f = new WeaverStepCustom("iterate()");
+			Path.AddItem(f);
+			return f;
+		}
+
+		/*--------------------------------------------------------------------------------------------*/
+		public IWeaverPathPipeEnd Remove() { //TEST: Core
+			var f = new WeaverStepCustom("remove()");
 			Path.AddItem(f);
 			return f;
 		}
@@ -97,6 +105,13 @@ namespace Weaver.Core.Pipe {
 		/*--------------------------------------------------------------------------------------------*/
 		public T HasNot(Expression<Func<T, object>> pProperty) {
 			var f = new WeaverStepHas<T>(pProperty, WeaverStepHasMode.HasNot);
+			Path.AddItem(f);
+			return Self;
+		}
+
+		/*--------------------------------------------------------------------------------------------*/
+		public T SideEffect(params IWeaverStatement<T>[] pStatements) {
+			var f = new WeaverStepSideEffect<T>(pStatements);
 			Path.AddItem(f);
 			return Self;
 		}
