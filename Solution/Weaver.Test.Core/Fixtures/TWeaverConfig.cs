@@ -42,6 +42,43 @@ namespace Weaver.Test.Core.Fixtures {
 			Assert.AreEqual(edges, wc.EdgeSchemas, "Incorrect Edge list.");
 		}
 
+		/*--------------------------------------------------------------------------------------------*/
+		[Test]
+		public void NewItemFail() {
+			var verts = new List<WeaverVertexSchema>();
+			var edges = new List<WeaverEdgeSchema>();
+
+			var per = new WeaverVertexSchema("Person", "Per");
+			verts.Add(per);
+			verts.Add(per);
+
+			var ex = WeaverTestUtil.CheckThrows<WeaverException>(
+				true, () => new WeaverConfig(verts, edges)
+			);
+
+			Assert.AreNotEqual(-1, ex.Message.IndexOf("item with"), "Incorrect exception.");
+		}
+
+		/*--------------------------------------------------------------------------------------------*/
+		[Test]
+		public void NewPropertyFail() {
+			var verts = new List<WeaverVertexSchema>();
+			var edges = new List<WeaverEdgeSchema>();
+
+			var per = new WeaverVertexSchema("Person", "Per");
+			verts.Add(per);
+
+			var ps = new WeaverPropSchema("PersonId", "PerId", typeof(int));
+			per.Props.Add(ps);
+			per.Props.Add(ps);
+
+			var ex = WeaverTestUtil.CheckThrows<WeaverException>(
+				true, () => new WeaverConfig(verts, edges)
+			);
+
+			Assert.AreNotEqual(-1, ex.Message.IndexOf("item property"), "Incorrect exception.");
+		}
+
 
 		////////////////////////////////////////////////////////////////////////////////////////////////
 		/*--------------------------------------------------------------------------------------------*/
