@@ -4,6 +4,8 @@ using Weaver.Core.Graph;
 using Weaver.Core.Path;
 using Weaver.Core.Query;
 using Weaver.Core.Steps;
+using Weaver.Core.Steps.Parameters;
+using Weaver.Test.Core.Common.Schema;
 using Weaver.Test.Core.Common.Vertices;
 
 namespace Weaver.Test.Core.Fixtures.Graph {
@@ -51,6 +53,19 @@ namespace Weaver.Test.Core.Fixtures.Graph {
 			Assert.False(vAllVerts.ForSpecificId, "Incorrect ForSpecificId.");
 		}
 
+		/*--------------------------------------------------------------------------------------------*/
+		[Test]
+		public void ElasticIndex() {
+			var mockParam = new Mock<IWeaverParamElastic<Person>>();
+			var list = new [] { mockParam.Object };
+
+			Person p = vAllVerts.ElasticIndex(list);
+
+			Assert.NotNull(p, "Result should be filled.");
+			vMockPath.Verify(x => x.AddItem(It.IsAny<WeaverStepElasticIndex<Person>>()), Times.Once());
+			Assert.False(vAllVerts.ForSpecificId, "Incorrect ForSpecificId.");
+		}
+
 
 		////////////////////////////////////////////////////////////////////////////////////////////////
 		/*--------------------------------------------------------------------------------------------*/
@@ -62,6 +77,28 @@ namespace Weaver.Test.Core.Fixtures.Graph {
 			}
 
 			Assert.AreEqual(pExpect, vAllVerts.BuildParameterizedString(), "Incorrect result.");
+		}
+
+
+		////////////////////////////////////////////////////////////////////////////////////////////////
+		/*--------------------------------------------------------------------------------------------*/
+		[Test]
+		[Category("Integration")]
+		public void ElasticIndexInteg() {
+			IWeaverQuery q = WeavInst.Graph
+				.V.ElasticIndex(
+					new WeaverParamElastic<Person>(x => x.PersonId, WeaverParamElasticOp.LessThan, 99),
+					new WeaverParamElastic<Person>(x => x.Age, WeaverParamElasticOp.GreaterThan, 18)
+				)
+				.ToQuery();
+
+			const string expect = "g.V"+
+				".has('"+TestSchema.Person_PersonId+"',"+
+					"com.tinkerpop.blueprints.Query.Compare.LESS_THAN,_P0)"+
+				".has('"+TestSchema.Person_Age+"',"+
+					"com.tinkerpop.blueprints.Query.Compare.GREATER_THAN,_P1);";
+
+			Assert.AreEqual(expect, q.Script, "Incorrect script.");
 		}
 
 	}

@@ -18,7 +18,7 @@ namespace Weaver.Core.Steps {
 		EqualTo = 1,
 		NotEqualTo,
 		GreaterThan,
-		GreterThanOrEqualTo,
+		GreaterThanOrEqualTo,
 		LessThan,
 		LessThanOrEqualTo
 	};
@@ -37,7 +37,7 @@ namespace Weaver.Core.Steps {
 			map.Add(WeaverStepHasOp.EqualTo, "eq");
 			map.Add(WeaverStepHasOp.NotEqualTo, "neq");
 			map.Add(WeaverStepHasOp.GreaterThan, "gt");
-			map.Add(WeaverStepHasOp.GreterThanOrEqualTo, "gte");
+			map.Add(WeaverStepHasOp.GreaterThanOrEqualTo, "gte");
 			map.Add(WeaverStepHasOp.LessThan, "lt");
 			map.Add(WeaverStepHasOp.LessThanOrEqualTo, "lte");
 			return map;

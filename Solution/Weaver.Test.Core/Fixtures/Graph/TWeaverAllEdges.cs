@@ -4,6 +4,7 @@ using Weaver.Core.Graph;
 using Weaver.Core.Path;
 using Weaver.Core.Query;
 using Weaver.Core.Steps;
+using Weaver.Core.Steps.Parameters;
 using Weaver.Test.Core.Common.Edges;
 
 namespace Weaver.Test.Core.Fixtures.Graph {
@@ -48,6 +49,20 @@ namespace Weaver.Test.Core.Fixtures.Graph {
 
 			Assert.NotNull(p, "Result should be filled.");
 			vMockPath.Verify(x => x.AddItem(It.IsAny<WeaverStepExactIndex<PersonLikesCandy>>()),
+				Times.Once());
+			Assert.False(vAllEdges.ForSpecificId, "Incorrect ForSpecificId.");
+		}
+
+		/*--------------------------------------------------------------------------------------------*/
+		[Test]
+		public void ElasticIndex() {
+			var mockParam = new Mock<IWeaverParamElastic<PersonLikesCandy>>();
+			var list = new[] { mockParam.Object };
+
+			PersonLikesCandy p = vAllEdges.ElasticIndex(list);
+
+			Assert.NotNull(p, "Result should be filled.");
+			vMockPath.Verify(x => x.AddItem(It.IsAny<WeaverStepElasticIndex<PersonLikesCandy>>()),
 				Times.Once());
 			Assert.False(vAllEdges.ForSpecificId, "Incorrect ForSpecificId.");
 		}

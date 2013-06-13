@@ -49,6 +49,11 @@
     <Compile Include="Pipe\IWeaverPathPipeEnd.cs" />
     <Compile Include="Pipe\WeaverPathPipe.cs" />
     <Compile Include="Query\WeaverTransaction.cs" />
+    <Compile Include="Steps\Parameters\IWeaverParamElastic.cs" />
+    <Compile Include="Steps\Parameters\IWeaverParam.cs" />
+    <Compile Include="Steps\Parameters\WeaverParamElastic.cs" />
+    <Compile Include="Steps\Parameters\WeaverParam.cs" />
+    <Compile Include="Steps\WeaverStepElasticIndex.cs" />
     <Compile Include="Steps\WeaverStepSideEffect.cs" />
     <Compile Include="Steps\IWeaverStep.cs" />
     <Compile Include="Steps\IWeaverStepAs.cs" />

@@ -75,7 +75,7 @@ namespace Weaver.Test.Core.Fixtures.Steps {
 		[TestCase(WeaverStepHasOp.EqualTo, "test", "eq,_P0")]
 		[TestCase(WeaverStepHasOp.NotEqualTo, null, "neq,null")]
 		[TestCase(WeaverStepHasOp.GreaterThan, 123u, "gt,123")]
-		[TestCase(WeaverStepHasOp.GreterThanOrEqualTo, 1.5f, "gte,1.5")]
+		[TestCase(WeaverStepHasOp.GreaterThanOrEqualTo, 1.5f, "gte,1.5")]
 		[TestCase(WeaverStepHasOp.LessThan, 99, "lt,99")]
 		[TestCase(WeaverStepHasOp.LessThanOrEqualTo, 1.23456789d, "lte,1.23456789")]
 		[TestCase(null, null, null)]
