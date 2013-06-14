@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Weaver.Core.Elements;
 using Weaver.Core.Exceptions;
 using Weaver.Core.Graph;
@@ -12,17 +11,16 @@ using Weaver.Titan.Schema;
 namespace Weaver.Titan.Graph {
 	
 	/*================================================================================================*/
+	//TEST: WeaverTitanGraph
 	public class WeaverTitanGraph : WeaverGraph, IWeaverTitanGraph {
 
 
 		////////////////////////////////////////////////////////////////////////////////////////////////
 		/*--------------------------------------------------------------------------------------------*/
-		public IWeaverTitanGraphQuery Query {
-			get {
-				var v = new WeaverTitanGraphQuery();
-				Path.AddItem(v);
-				return v;
-			}
+		public IWeaverTitanGraphQuery Query() {
+			var v = new WeaverTitanGraphQuery();
+			Path.AddItem(v);
+			return v;
 		}
 
 
@@ -61,7 +59,7 @@ namespace Weaver.Titan.Graph {
 		private IWeaverPathPipeEnd MakePropertyKey(string pElement, WeaverTitanPropSchema pProperty,
 																	IWeaverVarAlias pGroupVar=null) {
 			AddCustom("makeType()");
-			AddCustom("dataType("+GetTitanTypeName(pProperty.Type)+".class)");
+			AddCustom("dataType("+pProperty.GetTitanTypeName()+".class)");
 			AddCustom("name("+Path.Query.AddParam(new WeaverQueryVal(pProperty.DbName))+")");
 			AddCustom("unique(OUT)"); //WeaverConfig enforces unique property DbNames
 
@@ -127,44 +125,6 @@ namespace Weaver.Titan.Graph {
 			var sc = new WeaverStepCustom(pScript);
 			Path.AddItem(sc);
 			return sc;
-		}
-
-		/*--------------------------------------------------------------------------------------------*/
-		private static string GetTitanTypeName(Type pType) {
-			string n;
-
-			switch ( pType.Name ) {
-				case "Boolean":
-					n = "Boolean";
-					break;
-
-				case "Byte":
-					n = "Byte";
-					break;
-
-				case "Int32":
-					n = "Integer";
-					break;
-
-				case "Int64":
-				case "DateTime":
-					n = "Long";
-					break;
-
-				case "Single":
-					n = "Float";
-					break;
-
-				case "Double":
-					n = "Double";
-					break;
-
-				default:
-					n = pType.Name;
-					break;
-			}
-
-			return n;
 		}
 
 	}

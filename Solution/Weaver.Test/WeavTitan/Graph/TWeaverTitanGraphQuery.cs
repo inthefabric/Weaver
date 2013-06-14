@@ -1,0 +1,81 @@
+﻿using Moq;
+using NUnit.Framework;
+using Weaver.Core.Path;
+using Weaver.Core.Query;
+using Weaver.Test.Common.Schema;
+using Weaver.Test.Common.Vertices;
+using Weaver.Titan;
+using Weaver.Titan.Graph;
+using Weaver.Titan.Steps;
+using Weaver.Titan.Steps.Parameters;
+
+namespace Weaver.Test.WeavTitan.Graph {
+
+	/*================================================================================================*/
+	[TestFixture]
+	public class TWeaverTitanGraphQuery : WeaverTestBase {
+
+		private WeaverTitanGraphQuery vQuery;
+		private Mock<IWeaverPath> vMockPath;
+
+
+		////////////////////////////////////////////////////////////////////////////////////////////////
+		/*--------------------------------------------------------------------------------------------*/
+		protected override void SetUp() {
+			base.SetUp();
+
+			var mockQuery = new Mock<IWeaverQuery>();
+			vMockPath = new Mock<IWeaverPath>();
+			vMockPath.SetupGet(x => x.Query).Returns(mockQuery.Object);
+
+			vQuery = new WeaverTitanGraphQuery();
+			vQuery.Path = vMockPath.Object;
+		}
+
+
+		////////////////////////////////////////////////////////////////////////////////////////////////
+		/*--------------------------------------------------------------------------------------------*/
+		[Test]
+		public void ElasticIndex() {
+			var mockParam = new Mock<IWeaverParamElastic<Person>>();
+			var list = new [] { mockParam.Object };
+
+			Person p = vQuery.ElasticIndex(list);
+
+			Assert.NotNull(p, "Result should be filled.");
+			vMockPath.Verify(x => x.AddItem(It.IsAny<WeaverStepElasticIndex<Person>>()), Times.Once());
+		}
+
+
+		////////////////////////////////////////////////////////////////////////////////////////////////
+		/*--------------------------------------------------------------------------------------------*/
+		[Test]
+		public void BuildParameterizedString() {
+			Assert.AreEqual("query()", vQuery.BuildParameterizedString(), "Incorrect result.");
+		}
+
+
+		////////////////////////////////////////////////////////////////////////////////////////////////
+		/*--------------------------------------------------------------------------------------------*/
+		[Test]
+		[Category("Integration")]
+		public void ElasticIndexInteg() {
+			IWeaverQuery q = WeavInst.TitanGraph()
+				.Query().ElasticIndex(
+					new WeaverParamElastic<Person>(x => x.PersonId, WeaverParamElasticOp.LessThan, 99),
+					new WeaverParamElastic<Person>(x => x.Age, WeaverParamElasticOp.GreaterThan, 18)
+				)
+				.ToQuery();
+
+			const string expect = "g.query()"+
+				".has('"+TestSchema.Person_PersonId+"',"+
+					"com.tinkerpop.blueprints.Query.Compare.LESS_THAN,_P0)"+
+				".has('"+TestSchema.Person_Age+"',"+
+					"com.tinkerpop.blueprints.Query.Compare.GREATER_THAN,_P1);";
+
+			Assert.AreEqual(expect, q.Script, "Incorrect script.");
+		}
+
+	}
+
+}

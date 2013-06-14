@@ -44,6 +44,7 @@
     <Compile Include="Steps\Parameters\IWeaverParamElastic.cs" />
     <Compile Include="Steps\Parameters\WeaverParamElastic.cs" />
     <Compile Include="Steps\WeaverStepElasticIndex.cs" />
+    <Compile Include="WeaverTitanInstanceExt.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Weaver.Core\Weaver.Core.csproj">

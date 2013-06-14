@@ -2,8 +2,9 @@
 using System.Linq.Expressions;
 using NUnit.Framework;
 using Weaver.Test.Common.Vertices;
+using Weaver.Titan.Steps.Parameters;
 
-namespace Weaver.Test.WeavCore.Steps.Parameters {
+namespace Weaver.Test.WeavTitan.Steps.Parameters {
 
 	/*================================================================================================*/
 	[TestFixture]

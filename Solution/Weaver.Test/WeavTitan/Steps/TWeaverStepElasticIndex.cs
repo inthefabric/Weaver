@@ -6,8 +6,10 @@ using Weaver.Core.Query;
 using Weaver.Test.Common.Schema;
 using Weaver.Test.Common.Vertices;
 using Weaver.Test.Utils;
+using Weaver.Titan.Steps;
+using Weaver.Titan.Steps.Parameters;
 
-namespace Weaver.Test.WeavCore.Steps {
+namespace Weaver.Test.WeavTitan.Steps {
 
 	/*================================================================================================*/
 	[TestFixture]

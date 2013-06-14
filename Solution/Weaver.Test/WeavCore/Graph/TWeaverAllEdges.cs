@@ -52,20 +52,6 @@ namespace Weaver.Test.WeavCore.Graph {
 			Assert.False(vAllEdges.ForSpecificId, "Incorrect ForSpecificId.");
 		}
 
-		/*--------------------------------------------------------------------------------------------*/
-		[Test]
-		public void ElasticIndex() {
-			var mockParam = new Mock<IWeaverParamElastic<PersonLikesCandy>>();
-			var list = new[] { mockParam.Object };
-
-			PersonLikesCandy p = vAllEdges.ElasticIndex(list);
-
-			Assert.NotNull(p, "Result should be filled.");
-			vMockPath.Verify(x => x.AddItem(It.IsAny<WeaverStepElasticIndex<PersonLikesCandy>>()),
-				Times.Once());
-			Assert.False(vAllEdges.ForSpecificId, "Incorrect ForSpecificId.");
-		}
-
 
 		////////////////////////////////////////////////////////////////////////////////////////////////
 		/*--------------------------------------------------------------------------------------------*/

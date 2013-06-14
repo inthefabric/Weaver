@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using Weaver.Core.Schema;
 
 namespace Weaver.Test.Common.Schema {
@@ -128,6 +129,18 @@ namespace Weaver.Test.Common.Schema {
 
 				ps = new WeaverPropSchema("Notes", Plc_Notes, typeof(string));
 				perLikesCan.Props.Add(ps);
+		}
+
+
+		////////////////////////////////////////////////////////////////////////////////////////////////
+		/*--------------------------------------------------------------------------------------------*/
+		public WeaverVertexSchema GetVertexSchema(string pName) {
+			return Vertices.FirstOrDefault(v => v.Name == pName);
+		}
+
+		/*--------------------------------------------------------------------------------------------*/
+		public WeaverEdgeSchema GetEdgeSchema(string pName) {
+			return Edges.FirstOrDefault(v => v.Name == pName);
 		}
 		
 	}
