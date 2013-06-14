@@ -9,37 +9,22 @@ namespace Weaver.Core.Steps.Statements {
 	/*================================================================================================*/
 	public class WeaverStatementSetProperty<T> : WeaverStatement<T> where T : IWeaverElement {
 
-		private readonly IWeaverPath vPath;
 		private readonly Expression<Func<T, object>> vProp;
 		private readonly object vValue;
-		private string vPropName;
 
 
 		////////////////////////////////////////////////////////////////////////////////////////////////
 		/*--------------------------------------------------------------------------------------------*/
-		public WeaverStatementSetProperty(IWeaverPath pPath, Expression<Func<T, object>> pProperty,
-																						object pValue) {
-			vPath = pPath;
+		public WeaverStatementSetProperty(Expression<Func<T, object>> pProperty, object pValue) {
 			vProp = pProperty;
 			vValue = pValue;
 		}
 
 		/*--------------------------------------------------------------------------------------------*/
-		public string PropertyName {
-			get {
-				if ( vPropName != null ) {
-					return vPropName;
-				}
-
-				vPropName = WrapException(() => vPath.Config.GetPropertyDbName(vProp));
-				return vPropName;
-			}
-		}
-
-		/*--------------------------------------------------------------------------------------------*/
-		public override string BuildParameterizedString() {
-			var valParam = vPath.Query.AddParam(new WeaverQueryVal(vValue));
-			return "it.setProperty('"+PropertyName+"',"+valParam+")";
+		public override string BuildParameterizedString(IWeaverPath pPath) {
+			var propName = WrapException(() => pPath.Config.GetPropertyDbName(vProp));
+			var valParam = pPath.Query.AddParam(new WeaverQueryVal(vValue));
+			return "it.setProperty('"+propName+"',"+valParam+")";
 		}
 
 	}

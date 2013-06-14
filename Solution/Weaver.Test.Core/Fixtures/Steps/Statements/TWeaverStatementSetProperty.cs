@@ -31,36 +31,25 @@ namespace Weaver.Test.Core.Fixtures.Steps.Statements {
 		////////////////////////////////////////////////////////////////////////////////////////////////
 		/*--------------------------------------------------------------------------------------------*/
 		[Test]
-		public void PropertyName() {
-			var setProp = new WeaverStatementSetProperty<Person>(vMockPath.Object, x => x.PersonId, 5);
-
-			Assert.AreEqual(TestSchema.Person_PersonId, setProp.PropertyName,
-				"Incorrect PropertyName.");
-			Assert.AreEqual(TestSchema.Person_PersonId, setProp.PropertyName,
-				"Incorrect cached PropertyName.");
-		}
-
-		/*--------------------------------------------------------------------------------------------*/
-		[Test]
-		public void PropertyNameInvalid() {
-			var setProp = new WeaverStatementSetProperty<Person>(
-				vMockPath.Object, x => (x.PersonId == 99), 5);
-
-			WeaverTestUtil.CheckThrows<WeaverStatementException<Person>>(true, () => {
-				var p = setProp.PropertyName;
-			});
-		}
-
-
-		////////////////////////////////////////////////////////////////////////////////////////////////
-		/*--------------------------------------------------------------------------------------------*/
-		[Test]
 		public void BuildParameterizedString() {
-			var setProp = new WeaverStatementSetProperty<Person>(vMockPath.Object, x => x.PersonId, 5);
+			var setProp = new WeaverStatementSetProperty<Person>(x => x.PersonId, 5);
 
 			const string expect = "it.setProperty('"+TestSchema.Person_PersonId+"',_P0)";
-			Assert.AreEqual(expect, setProp.BuildParameterizedString(), "Incorrect result.");
+
+			Assert.AreEqual(expect, setProp.BuildParameterizedString(vMockPath.Object),
+				"Incorrect result.");
 		}
+
+		/*--------------------------------------------------------------------------------------------*/
+		[Test]
+		public void BuildParameterizedStringInvalid() {
+			var setProp = new WeaverStatementSetProperty<Person>(x => (x.PersonId == 99), 5);
+
+			WeaverTestUtil.CheckThrows<WeaverStatementException<Person>>(
+				true, () => setProp.BuildParameterizedString(vMockPath.Object)
+			);
+		}
+		
 
 	}
 

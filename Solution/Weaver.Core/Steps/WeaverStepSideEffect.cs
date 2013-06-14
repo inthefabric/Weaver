@@ -26,7 +26,7 @@ namespace Weaver.Core.Steps {
 			var sb = new StringBuilder("sideEffect{");
 
 			foreach ( IWeaverStatement<T> s in vStatement ) {
-				sb.Append(s.BuildParameterizedString()+";");
+				sb.Append(s.BuildParameterizedString(Path)+";");
 			}
 
 			sb.Append("}");

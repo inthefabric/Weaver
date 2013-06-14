@@ -48,13 +48,14 @@ namespace Weaver.Test.Core.Fixtures.Steps {
 				string script = "statement"+i;
 
 				var mockState = new Mock<IWeaverStatement<Person>>();
-				mockState.Setup(x => x.BuildParameterizedString()).Returns(script);
+				mockState.Setup(x => x.BuildParameterizedString(vMockPath.Object)).Returns(script);
 
 				statements[i] = mockState.Object;
 				expect += script+";";
 			}
 
 			var se = new WeaverStepSideEffect<Person>(statements);
+			se.Path = vMockPath.Object;
 			Assert.AreEqual(expect+"}", se.BuildParameterizedString(), "Incorrect result.");
 		}
 
@@ -62,10 +63,12 @@ namespace Weaver.Test.Core.Fixtures.Steps {
 		[Test]
 		[Category("Integration")]
 		public void BuildParameterizedStringInteg() {
-			var s0 = new WeaverStatementSetProperty<Person>(vMockPath.Object, x => x.Name, "name");
-			var s1 = new WeaverStatementSetProperty<Person>(vMockPath.Object, x => x.Age, 99.9);
-			var s2 = new WeaverStatementSetProperty<Person>(vMockPath.Object, x => x.Note, "note");
+			var s0 = new WeaverStatementSetProperty<Person>(x => x.Name, "name");
+			var s1 = new WeaverStatementSetProperty<Person>(x => x.Age, 99.9);
+			var s2 = new WeaverStatementSetProperty<Person>(x => x.Note, "note");
+
 			var se = new WeaverStepSideEffect<Person>(s0, s1, s2);
+			se.Path = vMockPath.Object;
 
 			const string expect = 
 				"sideEffect{"+

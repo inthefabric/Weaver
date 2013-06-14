@@ -1,4 +1,5 @@
 ﻿using Weaver.Core.Elements;
+using Weaver.Core.Path;
 
 namespace Weaver.Core.Steps.Statements {
 
@@ -8,7 +9,7 @@ namespace Weaver.Core.Steps.Statements {
 
 		////////////////////////////////////////////////////////////////////////////////////////////////
 		/*--------------------------------------------------------------------------------------------*/
-		string BuildParameterizedString();
+		string BuildParameterizedString(IWeaverPath pPath);
 
 	}
 

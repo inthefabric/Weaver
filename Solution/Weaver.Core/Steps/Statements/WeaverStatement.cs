@@ -1,6 +1,7 @@
 ﻿using System;
 using Weaver.Core.Elements;
 using Weaver.Core.Exceptions;
+using Weaver.Core.Path;
 
 namespace Weaver.Core.Steps.Statements {
 
@@ -10,7 +11,7 @@ namespace Weaver.Core.Steps.Statements {
 
 		////////////////////////////////////////////////////////////////////////////////////////////////
 		/*--------------------------------------------------------------------------------------------*/
-		public abstract string BuildParameterizedString();
+		public abstract string BuildParameterizedString(IWeaverPath pPath);
 
 		/*--------------------------------------------------------------------------------------------*/
 		protected TResult WrapException<TResult>(Func<TResult> pFunc) {
