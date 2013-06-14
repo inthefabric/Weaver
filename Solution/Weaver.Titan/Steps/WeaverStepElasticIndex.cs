@@ -2,9 +2,10 @@
 using Weaver.Core.Elements;
 using Weaver.Core.Exceptions;
 using Weaver.Core.Query;
-using Weaver.Core.Steps.Parameters;
+using Weaver.Core.Steps;
+using Weaver.Titan.Steps.Parameters;
 
-namespace Weaver.Core.Steps {
+namespace Weaver.Titan.Steps {
 	
 	/*================================================================================================*/
 	public class WeaverStepElasticIndex<T> : WeaverStep where T : IWeaverElement {

@@ -2,8 +2,9 @@
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using Weaver.Core.Elements;
+using Weaver.Core.Steps.Parameters;
 
-namespace Weaver.Core.Steps.Parameters {
+namespace Weaver.Titan.Steps.Parameters {
 
 	/*================================================================================================*/
 	public enum WeaverParamElasticOp {
