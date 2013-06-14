@@ -104,6 +104,7 @@ namespace Weaver.Test.WeavCore.Query {
 			const string varScript = name+"="+script;
 
 			var q = new WeaverQuery();
+			q.AddParam(new WeaverQueryVal("test"));
 			q.FinalizeQuery(script);
 
 			IWeaverQuery q2;
@@ -120,6 +121,7 @@ namespace Weaver.Test.WeavCore.Query {
 			}
 
 			Assert.AreEqual(varScript+";", q2.Script, "Incorrect Script.");
+			Assert.AreEqual(q.Params, q2.Params, "Incorrect Params.");
 		}
 
 		/*--------------------------------------------------------------------------------------------*/
@@ -130,6 +132,7 @@ namespace Weaver.Test.WeavCore.Query {
 			const string varScript = name+"="+script;
 
 			var q = new WeaverQuery();
+			q.AddParam(new WeaverQueryVal("test"));
 			q.FinalizeQuery(script);
 
 			IWeaverVarAlias<Person> alias;
@@ -137,6 +140,7 @@ namespace Weaver.Test.WeavCore.Query {
 
 			Assert.AreEqual(alias, q2.ResultVar, "Incorrect ResultVar.");
 			Assert.AreEqual(varScript+";", q2.Script, "Incorrect Script.");
+			Assert.AreEqual(q.Params, q2.Params, "Incorrect Params.");
 		}
 
 		/*--------------------------------------------------------------------------------------------*/

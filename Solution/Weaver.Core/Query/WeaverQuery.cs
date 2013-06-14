@@ -10,7 +10,7 @@ namespace Weaver.Core.Query {
 		public bool IsFinalized { get; private set; }
 		public string Script { get; private set; }
 		public Dictionary<string, IWeaverQueryVal> Params { get; private set; }
-		public IWeaverVarAlias ResultVar { get; internal set; }
+		public IWeaverVarAlias ResultVar { get; private set; }
 
 		
 		////////////////////////////////////////////////////////////////////////////////////////////////
@@ -79,6 +79,7 @@ namespace Weaver.Core.Query {
 
 			var q = new WeaverQuery();
 			q.ResultVar = pVarAlias;
+			q.Params = pQuery.Params;
 			q.FinalizeQuery(pVarAlias.Name+"="+s.Substring(0, s.Length-1));
 			return q;
 		}
