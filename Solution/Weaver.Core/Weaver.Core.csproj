@@ -53,6 +53,7 @@
     <Compile Include="Steps\Parameters\IWeaverParam.cs" />
     <Compile Include="Steps\Parameters\WeaverParamElastic.cs" />
     <Compile Include="Steps\Parameters\WeaverParam.cs" />
+    <Compile Include="Steps\Statements\WeaverStatementRemoveProperty.cs" />
     <Compile Include="Steps\WeaverStepElasticIndex.cs" />
     <Compile Include="Steps\WeaverStepSideEffect.cs" />
     <Compile Include="Steps\IWeaverStep.cs" />
