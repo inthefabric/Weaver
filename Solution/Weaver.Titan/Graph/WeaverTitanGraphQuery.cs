@@ -8,12 +8,19 @@ namespace Weaver.Titan.Graph {
 	/*================================================================================================*/
 	public class WeaverTitanGraphQuery : WeaverPathItem, IWeaverTitanGraphQuery {
 
+		private readonly bool vVertMode;
+
 
 		////////////////////////////////////////////////////////////////////////////////////////////////
 		/*--------------------------------------------------------------------------------------------*/
+		public WeaverTitanGraphQuery(bool pVertMode) {
+			vVertMode = pVertMode;
+		}
+
+		/*--------------------------------------------------------------------------------------------*/
 		public T ElasticIndex<T>(params IWeaverParamElastic<T>[] pParams)
 																	where T : IWeaverElement, new() {
-			var ei = new WeaverStepElasticIndex<T>(pParams);
+			var ei = new WeaverStepElasticIndex<T>(vVertMode, pParams);
 			Path.AddItem(ei);
 			return new T { Path = Path };
 		}

@@ -17,8 +17,15 @@ namespace Weaver.Titan.Graph {
 
 		////////////////////////////////////////////////////////////////////////////////////////////////
 		/*--------------------------------------------------------------------------------------------*/
-		public IWeaverTitanGraphQuery Query() {
-			var v = new WeaverTitanGraphQuery();
+		public IWeaverTitanGraphQuery QueryV() {
+			var v = new WeaverTitanGraphQuery(true);
+			Path.AddItem(v);
+			return v;
+		}
+		
+		/*--------------------------------------------------------------------------------------------*/
+		public IWeaverTitanGraphQuery QueryE() {
+			var v = new WeaverTitanGraphQuery(false);
 			Path.AddItem(v);
 			return v;
 		}

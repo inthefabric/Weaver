@@ -33,14 +33,16 @@ namespace Weaver.Test.WeavTitan.Steps {
 		/*--------------------------------------------------------------------------------------------*/
 		[Test]
 		public void BuildParameterizedStringFail() {
-			var se = new WeaverStepElasticIndex<Person>();
+			var se = new WeaverStepElasticIndex<Person>(true);
 			WeaverTestUtil.CheckThrows<WeaverStepException>(true, () => se.BuildParameterizedString());
 		}
 		
 		/*--------------------------------------------------------------------------------------------*/
-		[TestCase(1)]
-		[TestCase(4)]
-		public void BuildParameterizedString(int pCount) {
+		[TestCase(true, 1, "vertices")]
+		[TestCase(true, 4, "vertices")]
+		[TestCase(false, 1, "edges")]
+		[TestCase(false, 4, "edges")]
+		public void BuildParameterizedString(bool pVertMode, int pCount, string pEnd) {
 			var list = new IWeaverParamElastic<Person>[pCount];
 			string expect = "";
 
@@ -55,9 +57,10 @@ namespace Weaver.Test.WeavTitan.Steps {
 				expect += (i == 0 ? "" : ".")+"has('"+TestSchema.Person_PersonId+"',"+ops+",_P"+i+")";
 			}
 
-			var ei = new WeaverStepElasticIndex<Person>(list);
+			var ei = new WeaverStepElasticIndex<Person>(pVertMode, list);
 			ei.Path = vMockPath.Object;
 
+			expect += "."+pEnd+"()";
 			Assert.AreEqual(expect, ei.BuildParameterizedString(), "Incorrect result.");
 		}
 

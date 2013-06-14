@@ -28,7 +28,7 @@ namespace Weaver.Test.WeavTitan.Graph {
 			vMockPath = new Mock<IWeaverPath>();
 			vMockPath.SetupGet(x => x.Query).Returns(mockQuery.Object);
 
-			vQuery = new WeaverTitanGraphQuery();
+			vQuery = new WeaverTitanGraphQuery(true);
 			vQuery.Path = vMockPath.Object;
 		}
 
@@ -61,7 +61,7 @@ namespace Weaver.Test.WeavTitan.Graph {
 		[Category("Integration")]
 		public void ElasticIndexInteg() {
 			IWeaverQuery q = WeavInst.TitanGraph()
-				.Query().ElasticIndex(
+				.QueryV().ElasticIndex(
 					new WeaverParamElastic<Person>(x => x.PersonId, WeaverParamElasticOp.LessThan, 99),
 					new WeaverParamElastic<Person>(x => x.Age, WeaverParamElasticOp.GreaterThan, 18)
 				)
@@ -71,7 +71,8 @@ namespace Weaver.Test.WeavTitan.Graph {
 				".has('"+TestSchema.Person_PersonId+"',"+
 					"com.tinkerpop.blueprints.Query.Compare.LESS_THAN,_P0)"+
 				".has('"+TestSchema.Person_Age+"',"+
-					"com.tinkerpop.blueprints.Query.Compare.GREATER_THAN,_P1);";
+					"com.tinkerpop.blueprints.Query.Compare.GREATER_THAN,_P1)"+
+				".vertices();";
 
 			Assert.AreEqual(expect, q.Script, "Incorrect script.");
 		}

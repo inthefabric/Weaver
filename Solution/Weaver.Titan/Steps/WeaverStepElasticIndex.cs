@@ -10,12 +10,14 @@ namespace Weaver.Titan.Steps {
 	/*================================================================================================*/
 	public class WeaverStepElasticIndex<T> : WeaverStep where T : IWeaverElement {
 
+		private readonly bool vVertMode;
 		private readonly IWeaverParamElastic<T>[] vParams;
 
 
 		////////////////////////////////////////////////////////////////////////////////////////////////
 		/*--------------------------------------------------------------------------------------------*/
-		public WeaverStepElasticIndex(params IWeaverParamElastic<T>[] pParams) {
+		public WeaverStepElasticIndex(bool pVertMode, params IWeaverParamElastic<T>[] pParams) {
+			vVertMode = pVertMode;
 			vParams = pParams;
 		}
 
@@ -38,7 +40,7 @@ namespace Weaver.Titan.Steps {
 				);
 			}
 
-			return sb.ToString();
+			return sb+"."+(vVertMode ? "vertices" : "edges")+"()";
 		}
 
 	}
