@@ -23,6 +23,10 @@ namespace Weaver.Core.Elements {
 		Type OutVertexType { get; }
 		Type InVertexType { get; }
 
+		/*--------------------------------------------------------------------------------------------*/
+		bool IsValidOutVertexType(Type pType);
+		bool IsValidInVertexType(Type pType);
+
 	}
 
 

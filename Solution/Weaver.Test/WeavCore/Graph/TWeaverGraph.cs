@@ -1,7 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Moq;
 using NUnit.Framework;
 using Weaver.Core;
+using Weaver.Core.Elements;
 using Weaver.Core.Exceptions;
 using Weaver.Core.Graph;
 using Weaver.Core.Path;
@@ -204,13 +206,19 @@ namespace Weaver.Test.WeavCore.Graph {
 		[TestCase(false)]
 		public void AddEdgeVarInvalidVarType(bool pBadOut) {
 			var mockOutVar = new Mock<IWeaverVarAlias>();
-			mockOutVar.SetupGet(x => x.VarType).Returns(pBadOut ? typeof(Root) : typeof(Person));
+			mockOutVar.SetupGet(x => x.VarType).Returns(typeof(Person));
 			
 			var mockInVar = new Mock<IWeaverVarAlias>();
-			mockInVar.SetupGet(x => x.VarType).Returns(pBadOut ? typeof(Candy) : typeof(Root));
+			mockInVar.SetupGet(x => x.VarType).Returns(typeof(Person));
+
+			var mockEdge = new Mock<IWeaverEdge>();
+			mockEdge.SetupGet(x => x.OutVertexType).Returns(typeof(Person));
+			mockEdge.SetupGet(x => x.InVertexType).Returns(typeof(Person));
+			mockEdge.Setup(x => x.IsValidOutVertexType(It.IsAny<Type>())).Returns(!pBadOut);
+			mockEdge.Setup(x => x.IsValidInVertexType(It.IsAny<Type>())).Returns(pBadOut);
 			
 			var ex = WeaverTestUtil.CheckThrows<WeaverException>(true, () =>
-				vGraph.AddEdge(mockOutVar.Object, new PersonLikesCandy(), mockInVar.Object)
+				vGraph.AddEdge(mockOutVar.Object, mockEdge.Object, mockInVar.Object)
 			);
 
 			Assert.AreNotEqual(-1, ex.Message.IndexOf(pBadOut ? " Out " : " In "),

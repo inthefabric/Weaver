@@ -58,12 +58,12 @@ namespace Weaver.Core.Graph {
 		/*--------------------------------------------------------------------------------------------*/
 		public IWeaverQuery AddEdge<TEdge>(IWeaverVarAlias pOutVertexVar, TEdge pEdge,
 											IWeaverVarAlias pInVertexVar) where TEdge : IWeaverEdge {
-			if ( !pEdge.OutVertexType.IsAssignableFrom(pOutVertexVar.VarType) ) {
+			if ( !pEdge.IsValidOutVertexType(pOutVertexVar.VarType) ) {
 				throw new WeaverException("Invalid Out VarType: '"+pOutVertexVar.VarType.Name+
 					"', expected '"+pEdge.OutVertexType.Name+"'.");
 			}
 
-			if ( !pEdge.InVertexType.IsAssignableFrom(pInVertexVar.VarType) ) {
+			if ( !pEdge.IsValidInVertexType(pInVertexVar.VarType) ) {
 				throw new WeaverException("Invalid In VarType: '"+pInVertexVar.VarType.Name+
 					"', expected '"+pEdge.InVertexType.Name+"'.");
 			}

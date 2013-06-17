@@ -98,6 +98,18 @@ namespace Weaver.Core.Elements {
 		public Type InVertexType { get { return typeof(TIn); } }
 
 		/*--------------------------------------------------------------------------------------------*/
+		public virtual bool IsValidOutVertexType(Type pType) {
+			return OutVertexType.IsAssignableFrom(pType);
+		}
+
+		/*--------------------------------------------------------------------------------------------*/
+		public virtual bool IsValidInVertexType(Type pType) {
+			return InVertexType.IsAssignableFrom(pType);
+		}
+
+
+		////////////////////////////////////////////////////////////////////////////////////////////////
+		/*--------------------------------------------------------------------------------------------*/
 		public IWeaverEdgeType EdgeType {
 			get {
 				return new TType();

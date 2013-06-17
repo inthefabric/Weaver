@@ -1,8 +1,10 @@
-﻿using Moq;
+﻿using System;
+using Moq;
 using NUnit.Framework;
 using Weaver.Core.Elements;
 using Weaver.Core.Exceptions;
 using Weaver.Core.Path;
+using Weaver.Core.Query;
 using Weaver.Test.Common.EdgeTypes;
 using Weaver.Test.Common.Edges;
 using Weaver.Test.Common.Schema;
@@ -97,6 +99,26 @@ namespace Weaver.Test.WeavCore.Elements {
 			Assert.AreEqual(typeof(Candy), r.InVertexType, "Incorrect ToVertexType.");
 		}
 
+		/*--------------------------------------------------------------------------------------------*/
+		[TestCase(true)]
+		[TestCase(false)]
+		public void IsValidOutVertexType(bool pValid) {
+			Type t = (pValid ? typeof(Person) : typeof(Root));
+			var plc = new PersonLikesCandy();
+			Assert.AreEqual(pValid, plc.IsValidOutVertexType(t), "Incorrect result.");
+		}
+
+		/*--------------------------------------------------------------------------------------------*/
+		[TestCase(true)]
+		[TestCase(false)]
+		public void IsValidInVertexType(bool pValid) {
+			Type t = (pValid ? typeof(Candy) : typeof(Person));
+			var plc = new PersonLikesCandy();
+			Assert.AreEqual(pValid, plc.IsValidInVertexType(t), "Incorrect result.");
+		}
+
+
+		////////////////////////////////////////////////////////////////////////////////////////////////
 		/*--------------------------------------------------------------------------------------------*/
 		[Test]
 		public void EdgeType() {
