@@ -16,6 +16,18 @@ namespace Weaver.Test.Common.Edges {
 		[WeaverItemProperty]
 		public string Notes { get; set; }
 
+		
+		////////////////////////////////////////////////////////////////////////////////////////////////
+		/*--------------------------------------------------------------------------------------------*/
+		protected override Person BuildOutVertex () {
+			return new Person();
+		}
+		
+		/*--------------------------------------------------------------------------------------------*/
+		protected override Candy BuildInVertex () {
+			return new Candy();
+		}
+		
 	}
 
 }

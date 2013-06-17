@@ -23,9 +23,9 @@ namespace Weaver.Core.Elements {
 	public abstract class WeaverEdge<TEdge, TOut, TType, TIn> : WeaverElement<TEdge>,
 																	IWeaverEdge<TEdge, TOut, TIn>
 																	where TEdge : class, IWeaverEdge
-																	where TOut : IWeaverVertex, new()
+																	where TOut : IWeaverVertex
 																	where TType : IWeaverEdgeType, new()
-																	where TIn : IWeaverVertex, new() {
+																	where TIn : IWeaverVertex {
 
 		public bool IsFromManyVertices { get; private set; }
 		public bool IsToManyVertices { get; private set; }
@@ -78,7 +78,9 @@ namespace Weaver.Core.Elements {
 		/*--------------------------------------------------------------------------------------------*/
 		public TOut OutVertex {
 			get {
-				var n = new TOut { IsFromVertex = true, ExpectOneVertex = !IsFromManyVertices };
+				TOut n = BuildOutVertex();
+				n.IsFromVertex = true;
+				n.ExpectOneVertex = !IsFromManyVertices;
 				Path.AddItem(n);
 				return n;
 			}
@@ -87,11 +89,17 @@ namespace Weaver.Core.Elements {
 		/*--------------------------------------------------------------------------------------------*/
 		public TIn InVertex {
 			get {
-				var n = new TIn { IsFromVertex = false, ExpectOneVertex = !IsToManyVertices };
+				var n = BuildInVertex();
+				n.IsFromVertex = false;
+				n.ExpectOneVertex = !IsFromManyVertices;
 				Path.AddItem(n);
 				return n;
 			}
 		}
+		
+		/*--------------------------------------------------------------------------------------------*/
+		protected abstract TOut BuildOutVertex();
+		protected abstract TIn BuildInVertex();
 
 		/*--------------------------------------------------------------------------------------------*/
 		public Type OutVertexType { get { return typeof(TOut); } }
