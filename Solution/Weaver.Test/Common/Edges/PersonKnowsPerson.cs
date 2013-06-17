@@ -12,18 +12,6 @@ namespace Weaver.Test.Common.Edges {
 
 		[WeaverItemProperty]
 		public float Amount { get; set; }
-		
-		
-		////////////////////////////////////////////////////////////////////////////////////////////////
-		/*--------------------------------------------------------------------------------------------*/
-		protected override Person BuildOutVertex () {
-			return new Person();
-		}
-		
-		/*--------------------------------------------------------------------------------------------*/
-		protected override Person BuildInVertex () {
-			return new Person();
-		}
 
 	}
 
