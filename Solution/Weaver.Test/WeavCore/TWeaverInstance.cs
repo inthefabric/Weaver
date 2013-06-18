@@ -3,6 +3,7 @@ using Moq;
 using NUnit.Framework;
 using Weaver.Core;
 using Weaver.Core.Graph;
+using Weaver.Core.Pipe;
 using Weaver.Core.Query;
 using Weaver.Core.Schema;
 using Weaver.Core.Steps;

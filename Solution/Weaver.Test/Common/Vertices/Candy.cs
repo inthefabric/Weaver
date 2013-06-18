@@ -4,7 +4,7 @@ using Weaver.Test.Common.Edges;
 namespace Weaver.Test.Common.Vertices {
 
 	/*================================================================================================*/
-	public class Candy : TestVertex<Candy> {
+	public class Candy : TestVertex {
 
 		[WeaverItemProperty]
 		public int CandyId { get; set; }

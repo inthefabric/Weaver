@@ -5,7 +5,7 @@ using Weaver.Test.Common.Vertices;
 namespace Weaver.Test.Common.Edges {
 
 	/*================================================================================================*/
-	public class RootHasCandy : WeaverEdge<RootHasCandy, Root, Has, Candy> {
+	public class RootHasCandy : WeaverEdge<Root, Has, Candy> {
 		
 
 		////////////////////////////////////////////////////////////////////////////////////////////////

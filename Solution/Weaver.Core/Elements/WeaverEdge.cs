@@ -20,9 +20,7 @@ namespace Weaver.Core.Elements {
 
 
 	/*================================================================================================*/
-	public abstract class WeaverEdge<TEdge, TOut, TType, TIn> : WeaverElement<TEdge>,
-																	IWeaverEdge<TEdge, TOut, TIn>
-																	where TEdge : class, IWeaverEdge
+	public abstract class WeaverEdge<TOut, TType, TIn> : WeaverElement, IWeaverEdge<TOut, TIn>
 																	where TOut : IWeaverVertex, new()
 																	where TType : IWeaverEdgeType, new()
 																	where TIn : IWeaverVertex, new() {

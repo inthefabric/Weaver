@@ -31,16 +31,8 @@ namespace Weaver.Core.Elements {
 
 
 	/*================================================================================================*/
-	public interface IWeaverEdge<T> : IWeaverEdge, IWeaverElement<T> where T : class, IWeaverEdge {
-
-	}
-	
-
-	/*================================================================================================*/
-	public interface IWeaverEdge<TEdge, out TOut, out TIn> : IWeaverEdge<TEdge>
-																		where TEdge : class, IWeaverEdge
-																		where TOut : IWeaverVertex
-																		where TIn : IWeaverVertex {
+	public interface IWeaverEdge<out TOut, out TIn> : IWeaverEdge
+												where TOut : IWeaverVertex where TIn : IWeaverVertex {
 
 
 		////////////////////////////////////////////////////////////////////////////////////////////////

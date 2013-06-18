@@ -2,6 +2,7 @@
 using Moq;
 using NUnit.Framework;
 using Weaver.Core.Exceptions;
+using Weaver.Core.Pipe;
 using Weaver.Core.Query;
 using Weaver.Core.Steps;
 using Weaver.Test.Common.Schema;

@@ -9,10 +9,4 @@
 
 	}
 
-
-	/*================================================================================================*/
-	public interface IWeaverVertex<T> : IWeaverVertex, IWeaverElement<T> where T : class, IWeaverVertex{
-
-	}
-
 }

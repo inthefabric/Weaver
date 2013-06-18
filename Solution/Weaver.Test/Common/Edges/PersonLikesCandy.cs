@@ -5,7 +5,7 @@ using Weaver.Test.Common.Vertices;
 namespace Weaver.Test.Common.Edges {
 
 	/*================================================================================================*/
-	public class PersonLikesCandy : WeaverEdge<PersonLikesCandy, Person, Likes, Candy> {
+	public class PersonLikesCandy : WeaverEdge<Person, Likes, Candy> {
 
 		[WeaverItemProperty]
 		public int TimesEaten { get; set; }

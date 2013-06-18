@@ -1,6 +1,5 @@
 ﻿using Moq;
 using NUnit.Framework;
-using Weaver.Core.Exceptions;
 using Weaver.Core.Path;
 using Weaver.Core.Pipe;
 using Weaver.Core.Query;
@@ -8,7 +7,6 @@ using Weaver.Core.Steps;
 using Weaver.Core.Steps.Statements;
 using Weaver.Test.Common;
 using Weaver.Test.Common.Vertices;
-using Weaver.Test.Utils;
 
 namespace Weaver.Test.WeavCore.Pipe {
 
@@ -63,13 +61,6 @@ namespace Weaver.Test.WeavCore.Pipe {
 
 
 		////////////////////////////////////////////////////////////////////////////////////////////////
-		/*--------------------------------------------------------------------------------------------*/
-		[Test]
-		public void SelfError() {
-			var badSelf = new BadSelf();
-			WeaverTestUtil.CheckThrows<WeaverPathException>(true, () => badSelf.Dedup());
-		}
-		
 		/*--------------------------------------------------------------------------------------------*/
 		[Test]
 		public void As() {
@@ -247,7 +238,7 @@ namespace Weaver.Test.WeavCore.Pipe {
 
 
 	/*================================================================================================*/
-	public class BadSelf : TestVertex<Candy> {
+	public class BadSelf : TestVertex {
 		
 
 		////////////////////////////////////////////////////////////////////////////////////////////////

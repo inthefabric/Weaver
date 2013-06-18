@@ -4,7 +4,7 @@ using Weaver.Test.Common.Edges;
 namespace Weaver.Test.Common.Vertices {
 
 	/*================================================================================================*/
-	public class Root : TestVertex<Root> {
+	public class Root : TestVertex {
 
 
 		////////////////////////////////////////////////////////////////////////////////////////////////

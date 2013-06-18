@@ -1,8 +1,7 @@
 ﻿namespace Weaver.Core.Elements {
 
 	/*================================================================================================*/
-	public abstract class WeaverVertex<T> : WeaverElement<T>, IWeaverVertex<T>
-																		where T : class, IWeaverVertex {
+	public abstract class WeaverVertex : WeaverElement, IWeaverVertex {
 
 		public virtual bool IsFromVertex { get; set; }
 		public virtual bool ExpectOneVertex { get; set; }

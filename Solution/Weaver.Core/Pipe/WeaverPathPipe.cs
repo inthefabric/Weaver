@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Linq.Expressions;
 using Weaver.Core.Elements;
-using Weaver.Core.Exceptions;
 using Weaver.Core.Path;
 using Weaver.Core.Query;
 using Weaver.Core.Steps;
@@ -45,128 +44,118 @@ namespace Weaver.Core.Pipe {
 
 
 	/*================================================================================================*/
-	public abstract class WeaverPathPipe<T> : WeaverPathPipe, IWeaverPathPipe<T>
-																	where T : class, IWeaverElement {
-
-		
-		////////////////////////////////////////////////////////////////////////////////////////////////
-		/*--------------------------------------------------------------------------------------------*/
-		protected T Self {
-			get {
-				T self = (this as T);
-
-				if ( self == null ) {
-					throw new WeaverPathException(Path, "Invalid type for path item "+PathIndex+": "+
-						GetType().Name+". Expected type: "+typeof(T)+".");
-				}
-
-				return self;
-			}
-		}
+	public static class WeaverPathPipeExt {
 
 
 		////////////////////////////////////////////////////////////////////////////////////////////////
 		/*--------------------------------------------------------------------------------------------*/
-		public T As(out IWeaverStepAs<T> pAlias) {
-			pAlias = new WeaverStepAs<T>(Self);
-			Path.AddItem(pAlias);
-			return Self;
+		public static T As<T>(this T pElem, out IWeaverStepAs<T> pAlias) where T : IWeaverElement {
+			pAlias = new WeaverStepAs<T>(pElem);
+			pElem.Path.AddItem(pAlias);
+			return pElem;
 		}
 
 		/*--------------------------------------------------------------------------------------------*/
-		public TBack Back<TBack>(IWeaverStepAs<TBack> pAlias) where TBack : IWeaverElement {
+		public static TBack Back<T, TBack>(this T pElem, IWeaverStepAs<TBack> pAlias)
+												where T : IWeaverElement where TBack : IWeaverElement {
 			var f = new WeaverStepBack<TBack>(pAlias);
-			Path.AddItem(f);
+			pElem.Path.AddItem(f);
 			return pAlias.Item;
 		}
 
 		/*--------------------------------------------------------------------------------------------*/
-		public T Has(Expression<Func<T, object>> pProperty, WeaverStepHasOp pOperation, object pValue) {
+		public static T Has<T>(this T pElem, Expression<Func<T, object>> pProperty, 
+								WeaverStepHasOp pOperation, object pValue) where T : IWeaverElement {
 			var f = new WeaverStepHas<T>(pProperty, WeaverStepHasMode.Has, pOperation, pValue);
-			Path.AddItem(f);
-			return Self;
+			pElem.Path.AddItem(f);
+			return pElem;
 		}
 
 		/*--------------------------------------------------------------------------------------------*/
-		public T Has(Expression<Func<T, object>> pProperty) {
+		public static T Has<T>(this T pElem, Expression<Func<T, object>> pProperty) 
+																			where T : IWeaverElement {
 			var r = new WeaverStepHas<T>(pProperty, WeaverStepHasMode.Has);
-			Path.AddItem(r);
-			return Self;
+			pElem.Path.AddItem(r);
+			return pElem;
 		}
 
 		/*--------------------------------------------------------------------------------------------*/
-		public T HasNot(Expression<Func<T, object>> pProperty, WeaverStepHasOp pOperation,
-																						object pValue) {
+		public static T HasNot<T>(this T pElem, Expression<Func<T, object>> pProperty, 
+								WeaverStepHasOp pOperation, object pValue) where T : IWeaverElement {
 			var f = new WeaverStepHas<T>(pProperty, WeaverStepHasMode.HasNot, pOperation, pValue);
-			Path.AddItem(f);
-			return Self;
+			pElem.Path.AddItem(f);
+			return pElem;
 		}
 
 		/*--------------------------------------------------------------------------------------------*/
-		public T HasNot(Expression<Func<T, object>> pProperty) {
+		public static T HasNot<T>(this T pElem, Expression<Func<T, object>> pProperty) 
+																			where T : IWeaverElement {
 			var f = new WeaverStepHas<T>(pProperty, WeaverStepHasMode.HasNot);
-			Path.AddItem(f);
-			return Self;
+			pElem.Path.AddItem(f);
+			return pElem;
 		}
 
 		/*--------------------------------------------------------------------------------------------*/
-		public T SideEffect(params IWeaverStatement<T>[] pStatements) {
+		public static T SideEffect<T>(this T pElem, params IWeaverStatement<T>[] pStatements)
+																			where T : IWeaverElement {
 			var f = new WeaverStepSideEffect<T>(pStatements);
-			Path.AddItem(f);
-			return Self;
+			pElem.Path.AddItem(f);
+			return pElem;
 		}
 
 		/*--------------------------------------------------------------------------------------------*/
-		public IWeaverPathPipeEnd Property(Expression<Func<T, object>> pProperty) {
+		public static IWeaverPathPipeEnd Property<T>(this T pElem, 
+									Expression<Func<T, object>> pProperty) where T : IWeaverElement {
 			var f = new WeaverStepProp<T>(pProperty);
-			Path.AddItem(f);
+			pElem.Path.AddItem(f);
 			return f;
 		}
 
 
 		////////////////////////////////////////////////////////////////////////////////////////////////
 		/*--------------------------------------------------------------------------------------------*/
-		public T Next(int? pCount=null) {
-			return CustomStep("next("+(pCount == null ? "" : pCount+"")+")");
+		public static T Next<T>(this T pElem, int? pCount=null) where T : IWeaverElement {
+			return CustomStep(pElem, "next("+(pCount == null ? "" : pCount+"")+")");
 		}
 
 		/*--------------------------------------------------------------------------------------------*/
-		public T Aggregate(IWeaverVarAlias pVar) {
-			return CustomStep("aggregate("+pVar.Name+")");
+		public static T Aggregate<T>(this T pElem, IWeaverVarAlias pVar) where T : IWeaverElement {
+			return CustomStep(pElem, "aggregate("+pVar.Name+")");
 		}
 
 		/*--------------------------------------------------------------------------------------------*/
-		public T Retain(IWeaverVarAlias pVar) {
-			return CustomStep("retain("+pVar.Name+")");
+		public static T Retain<T>(this T pElem, IWeaverVarAlias pVar) where T : IWeaverElement {
+			return CustomStep(pElem, "retain("+pVar.Name+")");
 		}
 
 		/*--------------------------------------------------------------------------------------------*/
-		public T Except(IWeaverVarAlias pVar) {
-			return CustomStep("except("+pVar.Name+")");
+		public static T Except<T>(this T pElem, IWeaverVarAlias pVar) where T : IWeaverElement {
+			return CustomStep(pElem, "except("+pVar.Name+")");
 		}
 
 		/*--------------------------------------------------------------------------------------------*/
-		public T Dedup() {
-			return CustomStep("dedup");
+		public static T Dedup<T>(this T pElem) where T : IWeaverElement {
+			return CustomStep(pElem, "dedup");
 		}
 
 		/*--------------------------------------------------------------------------------------------*/
-		public T Limit(int pStartIndex, int pEndIndex) {
-			return CustomStep("["+pStartIndex+".."+pEndIndex+"]", true);
+		public static T Limit<T>(this T pElem, int pStartIndex, int pEndIndex) where T : IWeaverElement{
+			return CustomStep(pElem, "["+pStartIndex+".."+pEndIndex+"]", true);
 		}
 
 		/*--------------------------------------------------------------------------------------------*/
-		public T AtIndex(int pIndex) {
-			return CustomStep("["+pIndex+"]", true);
+		public static T AtIndex<T>(this T pElem, int pIndex) where T : IWeaverElement {
+			return CustomStep(pElem, "["+pIndex+"]", true);
 		}
 
 
 		////////////////////////////////////////////////////////////////////////////////////////////////
 		/*--------------------------------------------------------------------------------------------*/
-		public T CustomStep(string pScript, bool pSkipDotPrefix=false) {
+		public static T CustomStep<T>(this T pElem, string pScript, bool pSkipDotPrefix=false)
+																			where T : IWeaverElement {
 			var f = new WeaverStepCustom(pScript, pSkipDotPrefix);
-			Path.AddItem(f);
-			return Self;
+			pElem.Path.AddItem(f);
+			return pElem;
 		}
 
 	}
