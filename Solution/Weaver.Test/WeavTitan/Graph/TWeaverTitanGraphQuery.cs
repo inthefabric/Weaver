@@ -45,6 +45,15 @@ namespace Weaver.Test.WeavTitan.Graph {
 			Assert.NotNull(p, "Result should be filled.");
 			vMockPath.Verify(x => x.AddItem(It.IsAny<WeaverStepElasticIndex<Person>>()), Times.Once());
 		}
+		
+		/*--------------------------------------------------------------------------------------------*/
+		[Test]
+		public void ElasticIndexText() {
+			Person p = vQuery.ElasticIndex<Person>(x => x.Name, "Zach");
+
+			Assert.NotNull(p, "Result should be filled.");
+			vMockPath.Verify(x => x.AddItem(It.IsAny<WeaverStepElasticIndex<Person>>()), Times.Once());
+		}
 
 
 		////////////////////////////////////////////////////////////////////////////////////////////////

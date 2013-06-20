@@ -1,4 +1,7 @@
-﻿using System.Text;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq.Expressions;
+using System.Text;
 using Weaver.Core.Elements;
 using Weaver.Core.Exceptions;
 using Weaver.Core.Query;
@@ -20,6 +23,23 @@ namespace Weaver.Titan.Steps {
 			vVertMode = pVertMode;
 			vParams = pParams;
 		}
+
+		/*--------------------------------------------------------------------------------------------*/
+		public WeaverStepElasticIndex(bool pVertMode, Expression<Func<T, object>> pProperty,
+																		string pSpaceDelimitedText) {
+			vVertMode = pVertMode;
+
+			string[] tokens = pSpaceDelimitedText.Trim().Split(' ');
+			var list = new List<IWeaverParamElastic<T>>();
+
+			foreach ( string t in tokens ) {
+				list.Add(new WeaverParamElastic<T>(pProperty, WeaverParamElasticOp.Contains, t));
+			}
+
+			vParams = list.ToArray();
+		}
+
+		
 
 		/*--------------------------------------------------------------------------------------------*/
 		public override string BuildParameterizedString() {

@@ -64,6 +64,27 @@ namespace Weaver.Test.WeavTitan.Steps {
 			Assert.AreEqual(expect, ei.BuildParameterizedString(), "Incorrect result.");
 		}
 
+		/*--------------------------------------------------------------------------------------------*/
+		[TestCase(true, "vertices", "", new [] { "" })]
+		[TestCase(false, "edges", "", new [] { "" })]
+		[TestCase(true, "vertices", "zach", new[] { "zach" })]
+		[TestCase(false, "edges", "Zach Testing Kinstner", new[] { "Zach", "Testing", "Kinstner" })]
+		public void BuildParameterizedStringText(bool pVertMode, string pEnd, string pText, 
+																					string[] pExpect) {
+			string expect = "";
+
+			for ( int i = 0 ; i < pExpect.Length ; ++i ) {
+				expect += (i == 0 ? "" : ".")+"has('"+TestSchema.Vertex_Name+"',"+
+					WeaverParamElastic.ContainsScript+",_P"+i+")";
+			}
+
+			var ei = new WeaverStepElasticIndex<Person>(pVertMode, x => x.Name, pText);
+			ei.Path = vMockPath.Object;
+
+			expect += "."+pEnd+"()";
+			Assert.AreEqual(expect, ei.BuildParameterizedString(), "Incorrect result.");
+		}
+
 	}
 
 }
