@@ -35,6 +35,9 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\..\Global\GlobalAssemblyVersion.cs">
+      <Link>Properties\GlobalAssemblyVersion.cs</Link>
+    </Compile>
     <Compile Include="Graph\IWeaverTitanGraphQuery.cs" />
     <Compile Include="Graph\IWeaverTitanGraph.cs" />
     <Compile Include="Graph\WeaverTitanGraphQuery.cs" />

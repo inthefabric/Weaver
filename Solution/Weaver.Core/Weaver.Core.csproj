@@ -35,6 +35,9 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\..\Global\GlobalAssemblyVersion.cs">
+      <Link>Properties\GlobalAssemblyVersion.cs</Link>
+    </Compile>
     <Compile Include="Exceptions\WeaverException.cs" />
     <Compile Include="Exceptions\WeaverStatementException.cs" />
     <Compile Include="Exceptions\WeaverStepException.cs" />
