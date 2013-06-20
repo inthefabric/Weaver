@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Weaver.Core.Elements;
 using Weaver.Core.Exceptions;
 using Weaver.Core.Graph;
@@ -11,7 +12,6 @@ using Weaver.Titan.Schema;
 namespace Weaver.Titan.Graph {
 	
 	/*================================================================================================*/
-	//TEST: WeaverTitanGraph
 	public class WeaverTitanGraph : WeaverGraph, IWeaverTitanGraph {
 
 
@@ -42,8 +42,8 @@ namespace Weaver.Titan.Graph {
 
 			q.FinalizeQuery(
 				"com.thinkaurelius.titan.core.TypeGroup.of("+
-					Path.Query.AddParam(new WeaverQueryVal(pId))+","+
-					Path.Query.AddParam(new WeaverQueryVal(pVertex.DbName))+
+					q.AddParam(new WeaverQueryVal(pId))+","+
+					q.AddParam(new WeaverQueryVal(pVertex.DbName))+
 				")"
 			);
 
@@ -86,7 +86,8 @@ namespace Weaver.Titan.Graph {
 		}
 
 		/*--------------------------------------------------------------------------------------------*/
-		public IWeaverPathPipeEnd BuildEdgeLabel(WeaverEdgeSchema pEdge) {
+		public IWeaverPathPipeEnd BuildEdgeLabel(WeaverEdgeSchema pEdge, 
+										Func<WeaverTitanPropSchema, IWeaverVarAlias> pGetPropVarAlias) {
 			var ivc = pEdge.InVertexConn;
 			var ovc = pEdge.OutVertexConn;
 
@@ -94,17 +95,17 @@ namespace Weaver.Titan.Graph {
 			var sigs = new List<string>();
 
 			foreach ( WeaverTitanPropSchema p in pEdge.OutVertex.Props ) {
-				(p.HasTitanVertexCentricIndex(pEdge) ? keys : sigs).Add(p.DbName);
+				(p.HasTitanVertexCentricIndex(pEdge) ? keys : sigs).Add(pGetPropVarAlias(p).Name);
 			}
 
 			foreach ( WeaverTitanPropSchema p in pEdge.InVertex.Props  ) {
-				(p.HasTitanVertexCentricIndex(pEdge) ? keys : sigs).Add(p.DbName);
+				(p.HasTitanVertexCentricIndex(pEdge) ? keys : sigs).Add(pGetPropVarAlias(p).Name);
 			}
 
 			////
 
 			AddCustom("makeType()");
-			AddCustom("name('"+pEdge.DbName+"')");
+			AddCustom("name("+Path.Query.AddParam(new WeaverQueryVal(pEdge.DbName))+")");
 			
 			if ( keys.Count > 0 ) {
 				AddCustom("primaryKey("+string.Join(",", keys)+")");

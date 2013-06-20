@@ -1,4 +1,5 @@
-﻿using Weaver.Core.Graph;
+﻿using System;
+using Weaver.Core.Graph;
 using Weaver.Core.Pipe;
 using Weaver.Core.Query;
 using Weaver.Core.Schema;
@@ -31,7 +32,8 @@ namespace Weaver.Titan.Graph {
 																		IWeaverVarAlias pGroupVar=null);
 
 		/*--------------------------------------------------------------------------------------------*/
-		IWeaverPathPipeEnd BuildEdgeLabel(WeaverEdgeSchema pEdge);
+		IWeaverPathPipeEnd BuildEdgeLabel(WeaverEdgeSchema pEdge,
+										Func<WeaverTitanPropSchema, IWeaverVarAlias> pGetPropVarAlias);
 
 	}
 

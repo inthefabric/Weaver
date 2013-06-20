@@ -10,19 +10,19 @@ namespace Weaver.Titan.Graph {
 	/*================================================================================================*/
 	public class WeaverTitanGraphQuery : WeaverPathItem, IWeaverTitanGraphQuery {
 
-		private readonly bool vVertMode;
+		public bool VertMode { get; private set; }
 
 
 		////////////////////////////////////////////////////////////////////////////////////////////////
 		/*--------------------------------------------------------------------------------------------*/
 		public WeaverTitanGraphQuery(bool pVertMode) {
-			vVertMode = pVertMode;
+			VertMode = pVertMode;
 		}
 
 		/*--------------------------------------------------------------------------------------------*/
 		public T ElasticIndex<T>(params IWeaverParamElastic<T>[] pParams)
 																	where T : IWeaverElement, new() {
-			var ei = new WeaverStepElasticIndex<T>(vVertMode, pParams);
+			var ei = new WeaverStepElasticIndex<T>(VertMode, pParams);
 			Path.AddItem(ei);
 			return new T { Path = Path };
 		}
@@ -30,7 +30,7 @@ namespace Weaver.Titan.Graph {
 		/*--------------------------------------------------------------------------------------------*/
 		public T ElasticIndex<T>(Expression<Func<T, object>> pProperty, string pSpaceDelimitedText)
 																	where T : IWeaverElement, new() {
-			var ei = new WeaverStepElasticIndex<T>(vVertMode, pProperty, pSpaceDelimitedText);
+			var ei = new WeaverStepElasticIndex<T>(VertMode, pProperty, pSpaceDelimitedText);
 			Path.AddItem(ei);
 			return new T { Path = Path };
 		}

@@ -69,6 +69,7 @@
     <Compile Include="WeavCore\Steps\TWeaverStepAs.cs" />
     <Compile Include="WeavCore\Steps\TWeaverStepBack.cs" />
     <Compile Include="WeavCore\Steps\TWeaverStepCustom.cs" />
+    <Compile Include="WeavTitan\Graph\TWeaverTitanGraph.cs" />
     <Compile Include="WeavTitan\Schema\TWeaverTitanPropSchema.cs" />
     <Compile Include="WeavTitan\Steps\Parameters\TWeaverParamElastic.cs" />
     <Compile Include="WeavTitan\Steps\TWeaverStepElasticIndex.cs" />
