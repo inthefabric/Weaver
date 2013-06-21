@@ -10,7 +10,7 @@ namespace Weaver.Test.Common {
 
 		public Mock<IWeaverPath> MockPath { get; private set; }
 
-		[WeaverItemProperty]
+		[WeaverProperty("Val")]
 		public int Value { get; set; }
 
 		public IList<IWeaverPathItem> PathItems { get; private set; }

@@ -6,6 +6,7 @@ using Weaver.Core;
 using Weaver.Core.Exceptions;
 using Weaver.Core.Query;
 using Weaver.Core.Util;
+using Weaver.Test.Common;
 using Weaver.Test.Common.Edges;
 using Weaver.Test.Common.Schema;
 using Weaver.Test.Common.Vertices;
@@ -44,7 +45,7 @@ namespace Weaver.Test.WeavCore.Util {
 			Assert.True(pairMap.ContainsKey(TestSchema.Person_PersonId), "Missing PersonId key.");
 			Assert.True(pairMap.ContainsKey(TestSchema.Person_Age), "Missing Age key.");
 			Assert.True(pairMap.ContainsKey(TestSchema.Person_IsMale), "Missing IsMale key.");
-			Assert.AreEqual(pIncludeId, pairMap.ContainsKey("Id"), "Incorrect Id key.");
+			Assert.AreEqual(pIncludeId, pairMap.ContainsKey("id"), "Incorrect Id key.");
 			Assert.AreEqual((pName != null), pairMap.ContainsKey("Name"), "Incorrect Name key.");
 
 			Assert.AreEqual("_P0", pairMap[TestSchema.Person_PersonId], "Incorrect PersonId value.");
@@ -65,7 +66,7 @@ namespace Weaver.Test.WeavCore.Util {
 			}
 
 			if ( pIncludeId ) {
-				Assert.AreEqual("_P"+pi, pairMap["Id"], "Incorrect Id value.");
+				Assert.AreEqual("_P"+pi, pairMap["id"], "Incorrect Id value.");
 				expectParams.Add("_P"+pi, new WeaverQueryVal(p.Id));
 			}
 
@@ -118,7 +119,7 @@ namespace Weaver.Test.WeavCore.Util {
 		[Test]
 		public void PropNamePassLowerLabel() {
 			Expression<Func<PersonLikesCandy, object>> expr = (p => p.Label);
-			var cfg = new WeaverConfig(Schema.Vertices, Schema.Edges);
+			var cfg = new WeaverConfig(ConfigHelper.VertexTypes, ConfigHelper.EdgeTypes);
 			vPropExprResult = WeaverUtil.GetPropertyName(cfg, expr);
 
 			Assert.AreEqual("label", vPropExprResult, "Incorrect property name.");
@@ -167,8 +168,15 @@ namespace Weaver.Test.WeavCore.Util {
 		}
 
 		/*--------------------------------------------------------------------------------------------*/
+		[Test]
+		public void PropNameFailUnknown() {
+			vPropExpr = (p => p.InPersonKnows);
+			WeaverTestUtil.CheckThrows<WeaverException>(true, TryPropExpr);
+		}
+
+		/*--------------------------------------------------------------------------------------------*/
 		private void TryPropExpr() {
-			var cfg = new WeaverConfig(Schema.Vertices, Schema.Edges);
+			var cfg = new WeaverConfig(ConfigHelper.VertexTypes, ConfigHelper.EdgeTypes);
 			vPropExprResult = WeaverUtil.GetPropertyName(cfg, vPropExpr);
 		}
 

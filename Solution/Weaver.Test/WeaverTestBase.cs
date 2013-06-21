@@ -1,5 +1,6 @@
 ﻿using NUnit.Framework;
 using Weaver.Core;
+using Weaver.Test.Common;
 using Weaver.Test.Common.Schema;
 
 namespace Weaver.Test {
@@ -16,7 +17,7 @@ namespace Weaver.Test {
 		[SetUp]
 		protected virtual void SetUp() {
 			Schema = new TestSchema();
-			WeavInst = new WeaverInstance(Schema.Vertices, Schema.Edges);
+			WeavInst = new WeaverInstance(ConfigHelper.VertexTypes, ConfigHelper.EdgeTypes);
 		}
 
 		/*--------------------------------------------------------------------------------------------* /

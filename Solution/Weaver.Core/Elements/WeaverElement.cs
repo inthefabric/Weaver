@@ -5,7 +5,7 @@ namespace Weaver.Core.Elements {
 	/*================================================================================================*/
 	public abstract class WeaverElement : WeaverPathPipe, IWeaverElement {
 
-		[WeaverItemProperty]
+		[WeaverProperty("id")]
 		public string Id { get; set; }
 
 	}

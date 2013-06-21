@@ -1,21 +1,23 @@
 ﻿using Weaver.Core.Elements;
 using Weaver.Test.Common.Edges;
+using Weaver.Test.Common.Schema;
 
 namespace Weaver.Test.Common.Vertices {
 
 	/*================================================================================================*/
+	[WeaverVertex]
 	public class Person : TestVertex {
 
-		[WeaverItemProperty]
+		[WeaverProperty(TestSchema.Person_PersonId)]
 		public int PersonId { get; set; }
 
-		[WeaverItemProperty]
+		[WeaverProperty(TestSchema.Person_IsMale)]
 		public bool IsMale { get; set; }
 
-		[WeaverItemProperty]
+		[WeaverProperty(TestSchema.Person_Age)]
 		public float Age { get; set; }
 
-		[WeaverItemProperty]
+		[WeaverProperty(TestSchema.Person_Note)]
 		public string Note { get; set; }
 
 

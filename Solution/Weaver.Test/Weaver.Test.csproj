@@ -34,6 +34,7 @@
     <Compile Include="..\..\Global\GlobalAssemblyVersion.cs">
       <Link>Properties\GlobalAssemblyVersion.cs</Link>
     </Compile>
+    <Compile Include="Common\ConfigHelper.cs" />
     <Compile Include="Common\TestElement.cs" />
     <Compile Include="Common\Vertices\Candy.cs" />
     <Compile Include="Common\Vertices\Person.cs" />

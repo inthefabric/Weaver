@@ -1,11 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Moq;
 using NUnit.Framework;
 using Weaver.Core;
 using Weaver.Core.Graph;
 using Weaver.Core.Pipe;
 using Weaver.Core.Query;
-using Weaver.Core.Schema;
 using Weaver.Core.Steps;
 using Weaver.Test.Common.Schema;
 using Weaver.Test.Common.Vertices;
@@ -22,20 +22,20 @@ namespace Weaver.Test.WeavCore {
 		/*--------------------------------------------------------------------------------------------*/
 		[Test]
 		public void New() {
-			var verts = new List<WeaverVertexSchema>();
-			var edges = new List<WeaverEdgeSchema>();
-			
+			var verts = new List<Type>();
+			var edges = new List<Type>();
+
 			var wi = new WeaverInstance(verts, edges);
 
 			Assert.NotNull(wi.Config, "Config should be filled.");
-			Assert.AreEqual(verts, wi.Config.VertexSchemas, "Incorrect Vertex list.");
-			Assert.AreEqual(edges, wi.Config.EdgeSchemas, "Incorrect Edge list.");
+			Assert.AreEqual(verts, wi.Config.VertexTypes, "Incorrect Vertex list.");
+			Assert.AreEqual(edges, wi.Config.EdgeTypes, "Incorrect Edge list.");
 		}
 		
 		/*--------------------------------------------------------------------------------------------*/
 		[Test]
 		public void Graph() {
-			var wi = new WeaverInstance(new List<WeaverVertexSchema>(), new List<WeaverEdgeSchema>());
+			var wi = new WeaverInstance(new List<Type>(), new List<Type>());
 			WeaverGraph g = (WeaverGraph)wi.Graph;
 
 			Assert.NotNull(g, "Graph should be filled.");
@@ -55,7 +55,7 @@ namespace Weaver.Test.WeavCore {
 			var mockVar = new Mock<IWeaverVarAlias<Person>>();
 			mockVar.SetupGet(x => x.Name).Returns(name);
 
-			var wi = new WeaverInstance(new List<WeaverVertexSchema>(), new List<WeaverEdgeSchema>());
+			var wi = new WeaverInstance(new List<Type>(), new List<Type>());
 			Person p = wi.FromVar(mockVar.Object);
 
 			Assert.NotNull(p, "FromVar should be filled.");
@@ -105,8 +105,8 @@ namespace Weaver.Test.WeavCore {
 					".as('step5')"+
 				".inE('"+TestSchema.PersonKnowsPerson+"').outV"+
 					".has('"+TestSchema.Person_PersonId+"',Tokens.T.gt,_P1)"+
-					".has('Name',Tokens.T.neq,_P2)"+
-					".has('Name',Tokens.T.neq,_P3)"+
+					".has('"+TestSchema.Vertex_Name+"',Tokens.T.neq,_P2)"+
+					".has('"+TestSchema.Vertex_Name+"',Tokens.T.neq,_P3)"+
 					".back('step5')"+
 				".outE('"+TestSchema.PersonLikesCandy+"').inV"+
 					".property('"+TestSchema.Candy_Calories+"');";

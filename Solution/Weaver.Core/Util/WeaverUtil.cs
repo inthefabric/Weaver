@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Reflection;
 using Weaver.Core.Elements;
@@ -13,33 +14,56 @@ namespace Weaver.Core.Util {
 
 		////////////////////////////////////////////////////////////////////////////////////////////////
 		/*--------------------------------------------------------------------------------------------*/
-		public static string BuildPropList<TItem>(IWeaverConfig pConfig, IWeaverQuery pQuery,
-												TItem pItem, bool pIncludeId=false, int pStartParamI=0)
-																	where TItem : IWeaverElement {
-			string list = "";
-			int i = pStartParamI;
-			PropertyInfo[] props = pItem.GetType().GetProperties();
+		internal static T GetElementAttribute<T>(Type pType) where T : WeaverElementAttribute {
+			object[] atts = pType.GetCustomAttributes(typeof(T), false);
+			return (atts.Length == 0 ? null : (T)atts[0]);
+		}
+
+		/*--------------------------------------------------------------------------------------------*/
+		internal static IList<WeaverPropPair> GetElementPropertyAttributes(Type pType) {
+			PropertyInfo[] props = pType.GetProperties();
+			var list = new List<WeaverPropPair>();
 
 			foreach ( PropertyInfo prop in props ) {
-				object[] propAtts = prop.GetCustomAttributes(typeof(WeaverItemPropertyAttribute), true);
+				WeaverPropPair wpp = GetPropertyAttribute(prop);
 
-				if ( propAtts.Length == 0 ) {
+				if ( wpp != null ) {
+					list.Add(wpp);
+				}
+			}
+
+			return list;
+		}
+
+		/*--------------------------------------------------------------------------------------------*/
+		internal static WeaverPropPair GetPropertyAttribute(PropertyInfo pProp) {
+			object[] atts = pProp.GetCustomAttributes(typeof(WeaverPropertyAttribute), true);
+			return (atts.Length == 0 ? null : 
+				new WeaverPropPair((WeaverPropertyAttribute)atts[0], pProp));
+		}
+
+
+		////////////////////////////////////////////////////////////////////////////////////////////////
+		/*--------------------------------------------------------------------------------------------*/
+		public static string BuildPropList<T>(IWeaverConfig pConfig, IWeaverQuery pQuery, T pElem,
+								bool pIncludeId=false, int pStartParamI=0) where T : IWeaverElement {
+			string list = "";
+			int i = pStartParamI;
+			IList<WeaverPropPair> props = GetElementPropertyAttributes(typeof(T));
+
+			foreach ( WeaverPropPair wpp in props ) {
+				string dbName = wpp.Attrib.DbName;
+
+				if ( !pIncludeId && dbName == "id" ) {
 					continue;
 				}
 
-				if ( !pIncludeId && prop.Name == "Id" ) {
-					continue;
+				object val = wpp.Info.GetValue(pElem, null);
+
+				if ( val != null ) {
+					list += (i++ > 0 ? "," : "")+
+						dbName+":"+pQuery.AddParam(new WeaverQueryVal(val));
 				}
-
-				object val = prop.GetValue(pItem, null);
-
-				if ( val == null ) {
-					continue;
-				}
-
-				list += (i++ > 0 ? "," : "")+
-					pConfig.GetPropertyDbName<TItem>(prop.Name)+":"+
-					pQuery.AddParam(new WeaverQueryVal(val));
 			}
 
 			return list;
@@ -49,17 +73,18 @@ namespace Weaver.Core.Util {
 		////////////////////////////////////////////////////////////////////////////////////////////////
 		/*--------------------------------------------------------------------------------------------*/
 		public static string GetPropertyName<T>(IWeaverConfig pConfig, Expression<Func<T, object>> pExp)
-																		where T : IWeaverElement {
+																			where T : IWeaverElement {
 			MemberExpression me = GetMemberExpr(pExp);
 
 			if ( me != null ) {
-				string prop = (me).Member.Name;
+				PropertyInfo pi = (me.Member as PropertyInfo);
+				WeaverPropPair wpp = (pi == null ? null : GetPropertyAttribute(pi));
 
-				if ( prop == "Id" || prop == "Label" ) {
-					return prop.ToLower();
+				if ( wpp == null ) {
+					throw new WeaverException("Unknown property: "+me.Member.Name);
 				}
 
-				return pConfig.GetPropertyDbName<T>(prop);
+				return wpp.Attrib.DbName;
 			}
 
 			throw new WeaverException("Item property expression body was of type "+

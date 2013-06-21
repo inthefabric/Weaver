@@ -1,7 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using NUnit.Framework;
 using Weaver.Core;
-using Weaver.Core.Schema;
 using Weaver.Titan;
 using Weaver.Titan.Graph;
 
@@ -16,7 +16,7 @@ namespace Weaver.Test.WeavTitan {
 		/*--------------------------------------------------------------------------------------------*/
 		[Test]
 		public void TitanGraph() {
-			var wi = new WeaverInstance(new List<WeaverVertexSchema>(), new List<WeaverEdgeSchema>());
+			var wi = new WeaverInstance(new List<Type>(), new List<Type>());
 			WeaverTitanGraph g = (WeaverTitanGraph)wi.TitanGraph();
 
 			Assert.NotNull(g, "Graph should be filled.");

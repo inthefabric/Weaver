@@ -1,9 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Weaver.Core.Elements;
 using Weaver.Core.Graph;
 using Weaver.Core.Path;
 using Weaver.Core.Query;
-using Weaver.Core.Schema;
 using Weaver.Core.Steps;
 
 namespace Weaver.Core {
@@ -16,8 +16,8 @@ namespace Weaver.Core {
 
 		////////////////////////////////////////////////////////////////////////////////////////////////
 		/*--------------------------------------------------------------------------------------------*/
-		public WeaverInstance(IList<WeaverVertexSchema> pVertexs, IList<WeaverEdgeSchema> pEdges) {
-			Config = new WeaverConfig(pVertexs, pEdges);
+		public WeaverInstance(IList<Type> pVertexTypes, IList<Type> pEdgeTypes) {
+			Config = new WeaverConfig(pVertexTypes, pEdgeTypes);
 		}
 
 		/*--------------------------------------------------------------------------------------------*/

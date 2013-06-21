@@ -1,18 +1,20 @@
 ﻿using Weaver.Core.Elements;
 using Weaver.Test.Common.Edges;
+using Weaver.Test.Common.Schema;
 
 namespace Weaver.Test.Common.Vertices {
 
 	/*================================================================================================*/
+	[WeaverVertex]
 	public class Candy : TestVertex {
 
-		[WeaverItemProperty]
+		[WeaverProperty(TestSchema.Candy_CandyId)]
 		public int CandyId { get; set; }
 
-		[WeaverItemProperty]
+		[WeaverProperty(TestSchema.Candy_IsChocolate)]
 		public bool IsChocolate { get; set; }
 
-		[WeaverItemProperty]
+		[WeaverProperty(TestSchema.Candy_Calories)]
 		public int Calories { get; set; }
 
 

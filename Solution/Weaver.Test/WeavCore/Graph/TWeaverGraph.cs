@@ -8,6 +8,7 @@ using Weaver.Core.Exceptions;
 using Weaver.Core.Graph;
 using Weaver.Core.Path;
 using Weaver.Core.Query;
+using Weaver.Test.Common;
 using Weaver.Test.Common.Edges;
 using Weaver.Test.Common.Schema;
 using Weaver.Test.Common.Vertices;
@@ -30,7 +31,7 @@ namespace Weaver.Test.WeavCore.Graph {
 			base.SetUp();
 
 			var schema = new TestSchema();
-			var config = new WeaverConfig(schema.Vertices, schema.Edges);
+			var config = new WeaverConfig(ConfigHelper.VertexTypes, ConfigHelper.EdgeTypes);
 			var query = new WeaverQuery(); //should mock this, but it would be a pain
 
 			vGraph = new WeaverGraph();
@@ -156,13 +157,20 @@ namespace Weaver.Test.WeavCore.Graph {
 			Dictionary<string, string> pairMap = WeaverTestUtil.GetPropListDictionary(vals);
 
 			Assert.AreEqual(3, pairMap.Keys.Count, "Incorrect Key count.");
-			Assert.True(pairMap.ContainsKey(TestSchema.Plc_Enjoyment), "Missing Enjoyment key.");
-			Assert.True(pairMap.ContainsKey(TestSchema.Plc_TimesEaten), "Missing TimesEaten key.");
-			Assert.True(pairMap.ContainsKey(TestSchema.Plc_Notes), "Missing Notes key.");
 
-			Assert.AreEqual("_P3", pairMap[TestSchema.Plc_TimesEaten], "Incorrect TimesEaten value.");
-			Assert.AreEqual("_P4", pairMap[TestSchema.Plc_Enjoyment], "Incorrect Enjoyment value.");
-			Assert.AreEqual("_P5", pairMap[TestSchema.Plc_Notes], "Incorrect Notes value.");
+			Assert.True(pairMap.ContainsKey(TestSchema.PersonLikesCandy_TimesEaten),
+				"Missing TimesEaten key.");
+			Assert.True(pairMap.ContainsKey(TestSchema.PersonLikesCandy_Enjoyment),
+				"Missing Enjoyment key.");
+			Assert.True(pairMap.ContainsKey(TestSchema.PersonLikesCandy_Notes),
+				"Missing Notes key.");
+
+			Assert.AreEqual("_P3", pairMap[TestSchema.PersonLikesCandy_TimesEaten],
+				"Incorrect TimesEaten value.");
+			Assert.AreEqual("_P4", pairMap[TestSchema.PersonLikesCandy_Enjoyment],
+				"Incorrect Enjoyment value.");
+			Assert.AreEqual("_P5", pairMap[TestSchema.PersonLikesCandy_Notes],
+				"Incorrect Notes value.");
 
 			var expectParams = new Dictionary<string, IWeaverQueryVal>();
 			expectParams.Add("_P0", new WeaverQueryVal(person.Id));

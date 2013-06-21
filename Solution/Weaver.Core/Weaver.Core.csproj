@@ -38,6 +38,9 @@
     <Compile Include="..\..\Global\GlobalAssemblyVersion.cs">
       <Link>Properties\GlobalAssemblyVersion.cs</Link>
     </Compile>
+    <Compile Include="Elements\WeaverEdgeAttribute.cs" />
+    <Compile Include="Elements\WeaverElementAttribute.cs" />
+    <Compile Include="Elements\WeaverVertexAttribute.cs" />
     <Compile Include="Exceptions\WeaverException.cs" />
     <Compile Include="Exceptions\WeaverStatementException.cs" />
     <Compile Include="Exceptions\WeaverStepException.cs" />
@@ -71,7 +74,7 @@
     <Compile Include="Elements\IWeaverEdge.cs" />
     <Compile Include="Elements\IWeaverEdgeType.cs" />
     <Compile Include="Path\WeaverPathItem.cs" />
-    <Compile Include="Elements\WeaverItemPropertyAttribute.cs" />
+    <Compile Include="Elements\WeaverPropertyAttribute.cs" />
     <Compile Include="Elements\WeaverVertex.cs" />
     <Compile Include="Elements\WeaverProperty.cs" />
     <Compile Include="Elements\WeaverEdge.cs" />
@@ -99,6 +102,7 @@
     <Compile Include="Schema\WeaverVertexSchema.cs" />
     <Compile Include="Schema\WeaverPropSchema.cs" />
     <Compile Include="Schema\WeaverEdgeSchema.cs" />
+    <Compile Include="Util\WeaverPropPair.cs" />
     <Compile Include="Util\WeaverUtil.cs" />
     <Compile Include="WeaverConfig.cs" />
     <Compile Include="Graph\IWeaverGraph.cs" />

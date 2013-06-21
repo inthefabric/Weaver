@@ -4,9 +4,8 @@ using NUnit.Framework;
 using Weaver.Core.Elements;
 using Weaver.Core.Exceptions;
 using Weaver.Core.Path;
-using Weaver.Core.Query;
-using Weaver.Test.Common.EdgeTypes;
 using Weaver.Test.Common.Edges;
+using Weaver.Test.Common.EdgeTypes;
 using Weaver.Test.Common.Schema;
 using Weaver.Test.Common.Vertices;
 using Weaver.Test.Utils;
@@ -31,7 +30,6 @@ namespace Weaver.Test.WeavCore.Elements {
 		public void Connection(WeaverEdgeConn pConn, bool pFromMany, bool pToMany, bool pOut) {
 			var r = new RootHasCandy { Connection = pConn };
 
-			Assert.AreEqual("RootHasCandy", r.Label, "Incorrect IsRoot.");
 			Assert.AreEqual(pConn, r.Connection, "Incorrect Connection.");
 			Assert.AreEqual(pFromMany, r.IsFromManyVertices, "Incorrect IsFromManyVertexs.");
 			Assert.AreEqual(pToMany, r.IsToManyVertices, "Incorrect IsToManyVertexs.");
@@ -127,13 +125,6 @@ namespace Weaver.Test.WeavCore.Elements {
 
 			Assert.NotNull(hasType, "EdgeType should be filled.");
 			Assert.NotNull((hasType as Likes), "Incorrect EdgeType.");
-		}
-
-		/*--------------------------------------------------------------------------------------------*/
-		[Test]
-		public void Label() {
-			var r = new RootHasCandy();
-			Assert.AreEqual("RootHasCandy", r.Label, "Incorrect Label.");
 		}
 
 		/*--------------------------------------------------------------------------------------------*/

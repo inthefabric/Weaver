@@ -3,9 +3,9 @@
 namespace Weaver.Core.Elements {
 
 	/*================================================================================================*/
-	[AttributeUsage(AttributeTargets.Property)]
-	public class WeaverItemPropertyAttribute : Attribute {
-
+	[AttributeUsage(AttributeTargets.Class)]
+	public class WeaverVertexAttribute : WeaverElementAttribute {
+		
 	}
 
 }

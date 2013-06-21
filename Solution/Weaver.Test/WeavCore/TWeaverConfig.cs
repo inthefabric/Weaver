@@ -2,8 +2,11 @@
 using System.Collections.Generic;
 using NUnit.Framework;
 using Weaver.Core;
+using Weaver.Core.Elements;
 using Weaver.Core.Exceptions;
-using Weaver.Core.Schema;
+using Weaver.Test.Common;
+using Weaver.Test.Common.EdgeTypes;
+using Weaver.Test.Common.Edges;
 using Weaver.Test.Common.Schema;
 using Weaver.Test.Common.Vertices;
 using Weaver.Test.Utils;
@@ -21,8 +24,7 @@ namespace Weaver.Test.WeavCore {
 		/*--------------------------------------------------------------------------------------------*/
 		protected override void SetUp() {
 			base.SetUp();
-
-			vConfig = new WeaverConfig(Schema.Vertices, Schema.Edges);
+			vConfig = new WeaverConfig(ConfigHelper.VertexTypes, ConfigHelper.EdgeTypes);
 		}
 
 
@@ -30,106 +32,104 @@ namespace Weaver.Test.WeavCore {
 		/*--------------------------------------------------------------------------------------------*/
 		[Test]
 		public void New() {
-			var verts = new List<WeaverVertexSchema>();
-			var edges = new List<WeaverEdgeSchema>();
+			var verts = new List<Type>();
+			var edges = new List<Type>();
 			
 			var wc = new WeaverConfig(verts, edges);
 
-			Assert.AreEqual(verts, wc.VertexSchemas, "Incorrect Vertex list.");
-			Assert.AreEqual(edges, wc.EdgeSchemas, "Incorrect Edge list.");
+			Assert.AreEqual(verts, wc.VertexTypes, "Incorrect Vertex list.");
+			Assert.AreEqual(edges, wc.EdgeTypes, "Incorrect Edge list.");
 		}
 
 		/*--------------------------------------------------------------------------------------------*/
 		[Test]
-		public void NewItemFail() {
-			var verts = new List<WeaverVertexSchema>();
-			var edges = new List<WeaverEdgeSchema>();
+		public void NewInvalidType() {
+			var verts = new List<Type>();
+			var edges = new List<Type>();
 
-			var per = new WeaverVertexSchema("Person", "Per");
-			verts.Add(per);
-			verts.Add(per);
+			verts.Add(typeof(WeaverConfig));
 
 			var ex = WeaverTestUtil.CheckThrows<WeaverException>(
 				true, () => new WeaverConfig(verts, edges)
 			);
 
-			Assert.AreNotEqual(-1, ex.Message.IndexOf("item with"), "Incorrect exception.");
+			Assert.AreEqual(0, ex.Message.IndexOf("Type '"), "Incorrect exception.");
 		}
 
 		/*--------------------------------------------------------------------------------------------*/
 		[Test]
-		public void NewPropertyFail() {
-			var verts = new List<WeaverVertexSchema>();
-			var edges = new List<WeaverEdgeSchema>();
+		public void NewDuplicatePropertyDb() {
+			var verts = new List<Type>();
+			var edges = new List<Type>();
 
-			var per = new WeaverVertexSchema("Person", "Per");
-			verts.Add(per);
-
-			var ps = new WeaverPropSchema("PersonId", "PerId", typeof(int));
-			per.Props.Add(ps);
-			per.Props.Add(ps);
+			verts.Add(typeof(VertexA));
+			verts.Add(typeof(VertexB));
 
 			var ex = WeaverTestUtil.CheckThrows<WeaverException>(
 				true, () => new WeaverConfig(verts, edges)
 			);
 
-			Assert.AreNotEqual(-1, ex.Message.IndexOf("item property"), "Incorrect exception.");
+			Assert.AreEqual(0, ex.Message.IndexOf("Duplicate property"), "Incorrect exception.");
 		}
 
 
 		////////////////////////////////////////////////////////////////////////////////////////////////
 		/*--------------------------------------------------------------------------------------------*/
 		[Test]
-		public void GetItemDbNameItem() {
-			string name = vConfig.GetItemDbName(new Person());
-			Assert.AreEqual(TestSchema.Person_Vertex, name, "Incorrect result.");
+		public void GetEdgeDbNameItem() {
+			string name = vConfig.GetEdgeDbName(new PersonLikesCandy());
+			Assert.AreEqual(TestSchema.PersonLikesCandy, name, "Incorrect result.");
 		}
 
 		/*--------------------------------------------------------------------------------------------*/
 		[Test]
-		public void GetItemDbNameT() {
-			string name = vConfig.GetItemDbName<Person>();
-			Assert.AreEqual(TestSchema.Person_Vertex, name, "Incorrect result.");
+		public void GetEdgeDbNameT() {
+			string name = vConfig.GetEdgeDbName<PersonLikesCandy>();
+			Assert.AreEqual(TestSchema.PersonLikesCandy, name, "Incorrect result.");
 		}
 
 		/*--------------------------------------------------------------------------------------------*/
 		[Test]
-		public void GetItemDbNameName() {
-			string name = vConfig.GetItemDbName("Person");
-			Assert.AreEqual(TestSchema.Person_Vertex, name, "Incorrect result.");
-		}
-
-		/*--------------------------------------------------------------------------------------------*/
-		[Test]
-		public void GetItemDbNameFail() {
+		public void GetEdgeDbNameFail() {
 			WeaverTestUtil.CheckThrows<KeyNotFoundException>(
-				true, () => vConfig.GetItemDbName("x"));
+				true, () => vConfig.GetEdgeDbName<EdgeA>());
 		}
 
 
 		////////////////////////////////////////////////////////////////////////////////////////////////
 		/*--------------------------------------------------------------------------------------------*/
 		[Test]
-		public void GetPropertyDbNameEx() {
+		public void GetPropertyDbName() {
 			string name = vConfig.GetPropertyDbName<Person>(x => x.PersonId);
 			Assert.AreEqual(TestSchema.Person_PersonId, name, "Incorrect result.");
 		}
 
-		/*--------------------------------------------------------------------------------------------*/
-		[Test]
-		public void GetPropertyDbNameName() {
-			string name = vConfig.GetPropertyDbName<Person>("PersonId");
-			Assert.AreEqual(TestSchema.Person_PersonId, name, "Incorrect result.");
-		}
+	}
 
-		/*--------------------------------------------------------------------------------------------*/
-		[Test]
-		public void GetPropertyDbNameFail() {
-			var ex = WeaverTestUtil.CheckThrows<WeaverException>(
-				true, () => vConfig.GetPropertyDbName<Person>("x"));
-			Console.WriteLine(ex+"");
-			Assert.AreNotEqual(-1, ex.Message.IndexOf("Unknown item"), "Incorrect exception.");
-		}
+	
+	/*================================================================================================*/
+	[WeaverVertex]
+	public class VertexA : TestVertex {
+
+		[WeaverProperty("test")]
+		public string Test { get; set; }
+
+	}
+
+
+	/*================================================================================================*/
+	[WeaverVertex]
+	public class VertexB : TestVertex {
+
+		[WeaverProperty("test")]
+		public string Test { get; set; }
+
+	}
+
+
+	/*================================================================================================*/
+	[WeaverVertex]
+	public class EdgeA : WeaverEdge<Person, Knows, Candy> {
 
 	}
 

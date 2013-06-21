@@ -7,22 +7,25 @@ namespace Weaver.Test.Common.Schema {
 	/*================================================================================================*/
 	public class TestSchema {
 
-		public const string Person_Vertex = "Per";
-
 		public const string Person_PersonId = "PerId";
 		public const string Person_IsMale = "IsMale";
 		public const string Person_Age = "Age";
 		public const string Person_Note = "Note";
-		public const string Plc_TimesEaten = "Te";
-		public const string Plc_Enjoyment = "Enj";
-		public const string Plc_Notes = "Notes";
 		public const string Vertex_Name = "Name";
+		public const string Candy_CandyId = "CanId";
 		public const string Candy_IsChocolate = "IsChoc";
 		public const string Candy_Calories = "Calories";
 
 		public const string RootHasPerson = "RHP";
+		public const string RootHasCandy = "RHC";
 		public const string PersonLikesCandy = "PLC";
 		public const string PersonKnowsPerson = "PKP";
+
+		public const string PersonLikesCandy_TimesEaten = "TE";
+		public const string PersonLikesCandy_Enjoyment = "Enj";
+		public const string PersonLikesCandy_Notes = "No";
+		public const string PersonKnowsPerson_MetOnDate = "MOD";
+		public const string PersonKnowsPerson_Amount = "Amt";
 
 		public IList<WeaverVertexSchema> Vertices;
 		public IList<WeaverEdgeSchema> Edges;
@@ -62,7 +65,7 @@ namespace Weaver.Test.Common.Schema {
 
 			////
 
-			var per = new WeaverVertexSchema("Person", Person_Vertex);
+			var per = new WeaverVertexSchema("Person", "Per");
 			per.BaseVertex = vert;
 			Vertices.Add(per);
 
@@ -121,13 +124,13 @@ namespace Weaver.Test.Common.Schema {
 				root, "PersonLikesCandy", PersonLikesCandy, "Likes", per);
 			Edges.Add(perLikesCan);
 
-				ps = new WeaverPropSchema("TimesEaten", Plc_TimesEaten, typeof(int));
+				ps = new WeaverPropSchema("TimesEaten", PersonLikesCandy_TimesEaten, typeof(int));
 				perLikesCan.Props.Add(ps);
 
-				ps = new WeaverPropSchema("Enjoyment", Plc_Enjoyment, typeof(float));
+				ps = new WeaverPropSchema("Enjoyment", PersonLikesCandy_Enjoyment, typeof(float));
 				perLikesCan.Props.Add(ps);
 
-				ps = new WeaverPropSchema("Notes", Plc_Notes, typeof(string));
+				ps = new WeaverPropSchema("Notes", PersonLikesCandy_Notes, typeof(string));
 				perLikesCan.Props.Add(ps);
 		}
 
