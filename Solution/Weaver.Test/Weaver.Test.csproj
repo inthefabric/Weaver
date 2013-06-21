@@ -70,6 +70,14 @@
     <Compile Include="WeavCore\Steps\TWeaverStepAs.cs" />
     <Compile Include="WeavCore\Steps\TWeaverStepBack.cs" />
     <Compile Include="WeavCore\Steps\TWeaverStepCustom.cs" />
+    <Compile Include="WeavTitan\Common\Empty.cs" />
+    <Compile Include="WeavTitan\Common\EmptyHasEmpty.cs" />
+    <Compile Include="WeavTitan\Common\OneKnowsTwo.cs" />
+    <Compile Include="WeavTitan\Common\Two.cs" />
+    <Compile Include="WeavTitan\Common\One.cs" />
+    <Compile Include="WeavTitan\Common\TitanPerson.cs" />
+    <Compile Include="WeavTitan\Common\TitanPersonKnowsTitanPerson.cs" />
+    <Compile Include="WeavTitan\Elements\TWeaverTitanPropertyAttribute.cs" />
     <Compile Include="WeavTitan\Graph\TWeaverTitanGraph.cs" />
     <Compile Include="WeavTitan\Schema\TWeaverTitanPropSchema.cs" />
     <Compile Include="WeavTitan\Steps\Parameters\TWeaverParamElastic.cs" />

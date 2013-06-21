@@ -22,8 +22,8 @@ namespace Weaver.Core.Schema {
 			InVertex = pInVertex;
 			EdgeType = pEdgeType;
 
-			OutVertexConn = WeaverEdgeConn.OutToZeroOrMore;
-			InVertexConn = WeaverEdgeConn.InFromZeroOrMore;
+			OutVertexConn = WeaverEdgeConn.OutZeroOrMore;
+			InVertexConn = WeaverEdgeConn.InZeroOrMore;
 		}
 
 		/*--------------------------------------------------------------------------------------------*/

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Weaver.Core.Exceptions;
 using Weaver.Core.Schema;
+using Weaver.Titan.Elements;
 
 namespace Weaver.Titan.Schema {
 
@@ -48,45 +49,7 @@ namespace Weaver.Titan.Schema {
 		////////////////////////////////////////////////////////////////////////////////////////////////
 		/*--------------------------------------------------------------------------------------------*/
 		public string GetTitanTypeName() {
-			return GetTitanTypeName(Type);
-		}
-
-		/*--------------------------------------------------------------------------------------------*/
-		public static string GetTitanTypeName(Type pType) {
-			string n;
-
-			switch ( pType.Name ) {
-				case "Boolean":
-					n = "Boolean";
-					break;
-
-				case "Byte":
-					n = "Byte";
-					break;
-
-				case "Int32":
-					n = "Integer";
-					break;
-
-				case "Int64":
-				case "DateTime":
-					n = "Long";
-					break;
-
-				case "Single":
-					n = "Float";
-					break;
-
-				case "Double":
-					n = "Double";
-					break;
-
-				default:
-					n = pType.Name;
-					break;
-			}
-
-			return n;
+			return WeaverTitanPropertyAttribute.GetTitanTypeName(Type);
 		}
 
 	}

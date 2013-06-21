@@ -16,12 +16,12 @@ namespace Weaver.Test.Common.Vertices {
 		////////////////////////////////////////////////////////////////////////////////////////////////
 		/*--------------------------------------------------------------------------------------------*/
 		public RootHasCandy OutHasCandy {
-			get { return NewEdge<RootHasCandy>(WeaverEdgeConn.OutToOneOrMore); }
+			get { return NewEdge<RootHasCandy>(WeaverEdgeConn.OutOneOrMore); }
 		}
 
 		/*--------------------------------------------------------------------------------------------*/
 		public RootHasPerson OutHasPerson {
-			get { return NewEdge<RootHasPerson>(WeaverEdgeConn.OutToOneOrMore); }
+			get { return NewEdge<RootHasPerson>(WeaverEdgeConn.OutOneOrMore); }
 		}
 
 	}

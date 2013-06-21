@@ -14,13 +14,15 @@ namespace Weaver.Core.Util {
 
 		////////////////////////////////////////////////////////////////////////////////////////////////
 		/*--------------------------------------------------------------------------------------------*/
-		internal static T GetElementAttribute<T>(Type pType) where T : WeaverElementAttribute {
+		//TEST: WeaverUtil.GetElementAttribute
+		public static T GetElementAttribute<T>(Type pType) where T : WeaverElementAttribute {
 			object[] atts = pType.GetCustomAttributes(typeof(T), false);
 			return (atts.Length == 0 ? null : (T)atts[0]);
 		}
 
 		/*--------------------------------------------------------------------------------------------*/
-		internal static IList<WeaverPropPair> GetElementPropertyAttributes(Type pType) {
+		//TEST: WeaverUtil.GetElementPropertyAttributes
+		public static IList<WeaverPropPair> GetElementPropertyAttributes(Type pType) {
 			PropertyInfo[] props = pType.GetProperties();
 			var list = new List<WeaverPropPair>();
 
@@ -36,7 +38,8 @@ namespace Weaver.Core.Util {
 		}
 
 		/*--------------------------------------------------------------------------------------------*/
-		internal static WeaverPropPair GetPropertyAttribute(PropertyInfo pProp) {
+		//TEST: WeaverUtil.GetPropertyAttribute
+		public static WeaverPropPair GetPropertyAttribute(PropertyInfo pProp) {
 			object[] atts = pProp.GetCustomAttributes(typeof(WeaverPropertyAttribute), true);
 			return (atts.Length == 0 ? null : 
 				new WeaverPropPair((WeaverPropertyAttribute)atts[0], pProp));
@@ -72,9 +75,9 @@ namespace Weaver.Core.Util {
 
 		////////////////////////////////////////////////////////////////////////////////////////////////
 		/*--------------------------------------------------------------------------------------------*/
-		public static string GetPropertyName<T>(IWeaverConfig pConfig, Expression<Func<T, object>> pExp)
+		public static WeaverPropPair GetPropertyAttribute<T>(Expression<Func<T, object>> pProp)
 																			where T : IWeaverElement {
-			MemberExpression me = GetMemberExpr(pExp);
+			MemberExpression me = GetMemberExpr(pProp);
 
 			if ( me != null ) {
 				PropertyInfo pi = (me.Member as PropertyInfo);
@@ -84,20 +87,26 @@ namespace Weaver.Core.Util {
 					throw new WeaverException("Unknown property: "+me.Member.Name);
 				}
 
-				return wpp.Attrib.DbName;
+				return wpp;
 			}
 
 			throw new WeaverException("Item property expression body was of type "+
-				pExp.Body.GetType().Name+", but must be of type MemberExpression.");
+				pProp.Body.GetType().Name+", but must be of type MemberExpression.");
+		}
+		
+		/*--------------------------------------------------------------------------------------------*/
+		public static string GetPropertyDbName<T>(Expression<Func<T, object>> pProp)
+																			where T : IWeaverElement {
+			return GetPropertyAttribute(pProp).Attrib.DbName;
 		}
 
 		/*--------------------------------------------------------------------------------------------*/
-		private static MemberExpression GetMemberExpr<T>(Expression<Func<T, object>> pExp) {
+		private static MemberExpression GetMemberExpr<T>(Expression<Func<T, object>> pProp) {
 
-			var me = (pExp.Body as MemberExpression);
+			var me = (pProp.Body as MemberExpression);
 			if ( me != null ) { return me; }
 
-			var ue = (pExp.Body as UnaryExpression);
+			var ue = (pProp.Body as UnaryExpression);
 			return (ue != null ? (ue.Operand as MemberExpression) : null);
 		}
 

@@ -39,8 +39,8 @@ namespace Weaver.Titan.Steps {
 			vParams = list.ToArray();
 		}
 
-		
 
+		////////////////////////////////////////////////////////////////////////////////////////////////
 		/*--------------------------------------------------------------------------------------------*/
 		public override string BuildParameterizedString() {
 			if ( vParams.Length == 0 ) {

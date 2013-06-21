@@ -1,23 +1,24 @@
 ﻿using Weaver.Core.Elements;
 using Weaver.Test.Common.Edges;
 using Weaver.Test.Common.Schema;
+using Weaver.Titan.Elements;
 
-namespace Weaver.Test.Common.Vertices {
+namespace Weaver.Test.WeavTitan.Common {
 
 	/*================================================================================================*/
-	[WeaverVertex]
-	public class Person : TestVertex {
+	[WeaverTitanVertex]
+	public class TitanPerson : WeaverVertex {
 
-		[WeaverProperty(TestSchema.Person_PersonId)]
+		[WeaverTitanProperty(TestSchema.Person_PersonId)]
 		public int PersonId { get; set; }
 
-		[WeaverProperty(TestSchema.Person_IsMale)]
+		[WeaverTitanProperty(TestSchema.Person_IsMale)]
 		public bool IsMale { get; set; }
 
-		[WeaverProperty(TestSchema.Person_Age)]
+		[WeaverTitanProperty(TestSchema.Person_Age, TitanIndex=true, TitanElasticIndex=true)]
 		public float Age { get; set; }
 
-		[WeaverProperty(TestSchema.Person_Note)]
+		[WeaverTitanProperty(TestSchema.Person_Note)]
 		public string Note { get; set; }
 
 

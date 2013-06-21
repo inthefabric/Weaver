@@ -8,7 +8,10 @@ using Weaver.Core.Path;
 using Weaver.Core.Pipe;
 using Weaver.Core.Query;
 using Weaver.Core.Schema;
+using Weaver.Test.Common.Schema;
+using Weaver.Test.Common.Vertices;
 using Weaver.Test.Utils;
+using Weaver.Test.WeavTitan.Common;
 using Weaver.Titan.Graph;
 using Weaver.Titan.Schema;
 
@@ -82,45 +85,36 @@ namespace Weaver.Test.WeavTitan.Graph {
 		[Test]
 		public void TypeGroupOf() {
 			const int id = 2;
-			const string dbName = "Te";
-			var vert = new WeaverVertexSchema("Test", dbName);
 
-			IWeaverQuery q = vGraph.TypeGroupOf(vert, id);
+			IWeaverQuery q = vGraph.TypeGroupOf<TitanPerson>(id);
 
 			Assert.NotNull(q, "Result should be filled.");
-			Assert.AreEqual("com.thinkaurelius.titan.core.TypeGroup.of(_P0,_P1);", q.Script,
+			Assert.AreEqual("com.thinkaurelius.titan.core.TypeGroup.of(_P0,'group');", q.Script,
 				"Incorrect Query.Script.");
 			
 			var expectParams = new Dictionary<string, IWeaverQueryVal>();
 			expectParams.Add("_P0", new WeaverQueryVal(id));
-			expectParams.Add("_P1", new WeaverQueryVal(dbName));
 			WeaverTestUtil.CheckQueryParamsOriginalVal(q, expectParams);
 		}
 		
 		/*--------------------------------------------------------------------------------------------*/
 		[Test]
 		public void TypeGroupOfFail() {
-			var vert = new WeaverVertexSchema("Test", "Te");
-			WeaverTestUtil.CheckThrows<WeaverException>(true, () => vGraph.TypeGroupOf(vert, 1));
+			WeaverTestUtil.CheckThrows<WeaverException>(true, () => vGraph.TypeGroupOf<TestVertex>(1));
 		}
 
 
 		////////////////////////////////////////////////////////////////////////////////////////////////
 		/*--------------------------------------------------------------------------------------------*/
 		[Test]
-		public void MakePropertyKeyMax() {
-			const string propDbName = "Pr";
+		public void MakeVertexPropertyKeyMax() {
 			const string groupName = "_MyGroup";
 
-			var vert = new WeaverVertexSchema(null);
-			var prop = new WeaverTitanPropSchema("Prop", propDbName, typeof(int));
-			prop.TitanIndex = true;
-			prop.TitanElasticIndex = true;
-			
 			var mockGroup = new Mock<IWeaverVarAlias>();
 			mockGroup.SetupGet(x => x.Name).Returns(groupName);
 
-			IWeaverPathPipeEnd end = vGraph.MakePropertyKey(vert, prop, mockGroup.Object);
+			IWeaverPathPipeEnd end = 
+				vGraph.MakeVertexPropertyKey<TitanPerson>(x => x.Age, mockGroup.Object);
 			
 			var expect = new[] {
 				"group("+groupName+")",
@@ -128,37 +122,28 @@ namespace Weaver.Test.WeavTitan.Graph {
 				"indexed('search',Vertex.class)"
 			};
 
-			CheckMakeProperty(end, expect, propDbName, "Integer");
+			CheckMakeProperty(end, expect, TestSchema.Person_Age, "Float");
 		}
 		
 		/*--------------------------------------------------------------------------------------------*/
 		[Test]
-		public void MakePropertyKeyMin() {
-			const string propDbName = "Pr";
-			var vert = new WeaverVertexSchema("Test", "Te");
-			var prop = new WeaverTitanPropSchema("Prop", propDbName, typeof(string));
-
-			IWeaverPathPipeEnd end = vGraph.MakePropertyKey(vert, prop);
-			CheckMakeProperty(end, new string[0], propDbName, "String");
+		public void MakeVertexPropertyKeyMin() {
+			IWeaverPathPipeEnd end = vGraph.MakeVertexPropertyKey<TitanPerson>(x => x.IsMale);
+			CheckMakeProperty(end, new string[0], TestSchema.Person_IsMale, "Boolean");
 		}
 
 		/*--------------------------------------------------------------------------------------------*/
 		[Test]
-		public void MakePropertyKeyEdge() {
-			const string propDbName = "Pr";
-			var edge = new WeaverEdgeSchema(null, null, null, null, null);
-			var prop = new WeaverTitanPropSchema("Prop", propDbName, typeof(long));
-			prop.TitanIndex = true;
-			prop.TitanElasticIndex = true;
-
-			IWeaverPathPipeEnd end = vGraph.MakePropertyKey(edge, prop);
+		public void MakeEdgePropertyKey() {
+			IWeaverPathPipeEnd end = 
+				vGraph.MakeEdgePropertyKey<TitanPersonKnowsTitanPerson>(x => x.Amount);
 
 			var expect = new[] {
 				"indexed(Edge.class)",
 				"indexed('search',Edge.class)"
 			};
 
-			CheckMakeProperty(end, expect, propDbName, "Long");
+			CheckMakeProperty(end, expect, TestSchema.PersonKnowsPerson_Amount, "Float");
 		}
 
 		/*--------------------------------------------------------------------------------------------*/
@@ -193,87 +178,23 @@ namespace Weaver.Test.WeavTitan.Graph {
 		/*--------------------------------------------------------------------------------------------*/
 		[Test]
 		public void BuildEdgeLabelMin() {
-			const string edgeDbName = "FUT";
-			var vertF = new WeaverVertexSchema("FromVert", "Fr");
-			var vertT = new WeaverVertexSchema("ToVert", "To");
-			var edge = new WeaverEdgeSchema(vertF, "FromUsesTo", edgeDbName, "Uses", vertT);
-
-			IWeaverPathPipeEnd end = vGraph.BuildEdgeLabel(edge, p => null);
-			CheckBuildEdge(end, new string[0], edgeDbName);
+			IWeaverPathPipeEnd end = vGraph.BuildEdgeLabel<EmptyHasEmpty>(p => null);
+			CheckBuildEdge(end, new string[0], "EHE");
 		}
 
 		/*--------------------------------------------------------------------------------------------*/
 		[Test]
 		public void BuildEdgeLabelMax() {
-			const string edgeDbName = "FUT";
-			const string fv1 = "_FV1";
-			const string fv2 = "_FV2";
-			const string fv3 = "_FV3";
-			const string fv4 = "_FV4";
-			const string fv5 = "_FV5";
-			const string tv1 = "_TV1";
-			const string tv2 = "_TV2";
-			const string tv3 = "_TV3";
-			const string tv4 = "_TV4";
-			const string tv5 = "_TV5";
-
-			var vertF = new WeaverVertexSchema("FromVert", "Fr");
-			var vertT = new WeaverVertexSchema("ToVert", "To");
-			var edge = new WeaverEdgeSchema(vertF, "FromUsesTo", edgeDbName, "Uses", vertT);
-			edge.OutVertexConn = WeaverEdgeConn.OutToZeroOrOne;
-			edge.InVertexConn = WeaverEdgeConn.InFromOne;
-
-			////
-			
-			var prop = new WeaverTitanPropSchema(null, fv1, null);
-			prop.AddTitanVertexCentricIndex(edge);
-			vertF.Props.Add(prop);
-
-			prop = new WeaverTitanPropSchema(null, fv2, null);
-			vertF.Props.Add(prop);
-
-			prop = new WeaverTitanPropSchema(null, fv3, null);
-			vertF.Props.Add(prop);
-
-			prop = new WeaverTitanPropSchema(null, fv4, null);
-			prop.AddTitanVertexCentricIndex(edge);
-			vertF.Props.Add(prop);
-
-			prop = new WeaverTitanPropSchema(null, fv5, null);
-			vertF.Props.Add(prop);
-
-			////
-
-			prop = new WeaverTitanPropSchema(null, tv1, null);
-			vertT.Props.Add(prop);
-
-			prop = new WeaverTitanPropSchema(null, tv2, null);
-			prop.AddTitanVertexCentricIndex(edge);
-			vertT.Props.Add(prop);
-
-			prop = new WeaverTitanPropSchema(null, tv3, null);
-			prop.AddTitanVertexCentricIndex(edge);
-			vertT.Props.Add(prop);
-
-			prop = new WeaverTitanPropSchema(null, tv4, null);
-			prop.AddTitanVertexCentricIndex(edge);
-			vertT.Props.Add(prop);
-
-			prop = new WeaverTitanPropSchema(null, tv5, null);
-			vertT.Props.Add(prop);
-
-			////
-
-			IWeaverPathPipeEnd end = vGraph.BuildEdgeLabel(edge, p => new WeaverVarAlias(p.DbName));
+			IWeaverPathPipeEnd end = vGraph.BuildEdgeLabel<OneKnowsTwo>(n => new WeaverVarAlias(n));
 
 			var expect = new[] {
-				"primaryKey("+fv1+","+fv4+","+tv2+","+tv3+","+tv4+")",
-				"signature("+fv2+","+fv3+","+fv5+","+tv1+","+tv5+")",
+				"primaryKey(OA,OD,TB,TC,TD)",
+				"signature(OB,OC,OE,TA,TE)",
 				"unique(IN)",
 				"unique(OUT)"
 			};
 			
-			CheckBuildEdge(end, expect, edgeDbName);
+			CheckBuildEdge(end, expect, "OKT");
 		}
 
 		/*--------------------------------------------------------------------------------------------*/

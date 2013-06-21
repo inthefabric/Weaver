@@ -4,7 +4,7 @@ using Weaver.Core.Elements;
 namespace Weaver.Core.Util {
 
 	/*================================================================================================*/
-	internal class WeaverPropPair {
+	public class WeaverPropPair {
 
 		public WeaverPropertyAttribute Attrib { get; private set; }
 		public PropertyInfo Info { get; private set; }
@@ -12,7 +12,7 @@ namespace Weaver.Core.Util {
 
 		////////////////////////////////////////////////////////////////////////////////////////////////
 		/*--------------------------------------------------------------------------------------------*/
-		internal WeaverPropPair(WeaverPropertyAttribute pAttrib, PropertyInfo pInfo) {
+		public WeaverPropPair(WeaverPropertyAttribute pAttrib, PropertyInfo pInfo) {
 			Attrib = pAttrib;
 			Info = pInfo;
 		}

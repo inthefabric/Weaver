@@ -1,9 +1,9 @@
 ﻿using System;
+using System.Linq.Expressions;
+using Weaver.Core.Elements;
 using Weaver.Core.Graph;
 using Weaver.Core.Pipe;
 using Weaver.Core.Query;
-using Weaver.Core.Schema;
-using Weaver.Titan.Schema;
 
 namespace Weaver.Titan.Graph {
 	
@@ -21,19 +21,20 @@ namespace Weaver.Titan.Graph {
 
 		////////////////////////////////////////////////////////////////////////////////////////////////
 		/*--------------------------------------------------------------------------------------------*/
-		IWeaverQuery TypeGroupOf(WeaverVertexSchema pVertex, int pId);
+		IWeaverQuery TypeGroupOf<T>(int pId) where T : IWeaverVertex;
+
+		
+		/*--------------------------------------------------------------------------------------------*/
+		IWeaverPathPipeEnd MakeVertexPropertyKey<T>(Expression<Func<T, object>> pProperty,
+												IWeaverVarAlias pGroupVar=null) where T : IWeaverVertex;
 
 		/*--------------------------------------------------------------------------------------------*/
-		IWeaverPathPipeEnd MakePropertyKey(WeaverVertexSchema pVertex, WeaverTitanPropSchema pProperty, 
-																		IWeaverVarAlias pGroupVar=null);
+		IWeaverPathPipeEnd MakeEdgePropertyKey<T>(Expression<Func<T, object>> pProperty,
+												IWeaverVarAlias pGroupVar=null) where T : IWeaverEdge;
 
 		/*--------------------------------------------------------------------------------------------*/
-		IWeaverPathPipeEnd MakePropertyKey(WeaverEdgeSchema pEdge, WeaverTitanPropSchema pProperty,
-																		IWeaverVarAlias pGroupVar=null);
-
-		/*--------------------------------------------------------------------------------------------*/
-		IWeaverPathPipeEnd BuildEdgeLabel(WeaverEdgeSchema pEdge,
-										Func<WeaverTitanPropSchema, IWeaverVarAlias> pGetPropVarAlias);
+		IWeaverPathPipeEnd BuildEdgeLabel<T>(Func<string, IWeaverVarAlias> pGetPropVarAliasByDbName) 
+																				where T : IWeaverEdge;
 
 	}
 

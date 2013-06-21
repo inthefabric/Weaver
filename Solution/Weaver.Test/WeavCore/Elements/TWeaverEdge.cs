@@ -19,14 +19,14 @@ namespace Weaver.Test.WeavCore.Elements {
 
 		////////////////////////////////////////////////////////////////////////////////////////////////
 		/*--------------------------------------------------------------------------------------------*/
-		[TestCase(WeaverEdgeConn.InFromOne, false, false, false)]
-		[TestCase(WeaverEdgeConn.InFromZeroOrOne, false, false, false)]
-		[TestCase(WeaverEdgeConn.InFromOneOrMore, true, false, false)]
-		[TestCase(WeaverEdgeConn.InFromZeroOrMore, true, false, false)]
-		[TestCase(WeaverEdgeConn.OutToOne, false, false, true)]
-		[TestCase(WeaverEdgeConn.OutToZeroOrOne, false, false, true)]
-		[TestCase(WeaverEdgeConn.OutToOneOrMore, false, true, true)]
-		[TestCase(WeaverEdgeConn.OutToZeroOrMore, false, true, true)]
+		[TestCase(WeaverEdgeConn.InOne, false, false, false)]
+		[TestCase(WeaverEdgeConn.InZeroOrOne, false, false, false)]
+		[TestCase(WeaverEdgeConn.InOneOrMore, true, false, false)]
+		[TestCase(WeaverEdgeConn.InZeroOrMore, true, false, false)]
+		[TestCase(WeaverEdgeConn.OutOne, false, false, true)]
+		[TestCase(WeaverEdgeConn.OutZeroOrOne, false, false, true)]
+		[TestCase(WeaverEdgeConn.OutOneOrMore, false, true, true)]
+		[TestCase(WeaverEdgeConn.OutZeroOrMore, false, true, true)]
 		public void Connection(WeaverEdgeConn pConn, bool pFromMany, bool pToMany, bool pOut) {
 			var r = new RootHasCandy { Connection = pConn };
 
@@ -49,10 +49,10 @@ namespace Weaver.Test.WeavCore.Elements {
 		/*--------------------------------------------------------------------------------------------*/
 		[Test]
 		public void ConnectionAlreadSet() {
-			var r = new RootHasCandy(WeaverEdgeConn.OutToOne);
+			var r = new RootHasCandy(WeaverEdgeConn.OutOne);
 
 			WeaverTestUtil.CheckThrows<WeaverEdgeException>(true, () => {
-				r.Connection = WeaverEdgeConn.OutToOneOrMore;
+				r.Connection = WeaverEdgeConn.OutOneOrMore;
 			});
 		}
 
@@ -138,14 +138,14 @@ namespace Weaver.Test.WeavCore.Elements {
 
 		////////////////////////////////////////////////////////////////////////////////////////////////
 		/*--------------------------------------------------------------------------------------------*/
-		[TestCase(WeaverEdgeConn.InFromOne, "inE('"+TestSchema.RootHasPerson+"')")]
-		[TestCase(WeaverEdgeConn.InFromZeroOrOne, "inE('"+TestSchema.RootHasPerson+"')")]
-		[TestCase(WeaverEdgeConn.InFromOneOrMore, "inE('"+TestSchema.RootHasPerson+"')")]
-		[TestCase(WeaverEdgeConn.InFromZeroOrMore, "inE('"+TestSchema.RootHasPerson+"')")]
-		[TestCase(WeaverEdgeConn.OutToOne, "outE('"+TestSchema.RootHasPerson+"')")]
-		[TestCase(WeaverEdgeConn.OutToZeroOrOne, "outE('"+TestSchema.RootHasPerson+"')")]
-		[TestCase(WeaverEdgeConn.OutToOneOrMore, "outE('"+TestSchema.RootHasPerson+"')")]
-		[TestCase(WeaverEdgeConn.OutToZeroOrMore, "outE('"+TestSchema.RootHasPerson+"')")]
+		[TestCase(WeaverEdgeConn.InOne, "inE('"+TestSchema.RootHasPerson+"')")]
+		[TestCase(WeaverEdgeConn.InZeroOrOne, "inE('"+TestSchema.RootHasPerson+"')")]
+		[TestCase(WeaverEdgeConn.InOneOrMore, "inE('"+TestSchema.RootHasPerson+"')")]
+		[TestCase(WeaverEdgeConn.InZeroOrMore, "inE('"+TestSchema.RootHasPerson+"')")]
+		[TestCase(WeaverEdgeConn.OutOne, "outE('"+TestSchema.RootHasPerson+"')")]
+		[TestCase(WeaverEdgeConn.OutZeroOrOne, "outE('"+TestSchema.RootHasPerson+"')")]
+		[TestCase(WeaverEdgeConn.OutOneOrMore, "outE('"+TestSchema.RootHasPerson+"')")]
+		[TestCase(WeaverEdgeConn.OutZeroOrMore, "outE('"+TestSchema.RootHasPerson+"')")]
 		public void BuildParameterizedString(WeaverEdgeConn pConn, string pExpectScript) {
 			var mockPath = new Mock<IWeaverPath>();
 			mockPath.SetupGet(x => x.Config).Returns(WeavInst.Config);

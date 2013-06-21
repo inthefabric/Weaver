@@ -21,12 +21,12 @@ namespace Weaver.Test.Common.Vertices {
 		////////////////////////////////////////////////////////////////////////////////////////////////
 		/*--------------------------------------------------------------------------------------------*/
 		public RootHasPerson InRootHas {
-			get { return NewEdge<RootHasPerson>(WeaverEdgeConn.InFromOne); }
+			get { return NewEdge<RootHasPerson>(WeaverEdgeConn.InOne); }
 		}
 
 		/*--------------------------------------------------------------------------------------------*/
 		public PersonLikesCandy InPersonLikes {
-			get { return NewEdge<PersonLikesCandy>(WeaverEdgeConn.InFromZeroOrMore); }
+			get { return NewEdge<PersonLikesCandy>(WeaverEdgeConn.InZeroOrMore); }
 		}
 		
 	}

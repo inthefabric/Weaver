@@ -2,11 +2,9 @@
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using NUnit.Framework;
-using Weaver.Core;
 using Weaver.Core.Exceptions;
 using Weaver.Core.Query;
 using Weaver.Core.Util;
-using Weaver.Test.Common;
 using Weaver.Test.Common.Edges;
 using Weaver.Test.Common.Schema;
 using Weaver.Test.Common.Vertices;
@@ -119,8 +117,7 @@ namespace Weaver.Test.WeavCore.Util {
 		[Test]
 		public void PropNamePassLowerLabel() {
 			Expression<Func<PersonLikesCandy, object>> expr = (p => p.Label);
-			var cfg = new WeaverConfig(ConfigHelper.VertexTypes, ConfigHelper.EdgeTypes);
-			vPropExprResult = WeaverUtil.GetPropertyName(cfg, expr);
+			vPropExprResult = WeaverUtil.GetPropertyDbName(expr);
 
 			Assert.AreEqual("label", vPropExprResult, "Incorrect property name.");
 		}
@@ -176,8 +173,7 @@ namespace Weaver.Test.WeavCore.Util {
 
 		/*--------------------------------------------------------------------------------------------*/
 		private void TryPropExpr() {
-			var cfg = new WeaverConfig(ConfigHelper.VertexTypes, ConfigHelper.EdgeTypes);
-			vPropExprResult = WeaverUtil.GetPropertyName(cfg, vPropExpr);
+			vPropExprResult = WeaverUtil.GetPropertyDbName(vPropExpr);
 		}
 
 	}

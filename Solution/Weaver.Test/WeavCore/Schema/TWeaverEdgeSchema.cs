@@ -22,8 +22,8 @@ namespace Weaver.Test.WeavCore.Schema {
 			Assert.AreEqual(outVert, rs.OutVertex, "Incorrect FromNode.");
 			Assert.AreEqual("FromLikesTo", rs.Name, "Incorrect Name.");
 			Assert.AreEqual(inVert, rs.InVertex, "Incorrect ToNode.");
-			Assert.AreEqual(WeaverEdgeConn.OutToZeroOrMore, rs.OutVertexConn, "Incorrect FromNodeComm.");
-			Assert.AreEqual(WeaverEdgeConn.InFromZeroOrMore, rs.InVertexConn, "Incorrect ToNodeComm.");
+			Assert.AreEqual(WeaverEdgeConn.OutZeroOrMore, rs.OutVertexConn, "Incorrect FromNodeComm.");
+			Assert.AreEqual(WeaverEdgeConn.InZeroOrMore, rs.InVertexConn, "Incorrect ToNodeComm.");
 		}
 
 		/*--------------------------------------------------------------------------------------------*/
@@ -32,7 +32,7 @@ namespace Weaver.Test.WeavCore.Schema {
 			var rs = new WeaverEdgeSchema(null, "TestDoesPass", "TDP", "Does", null);
 
 			WeaverTestUtil.CheckThrows<WeaverException>(true,
-				() => rs.OutVertexConn = WeaverEdgeConn.InFromOne
+				() => rs.OutVertexConn = WeaverEdgeConn.InOne
 			);
 		}
 
@@ -42,7 +42,7 @@ namespace Weaver.Test.WeavCore.Schema {
 			var rs = new WeaverEdgeSchema(null, "TestDoesPass", "TDP", "Does", null);
 
 			WeaverTestUtil.CheckThrows<WeaverException>(true,
-				() => rs.InVertexConn = WeaverEdgeConn.OutToOne
+				() => rs.InVertexConn = WeaverEdgeConn.OutOne
 			);
 		}
 

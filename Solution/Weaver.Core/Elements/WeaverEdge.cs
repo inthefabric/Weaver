@@ -6,15 +6,15 @@ namespace Weaver.Core.Elements {
 	/*================================================================================================*/
 	public enum WeaverEdgeConn {
 
-		OutToOne = 1,
-		OutToOneOrMore,
-		OutToZeroOrMore,
-		OutToZeroOrOne,
+		OutOne = 1,
+		OutOneOrMore,
+		OutZeroOrMore,
+		OutZeroOrOne,
 
-		InFromOne,
-		InFromOneOrMore,
-		InFromZeroOrMore,
-		InFromZeroOrOne
+		InOne,
+		InOneOrMore,
+		InZeroOrMore,
+		InZeroOrOne
 
 	}
 
@@ -58,13 +58,13 @@ namespace Weaver.Core.Elements {
 				vConn = value;
 
 				IsFromManyVertices = (
-					vConn == WeaverEdgeConn.InFromZeroOrMore || 
-					vConn == WeaverEdgeConn.InFromOneOrMore
+					vConn == WeaverEdgeConn.InZeroOrMore || 
+					vConn == WeaverEdgeConn.InOneOrMore
 				);
 
 				IsToManyVertices = (
-					vConn == WeaverEdgeConn.OutToZeroOrMore ||
-					vConn == WeaverEdgeConn.OutToOneOrMore
+					vConn == WeaverEdgeConn.OutZeroOrMore ||
+					vConn == WeaverEdgeConn.OutOneOrMore
 				);
 
 				IsOutgoing = IsConnOutgoing((WeaverEdgeConn)vConn);
@@ -107,10 +107,10 @@ namespace Weaver.Core.Elements {
 		/*--------------------------------------------------------------------------------------------*/
 		public static bool IsConnOutgoing(WeaverEdgeConn pConn) {
 			return (
-				pConn == WeaverEdgeConn.OutToOne || 
-				pConn == WeaverEdgeConn.OutToOneOrMore ||
-				pConn == WeaverEdgeConn.OutToZeroOrMore ||
-				pConn == WeaverEdgeConn.OutToZeroOrOne
+				pConn == WeaverEdgeConn.OutOne || 
+				pConn == WeaverEdgeConn.OutOneOrMore ||
+				pConn == WeaverEdgeConn.OutZeroOrMore ||
+				pConn == WeaverEdgeConn.OutZeroOrOne
 			);
 		}
 
