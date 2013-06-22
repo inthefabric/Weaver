@@ -92,6 +92,7 @@
     <Compile Include="WeaverTestBase.cs" />
     <Compile Include="WeavTitan\Graph\TWeaverTitanGraphQuery.cs" />
     <Compile Include="WeavTitan\TWeaverTitanInstanceExt.cs" />
+    <Compile Include="WeavExamples\TTraversals.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Weaver.Core\Weaver.Core.csproj">
@@ -101,6 +102,10 @@
     <ProjectReference Include="..\Weaver.Titan\Weaver.Titan.csproj">
       <Project>{965AF9ED-A328-44CA-A2CC-AE7FADEB09A4}</Project>
       <Name>Weaver.Titan</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Weaver.Examples\Weaver.Examples.csproj">
+      <Project>{A2DB9FE0-7C4D-483E-8926-C7EB5263AC24}</Project>
+      <Name>Weaver.Examples</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
@@ -117,6 +122,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="WeavCore\Steps\Parameters\" />
+    <Folder Include="WeavExamples\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

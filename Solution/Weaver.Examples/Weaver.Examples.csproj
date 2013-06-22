@@ -58,6 +58,8 @@
     <Compile Include="Core\Edges\CharacterLivesLocation.cs" />
     <Compile Include="Core\Edges\MonsterLivesLocation.cs" />
     <Compile Include="Core\Edges\LivesLocation.cs" />
+    <Compile Include="Core\Traversals.cs" />
+    <Compile Include="Core\Weave.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
