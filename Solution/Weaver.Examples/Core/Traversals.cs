@@ -28,9 +28,10 @@ namespace Weaver.Examples.Core {
 		}
 		
 		/*--------------------------------------------------------------------------------------------*/
-		public static IWeaverQuery GetSaturn(out IWeaverVarAlias<Titan> pSaturnVar) {
-			//saturn = g.V('name','saturn').next()
-			return GetCharacterByName<Titan>("saturn", "saturn", out pSaturnVar);
+		public static Character GetGrandchildOfCharacter(IWeaverVarAlias<Character> pCharVar) {
+			return Weave.Inst.FromVar(pCharVar)
+				.InCharacterHasFather.OutVertex
+				.InCharacterHasFather.OutVertex;
 		}
 				
 	}
