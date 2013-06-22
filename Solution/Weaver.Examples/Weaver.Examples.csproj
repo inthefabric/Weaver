@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>10.0.0</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{A2DB9FE0-7C4D-483E-8926-C7EB5263AC24}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <RootNamespace>Weaver.Examples</RootNamespace>
+    <AssemblyName>Weaver.Examples</AssemblyName>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>True</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>False</Optimize>
+    <OutputPath>bin\Debug</OutputPath>
+    <DefineConstants>DEBUG;</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>False</ConsolePause>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>none</DebugType>
+    <Optimize>True</Optimize>
+    <OutputPath>bin\Release</OutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>False</ConsolePause>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\..\Global\GlobalAssemblyVersion.cs">
+      <Link>Properties\GlobalAssemblyVersion.cs</Link>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Core\Vertices\BaseVertex.cs" />
+    <Compile Include="Core\Vertices\Titan.cs" />
+    <Compile Include="Core\Vertices\Location.cs" />
+    <Compile Include="Core\Vertices\Human.cs" />
+    <Compile Include="Core\Vertices\God.cs" />
+    <Compile Include="Core\Vertices\Demigod.cs" />
+    <Compile Include="Core\Vertices\Monster.cs" />
+    <Compile Include="Core\EdgeTypes\HasFather.cs" />
+    <Compile Include="Core\Edges\CharacterHasBrotherCharacter.cs" />
+    <Compile Include="Core\EdgeTypes\HasMother.cs" />
+    <Compile Include="Core\EdgeTypes\HasBrother.cs" />
+    <Compile Include="Core\Vertices\Character.cs" />
+    <Compile Include="Core\Edges\CharacterHasMotherCharacter.cs" />
+    <Compile Include="Core\Edges\CharacterHasFatherCharacter.cs" />
+    <Compile Include="Core\EdgeTypes\HasPet.cs" />
+    <Compile Include="Core\EdgeTypes\Lives.cs" />
+    <Compile Include="Core\EdgeTypes\Battled.cs" />
+    <Compile Include="Core\Edges\CharacterHasPetMonster.cs" />
+    <Compile Include="Core\Edges\CharacterBattledMonster.cs" />
+    <Compile Include="Core\Edges\CharacterLivesLocation.cs" />
+    <Compile Include="Core\Edges\MonsterLivesLocation.cs" />
+    <Compile Include="Core\Edges\LivesLocation.cs" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <ItemGroup>
+    <ProjectReference Include="..\Weaver.Core\Weaver.Core.csproj">
+      <Project>{3904484B-9C06-4CC1-9D52-5DD57B8EDC46}</Project>
+      <Name>Weaver.Core</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Core\" />
+  </ItemGroup>
+</Project>
