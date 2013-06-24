@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Weaver.Titan", "Weaver.Tita
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Weaver.Test", "Weaver.Test\Weaver.Test.csproj", "{F061033B-9419-4ADF-8545-B78FC75AED49}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Weaver.Examples", "Weaver.Examples\Weaver.Examples.csproj", "{A2DB9FE0-7C4D-483E-8926-C7EB5263AC24}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -50,6 +52,24 @@ Global
 		{965AF9ED-A328-44CA-A2CC-AE7FADEB09A4}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{965AF9ED-A328-44CA-A2CC-AE7FADEB09A4}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{965AF9ED-A328-44CA-A2CC-AE7FADEB09A4}.Release|x86.ActiveCfg = Release|Any CPU
+		{A2DB9FE0-7C4D-483E-8926-C7EB5263AC24}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A2DB9FE0-7C4D-483E-8926-C7EB5263AC24}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A2DB9FE0-7C4D-483E-8926-C7EB5263AC24}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{A2DB9FE0-7C4D-483E-8926-C7EB5263AC24}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{A2DB9FE0-7C4D-483E-8926-C7EB5263AC24}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{A2DB9FE0-7C4D-483E-8926-C7EB5263AC24}.Debug|x86.Build.0 = Debug|Any CPU
+		{A2DB9FE0-7C4D-483E-8926-C7EB5263AC24}.DebugLive|Any CPU.ActiveCfg = Debug|Any CPU
+		{A2DB9FE0-7C4D-483E-8926-C7EB5263AC24}.DebugLive|Any CPU.Build.0 = Debug|Any CPU
+		{A2DB9FE0-7C4D-483E-8926-C7EB5263AC24}.DebugLive|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{A2DB9FE0-7C4D-483E-8926-C7EB5263AC24}.DebugLive|Mixed Platforms.Build.0 = Debug|Any CPU
+		{A2DB9FE0-7C4D-483E-8926-C7EB5263AC24}.DebugLive|x86.ActiveCfg = Debug|Any CPU
+		{A2DB9FE0-7C4D-483E-8926-C7EB5263AC24}.DebugLive|x86.Build.0 = Debug|Any CPU
+		{A2DB9FE0-7C4D-483E-8926-C7EB5263AC24}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A2DB9FE0-7C4D-483E-8926-C7EB5263AC24}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A2DB9FE0-7C4D-483E-8926-C7EB5263AC24}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{A2DB9FE0-7C4D-483E-8926-C7EB5263AC24}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{A2DB9FE0-7C4D-483E-8926-C7EB5263AC24}.Release|x86.ActiveCfg = Release|Any CPU
+		{A2DB9FE0-7C4D-483E-8926-C7EB5263AC24}.Release|x86.Build.0 = Release|Any CPU
 		{F061033B-9419-4ADF-8545-B78FC75AED49}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{F061033B-9419-4ADF-8545-B78FC75AED49}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F061033B-9419-4ADF-8545-B78FC75AED49}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
@@ -65,9 +85,6 @@ Global
 		{F061033B-9419-4ADF-8545-B78FC75AED49}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{F061033B-9419-4ADF-8545-B78FC75AED49}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{F061033B-9419-4ADF-8545-B78FC75AED49}.Release|x86.ActiveCfg = Release|Any CPU
-	EndGlobalSection
-	GlobalSection(SolutionProperties) = preSolution
-		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(MonoDevelopProperties) = preSolution
 		StartupItem = Weaver.Test\Weaver.Test.csproj
@@ -89,5 +106,8 @@ Global
 		$4.inheritsSet = VisualStudio
 		$4.inheritsScope = text/plain
 		$4.scope = text/plain
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
 	EndGlobalSection
 EndGlobal

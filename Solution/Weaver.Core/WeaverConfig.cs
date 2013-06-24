@@ -66,9 +66,21 @@ namespace Weaver.Core {
 
 				//Duplicate DbNames are ignored if they come from the same declaring type. This occurs
 				//for WeaverElement.Id, for example, or a common Vertex base class.
-
-				if ( wpp.Info.DeclaringType == pProp.Info.DeclaringType ) {
+				
+				Type t = wpp.Info.DeclaringType;
+				Type expectT = pProp.Info.DeclaringType;
+				
+				if ( t == expectT ) {
 					return;
+				}
+				
+				if ( t.IsGenericType ) {
+					string s = t.FullName.Substring(0, t.FullName.IndexOf('['));
+					string expectS = expectT.FullName.Substring(0, expectT.FullName.IndexOf('['));
+					
+					if ( s == expectS ) {
+						return;
+					}
 				}
 
 				throw new WeaverException("Duplicate property DbName found: '"+dbName+"'.");
