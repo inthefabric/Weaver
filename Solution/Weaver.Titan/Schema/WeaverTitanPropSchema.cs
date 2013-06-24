@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Weaver.Core.Exceptions;
 using Weaver.Core.Schema;
 using Weaver.Titan.Elements;
@@ -43,6 +44,11 @@ namespace Weaver.Titan.Schema {
 		/*--------------------------------------------------------------------------------------------*/
 		public bool HasTitanVertexCentricIndex(string pEdgeDbName) {
 			return vVertCent.ContainsKey(pEdgeDbName);
+		}
+
+		/*--------------------------------------------------------------------------------------------*/
+		public WeaverEdgeSchema[] GetTitanVertexCentricIndexes() {
+			return vVertCent.Values.ToArray();
 		}
 
 
