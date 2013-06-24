@@ -55,6 +55,10 @@ namespace Weaver.Titan.Elements {
 					n = "Double";
 					break;
 
+				case "Nullable`1":
+					n = GetTitanTypeName(pType.GetGenericArguments()[0]);
+					break;
+
 				default:
 					n = pType.Name;
 					break;

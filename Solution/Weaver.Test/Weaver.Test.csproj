@@ -70,6 +70,7 @@
     <Compile Include="WeavCore\Steps\TWeaverStepAs.cs" />
     <Compile Include="WeavCore\Steps\TWeaverStepBack.cs" />
     <Compile Include="WeavCore\Steps\TWeaverStepCustom.cs" />
+    <Compile Include="WeavTitan\Common\NullableProp.cs" />
     <Compile Include="WeavTitan\Common\Empty.cs" />
     <Compile Include="WeavTitan\Common\EmptyHasEmpty.cs" />
     <Compile Include="WeavTitan\Common\OneKnowsTwo.cs" />
@@ -122,7 +123,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="WeavCore\Steps\Parameters\" />
-    <Folder Include="WeavExamples\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

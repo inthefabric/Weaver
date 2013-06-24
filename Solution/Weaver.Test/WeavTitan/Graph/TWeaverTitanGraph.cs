@@ -134,6 +134,13 @@ namespace Weaver.Test.WeavTitan.Graph {
 
 		/*--------------------------------------------------------------------------------------------*/
 		[Test]
+		public void MakeVertexPropertyKeyNullable() {
+			IWeaverPathPipeEnd end = vGraph.MakeVertexPropertyKey<NullableProp>(x => x.A);
+			CheckMakeProperty(end, new string[0], "A", "Integer");
+		}
+
+		/*--------------------------------------------------------------------------------------------*/
+		[Test]
 		public void MakeEdgePropertyKey() {
 			IWeaverPathPipeEnd end = 
 				vGraph.MakeEdgePropertyKey<TitanPersonKnowsTitanPerson>(x => x.Amount);
