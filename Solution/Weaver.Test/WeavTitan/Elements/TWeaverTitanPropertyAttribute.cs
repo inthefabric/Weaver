@@ -1,5 +1,6 @@
 ﻿using System;
 using NUnit.Framework;
+using Weaver.Test.WeavTitan.Common;
 using Weaver.Titan.Elements;
 
 namespace Weaver.Test.WeavTitan.Elements {
@@ -7,6 +8,29 @@ namespace Weaver.Test.WeavTitan.Elements {
 	/*================================================================================================*/
 	[TestFixture]
 	public class TWeaverTitanPropertyAttribute : WeaverTestBase {
+
+
+
+		////////////////////////////////////////////////////////////////////////////////////////////////
+		/*--------------------------------------------------------------------------------------------*/
+		[Test]
+		public void HasTitanVertexCentricIndex() {
+			var prop = new WeaverTitanPropertyAttribute("test");
+			prop.EdgesForVertexCentricIndexing = new [] { typeof(One), typeof(Two) };
+
+			Assert.True(prop.HasTitanVertexCentricIndex(typeof(One)), "Incorrect result: One.");
+			Assert.True(prop.HasTitanVertexCentricIndex(typeof(Two)), "Incorrect result: Two.");
+			Assert.False(prop.HasTitanVertexCentricIndex(typeof(Empty)), "Incorrect result: Empty.");
+		}
+		
+		/*--------------------------------------------------------------------------------------------*/
+		[Test]
+		public void HasTitanVertexCentricIndexNull() {
+			var prop = new WeaverTitanPropertyAttribute("test");
+			prop.EdgesForVertexCentricIndexing = null;
+
+			Assert.False(prop.HasTitanVertexCentricIndex(typeof(Empty)), "Incorrect result: Empty.");
+		}
 
 
 		////////////////////////////////////////////////////////////////////////////////////////////////

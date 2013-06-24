@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using NUnit.Framework;
+using Weaver.Core.Elements;
 using Weaver.Core.Exceptions;
 using Weaver.Core.Query;
 using Weaver.Core.Util;
@@ -18,6 +19,42 @@ namespace Weaver.Test.WeavCore.Util {
 
 		private Expression<Func<Person, object>> vPropExpr;
 		private string vPropExprResult;
+
+
+		////////////////////////////////////////////////////////////////////////////////////////////////
+		/*--------------------------------------------------------------------------------------------*/
+		[TestCase(typeof(Person), true)]
+		[TestCase(typeof(WeaverUtil), false)]
+		public void GetElementAttribute(Type pType, bool pFound) {
+			var result = WeaverUtil.GetElementAttribute<WeaverVertexAttribute>(pType);
+
+			if ( pFound ) {
+				Assert.NotNull(result, "Result should be filled.");
+			}
+			else {
+				Assert.Null(result, "Result should be null.");
+			}
+		}
+		
+		/*--------------------------------------------------------------------------------------------*/
+		[TestCase(typeof(Person), 6)] //4+name+id
+		[TestCase(typeof(Root), 2)] //0+name+id
+		[TestCase(typeof(WeaverUtil), 0)]
+		public void GetElementPropertyAttributes(Type pType, int pCount) {
+			IList<WeaverPropPair> result = WeaverUtil.GetElementPropertyAttributes(pType);
+
+			Assert.NotNull(result, "Result should be filled.");
+			Assert.AreEqual(pCount, result.Count, "Incorrect result count.");
+		}
+
+		/*--------------------------------------------------------------------------------------------*/
+		[Test]
+		public void GetPropertyAttribute() {
+			WeaverPropPair result = WeaverUtil.GetPropertyAttribute<Person>(x => x.Age);
+
+			Assert.NotNull(result, "Result should be filled.");
+			Assert.AreEqual("Age", result.Info.Name, "Incorrect result PropertyInfo.Name.");
+		}
 
 
 		////////////////////////////////////////////////////////////////////////////////////////////////

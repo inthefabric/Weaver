@@ -18,7 +18,6 @@ namespace Weaver.Titan.Elements {
 		public WeaverTitanPropertyAttribute(string DbName) : base(DbName) {}
 
 		/*--------------------------------------------------------------------------------------------*/
-		//TEST: WeaverTitanPropertyAttribute.HasTitanVertexCentricIndex
 		public bool HasTitanVertexCentricIndex(Type pEdgeType) {
 			return (EdgesForVertexCentricIndexing != null &&
 				EdgesForVertexCentricIndexing.Any(t => (t == pEdgeType)));

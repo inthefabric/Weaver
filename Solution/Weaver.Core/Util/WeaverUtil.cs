@@ -14,14 +14,12 @@ namespace Weaver.Core.Util {
 
 		////////////////////////////////////////////////////////////////////////////////////////////////
 		/*--------------------------------------------------------------------------------------------*/
-		//TEST: WeaverUtil.GetElementAttribute
 		public static T GetElementAttribute<T>(Type pType) where T : WeaverElementAttribute {
 			object[] atts = pType.GetCustomAttributes(typeof(T), false);
 			return (atts.Length == 0 ? null : (T)atts[0]);
 		}
 
 		/*--------------------------------------------------------------------------------------------*/
-		//TEST: WeaverUtil.GetElementPropertyAttributes
 		public static IList<WeaverPropPair> GetElementPropertyAttributes(Type pType) {
 			PropertyInfo[] props = pType.GetProperties();
 			var list = new List<WeaverPropPair>();
@@ -35,14 +33,6 @@ namespace Weaver.Core.Util {
 			}
 
 			return list;
-		}
-
-		/*--------------------------------------------------------------------------------------------*/
-		//TEST: WeaverUtil.GetPropertyAttribute
-		public static WeaverPropPair GetPropertyAttribute(PropertyInfo pProp) {
-			object[] atts = pProp.GetCustomAttributes(typeof(WeaverPropertyAttribute), true);
-			return (atts.Length == 0 ? null : 
-				new WeaverPropPair((WeaverPropertyAttribute)atts[0], pProp));
 		}
 
 
@@ -92,6 +82,13 @@ namespace Weaver.Core.Util {
 
 			throw new WeaverException("Item property expression body was of type "+
 				pProp.Body.GetType().Name+", but must be of type MemberExpression.");
+		}
+
+		/*--------------------------------------------------------------------------------------------*/
+		private static WeaverPropPair GetPropertyAttribute(PropertyInfo pProp) {
+			object[] atts = pProp.GetCustomAttributes(typeof(WeaverPropertyAttribute), true);
+			return (atts.Length == 0 ? null : 
+				new WeaverPropPair((WeaverPropertyAttribute)atts[0], pProp));
 		}
 		
 		/*--------------------------------------------------------------------------------------------*/

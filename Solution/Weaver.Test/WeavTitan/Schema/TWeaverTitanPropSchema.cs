@@ -34,8 +34,8 @@ namespace Weaver.Test.WeavTitan.Schema {
 		/*--------------------------------------------------------------------------------------------*/
 		[Test]
 		public void AddTitanVertexCentricIndex() {
-			var pkp = vSchema.GetEdgeSchema(typeof(PersonKnowsPerson).Name);
-			var rhp = vSchema.GetEdgeSchema(typeof(RootHasPerson).Name);
+			WeaverEdgeSchema pkp = vSchema.GetEdgeSchema(typeof(PersonKnowsPerson).Name);
+			WeaverEdgeSchema rhp = vSchema.GetEdgeSchema(typeof(RootHasPerson).Name);
 
 			Assert.AreEqual(2, vProp.AddTitanVertexCentricIndex(pkp), "Incorrect count 2.");
 			Assert.AreEqual(3, vProp.AddTitanVertexCentricIndex(rhp), "Incorrect count 3.");
@@ -60,6 +60,24 @@ namespace Weaver.Test.WeavTitan.Schema {
 		public void HasTitanVertexCentricIndexDbName() {
 			Assert.True(vProp.HasTitanVertexCentricIndex(vPlc.DbName), "Incorrect result.");
 		}
+		
+		/*--------------------------------------------------------------------------------------------*/
+		[Test]
+		public void GetTitanVertexCentricIndexes() {
+			WeaverEdgeSchema pkp = vSchema.GetEdgeSchema(typeof(PersonKnowsPerson).Name);
+			WeaverEdgeSchema rhp = vSchema.GetEdgeSchema(typeof(RootHasPerson).Name);
+			vProp.AddTitanVertexCentricIndex(pkp);
+			vProp.AddTitanVertexCentricIndex(rhp);
+
+			WeaverEdgeSchema[] result = vProp.GetTitanVertexCentricIndexes();
+
+			Assert.NotNull(result, "Result should be filled.");
+			Assert.AreEqual(3, result.Length, "Incorrect result length.");
+
+			WeaverEdgeSchema[] expect = new[] { vPlc, pkp, rhp };
+			Assert.AreEqual(expect, result, "Incorrect result contents.");
+		}
+		
 
 
 		////////////////////////////////////////////////////////////////////////////////////////////////
