@@ -1,8 +1,8 @@
 ﻿using System.Reflection;
 using System.Resources;
 
-[assembly: AssemblyTitle("Weaver.Titan")]
-[assembly: AssemblyDescription("Extends Weaver with Titan-specific data-type and query functionality.")]
+[assembly: AssemblyTitle("Weaver.Exec.RexConnect")]
+[assembly: AssemblyDescription("Extends Weaver with execution of RexConnect requests.")]
 [assembly: AssemblyCompanyAttribute("Aesthetic Interactive")]
 [assembly: AssemblyProductAttribute("")]
 [assembly: NeutralResourcesLanguageAttribute("en")]
