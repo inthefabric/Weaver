@@ -2,18 +2,15 @@
 using System.Collections.Generic;
 using Moq;
 using NUnit.Framework;
-using Weaver.Core.Elements;
 using Weaver.Core.Exceptions;
 using Weaver.Core.Path;
 using Weaver.Core.Pipe;
 using Weaver.Core.Query;
-using Weaver.Core.Schema;
 using Weaver.Test.Common.Schema;
 using Weaver.Test.Common.Vertices;
 using Weaver.Test.Utils;
 using Weaver.Test.WeavTitan.Common;
 using Weaver.Titan.Graph;
-using Weaver.Titan.Schema;
 
 namespace Weaver.Test.WeavTitan.Graph {
 
@@ -196,7 +193,7 @@ namespace Weaver.Test.WeavTitan.Graph {
 
 			var expect = new[] {
 				"primaryKey(OA,OD,TB,TC,TD)",
-				"signature(OB,OC,OE,TA,TE)",
+				"signature(OB,OC,OE,TiNa,TA,TE)",
 				"unique(IN)",
 				"unique(OUT)"
 			};

@@ -103,8 +103,8 @@ namespace Weaver.Titan.Graph {
 			props.AddRange(WeaverUtil.GetElementPropertyAttributes(e.OutVertex));
 			props.AddRange(WeaverUtil.GetElementPropertyAttributes(e.InVertex));
 
-			var keys = new List<string>();
-			var sigs = new List<string>();
+			var keys = new HashSet<string>();
+			var sigs = new HashSet<string>();
 
 			foreach ( WeaverPropPair wpp in props ) {
 				WeaverTitanPropertyAttribute att = GetAndVerifyTitanPropertyAttribute(wpp, true);

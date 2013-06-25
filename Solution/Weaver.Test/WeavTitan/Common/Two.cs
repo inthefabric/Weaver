@@ -1,11 +1,10 @@
-﻿using Weaver.Core.Elements;
-using Weaver.Titan.Elements;
+﻿using Weaver.Titan.Elements;
 
 namespace Weaver.Test.WeavTitan.Common {
 
 	/*================================================================================================*/
 	[WeaverTitanVertex]
-	public class Two : WeaverVertex {
+	public class Two : TitanBase {
 
 		[WeaverTitanProperty("TA")]
 		public int A { get; set; }

@@ -70,6 +70,7 @@
     <Compile Include="WeavCore\Steps\TWeaverStepAs.cs" />
     <Compile Include="WeavCore\Steps\TWeaverStepBack.cs" />
     <Compile Include="WeavCore\Steps\TWeaverStepCustom.cs" />
+    <Compile Include="WeavTitan\Common\TitanBase.cs" />
     <Compile Include="WeavTitan\Common\NullableProp.cs" />
     <Compile Include="WeavTitan\Common\Empty.cs" />
     <Compile Include="WeavTitan\Common\EmptyHasEmpty.cs" />

@@ -1,11 +1,10 @@
-﻿using Weaver.Core.Elements;
-using Weaver.Titan.Elements;
+﻿using Weaver.Titan.Elements;
 
 namespace Weaver.Test.WeavTitan.Common {
 
 	/*================================================================================================*/
 	[WeaverTitanVertex]
-	public class One : WeaverVertex {
+	public class One : TitanBase {
 
 		[WeaverTitanProperty("OA", EdgesForVertexCentricIndexing = new [] { typeof(OneKnowsTwo) })]
 		public int A { get; set; }
