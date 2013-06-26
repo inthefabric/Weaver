@@ -10,10 +10,8 @@ namespace Weaver.Exec.RexConnect.Result {
 
 		Request Request { get; }
 		string RequestJson { get; }
-
 		Response Response { get; }
 		string ResponseJson { get; }
-		IList<ResponseCmdResult> CommandResults { get; }
 
 		bool IsError { get; }
 		int ExecutionMilliseconds { get; set; }
@@ -29,7 +27,18 @@ namespace Weaver.Exec.RexConnect.Result {
 
 		////////////////////////////////////////////////////////////////////////////////////////////////
 		/*--------------------------------------------------------------------------------------------*/
-		void FillCommandTextResults();
+		IList<IList<IGraphElement>> GetGraphElements();
+		
+		/*--------------------------------------------------------------------------------------------*/
+		IList<IGraphElement> GetGraphElementsAt(int pCommandIndex);
+
+
+		////////////////////////////////////////////////////////////////////////////////////////////////
+		/*--------------------------------------------------------------------------------------------*/
+		IList<ITextResultList> GetTextResults();
+
+		/*--------------------------------------------------------------------------------------------*/
+		ITextResultList GetTextResultAt(int pCommandIndex);
 
 	}
 

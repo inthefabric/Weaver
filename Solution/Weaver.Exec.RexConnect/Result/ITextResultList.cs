@@ -3,7 +3,7 @@
 namespace Weaver.Exec.RexConnect.Result {
 
 	/*================================================================================================*/
-	interface ITextResultList {
+	public interface ITextResultList {
 
 		IList<string> Values { get; }
 		

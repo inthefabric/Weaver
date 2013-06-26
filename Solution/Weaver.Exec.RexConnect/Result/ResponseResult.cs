@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using ServiceStack.Text;
+using Weaver.Exec.RexConnect.Result.Strings;
 using Weaver.Exec.RexConnect.Transfer;
 
 namespace Weaver.Exec.RexConnect.Result {
@@ -12,13 +14,14 @@ namespace Weaver.Exec.RexConnect.Result {
 
 		public Request Request { get; protected set; }
 		public string RequestJson { get; protected set; }
-
 		public Response Response { get; protected set; }
 		public string ResponseJson { get; protected set; }
-		public IList<ResponseCmdResult> CommandResults { get; protected set; }
 
 		public bool IsError { get; protected set; }
 		public int ExecutionMilliseconds { get; set; }
+
+		private IList<IList<IGraphElement>> vElementResults;
+		private IList<ITextResultList> vTextResults;
 
 
 		////////////////////////////////////////////////////////////////////////////////////////////////
@@ -31,6 +34,7 @@ namespace Weaver.Exec.RexConnect.Result {
 
 		/*--------------------------------------------------------------------------------------------*/
 		public virtual void SetResponseJson(string pResponseJson) {
+			VerifyNoResponse();
 			ResponseJson = pResponseJson;
 			Response = JsonSerializer.DeserializeFromString<Response>(ResponseJson);
 
@@ -39,14 +43,11 @@ namespace Weaver.Exec.RexConnect.Result {
 			}
 
 			if ( Response.Err != null ) {
-				throw new Exception("Response has an error.");
+				throw new Exception("Response has an error: "+Response.Err);
 			}
-
-			CommandResults = new List<ResponseCmdResult>();
 
 			for ( int i = 0 ; i < Response.CmdList.Count ; ++i ) {
 				ResponseCmd rc = Response.CmdList[i];
-				CommandResults.Add(new ResponseCmdResult(rc));
 
 				if ( rc.Err != null ) {
 					Context.Log("Warn", "Data", "Response.CmdList["+i+"] error: "+rc.Err);
@@ -56,16 +57,73 @@ namespace Weaver.Exec.RexConnect.Result {
 
 		/*--------------------------------------------------------------------------------------------*/
 		public virtual void SetResponseError(string pErr) {
+			VerifyNoResponse();
 			IsError = true;
 
 			Response = new Response();
 			Response.Err = pErr;
 			Response.CmdList = new List<ResponseCmd>();
 		}
+		
+		/*--------------------------------------------------------------------------------------------*/
+		private void VerifyNoResponse() {
+			if ( Response != null ) {
+				throw new Exception("Response is already set.");
+			}
+		}
+
+		
+		////////////////////////////////////////////////////////////////////////////////////////////////
+		/*--------------------------------------------------------------------------------------------*/
+		public virtual IList<IList<IGraphElement>> GetGraphElements() {
+			if ( vElementResults != null ) {
+				return vElementResults;
+			}
+
+			vElementResults = new List<IList<IGraphElement>>();
+
+			foreach ( ResponseCmd cmd in Response.CmdList ) {
+				vElementResults.Add(
+					cmd.Results.Select(GraphElement.Build).Cast<IGraphElement>().ToList()
+				);
+			}
+
+			return vElementResults;
+		}
+		
+		/*--------------------------------------------------------------------------------------------*/
+		public virtual IList<IGraphElement> GetGraphElementsAt(int pCommandIndex) {
+			GetGraphElements();
+			return vElementResults[pCommandIndex];
+		}
 
 
 		////////////////////////////////////////////////////////////////////////////////////////////////
 		/*--------------------------------------------------------------------------------------------*/
+		public virtual IList<ITextResultList> GetTextResults() {
+			if ( vTextResults != null ) {
+				return vTextResults;
+			}
+
+			StringsResponse sr = JsonSerializer.DeserializeFromString<StringsResponse>(ResponseJson);
+			vTextResults = new List<ITextResultList>();
+
+			foreach ( StringsResponseCmd src in sr.CmdList ) {
+				vTextResults.Add(new TextResultList(src.Results));
+			}
+
+			return vTextResults;
+		}
+
+		/*--------------------------------------------------------------------------------------------*/
+		public virtual ITextResultList GetTextResultAt(int pCommandIndex) {
+			GetTextResults();
+			return vTextResults[pCommandIndex];
+		}
+
+
+		////////////////////////////////////////////////////////////////////////////////////////////////
+		/*--------------------------------------------------------------------------------------------* /
 		public virtual void FillCommandTextResults() {
 			int count = CommandResults.Count;
 			int i = 0;
@@ -76,7 +134,7 @@ namespace Weaver.Exec.RexConnect.Result {
 			}
 		}
 
-		/*--------------------------------------------------------------------------------------------*/
+		/*--------------------------------------------------------------------------------------------* /
 		protected static string BuildTextListResults(string pRemainingJson, ResponseCmdResult pCmdRes) {
 			const string cmdResults = "\"results\":[";
 			var list = new List<string>();
@@ -146,7 +204,7 @@ namespace Weaver.Exec.RexConnect.Result {
 
 			pCmdRes.TextResults = new TextResultList(list);
 			return pRemainingJson.Substring(i);
-		}
+		}*/
 
 	}
 
