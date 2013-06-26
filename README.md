@@ -1,14 +1,26 @@
 ## Weaver
 
-Weaver provides a fluent, strongly-typed interface for generating Gremlin scripts (for .NET/C#).
+Weaver provides a fluent, strongly-typed interface for generating [Gremlin](https://github.com/tinkerpop/gremlin) scripts (for .NET/C#).
 
-It requires a full graph schema (with [nodes](https://github.com/inthefabric/Weaver/blob/master/Solution/Weaver/Schema/WeaverNodeSchema.cs) and [relationships](https://github.com/inthefabric/Weaver/blob/master/Solution/Weaver/Schema/WeaverRelSchema.cs)) to function correctly.
+This requires that your graph domain classes use Weaver's custom attributes for [vertices](https://github.com/inthefabric/Weaver/blob/master/Solution/Weaver.Core/Elements/WeaverVertexAttribute.cs), [edges](https://github.com/inthefabric/Weaver/blob/master/Solution/Weaver.Core/Elements/WeaverEdgeAttribute.cs), and [properties](https://github.com/inthefabric/Weaver/blob/master/Solution/Weaver.Core/Elements/WeaverPropertyAttribute.cs). The `Weaver.Titan` package includes additional [Titan](https://github.com/thinkaurelius/titan)-specific functionality for creating graph data-types, groups, and indices.
+
+#### Install with NuGet
+
+- [Weaver.Core](https://www.nuget.org/packages/Weaver)
+```
+PM> Install-Package Weaver
+```
+
+- [Weaver.Titan](https://www.nuget.org/packages/Weaver.Titan)
+```
+PM> Install-Package Weaver.Titan 
+```
 
 #### Basic Usage
 
 Weaver converts C# code:
 ```cs
-myWeaverObj.BeginPath<User>(x => x.Name, "Zach")
+myWeaverObj.Graph.V.ExactIndex<User>(x => x.Name, "Zach")
 ```
 
 ...into Gremlin script:
@@ -26,19 +38,19 @@ A slightly-modified example from Fabric [code](https://github.com/inthefabric/Fa
 ```cs
 IWeaverFuncAs<Member> memAlias;
 
-IWeaverQuery q = 
-	myWeaverObj.BeginPath<User>(x => x.ArtifactId, 123).BaseNode
+IWeaverQuery q = myWeaverObj.Graph
+	.V.ExactIndex<User>(x => x.ArtifactId, 123)
 	.DefinesMemberList.ToMember
 		.As(out memAlias)
 	.InAppDefines.FromApp
-		.Has(x => x.ArtifactId, WeaverFuncHasOp.EqualTo, 456)
+		.Has(x => x.ArtifactId, WeaverStepHasOp.EqualTo, pApiCtx.AppId)
 	.Back(memAlias)
 	.HasMemberTypeAssign.ToMemberTypeAssign
-		.Has(x => x.MemberTypeId, WeaverFuncHasOp.NotEqualTo, (byte)MemberTypeId.None)
-		.Has(x => x.MemberTypeId, WeaverFuncHasOp.NotEqualTo, (byte)MemberTypeId.Invite)
-		.Has(x => x.MemberTypeId, WeaverFuncHasOp.NotEqualTo, (byte)MemberTypeId.Request)
+		.Has(x => x.MemberTypeId, WeaverStepHasOp.NotEqualTo, (byte)MemberTypeId.None)
+		.Has(x => x.MemberTypeId, WeaverStepHasOp.NotEqualTo, (byte)MemberTypeId.Invite)
+		.Has(x => x.MemberTypeId, WeaverStepHasOp.NotEqualTo, (byte)MemberTypeId.Request)
 	.Back(memAlias)
-	.End();
+	.ToQuery();
 
 SendGremlinRequest(q.Script, q.Params);
 ```
