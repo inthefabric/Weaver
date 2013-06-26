@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
+using Weaver.Exec.RexConnect.Transfer;
 
-namespace Weaver.Exec.RexConnect.Transfer {
+namespace Weaver.Exec.RexConnect.Result {
 
 	/*================================================================================================*/
 	public interface IResponseResult {

@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Weaver.Exec.RexConnect.Transfer {
+namespace Weaver.Exec.RexConnect.Result {
 
 	/*================================================================================================*/
 	interface ITextResultList {

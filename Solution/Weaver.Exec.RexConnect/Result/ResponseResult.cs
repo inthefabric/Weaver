@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using ServiceStack.Text;
+using Weaver.Exec.RexConnect.Transfer;
 
-namespace Weaver.Exec.RexConnect.Transfer {
+namespace Weaver.Exec.RexConnect.Result {
 
 	/*================================================================================================*/
 	public class ResponseResult : IResponseResult {

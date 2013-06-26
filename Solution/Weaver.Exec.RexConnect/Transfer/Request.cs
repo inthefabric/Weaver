@@ -58,7 +58,7 @@ namespace Weaver.Exec.RexConnect.Transfer {
 		
 		////////////////////////////////////////////////////////////////////////////////////////////////
 		/*--------------------------------------------------------------------------------------------*/
-		public virtual string ToJson() {
+		public virtual string ToRequestJson() {
 			JsConfig.EmitCamelCaseNames = true;
 			string json = JsonSerializer.SerializeToString(this);
 			JsConfig.EmitCamelCaseNames = false;

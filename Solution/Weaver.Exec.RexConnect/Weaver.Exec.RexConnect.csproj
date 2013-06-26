@@ -34,18 +34,20 @@
     <Compile Include="..\..\Global\GlobalAssemblyVersion.cs">
       <Link>Properties\GlobalAssemblyVersion.cs</Link>
     </Compile>
+    <Compile Include="IRexConnDataAccess.cs" />
+    <Compile Include="RexConnDataAccess.cs" />
     <Compile Include="RexConnTcp.cs" />
     <Compile Include="IRexConnTcp.cs" />
     <Compile Include="RexConnContext.cs" />
     <Compile Include="RexConn.cs" />
-    <Compile Include="Transfer\CommandResult.cs" />
-    <Compile Include="Transfer\ITextResultList.cs" />
-    <Compile Include="Transfer\IGraphElement.cs" />
-    <Compile Include="Transfer\ICommandResult.cs" />
-    <Compile Include="Transfer\IResponseResult.cs" />
-    <Compile Include="Transfer\ResponseResult.cs" />
-    <Compile Include="Transfer\TextResultList.cs" />
-    <Compile Include="Transfer\GraphElement.cs" />
+    <Compile Include="Result\CommandResult.cs" />
+    <Compile Include="Result\ITextResultList.cs" />
+    <Compile Include="Result\IGraphElement.cs" />
+    <Compile Include="Result\ICommandResult.cs" />
+    <Compile Include="Result\IResponseResult.cs" />
+    <Compile Include="Result\ResponseResult.cs" />
+    <Compile Include="Result\TextResultList.cs" />
+    <Compile Include="Result\GraphElement.cs" />
     <Compile Include="Transfer\Request.cs" />
     <Compile Include="Transfer\RequestCmd.cs" />
     <Compile Include="Transfer\ResponseCmd.cs" />

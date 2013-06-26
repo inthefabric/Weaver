@@ -1,7 +1,7 @@
 ﻿using System;
 using ServiceStack.Text;
 
-namespace Weaver.Exec.RexConnect.Transfer {
+namespace Weaver.Exec.RexConnect.Result {
 
 	/*================================================================================================*/
 	public class GraphElement : IGraphElement {
