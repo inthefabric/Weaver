@@ -1,11 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
-using ServiceStack.Text;
 using Weaver.Exec.RexConnect.Transfer;
 
 namespace Weaver.Exec.RexConnect {
@@ -13,99 +11,54 @@ namespace Weaver.Exec.RexConnect {
 	/*================================================================================================*/
 	public class RexConnDataAccess : IRexConnDataAccess {
 
-		private static int TcpCount;
-
-		public IRexConnContext ApiCtx { get; private set; }
-
-		public Request Request { get; private set; }
-		public string RequestJson { get; private set; }
-
-		public Response Response { get; private set; }
-		public string ResponseJson { get; private set; }
-		public int ExecutionMilliseconds { get; private set; }
-
-		private Exception vUnhandledException;
-
 
 		////////////////////////////////////////////////////////////////////////////////////////////////
 		/*--------------------------------------------------------------------------------------------*/
-		public RexConnDataAccess(IRexConnContext pContext, Request pRequest) {
-			ApiCtx = pContext;
-			Request = pRequest;
-		}
-
-		/*--------------------------------------------------------------------------------------------*/
-		public virtual void Execute() {
+		public ResponseResult Execute(IRexConnContext pContext, Request pRequest) {
 			var sw = Stopwatch.StartNew();
+			Exception unhandled = null;
+			
+			var result = new ResponseResult();
+			result.SetRequest(pContext, pRequest);
 
 			try {
-				++TcpCount;
-				RequestJson = Request.ToJson();
-				ApiCtx.Log("Debug", "Request", RequestJson);
-
-				ResponseJson = GetRawResult(RequestJson);
-				Response = JsonSerializer.DeserializeFromString<Response>(ResponseJson);
-
-				if ( Response == null ) {
-					throw new Exception("Response is null.");
-				}
-
-				Response.RawJson = ResponseJson;
-
-				if ( Response.Err != null ) {
-					throw new Exception("Response has an error.");
-				}
+				pContext.Log("Debug", "Request", result.RequestJson);
+				GetRawResult(result);
 			}
 			catch ( WebException we ) {
-				vUnhandledException = we;
-
-				Response = new Response();
-				Response.Err = we+"";
-				Response.CmdList = new List<ResponseCmd>();
-
+				unhandled = we;
+				result.SetErrorResponse(we+"");
 				Stream s = (we.Response == null ? null : we.Response.GetResponseStream());
 
 				if ( s != null ) {
 					var sr = new StreamReader(s);
-					ApiCtx.Log("Error", "Gremlin", sr.ReadToEnd());
+					pContext.Log("Error", "Gremlin", sr.ReadToEnd());
 				}
 			}
 			catch ( Exception e ) {
-				vUnhandledException = e;
-				ApiCtx.Log("Error", "Unhandled", "Raw result: "+ResponseJson);
-
-				Response = new Response();
-				Response.Err = e+"";
-				Response.CmdList = new List<ResponseCmd>();
+				unhandled = e;
+				pContext.Log("Error", "Unhandled", "Raw result: "+result.ResponseJson);
+				result.SetErrorResponse(e+"");
 			}
 
-			--TcpCount;
-			ExecutionMilliseconds = (int)sw.ElapsedMilliseconds;
-			LogAction();
+			result.ExecutionMilliseconds = (int)sw.ElapsedMilliseconds;
 
-			if ( vUnhandledException != null ) {
-				vUnhandledException = new Exception("Unhandled exception:"+
-					"\nRequestJson = "+RequestJson+
-					"\nResponseJson = "+ResponseJson, vUnhandledException);
-				throw vUnhandledException;
+			if ( unhandled != null ) {
+				unhandled = new Exception("Unhandled exception:\nRequestJson = "+
+					result.RequestJson+"\nResponseJson = "+result.ResponseJson, unhandled);
+				throw unhandled;
 			}
 
-			for ( int i = 0 ; i < Response.CmdList.Count ; ++i ) {
-				ResponseCmd rc = Response.CmdList[i];
-
-				if ( rc.Err != null ) {
-					ApiCtx.Log("Warn", "Data", "Response.CmdList["+i+"] error: "+rc.Err);
-				}
-			}
+			return result;
 		}
 
 		/*--------------------------------------------------------------------------------------------*/
-		protected virtual string GetRawResult(string pReqJson) {
-			TcpClient tcp = new TcpClient(ApiCtx.HostName, ApiCtx.Port);
-			tcp.SendBufferSize = tcp.ReceiveBufferSize = 1<<16;
+		protected virtual void GetRawResult(ResponseResult pResult) {
+			TcpClient tcp = pResult.Context.CreateTcpClient();
 
-			byte[] dataLen = BitConverter.GetBytes(IPAddress.HostToNetworkOrder(pReqJson.Length));
-			byte[] data = Encoding.ASCII.GetBytes(pReqJson);
+			int len = IPAddress.HostToNetworkOrder(pResult.RequestJson.Length);
+			byte[] dataLen = BitConverter.GetBytes(len);
+			byte[] data = Encoding.ASCII.GetBytes(pResult.RequestJson);
 			
 			//stream the request's string length, then the string itself
 
@@ -136,34 +89,9 @@ namespace Weaver.Exec.RexConnect {
 				sb.Append(Encoding.ASCII.GetString(data, 0, bytes));
 			}
 
-			string result = sb.ToString();
-			ApiCtx.Log("Debug", "Result", result);
-			return result;
-		}
-
-
-		////////////////////////////////////////////////////////////////////////////////////////////////
-		/*--------------------------------------------------------------------------------------------*/
-		private void LogAction() {
-			//DBv1: 
-			//	TotalMs, QueryMs, Timestamp, TcpCount, QueryChars
-
-			const string name = "DBv1";
-			const string x = " | ";
-
-			string v1 =
-				ExecutionMilliseconds +x+
-				Response.Timer +x+
-				DateTime.UtcNow.Ticks +x+
-				TcpCount +x+
-				RequestJson.Length;
-
-			if ( vUnhandledException == null ) {
-				ApiCtx.Log("Info", name, v1);
-			}
-			else {
-				ApiCtx.Log("Error", name, v1, vUnhandledException);
-			}
+			string resp = sb.ToString();
+			pResult.Context.Log("Debug", "Result", resp);
+			pResult.SetResponseJson(resp);
 		}
 
 	}

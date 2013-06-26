@@ -1,14 +1,17 @@
-﻿using Weaver.Exec.RexConnect.Transfer;
+﻿using System.Collections.Generic;
 
-namespace Weaver.Exec.RexConnect {
+namespace Weaver.Exec.RexConnect.Transfer {
 
 	/*================================================================================================*/
-	public interface IRexConnDataAccess {
+	public interface ICommandResult {
 
+		ResponseCmd Command { get; }
+		TextResultList TextResults { get; }
 
+		
 		////////////////////////////////////////////////////////////////////////////////////////////////
 		/*--------------------------------------------------------------------------------------------*/
-		ResponseResult Execute(IRexConnContext pContext, Request pRequest);
+		IList<GraphElement> ToGraphElements();
 
 	}
 

@@ -3,53 +3,32 @@
 namespace Weaver.Exec.RexConnect.Transfer {
 
 	/*================================================================================================*/
-	public class TextResultList : ITextResultList {
+	interface ITextResultList {
 
-		public IList<string> Values { get; private set; }
+		IList<string> Values { get; }
 		
 		
 		////////////////////////////////////////////////////////////////////////////////////////////////
 		/*--------------------------------------------------------------------------------------------*/
-		public TextResultList(IList<string> pValues) {
-			Values = pValues;
-		}
-
-
-		////////////////////////////////////////////////////////////////////////////////////////////////
-		/*--------------------------------------------------------------------------------------------*/
-		public string ToString(int pIndex) {
-			return Values[pIndex];
-		}
+		string ToString(int pIndex);
 
 		/*--------------------------------------------------------------------------------------------*/
-		public byte ToByte(int pIndex) {
-			return byte.Parse(ToString(pIndex));
-		}
+		byte ToByte(int pIndex);
 
 		/*--------------------------------------------------------------------------------------------*/
-		public short ToShort(int pIndex) {
-			return short.Parse(ToString(pIndex));
-		}
+		short ToShort(int pIndex);
 
 		/*--------------------------------------------------------------------------------------------*/
-		public int ToInt(int pIndex) {
-			return int.Parse(ToString(pIndex));
-		}
+		int ToInt(int pIndex);
 
 		/*--------------------------------------------------------------------------------------------*/
-		public long ToLong(int pIndex) {
-			return long.Parse(ToString(pIndex));
-		}
+		long ToLong(int pIndex);
 
 		/*--------------------------------------------------------------------------------------------*/
-		public float ToFloat(int pIndex) {
-			return float.Parse(ToString(pIndex));
-		}
+		float ToFloat(int pIndex);
 
 		/*--------------------------------------------------------------------------------------------*/
-		public double ToDouble(int pIndex) {
-			return double.Parse(ToString(pIndex));
-		}
+		double ToDouble(int pIndex);
 
 	}
 

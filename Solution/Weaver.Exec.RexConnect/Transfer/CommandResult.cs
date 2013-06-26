@@ -4,10 +4,10 @@ using ServiceStack.Text;
 namespace Weaver.Exec.RexConnect.Transfer {
 
 	/*================================================================================================*/
-	public class CommandResult {
+	public class CommandResult : ICommandResult {
 
-		public virtual ResponseCmd Command { get; private set; }
-		public virtual TextResultList TextResults { get; internal set; }
+		public ResponseCmd Command { get; protected set; }
+		public TextResultList TextResults { get; internal set; }
 
 		
 		////////////////////////////////////////////////////////////////////////////////////////////////

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Net.Sockets;
 
 namespace Weaver.Exec.RexConnect {
 	
@@ -11,6 +12,9 @@ namespace Weaver.Exec.RexConnect {
 
 
 		////////////////////////////////////////////////////////////////////////////////////////////////
+		/*--------------------------------------------------------------------------------------------*/
+		TcpClient CreateTcpClient();
+
 		/*--------------------------------------------------------------------------------------------*/
 		void Log(string pType, string pCategory, string pText, Exception pException=null);
 

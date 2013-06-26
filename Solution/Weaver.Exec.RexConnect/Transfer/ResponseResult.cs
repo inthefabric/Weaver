@@ -1,53 +1,82 @@
 ﻿using System;
 using System.Collections.Generic;
+using ServiceStack.Text;
 
 namespace Weaver.Exec.RexConnect.Transfer {
 
 	/*================================================================================================*/
-	public class ResponseResult {
+	public class ResponseResult : IResponseResult {
 
-		public Request Request { get; private set; }
-		public string RequestJson { get; private set; }
+		public IRexConnContext Context { get; protected set; }
 
-		public Response Response { get; private set; }
-		public string ResponseJson { get; private set; }
-		public IList<CommandResult> CommandResults { get; private set; }
+		public Request Request { get; protected set; }
+		public string RequestJson { get; protected set; }
 
-		public int ExecutionMilliseconds { get; private set; }
+		public Response Response { get; protected set; }
+		public string ResponseJson { get; protected set; }
+		public IList<CommandResult> CommandResults { get; protected set; }
+
+		public bool IsError { get; protected set; }
+		public int ExecutionMilliseconds { get; set; }
 
 
 		////////////////////////////////////////////////////////////////////////////////////////////////
 		/*--------------------------------------------------------------------------------------------*/
-		public ResponseResult(Request pRequest, string pRequestJson, Response pResponse, 
-												string pResponseJson, int pExecutionMilliseconds) {
+		public void SetRequest(IRexConnContext pContext, Request pRequest) {
+			Context = pContext;
 			Request = pRequest;
-			RequestJson = pRequestJson;
-			Response = pResponse;
+			RequestJson = JsonSerializer.SerializeToString(pRequest);
+		}
+
+		/*--------------------------------------------------------------------------------------------*/
+		public virtual void SetResponseJson(string pResponseJson) {
 			ResponseJson = pResponseJson;
-			ExecutionMilliseconds = pExecutionMilliseconds;
+			Response = JsonSerializer.DeserializeFromString<Response>(ResponseJson);
+
+			if ( Response == null ) {
+				throw new Exception("Response is null.");
+			}
+
+			if ( Response.Err != null ) {
+				throw new Exception("Response has an error.");
+			}
 
 			CommandResults = new List<CommandResult>();
 
-			foreach ( ResponseCmd cmd in Response.CmdList ) {
-				CommandResults.Add(new CommandResult(cmd));
+			for ( int i = 0 ; i < Response.CmdList.Count ; ++i ) {
+				ResponseCmd rc = Response.CmdList[i];
+				CommandResults.Add(new CommandResult(rc));
+
+				if ( rc.Err != null ) {
+					Context.Log("Warn", "Data", "Response.CmdList["+i+"] error: "+rc.Err);
+				}
 			}
+		}
+
+		/*--------------------------------------------------------------------------------------------*/
+		public virtual void SetErrorResponse(string pErr) {
+			IsError = true;
+
+			Response = new Response();
+			Response.Err = pErr;
+			Response.CmdList = new List<ResponseCmd>();
 		}
 
 
 		////////////////////////////////////////////////////////////////////////////////////////////////
 		/*--------------------------------------------------------------------------------------------*/
-		public void FillCommandTextResults() {
-			int count = Response.CmdList.Count;
+		public virtual void FillCommandTextResults() {
+			int count = CommandResults.Count;
 			int i = 0;
 			string json = (string)ResponseJson.Clone();
 
 			while ( i < count && json != null ) {
-				json = BuildTextListResults(json, Response.CmdList[i++]);
+				json = BuildTextListResults(json, CommandResults[i++]);
 			}
 		}
 
 		/*--------------------------------------------------------------------------------------------*/
-		private static string BuildTextListResults(string pRemainingJson, ResponseCmd pCmd) {
+		protected static string BuildTextListResults(string pRemainingJson, CommandResult pCmdRes) {
 			const string cmdResults = "\"results\":[";
 			var list = new List<string>();
 			int startI = pRemainingJson.IndexOf(cmdResults);
@@ -114,7 +143,7 @@ namespace Weaver.Exec.RexConnect.Transfer {
 				}
 			}
 
-			pCmd.TextResults = new TextResultList(list);
+			pCmdRes.TextResults = new TextResultList(list);
 			return pRemainingJson.Substring(i);
 		}
 

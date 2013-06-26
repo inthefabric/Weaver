@@ -37,6 +37,10 @@
     <Compile Include="RexConnContext.cs" />
     <Compile Include="RexConn.cs" />
     <Compile Include="Transfer\CommandResult.cs" />
+    <Compile Include="Transfer\ITextResultList.cs" />
+    <Compile Include="Transfer\IGraphElement.cs" />
+    <Compile Include="Transfer\ICommandResult.cs" />
+    <Compile Include="Transfer\IResponseResult.cs" />
     <Compile Include="Transfer\ResponseResult.cs" />
     <Compile Include="Transfer\TextResultList.cs" />
     <Compile Include="Transfer\GraphElement.cs" />

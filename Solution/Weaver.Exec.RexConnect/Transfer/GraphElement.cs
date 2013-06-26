@@ -4,17 +4,17 @@ using ServiceStack.Text;
 namespace Weaver.Exec.RexConnect.Transfer {
 
 	/*================================================================================================*/
-	public class GraphElement {
+	public class GraphElement : IGraphElement {
 
-		public virtual RexConn.GraphElementType Type { get; set; }
-		public virtual string Id { get; set; }
-		public virtual string Label { get; set; }
-		public virtual string InVertexId { get; set; }
-		public virtual string OutVertexId { get; set; }
-		public virtual JsonObject Properties { get; set; }
+		public RexConn.GraphElementType Type { get; set; }
+		public string Id { get; set; }
+		public string Label { get; set; }
+		public string InVertexId { get; set; }
+		public string OutVertexId { get; set; }
+		public JsonObject Properties { get; set; }
 
-		public virtual string Message { get; set; }
-		public virtual string Exception { get; set; }
+		public string Message { get; set; }
+		public string Exception { get; set; }
 
 
 		////////////////////////////////////////////////////////////////////////////////////////////////
