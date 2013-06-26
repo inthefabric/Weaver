@@ -9,12 +9,9 @@ namespace Weaver.Exec.RexConnect.Result {
 		public RexConn.GraphElementType Type { get; set; }
 		public string Id { get; set; }
 		public string Label { get; set; }
-		public string InVertexId { get; set; }
 		public string OutVertexId { get; set; }
+		public string InVertexId { get; set; }
 		public JsonObject Properties { get; set; }
-
-		public string Message { get; set; }
-		public string Exception { get; set; }
 
 
 		////////////////////////////////////////////////////////////////////////////////////////////////
@@ -37,7 +34,6 @@ namespace Weaver.Exec.RexConnect.Result {
 					break;
 
 				default:
-					ge.Type = RexConn.GraphElementType.Error;
 					throw new Exception("Unknown GraphElementType: "+pObj["_type"]);
 			}
 

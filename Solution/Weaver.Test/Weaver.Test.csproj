@@ -102,6 +102,10 @@
       <Project>{3904484B-9C06-4CC1-9D52-5DD57B8EDC46}</Project>
       <Name>Weaver.Core</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Weaver.Exec.RexConnect\Weaver.Exec.RexConnect.csproj">
+      <Project>{F71292E1-2F2C-4F7A-9B9C-B72E0DAD080C}</Project>
+      <Name>Weaver.Exec.RexConnect</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Weaver.Titan\Weaver.Titan.csproj">
       <Project>{965AF9ED-A328-44CA-A2CC-AE7FADEB09A4}</Project>
       <Name>Weaver.Titan</Name>
@@ -117,6 +121,9 @@
     </Reference>
     <Reference Include="nunit.framework">
       <HintPath>..\..\Packages\NUnit.2.6.2\lib\nunit.framework.dll</HintPath>
+    </Reference>
+    <Reference Include="ServiceStack.Text">
+      <HintPath>..\..\Packages\ServiceStack.Text.3.9.54\lib\net35\ServiceStack.Text.dll</HintPath>
     </Reference>
     <Reference Include="System" />
   </ItemGroup>

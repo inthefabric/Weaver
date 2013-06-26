@@ -22,10 +22,8 @@
 		}
 
 		public enum GraphElementType {
-			Unknown,
-			Vertex,
-			Edge,
-			Error
+			Vertex = 1,
+			Edge
 		}
 
 	}
