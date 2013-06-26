@@ -23,12 +23,11 @@ namespace Weaver.Exec.RexConnect {
 
 		////////////////////////////////////////////////////////////////////////////////////////////////
 		/*--------------------------------------------------------------------------------------------*/
-		public ResponseResult Execute() {
+		public IResponseResult Execute() {
 			var sw = Stopwatch.StartNew();
 			Exception unhandled = null;
 
-			var result = new ResponseResult();
-			result.SetRequest(Context);
+			IResponseResult result = Context.CreateResponseResult();
 
 			try {
 				Context.Log("Debug", "Request", result.RequestJson);
@@ -36,7 +35,7 @@ namespace Weaver.Exec.RexConnect {
 			}
 			catch ( WebException we ) {
 				unhandled = we;
-				result.SetErrorResponse(we+"");
+				result.SetResponseError(we+"");
 				Stream s = (we.Response == null ? null : we.Response.GetResponseStream());
 
 				if ( s != null ) {
@@ -47,7 +46,7 @@ namespace Weaver.Exec.RexConnect {
 			catch ( Exception e ) {
 				unhandled = e;
 				Context.Log("Error", "Unhandled", "Raw result: "+result.ResponseJson);
-				result.SetErrorResponse(e+"");
+				result.SetResponseError(e+"");
 			}
 
 			result.ExecutionMilliseconds = (int)sw.ElapsedMilliseconds;
@@ -62,7 +61,7 @@ namespace Weaver.Exec.RexConnect {
 		}
 
 		/*--------------------------------------------------------------------------------------------*/
-		protected virtual void GetRawResult(ResponseResult pResult) {
+		protected virtual void GetRawResult(IResponseResult pResult) {
 			IRexConnTcp tcp = pResult.Context.CreateTcpClient();
 
 			int len = IPAddress.HostToNetworkOrder(pResult.RequestJson.Length);

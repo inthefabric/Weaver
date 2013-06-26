@@ -1,4 +1,5 @@
 ﻿using System;
+using Weaver.Exec.RexConnect.Result;
 using Weaver.Exec.RexConnect.Transfer;
 
 namespace Weaver.Exec.RexConnect {
@@ -17,6 +18,11 @@ namespace Weaver.Exec.RexConnect {
 			Request = pRequest;
 			HostName = pHostName;
 			Port = pPort;
+		}
+
+		/*--------------------------------------------------------------------------------------------*/
+		public virtual IResponseResult CreateResponseResult() {
+			return new ResponseResult(this);
 		}
 
 		/*--------------------------------------------------------------------------------------------*/

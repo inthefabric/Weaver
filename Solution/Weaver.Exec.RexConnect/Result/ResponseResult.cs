@@ -23,7 +23,7 @@ namespace Weaver.Exec.RexConnect.Result {
 
 		////////////////////////////////////////////////////////////////////////////////////////////////
 		/*--------------------------------------------------------------------------------------------*/
-		public virtual void SetRequest(IRexConnContext pContext) {
+		public ResponseResult(IRexConnContext pContext) {
 			Context = pContext;
 			Request = pContext.Request;
 			RequestJson = JsonSerializer.SerializeToString(Request);
@@ -55,7 +55,7 @@ namespace Weaver.Exec.RexConnect.Result {
 		}
 
 		/*--------------------------------------------------------------------------------------------*/
-		public virtual void SetErrorResponse(string pErr) {
+		public virtual void SetResponseError(string pErr) {
 			IsError = true;
 
 			Response = new Response();

@@ -1,4 +1,5 @@
 ﻿using System;
+using Weaver.Exec.RexConnect.Result;
 using Weaver.Exec.RexConnect.Transfer;
 
 namespace Weaver.Exec.RexConnect {
@@ -13,8 +14,13 @@ namespace Weaver.Exec.RexConnect {
 
 		////////////////////////////////////////////////////////////////////////////////////////////////
 		/*--------------------------------------------------------------------------------------------*/
+		IResponseResult CreateResponseResult();
+
+		/*--------------------------------------------------------------------------------------------*/
 		IRexConnTcp CreateTcpClient();
 
+
+		////////////////////////////////////////////////////////////////////////////////////////////////
 		/*--------------------------------------------------------------------------------------------*/
 		void Log(string pType, string pCategory, string pText, Exception pException=null);
 
