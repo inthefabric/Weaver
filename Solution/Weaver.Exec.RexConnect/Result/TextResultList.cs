@@ -22,6 +22,11 @@ namespace Weaver.Exec.RexConnect.Result {
 		}
 
 		/*--------------------------------------------------------------------------------------------*/
+		public bool ToBool(int pIndex) {
+			return bool.Parse(ToString(pIndex));
+		}
+
+		/*--------------------------------------------------------------------------------------------*/
 		public byte ToByte(int pIndex) {
 			return byte.Parse(ToString(pIndex));
 		}

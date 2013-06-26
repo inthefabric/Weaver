@@ -5,7 +5,7 @@ using Weaver.Exec.RexConnect;
 using Weaver.Exec.RexConnect.Result;
 using Weaver.Test.Utils;
 
-namespace Weaver.Test.WeavExecRexConn.Transfer {
+namespace Weaver.Test.WeavExecRexConn.Result {
 
 	/*================================================================================================*/
 	[TestFixture]
