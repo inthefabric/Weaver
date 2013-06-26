@@ -4,7 +4,7 @@ using Weaver.Exec.RexConnect.Transfer;
 namespace Weaver.Exec.RexConnect.Result {
 
 	/*================================================================================================*/
-	public interface ICommandResult {
+	public interface IResponseCmdResult {
 
 		ResponseCmd Command { get; }
 		TextResultList TextResults { get; }

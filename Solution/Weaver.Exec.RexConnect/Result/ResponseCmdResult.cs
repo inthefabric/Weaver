@@ -5,7 +5,7 @@ using Weaver.Exec.RexConnect.Transfer;
 namespace Weaver.Exec.RexConnect.Result {
 
 	/*================================================================================================*/
-	public class CommandResult : ICommandResult {
+	public class ResponseCmdResult : IResponseCmdResult {
 
 		public ResponseCmd Command { get; protected set; }
 		public TextResultList TextResults { get; internal set; }
@@ -13,7 +13,7 @@ namespace Weaver.Exec.RexConnect.Result {
 		
 		////////////////////////////////////////////////////////////////////////////////////////////////
 		/*--------------------------------------------------------------------------------------------*/
-		public CommandResult(ResponseCmd pCommand) {
+		public ResponseCmdResult(ResponseCmd pCommand) {
 			Command = pCommand;
 		}
 		

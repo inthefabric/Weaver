@@ -15,7 +15,7 @@ namespace Weaver.Exec.RexConnect.Result {
 
 		public Response Response { get; protected set; }
 		public string ResponseJson { get; protected set; }
-		public IList<CommandResult> CommandResults { get; protected set; }
+		public IList<ResponseCmdResult> CommandResults { get; protected set; }
 
 		public bool IsError { get; protected set; }
 		public int ExecutionMilliseconds { get; set; }
@@ -42,11 +42,11 @@ namespace Weaver.Exec.RexConnect.Result {
 				throw new Exception("Response has an error.");
 			}
 
-			CommandResults = new List<CommandResult>();
+			CommandResults = new List<ResponseCmdResult>();
 
 			for ( int i = 0 ; i < Response.CmdList.Count ; ++i ) {
 				ResponseCmd rc = Response.CmdList[i];
-				CommandResults.Add(new CommandResult(rc));
+				CommandResults.Add(new ResponseCmdResult(rc));
 
 				if ( rc.Err != null ) {
 					Context.Log("Warn", "Data", "Response.CmdList["+i+"] error: "+rc.Err);
@@ -77,7 +77,7 @@ namespace Weaver.Exec.RexConnect.Result {
 		}
 
 		/*--------------------------------------------------------------------------------------------*/
-		protected static string BuildTextListResults(string pRemainingJson, CommandResult pCmdRes) {
+		protected static string BuildTextListResults(string pRemainingJson, ResponseCmdResult pCmdRes) {
 			const string cmdResults = "\"results\":[";
 			var list = new List<string>();
 			int startI = pRemainingJson.IndexOf(cmdResults);

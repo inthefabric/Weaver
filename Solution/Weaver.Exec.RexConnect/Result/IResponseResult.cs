@@ -13,7 +13,7 @@ namespace Weaver.Exec.RexConnect.Result {
 
 		Response Response { get; }
 		string ResponseJson { get; }
-		IList<CommandResult> CommandResults { get; }
+		IList<ResponseCmdResult> CommandResults { get; }
 
 		bool IsError { get; }
 		int ExecutionMilliseconds { get; set; }

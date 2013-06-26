@@ -40,10 +40,10 @@
     <Compile Include="IRexConnTcp.cs" />
     <Compile Include="RexConnContext.cs" />
     <Compile Include="RexConn.cs" />
-    <Compile Include="Result\CommandResult.cs" />
+    <Compile Include="Result\ResponseCmdResult.cs" />
     <Compile Include="Result\ITextResultList.cs" />
     <Compile Include="Result\IGraphElement.cs" />
-    <Compile Include="Result\ICommandResult.cs" />
+    <Compile Include="Result\IResponseCmdResult.cs" />
     <Compile Include="Result\IResponseResult.cs" />
     <Compile Include="Result\ResponseResult.cs" />
     <Compile Include="Result\TextResultList.cs" />
