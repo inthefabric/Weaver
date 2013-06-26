@@ -1,14 +1,17 @@
-﻿using Weaver.Exec.RexConnect.Transfer;
+﻿using System.Net.Sockets;
 
 namespace Weaver.Exec.RexConnect {
-
+	
 	/*================================================================================================*/
-	public interface IRexConnDataAccess {
+	public interface IRexConnTcp {
+
+		int SendBufferSize { get; set; }
+		int ReceiveBufferSize { get; set; }
 
 
 		////////////////////////////////////////////////////////////////////////////////////////////////
 		/*--------------------------------------------------------------------------------------------*/
-		ResponseResult Execute(IRexConnContext pContext, Request pRequest);
+		NetworkStream GetStream();
 
 	}
 

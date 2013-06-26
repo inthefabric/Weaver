@@ -1,6 +1,9 @@
-﻿using System.Collections.Generic;
-using System.Text.RegularExpressions;
-using Weaver.Core.Query;
+﻿using System;
+using System.Diagnostics;
+using System.IO;
+using System.Net;
+using System.Net.Sockets;
+using System.Text;
 using Weaver.Exec.RexConnect.Transfer;
 
 namespace Weaver.Exec.RexConnect {
@@ -33,136 +36,87 @@ namespace Weaver.Exec.RexConnect {
 			Error
 		}
 
-		public static bool SendRequestsInDebugMode;
-
 
 		////////////////////////////////////////////////////////////////////////////////////////////////
 		/*--------------------------------------------------------------------------------------------*/
-		public static Request BuildRequest(string pRequestId) {
-			var req = new Request();
-			req.ReqId = pRequestId;
-			req.CmdList = new List<RequestCmd>();
+		public ResponseResult Execute(IRexConnContext pContext) {
+			var sw = Stopwatch.StartNew();
+			Exception unhandled = null;
 
-			if ( SendRequestsInDebugMode ) {
-				var debugCmd = new RequestCmd();
-				debugCmd.Cmd = Command.Config.ToString().ToLower();
-				debugCmd.Args = new List<string>(new[] { ConfigSetting.Debug.ToString().ToLower(), "1" });
-				req.CmdList.Add(debugCmd);
+			var result = new ResponseResult();
+			result.SetRequest(pContext);
+
+			try {
+				pContext.Log("Debug", "Request", result.RequestJson);
+				GetRawResult(result);
 			}
+			catch ( WebException we ) {
+				unhandled = we;
+				result.SetErrorResponse(we+"");
+				Stream s = (we.Response == null ? null : we.Response.GetResponseStream());
 
-			return req;
-		}
-
-		/*--------------------------------------------------------------------------------------------*/
-		public static Request BuildRequest(string pRequestId, string pScript,
-														IDictionary<string, IWeaverQueryVal> pParams) {
-			Request req = BuildRequest(pRequestId);
-			req.CmdList.Add(BuildQueryCommand(pScript, pParams));
-			return req;
-		}
-
-		/*--------------------------------------------------------------------------------------------*/
-		public static Request BuildRequest(string pRequestId, string pScript) {
-			return BuildRequest(pRequestId, pScript, null);
-		}
-
-		/*--------------------------------------------------------------------------------------------*/
-		public static Request BuildRequest(string pRequestId, IWeaverScript pWeaverScript) {
-			return BuildRequest(pRequestId, pWeaverScript.Script, pWeaverScript.Params);
-		}
-
-		/*--------------------------------------------------------------------------------------------*/
-		public static Request BuildRequest(string pRequestId, IList<IWeaverScript> pWeaverScripts,
-																			bool pAsSession=true) {
-			Request req = BuildRequest(pRequestId);
-
-			if ( pAsSession ) {
-				req.CmdList.Add(BuildSessionAction(SessionAction.Start));
-			}
-
-			foreach ( IWeaverScript ws in pWeaverScripts ) {
-				req.CmdList.Add(BuildQueryCommand(ws.Script, ws.Params));
-			}
-
-			if ( pAsSession ) {
-				req.CmdList.Add(BuildSessionAction(SessionAction.Commit));
-				req.CmdList.Add(BuildSessionAction(SessionAction.Close));
-			}
-
-			return req;
-		}
-
-
-		////////////////////////////////////////////////////////////////////////////////////////////////
-		/*--------------------------------------------------------------------------------------------*/
-		public static RequestCmd BuildQueryCommand(string pScript) {
-			var cmd = new RequestCmd();
-			cmd.Cmd = Command.Query.ToString().ToLower();
-			cmd.Args = new List<string>(new [] { JsonUnquote(pScript) });
-			return cmd;
-		}
-		
-		/*--------------------------------------------------------------------------------------------*/
-		public static RequestCmd BuildQueryCommand(string pScript,
-														IDictionary<string, IWeaverQueryVal> pParams) {
-			var cmd = new RequestCmd();
-			cmd.Cmd = Command.Query.ToString().ToLower();
-
-			const string end = @"(?=$|[^\d])";
-			string q = JsonUnquote(pScript);
-			string p = "";
-
-			foreach ( string key in pParams.Keys ) {
-				p += (p.Length > 0 ? "," : "")+"\""+JsonUnquote(key)+"\":";
-
-				IWeaverQueryVal qv = pParams[key];
-
-				if ( qv.IsString ) {
-					p += "\""+JsonUnquote(qv.FixedText)+"\"";
-					continue;
-				}
-
-				p += qv.FixedText;
-
-				//Explicitly cast certain parameter types
-				//See: https://github.com/tinkerpop/rexster/issues/295
-
-				if ( qv.Original is int ) {
-					q = Regex.Replace(q, key+end, key+".toInteger()");
-				}
-				else if ( qv.Original is byte ) {
-					q = Regex.Replace(q, key+end, key+".byteValue()");
-				}
-				else if ( qv.Original is float ) {
-					q = Regex.Replace(q, key+end, key+".toFloat()");
+				if ( s != null ) {
+					var sr = new StreamReader(s);
+					pContext.Log("Error", "Gremlin", sr.ReadToEnd());
 				}
 			}
+			catch ( Exception e ) {
+				unhandled = e;
+				pContext.Log("Error", "Unhandled", "Raw result: "+result.ResponseJson);
+				result.SetErrorResponse(e+"");
+			}
 
-			cmd.Args = new List<string>(new[] { q, "{"+p+"}" });
-			return cmd;
+			result.ExecutionMilliseconds = (int)sw.ElapsedMilliseconds;
+
+			if ( unhandled != null ) {
+				unhandled = new Exception("Unhandled exception:\nRequestJson = "+
+					result.RequestJson+"\nResponseJson = "+result.ResponseJson, unhandled);
+				throw unhandled;
+			}
+
+			return result;
 		}
 
 		/*--------------------------------------------------------------------------------------------*/
-		public static RequestCmd BuildSessionAction(SessionAction pAction) {
-			var cmd = new RequestCmd();
-			cmd.Cmd = Command.Session.ToString().ToLower();
-			cmd.Args = new List<string>(new[] { pAction.ToString().ToLower() });
-			return cmd;
-		}
+		protected virtual void GetRawResult(ResponseResult pResult) {
+			IRexConnTcp tcp = pResult.Context.CreateTcpClient();
 
-		/*--------------------------------------------------------------------------------------------*/
-		public static RequestCmd BuildConfigSetting(ConfigSetting pSetting, string pValue) {
-			var cmd = new RequestCmd();
-			cmd.Cmd = Command.Config.ToString().ToLower();
-			cmd.Args = new List<string>(new[] { pSetting.ToString().ToLower(), pValue });
-			return cmd;
-		}
+			int len = IPAddress.HostToNetworkOrder(pResult.RequestJson.Length);
+			byte[] dataLen = BitConverter.GetBytes(len);
+			byte[] data = Encoding.ASCII.GetBytes(pResult.RequestJson);
 
+			//stream the request's string length, then the string itself
 
-		////////////////////////////////////////////////////////////////////////////////////////////////
-		/*--------------------------------------------------------------------------------------------*/
-		private static string JsonUnquote(string pText) {
-			return pText.Replace("\"", "\\\"");
+			NetworkStream stream = tcp.GetStream();
+			stream.Write(dataLen, 0, dataLen.Length);
+			stream.Write(data, 0, data.Length);
+
+			//Get string length from the first four bytes
+
+			data = new byte[4];
+			stream.Read(data, 0, data.Length);
+			Array.Reverse(data);
+			int respLen = BitConverter.ToInt32(data, 0);
+
+			//Get response string using the string length
+
+			var sb = new StringBuilder(respLen);
+
+			while ( sb.Length < respLen ) {
+				data = new byte[respLen];
+				int bytes = stream.Read(data, 0, data.Length);
+
+				if ( bytes == 0 ) {
+					throw new Exception("Empty read from NetworkStream. "+
+						"Expected "+respLen+" chars, received "+sb.Length+" total.");
+				}
+
+				sb.Append(Encoding.ASCII.GetString(data, 0, bytes));
+			}
+
+			string resp = sb.ToString();
+			pResult.Context.Log("Debug", "Result", resp);
+			pResult.SetResponseJson(resp);
 		}
 
 	}

@@ -34,6 +34,8 @@
     <Compile Include="..\..\Global\GlobalAssemblyVersion.cs">
       <Link>Properties\GlobalAssemblyVersion.cs</Link>
     </Compile>
+    <Compile Include="RexConnTcp.cs" />
+    <Compile Include="IRexConnTcp.cs" />
     <Compile Include="RexConnContext.cs" />
     <Compile Include="RexConn.cs" />
     <Compile Include="Transfer\CommandResult.cs" />
@@ -48,9 +50,7 @@
     <Compile Include="Transfer\RequestCmd.cs" />
     <Compile Include="Transfer\ResponseCmd.cs" />
     <Compile Include="Transfer\Response.cs" />
-    <Compile Include="RexConnDataAccess.cs" />
     <Compile Include="IRexConnContext.cs" />
-    <Compile Include="IRexConnDataAccess.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

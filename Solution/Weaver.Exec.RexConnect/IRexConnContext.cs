@@ -1,19 +1,19 @@
 ﻿using System;
-using System.Net.Sockets;
+using Weaver.Exec.RexConnect.Transfer;
 
 namespace Weaver.Exec.RexConnect {
 	
 	/*================================================================================================*/
 	public interface IRexConnContext {
 
-		string RequestId { get; }
+		Request Request { get; }
 		string HostName { get; }
 		int Port { get; }
 
 
 		////////////////////////////////////////////////////////////////////////////////////////////////
 		/*--------------------------------------------------------------------------------------------*/
-		TcpClient CreateTcpClient();
+		IRexConnTcp CreateTcpClient();
 
 		/*--------------------------------------------------------------------------------------------*/
 		void Log(string pType, string pCategory, string pText, Exception pException=null);

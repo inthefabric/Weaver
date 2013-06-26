@@ -21,7 +21,7 @@ namespace Weaver.Exec.RexConnect.Transfer {
 
 		////////////////////////////////////////////////////////////////////////////////////////////////
 		/*--------------------------------------------------------------------------------------------*/
-		void SetRequest(IRexConnContext pContext, Request pRequest);
+		void SetRequest(IRexConnContext pContext);
 
 		/*--------------------------------------------------------------------------------------------*/
 		void SetResponseJson(string pResponseJson);

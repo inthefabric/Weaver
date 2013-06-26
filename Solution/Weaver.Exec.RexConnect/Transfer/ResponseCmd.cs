@@ -6,9 +6,9 @@ namespace Weaver.Exec.RexConnect.Transfer {
 	/*================================================================================================*/
 	public class ResponseCmd {
 
-		public virtual long Timer { get; set; }
-		public virtual IList<JsonObject> Results { get; set; }
-		public virtual string Err { get; set; }
+		public long Timer { get; set; }
+		public IList<JsonObject> Results { get; set; }
+		public string Err { get; set; }
 
 	}
 

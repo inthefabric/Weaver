@@ -5,11 +5,11 @@ namespace Weaver.Exec.RexConnect.Transfer {
 	/*================================================================================================*/
 	public class Response {
 
-		public virtual string ReqId { get; set; }
-		public virtual string SessId { get; set; }
-		public virtual long Timer { get; set; }
-		public virtual string Err { get; set; }
-		public virtual IList<ResponseCmd> CmdList { get; set; }
+		public string ReqId { get; set; }
+		public string SessId { get; set; }
+		public long Timer { get; set; }
+		public string Err { get; set; }
+		public IList<ResponseCmd> CmdList { get; set; }
 
 	}
 

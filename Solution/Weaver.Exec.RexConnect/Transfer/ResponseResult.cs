@@ -22,10 +22,10 @@ namespace Weaver.Exec.RexConnect.Transfer {
 
 		////////////////////////////////////////////////////////////////////////////////////////////////
 		/*--------------------------------------------------------------------------------------------*/
-		public void SetRequest(IRexConnContext pContext, Request pRequest) {
+		public void SetRequest(IRexConnContext pContext) {
 			Context = pContext;
-			Request = pRequest;
-			RequestJson = JsonSerializer.SerializeToString(pRequest);
+			Request = pContext.Request;
+			RequestJson = JsonSerializer.SerializeToString(Request);
 		}
 
 		/*--------------------------------------------------------------------------------------------*/
