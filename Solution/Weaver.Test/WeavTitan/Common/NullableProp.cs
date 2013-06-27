@@ -10,6 +10,9 @@ namespace Weaver.Test.WeavTitan.Common {
 		[WeaverTitanProperty("A")]
 		public int? A { get; set; }
 
+		[WeaverProperty("NTA")]
+		public string NonTitanAttribute { get; set; }
+
 	}
 
 }

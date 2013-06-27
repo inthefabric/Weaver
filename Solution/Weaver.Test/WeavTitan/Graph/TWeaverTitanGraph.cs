@@ -96,8 +96,18 @@ namespace Weaver.Test.WeavTitan.Graph {
 		
 		/*--------------------------------------------------------------------------------------------*/
 		[Test]
-		public void TypeGroupOfFail() {
-			WeaverTestUtil.CheckThrows<WeaverException>(true, () => vGraph.TypeGroupOf<TestVertex>(1));
+		public void TypeGroupOfErrId() {
+			Exception e = WeaverTestUtil.CheckThrows<WeaverException>(true,
+				() => vGraph.TypeGroupOf<TestVertex>(1));
+			Assert.True(e.Message.Contains("greater than"), "Incorrect exception.");
+		}
+
+		/*--------------------------------------------------------------------------------------------*/
+		[Test]
+		public void TypeGroupOfErrType() {
+			Exception e = WeaverTestUtil.CheckThrows<WeaverException>(true,
+				() => vGraph.TypeGroupOf<TestVertex>(2));
+			Assert.AreEqual(0, e.Message.IndexOf("Type"), "Incorrect exception.");
 		}
 
 
@@ -148,6 +158,14 @@ namespace Weaver.Test.WeavTitan.Graph {
 			};
 
 			CheckMakeProperty(end, expect, TestSchema.PersonKnowsPerson_Amount, "Float");
+		}
+
+		/*--------------------------------------------------------------------------------------------*/
+		[Test]
+		public void MakeVertexPropertyErrType() {
+			Exception e = WeaverTestUtil.CheckThrows<WeaverException>(true,
+				() => vGraph.MakeVertexPropertyKey<NullableProp>(x => x.NonTitanAttribute));
+			Assert.AreEqual(0, e.Message.IndexOf("Type"), "Incorrect exception.");
 		}
 
 		/*--------------------------------------------------------------------------------------------*/
