@@ -55,5 +55,9 @@ IWeaverQuery q = myWeaverObj.Graph
 SendGremlinRequest(q.Script, q.Params);
 ```
 
+#### Graph of the Gods
+
+In the `Weaver.Examples` project, the "[Graph of the Gods](https://github.com/thinkaurelius/titan/wiki/Getting-Started)" graph schema is implemented using Weaver's attributes, and some basic traversals are demonstrated. [View the code](https://github.com/inthefabric/Weaver/tree/master/Solution/Weaver.Examples/Core).
+
 
 [![githalytics.com alpha](https://cruel-carlota.pagodabox.com/9caca4070a7a2601105b67a6840644c2 "githalytics.com")](http://githalytics.com/inthefabric/Weaver)
