@@ -36,7 +36,6 @@
     </Compile>
     <Compile Include="RexConnExtensions.cs" />
     <Compile Include="WeaverRequest.cs" />
-    <Compile Include="WeaverRequestCmd.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

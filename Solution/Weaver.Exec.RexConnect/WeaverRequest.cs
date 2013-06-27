@@ -2,6 +2,7 @@
 using RexConnectClient.Core;
 using RexConnectClient.Core.Transfer;
 using Weaver.Core.Query;
+using Weaver.Core.Util;
 
 namespace Weaver.Exec.RexConnect {
 
@@ -22,8 +23,10 @@ namespace Weaver.Exec.RexConnect {
 
 		////////////////////////////////////////////////////////////////////////////////////////////////
 		/*--------------------------------------------------------------------------------------------*/
-		public RequestCmd AddQuery(string pScript, IDictionary<string,IWeaverQueryVal> pParams) {
-			RequestCmd rc = WeaverRequestCmd.CreateQueryCommand(pScript, pParams);
+		public RequestCmd AddQuery(string pScript, IDictionary<string, IWeaverQueryVal> pParams) {
+			string[] args = WeaverUtil.GetScriptAndParamJson(pScript, pParams);
+
+			RequestCmd rc = new RequestCmd(RexConn.Command.Query.ToString().ToLower(), args);
 			CmdList.Add(rc);
 			return rc;
 		}

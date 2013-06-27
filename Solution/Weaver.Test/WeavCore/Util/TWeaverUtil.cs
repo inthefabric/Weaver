@@ -212,6 +212,94 @@ namespace Weaver.Test.WeavCore.Util {
 		private void TryPropExpr() {
 			vPropExprResult = WeaverUtil.GetPropertyDbName(vPropExpr);
 		}
+		
+
+
+		////////////////////////////////////////////////////////////////////////////////////////////////
+		/*--------------------------------------------------------------------------------------------*/
+		[TestCase(true)]
+		[TestCase(false)]
+		public void GetScriptAndParamJsonNoParams(bool pNullParams) {
+			const string script = "g";
+			var param = (pNullParams ? null : new Dictionary<string, IWeaverQueryVal>());
+			AssertScriptAndParams(script, param, "g", null);
+		}
+		
+		/*--------------------------------------------------------------------------------------------*/
+		[Test]
+		public void GetScriptAndParamJsonString() {
+			const string script = "g.V('ItemId',P1);";
+			const string val = "this 'might' cause some \"trouble\" because it's \"quoted\"";
+
+			var param = new Dictionary<string, IWeaverQueryVal>();
+			param.Add("P1", new WeaverQueryVal(val));
+
+			const string expectScript = "g.V('ItemId',P1);";
+			const string expectParamJson = "{\"P1\":\"this 'might' cause some \\\"trouble\\\" because "+
+				"it's \\\"quoted\\\"\"}";
+
+			AssertScriptAndParams(script, param, expectScript, expectParamJson);
+		}
+
+		/*--------------------------------------------------------------------------------------------*/
+		[Test]
+		public void GetScriptAndParamJsonInteger() {
+			const string script = "g.V('ItemId',P1).fake(P10, P11);";
+			const int val = 12345;
+
+			var param = new Dictionary<string, IWeaverQueryVal>();
+			param.Add("P1", new WeaverQueryVal(val));
+
+			const string expectScript = "g.V('ItemId',P1.toInteger()).fake(P10, P11);";
+			string expectParamJson = "{\"P1\":"+val+"}";
+
+			AssertScriptAndParams(script, param, expectScript, expectParamJson);
+		}
+
+		/*--------------------------------------------------------------------------------------------*/
+		[Test]
+		public void GetScriptAndParamJsonByte() {
+			const string script = "g.V('ItemId',P1).fake(P10, P1, P11);";
+			const byte val = 123;
+
+			var param = new Dictionary<string, IWeaverQueryVal>();
+			param.Add("P1", new WeaverQueryVal(val));
+
+			const string expectScript = "g.V('ItemId',P1.byteValue()).fake(P10, P1.byteValue(), P11);";
+			string expectParamJson = "{\"P1\":"+val+"}";
+
+			AssertScriptAndParams(script, param, expectScript, expectParamJson);
+		}
+
+		/*--------------------------------------------------------------------------------------------*/
+		[Test]
+		public void GetScriptAndParamJsonFloat() {
+			const string script = "g.V('ItemId',P1).fake(P10, P11);";
+			const float val = 12345.6789f;
+
+			var param = new Dictionary<string, IWeaverQueryVal>();
+			param.Add("P1", new WeaverQueryVal(val));
+
+			const string expectScript = "g.V('ItemId',P1.toFloat()).fake(P10, P11);";
+			string expectParamJson = "{\"P1\":"+val+"}";
+
+			AssertScriptAndParams(script, param, expectScript, expectParamJson);
+		}
+
+		/*--------------------------------------------------------------------------------------------*/
+		public void AssertScriptAndParams(string pScript, IDictionary<string, IWeaverQueryVal> pParams,
+														string pExpectScript, string pExpectParamJson) {
+			string[] args = WeaverUtil.GetScriptAndParamJson(pScript, pParams);
+
+			Assert.NotNull(args, "Result should be filled.");
+			Assert.AreEqual((pExpectParamJson == null ? 1 : 2), args.Length,
+				"Incorrect argument count.");
+			Assert.AreEqual(pExpectScript, args[0], "Incorrect script argument.");
+
+			if ( pExpectParamJson != null ) {
+				Assert.AreEqual(pExpectParamJson, args[1], "Incorrect parameters argument.");
+			}
+		}
 
 	}
 

@@ -67,80 +67,16 @@ namespace Weaver.Test.WeavExecRexConn {
 		}
 
 		/*--------------------------------------------------------------------------------------------*/
-		[Test]
-		public void AddQueryString() {
-			const string script = "g.V('ItemId',P1);";
-			const string val = "this 'might' cause some \"trouble\" because it's \"quoted\"";
-
-			var param = new Dictionary<string, IWeaverQueryVal>();
-			param.Add("P1", new WeaverQueryVal(val));
+		[TestCase(true)]
+		[TestCase(false)]
+		public void AddQueryNoParams(bool pNullParams) {
+			var param = (pNullParams ? null : new Dictionary<string, IWeaverQueryVal>());
 
 			var r = new WeaverRequest();
-			RequestCmd cmd = r.AddQuery(script, param);
-
-			const string expectScript = "g.V('ItemId',P1);";
-			const string expectParamJson = "{\"P1\":\"this 'might' cause some \\\"trouble\\\" because "+
-				"it's \\\"quoted\\\"\"}";
+			RequestCmd cmd = r.AddQuery("g", param);
 
 			AssertCmdList(r, 1);
-			AssertCmd(cmd, "query", expectScript, expectParamJson);
-		}
-		
-		/*--------------------------------------------------------------------------------------------*/
-		[Test]
-		public void AddQueryInteger() {
-			const string script = "g.V('ItemId',P1).fake(P10, P11);";
-			const int val = 12345;
-
-			var param = new Dictionary<string, IWeaverQueryVal>();
-			param.Add("P1", new WeaverQueryVal(val));
-
-			var r = new WeaverRequest();
-			RequestCmd cmd = r.AddQuery(script, param);
-
-			const string expectScript = "g.V('ItemId',P1.toInteger()).fake(P10, P11);";
-			string expectParamJson = "{\"P1\":"+val+"}";
-
-			AssertCmdList(r, 1);
-			AssertCmd(cmd, "query", expectScript, expectParamJson);
-		}
-
-		/*--------------------------------------------------------------------------------------------*/
-		[Test]
-		public void AddQueryByte() {
-			const string script = "g.V('ItemId',P1).fake(P10, P1, P11);";
-			const byte val = 123;
-
-			var param = new Dictionary<string, IWeaverQueryVal>();
-			param.Add("P1", new WeaverQueryVal(val));
-
-			var r = new WeaverRequest();
-			RequestCmd cmd = r.AddQuery(script, param);
-
-			const string expectScript = "g.V('ItemId',P1.byteValue()).fake(P10, P1.byteValue(), P11);";
-			string expectParamJson = "{\"P1\":"+val+"}";
-
-			AssertCmdList(r, 1);
-			AssertCmd(cmd, "query", expectScript, expectParamJson);
-		}
-
-		/*--------------------------------------------------------------------------------------------*/
-		[Test]
-		public void AddQueryFloat() {
-			const string script = "g.V('ItemId',P1).fake(P10, P11);";
-			const float val = 12345.6789f;
-
-			var param = new Dictionary<string, IWeaverQueryVal>();
-			param.Add("P1", new WeaverQueryVal(val));
-
-			var r = new WeaverRequest();
-			RequestCmd cmd = r.AddQuery(script, param);
-
-			const string expectScript = "g.V('ItemId',P1.toFloat()).fake(P10, P11);";
-			string expectParamJson = "{\"P1\":"+val+"}";
-
-			AssertCmdList(r, 1);
-			AssertCmd(cmd, "query", expectScript, expectParamJson);
+			AssertCmd(cmd, "query", "g");
 		}
 
 
