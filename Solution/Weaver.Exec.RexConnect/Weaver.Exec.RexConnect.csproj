@@ -34,25 +34,9 @@
     <Compile Include="..\..\Global\GlobalAssemblyVersion.cs">
       <Link>Properties\GlobalAssemblyVersion.cs</Link>
     </Compile>
-    <Compile Include="IRexConnDataAccess.cs" />
-    <Compile Include="Result\Strings\StringsResponseCmd.cs" />
-    <Compile Include="Result\Strings\StringsResponse.cs" />
-    <Compile Include="RexConnDataAccess.cs" />
-    <Compile Include="RexConnTcp.cs" />
-    <Compile Include="IRexConnTcp.cs" />
-    <Compile Include="RexConnContext.cs" />
-    <Compile Include="RexConn.cs" />
-    <Compile Include="Result\ITextResultList.cs" />
-    <Compile Include="Result\IGraphElement.cs" />
-    <Compile Include="Result\IResponseResult.cs" />
-    <Compile Include="Result\ResponseResult.cs" />
-    <Compile Include="Result\TextResultList.cs" />
-    <Compile Include="Result\GraphElement.cs" />
-    <Compile Include="Transfer\Request.cs" />
-    <Compile Include="Transfer\RequestCmd.cs" />
-    <Compile Include="Transfer\ResponseCmd.cs" />
-    <Compile Include="Transfer\Response.cs" />
-    <Compile Include="IRexConnContext.cs" />
+    <Compile Include="RexConnExtensions.cs" />
+    <Compile Include="WeaverRequest.cs" />
+    <Compile Include="WeaverRequestCmd.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -62,7 +46,10 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="ServiceStack.Text">
+    <Reference Include="RexConnectClient.Core">
+      <HintPath>..\..\Packages\RexConnectClient.0.3.3.0\lib\RexConnectClient.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="ServiceStack.Text, Version=3.9.54.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\Packages\ServiceStack.Text.3.9.54\lib\net35\ServiceStack.Text.dll</HintPath>
     </Reference>
     <Reference Include="System" />

@@ -70,8 +70,8 @@
     <Compile Include="WeavCore\Steps\TWeaverStepAs.cs" />
     <Compile Include="WeavCore\Steps\TWeaverStepBack.cs" />
     <Compile Include="WeavCore\Steps\TWeaverStepCustom.cs" />
-    <Compile Include="WeavExecRexConn\Result\TTextResultList.cs" />
-    <Compile Include="WeavExecRexConn\Result\TGraphElement.cs" />
+    <Compile Include="WeavExecRexConn\TRexConnExtensions.cs" />
+    <Compile Include="WeavExecRexConn\TWeaverRequest.cs" />
     <Compile Include="WeavTitan\Common\TitanBase.cs" />
     <Compile Include="WeavTitan\Common\NullableProp.cs" />
     <Compile Include="WeavTitan\Common\Empty.cs" />
@@ -122,6 +122,9 @@
     </Reference>
     <Reference Include="nunit.framework">
       <HintPath>..\..\Packages\NUnit.2.6.2\lib\nunit.framework.dll</HintPath>
+    </Reference>
+    <Reference Include="RexConnectClient.Core">
+      <HintPath>..\..\Packages\RexConnectClient.0.3.3.0\lib\RexConnectClient.Core.dll</HintPath>
     </Reference>
     <Reference Include="ServiceStack.Text">
       <HintPath>..\..\Packages\ServiceStack.Text.3.9.54\lib\net35\ServiceStack.Text.dll</HintPath>

@@ -8,6 +8,11 @@ namespace Weaver.Test {
 	/*================================================================================================*/
 	public abstract class WeaverTestBase {
 
+		public const string Integration = "Integration";
+
+		public const string RexConnHost = "rexster";
+		public const int RexConnPort = 8185;
+
 		protected TestSchema Schema { get; private set; }
 		protected WeaverInstance WeavInst { get; private set; }
 

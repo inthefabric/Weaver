@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+  <metadata>
+    <id>RexConnectClient</id>
+    <version>0.3.3.0</version>
+    <title>RexConnectClient.Core</title>
+    <authors>Zach Kinstner</authors>
+    <owners>Zach Kinstner</owners>
+    <licenseUrl>https://github.com/inthefabric/RexConnectClient/blob/master/LICENSE.md</licenseUrl>
+    <projectUrl>https://github.com/inthefabric/RexConnectClient</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>A RexConnect client library.</description>
+    <releaseNotes>Compatible with RexConnect 0.3.3.</releaseNotes>
+    <copyright />
+    <language />
+    <tags>RexConnect Rexster RexPro Gremlin Blueprints</tags>
+    <dependencies>
+      <dependency id="ServiceStack.Text" version="3.9.54" />
+    </dependencies>
+    <frameworkAssemblies>
+      <frameworkAssembly assemblyName="System" targetFramework="" />
+    </frameworkAssemblies>
+  </metadata>
+</package>
