@@ -5,8 +5,8 @@ using Weaver.Core;
 using Weaver.Core.Elements;
 using Weaver.Core.Exceptions;
 using Weaver.Test.Common;
-using Weaver.Test.Common.EdgeTypes;
 using Weaver.Test.Common.Edges;
+using Weaver.Test.Common.EdgeTypes;
 using Weaver.Test.Common.Schema;
 using Weaver.Test.Common.Vertices;
 using Weaver.Test.Utils;
@@ -43,6 +43,21 @@ namespace Weaver.Test.WeavCore {
 
 		/*--------------------------------------------------------------------------------------------*/
 		[Test]
+		public void NewWithPropFromGenericBase() {
+			var verts = new List<Type>();
+			var edges = new List<Type>();
+
+			edges.Add(typeof(EdgeB));
+			edges.Add(typeof(EdgeC));
+
+			var wc = new WeaverConfig(verts, edges);
+
+			Assert.AreEqual(verts, wc.VertexTypes, "Incorrect Vertex list.");
+			Assert.AreEqual(edges, wc.EdgeTypes, "Incorrect Edge list.");
+		}
+
+		/*--------------------------------------------------------------------------------------------*/
+		[Test]
 		public void NewInvalidType() {
 			var verts = new List<Type>();
 			var edges = new List<Type>();
@@ -70,6 +85,7 @@ namespace Weaver.Test.WeavCore {
 			);
 
 			Assert.AreEqual(0, ex.Message.IndexOf("Duplicate property"), "Incorrect exception.");
+			Assert.AreNotEqual(-1, ex.Message.IndexOf("'test'"), "Incorrect DbName in exception.");
 		}
 
 
@@ -128,8 +144,31 @@ namespace Weaver.Test.WeavCore {
 
 
 	/*================================================================================================*/
-	[WeaverVertex]
+	[WeaverEdge("EA", typeof(Person), typeof(Candy))]
 	public class EdgeA : WeaverEdge<Person, Knows, Candy> {
+
+	}
+
+
+	/*================================================================================================*/
+	public abstract class EdgeBase<T> : WeaverEdge<Person, Knows, T> where T : IWeaverVertex, new() {
+
+		[WeaverProperty("shared")]
+		public string Shared { get; set; }
+
+	}
+
+
+	/*================================================================================================*/
+	[WeaverEdge("EB", typeof(Person), typeof(Person))]
+	public class EdgeB : EdgeBase<Person> {
+
+	}
+
+
+	/*================================================================================================*/
+	[WeaverEdge("EC", typeof(Person), typeof(Candy))]
+	public class EdgeC : EdgeBase<Candy> {
 
 	}
 

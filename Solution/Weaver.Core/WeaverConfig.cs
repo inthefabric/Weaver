@@ -69,18 +69,18 @@ namespace Weaver.Core {
 				
 				Type t = wpp.Info.DeclaringType;
 				Type expectT = pProp.Info.DeclaringType;
-				
+
 				if ( t == expectT ) {
 					return;
 				}
-				
-				if ( t.IsGenericType ) {
-					string s = t.FullName.Substring(0, t.FullName.IndexOf('['));
-					string expectS = expectT.FullName.Substring(0, expectT.FullName.IndexOf('['));
-					
-					if ( s == expectS ) {
-						return;
-					}
+
+				//Sometimes, a property can be shared by a generic base class. For example: base class
+				//EdgeBase<Person, Knows, T> contains a "MyNumber" property. The condition below will
+				//prevent exceptions when multiple subclasses (like CandyEdge : EdgeBase<Candy>) 
+				//all try to register the same shared "MyNumber" property.
+
+				if ( t.Namespace == expectT.Namespace && t.Name == expectT.Name ) {
+					return;
 				}
 
 				throw new WeaverException("Duplicate property DbName found: '"+dbName+"'.");
