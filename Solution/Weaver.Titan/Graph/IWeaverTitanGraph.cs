@@ -21,6 +21,16 @@ namespace Weaver.Titan.Graph {
 
 		////////////////////////////////////////////////////////////////////////////////////////////////
 		/*--------------------------------------------------------------------------------------------*/
+		IWeaverQuery AddEdgeVci<TOut, TEdge, TIn>(TOut pOutVertex, TEdge pEdge, TIn pInVertex)
+						where TOut : IWeaverVertex where TEdge : IWeaverEdge where TIn : IWeaverVertex;
+
+		/*--------------------------------------------------------------------------------------------*/
+		IWeaverQuery AddEdgeVci<TEdge>(IWeaverVarAlias pOutVertexVar, TEdge pEdge,
+												IWeaverVarAlias pInVertexVar) where TEdge : IWeaverEdge;
+
+
+		////////////////////////////////////////////////////////////////////////////////////////////////
+		/*--------------------------------------------------------------------------------------------*/
 		IWeaverQuery TypeGroupOf<T>(int pId) where T : IWeaverVertex;
 
 		
