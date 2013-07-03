@@ -1,4 +1,5 @@
 ﻿using Weaver.Core.Elements;
+using Weaver.Examples.Core.Edges;
 
 namespace Weaver.Examples.Core.Vertices {
 

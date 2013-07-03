@@ -1,5 +1,6 @@
 ﻿using Weaver.Core.Elements;
 using Weaver.Examples.Core.EdgeTypes;
+using Weaver.Examples.Core.Edges;
 using Weaver.Examples.Core.Vertices;
 using Weaver.Core;
 using System;

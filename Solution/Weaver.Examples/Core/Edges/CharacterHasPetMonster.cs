@@ -2,7 +2,7 @@
 using Weaver.Examples.Core.EdgeTypes;
 using Weaver.Examples.Core.Vertices;
 
-namespace Weaver.Examples.Core.Vertices {
+namespace Weaver.Examples.Core.Edges {
 
 	/*================================================================================================*/
 	[WeaverEdge("pet", typeof(Character), typeof(Monster))]
