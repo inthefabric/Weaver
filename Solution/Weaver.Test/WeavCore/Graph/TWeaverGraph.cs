@@ -30,7 +30,6 @@ namespace Weaver.Test.WeavCore.Graph {
 		protected override void SetUp() {
 			base.SetUp();
 
-			var schema = new TestSchema();
 			var config = new WeaverConfig(ConfigHelper.VertexTypes, ConfigHelper.EdgeTypes);
 			var query = new WeaverQuery(); //should mock this, but it would be a pain
 
@@ -138,7 +137,7 @@ namespace Weaver.Test.WeavCore.Graph {
 			const string candyId = "x1234";
 
 			var person = new Person { Id = perId };
-			var candy = new Candy() { Id = candyId };
+			var candy = new Candy { Id = candyId };
 
 			IWeaverQuery q = vGraph.AddEdge(person, plc, candy);
 

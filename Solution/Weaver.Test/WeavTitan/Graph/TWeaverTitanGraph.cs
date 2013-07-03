@@ -2,10 +2,12 @@
 using System.Collections.Generic;
 using Moq;
 using NUnit.Framework;
+using Weaver.Core.Elements;
 using Weaver.Core.Exceptions;
 using Weaver.Core.Path;
 using Weaver.Core.Pipe;
 using Weaver.Core.Query;
+using Weaver.Test.Common.Edges;
 using Weaver.Test.Common.Schema;
 using Weaver.Test.Common.Vertices;
 using Weaver.Test.Utils;
@@ -74,6 +76,146 @@ namespace Weaver.Test.WeavTitan.Graph {
 
 			WeaverTitanGraphQuery q = (WeaverTitanGraphQuery)qe;
 			Assert.False(q.VertMode, "Incorrect Query.VertMode.");
+		}
+
+
+		////////////////////////////////////////////////////////////////////////////////////////////////
+		/*--------------------------------------------------------------------------------------------*/
+		[Test]
+		public void AddEdgeVci() {
+			vMockPath.SetupGet(x => x.Query).Returns(new WeaverQuery()); //should mock this
+
+			var okt = new OneKnowsTwo();
+			okt.FirstProp = "test";
+			okt.SecondProp = 998877;
+
+			const string perId = "a99";
+			const string twoId = "x1234";
+
+			var one = new One { Id = perId };
+			var two = new Two { Id = twoId };
+
+			IWeaverQuery q = vGraph.AddEdgeVci(one, okt, two);
+			Console.WriteLine(q.Script);
+
+			int bracketI = q.Script.IndexOf('[');
+			int bracketIClose = q.Script.LastIndexOf(']');
+
+			Assert.True(q.IsFinalized, "Incorrect IsFinalized.");
+			Assert.NotNull(q.Script, "Script should be filled.");
+			Assert.AreEqual("_OUTV=g.v(_P0);_INV=g.v(_P1);g.addEdge(_OUTV,_INV,_P2,[",
+				q.Script.Substring(0, bracketI+1), "Incorrect starting code.");
+			Assert.AreEqual("]);", q.Script.Substring(bracketIClose), "Incorrect ending code.");
+
+			////
+
+			string vals = q.Script.Substring(bracketI+1, bracketIClose-bracketI-1);
+			Dictionary<string, string> pairMap = WeaverTestUtil.GetPropListDictionary(vals);
+
+			Assert.AreEqual(7, pairMap.Keys.Count, "Incorrect Key count.");
+			Assert.True(pairMap.ContainsKey("First"), "Missing OneKnowsTwo.FirstProp key.");
+			Assert.True(pairMap.ContainsKey("Second"), "Missing OneKnowsTwo.SecondProp key.");
+			Assert.True(pairMap.ContainsKey("OA"), "Missing One.A key.");
+			Assert.True(pairMap.ContainsKey("OD"), "Missing One.D key.");
+			Assert.True(pairMap.ContainsKey("TB"), "Missing Two.B key.");
+			Assert.True(pairMap.ContainsKey("TC"), "Missing Two.C key.");
+			Assert.True(pairMap.ContainsKey("TD"), "Missing Two.D key.");
+
+			var expectParams = new Dictionary<string, IWeaverQueryVal>();
+			expectParams.Add("_P0", new WeaverQueryVal(one.Id));
+			expectParams.Add("_P1", new WeaverQueryVal(two.Id));
+			expectParams.Add("_P2", new WeaverQueryVal("OKT"));
+			expectParams.Add("_P3", new WeaverQueryVal(okt.FirstProp));
+			expectParams.Add("_P4", new WeaverQueryVal(okt.SecondProp));
+			WeaverTestUtil.CheckQueryParamsOriginalVal(q, expectParams);
+		}
+
+		/*--------------------------------------------------------------------------------------------*/
+		[Test]
+		public void AddEdgeVciVarNoProps() {
+			vMockPath.SetupGet(x => x.Query).Returns(new WeaverQuery()); //should mock this
+
+			var ehe = new EmptyHasEmpty();
+			const string outVarName = "_var0";
+			const string inVarName = "_var1";
+
+			var mockOutVar = new Mock<IWeaverVarAlias>();
+			mockOutVar.SetupGet(x => x.Name).Returns(outVarName);
+			mockOutVar.SetupGet(x => x.VarType).Returns(typeof(Empty));
+
+			var mockInVar = new Mock<IWeaverVarAlias>();
+			mockInVar.SetupGet(x => x.Name).Returns(inVarName);
+			mockInVar.SetupGet(x => x.VarType).Returns(typeof(Empty));
+
+			IWeaverQuery q = vGraph.AddEdgeVci(mockOutVar.Object, ehe, mockInVar.Object);
+
+			Assert.True(q.IsFinalized, "Incorrect IsFinalized.");
+			Assert.NotNull(q.Script, "Script should be filled.");
+			Assert.AreEqual(q.Script, "g.addEdge("+outVarName+","+inVarName+",_P0);",
+				"Incorrect Script.");
+
+			var expectParams = new Dictionary<string, IWeaverQueryVal>();
+			expectParams.Add("_P0", new WeaverQueryVal("EHE"));
+			WeaverTestUtil.CheckQueryParamsOriginalVal(q, expectParams);
+		}
+
+		/*--------------------------------------------------------------------------------------------*/
+		[TestCase(true)]
+		[TestCase(false)]
+		public void AddEdgeVciVarInvalidVarType(bool pBadOut) {
+			var mockOutVar = new Mock<IWeaverVarAlias>();
+			mockOutVar.SetupGet(x => x.VarType).Returns(typeof(Person));
+
+			var mockInVar = new Mock<IWeaverVarAlias>();
+			mockInVar.SetupGet(x => x.VarType).Returns(typeof(Person));
+
+			var mockEdge = new Mock<IWeaverEdge>();
+			mockEdge.SetupGet(x => x.OutVertexType).Returns(typeof(Person));
+			mockEdge.SetupGet(x => x.InVertexType).Returns(typeof(Person));
+			mockEdge.Setup(x => x.IsValidOutVertexType(It.IsAny<Type>())).Returns(!pBadOut);
+			mockEdge.Setup(x => x.IsValidInVertexType(It.IsAny<Type>())).Returns(pBadOut);
+
+			var ex = WeaverTestUtil.CheckThrows<WeaverException>(true, () =>
+				vGraph.AddEdgeVci(mockOutVar.Object, mockEdge.Object, mockInVar.Object)
+			);
+
+			Assert.AreNotEqual(-1, ex.Message.IndexOf(pBadOut ? " Out " : " In "),
+				"Incorrect exception.");
+		}
+
+		/*--------------------------------------------------------------------------------------------*/
+		[Test]
+		public void AddEdgeVciNoProps() {
+			vMockPath.SetupGet(x => x.Query).Returns(new WeaverQuery()); //should mock this
+
+			var ehe = new EmptyHasEmpty();
+			var e1 = new Empty { Id = "V0" };
+			var e2 = new Empty { Id = "eee99" };
+
+			IWeaverQuery q = vGraph.AddEdgeVci(e1, ehe, e2);
+
+			Assert.True(q.IsFinalized, "Incorrect IsFinalized.");
+			Assert.NotNull(q.Script, "Script should be filled.");
+			Assert.AreEqual("_OUTV=g.v(_P0);_INV=g.v(_P1);g.addEdge(_OUTV,_INV,_P2);",
+				q.Script, "Incorrect Script.");
+
+			var expectParams = new Dictionary<string, IWeaverQueryVal>();
+			expectParams.Add("_P0", new WeaverQueryVal(e1.Id));
+			expectParams.Add("_P1", new WeaverQueryVal(e2.Id));
+			expectParams.Add("_P2", new WeaverQueryVal("EHE"));
+			WeaverTestUtil.CheckQueryParamsOriginalVal(q, expectParams);
+		}
+
+		/*--------------------------------------------------------------------------------------------*/
+		[TestCase(null, "x0")]
+		[TestCase("x0", null)]
+		public void AddEdgeVciFail(string pPerId, string pCanId) {
+			var per = new Person { Id = pPerId };
+			var can = new Candy { Id = pCanId };
+
+			WeaverTestUtil.CheckThrows<WeaverException>(true,
+				() => vGraph.AddEdgeVci(per, new PersonLikesCandy(), can)
+			);
 		}
 
 

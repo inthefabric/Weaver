@@ -41,10 +41,9 @@ namespace Weaver.Core.Util {
 		////////////////////////////////////////////////////////////////////////////////////////////////
 		/*--------------------------------------------------------------------------------------------*/
 		public static string BuildPropList<T>(IWeaverConfig pConfig, IWeaverQuery pQuery, T pElem,
-								bool pIncludeId=false, int pStartParamI=0) where T : IWeaverElement {
-			string list = "";
-			int i = pStartParamI;
+								bool pIncludeId=false) where T : IWeaverElement {
 			IList<WeaverPropPair> props = GetElementPropertyAttributes(typeof(T));
+			var sb = new StringBuilder();
 
 			foreach ( WeaverPropPair wpp in props ) {
 				string dbName = wpp.Attrib.DbName;
@@ -56,12 +55,12 @@ namespace Weaver.Core.Util {
 				object val = wpp.Info.GetValue(pElem, null);
 
 				if ( val != null ) {
-					list += (i++ > 0 ? "," : "")+
-						dbName+":"+pQuery.AddParam(new WeaverQueryVal(val));
+					sb.Append((sb.Length > 0 ? "," : "")+
+						dbName+":"+pQuery.AddParam(new WeaverQueryVal(val)));
 				}
 			}
 
-			return list;
+			return sb.ToString();
 		}
 
 

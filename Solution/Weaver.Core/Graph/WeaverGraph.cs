@@ -73,11 +73,11 @@ namespace Weaver.Core.Graph {
 
 		/*--------------------------------------------------------------------------------------------*/
 		private IWeaverQuery FinishEdge<TEdge>(TEdge pEdge, string pScript) where TEdge : IWeaverEdge {
-			string edgeParam = Path.Query.AddStringParam(Path.Config.GetEdgeDbName<TEdge>());
+			string labelParam = Path.Query.AddStringParam(Path.Config.GetEdgeDbName<TEdge>());
 			string propList = WeaverUtil.BuildPropList(Path.Config, Path.Query, pEdge);
-			pScript += edgeParam+(propList.Length > 0 ? ",["+propList+"]" : "")+")";
 
-			Path.Query.FinalizeQuery(pScript);
+			Path.Query.FinalizeQuery(pScript+
+				labelParam+(propList.Length > 0 ? ",["+propList+"]" : "")+")");
 			return Path.Query;
 		}
 

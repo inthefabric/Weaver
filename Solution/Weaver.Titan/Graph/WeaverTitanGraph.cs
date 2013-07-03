@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
+using System.Text;
 using Weaver.Core.Elements;
 using Weaver.Core.Exceptions;
 using Weaver.Core.Graph;
@@ -29,6 +30,79 @@ namespace Weaver.Titan.Graph {
 			var v = new WeaverTitanGraphQuery(false);
 			Path.AddItem(v);
 			return v;
+		}
+
+
+		////////////////////////////////////////////////////////////////////////////////////////////////
+		/*--------------------------------------------------------------------------------------------*/
+		public IWeaverQuery AddEdgeVci<TOut, TEdge, TIn>(TOut pOutVertex, TEdge pEdge, TIn pInVertex)
+						where TOut : IWeaverVertex where TEdge : IWeaverEdge where TIn : IWeaverVertex {
+			if ( pOutVertex.Id == null ) {
+				throw new WeaverException("OutVertex.Id cannot be null.");
+			}
+
+			if ( pInVertex.Id == null ) {
+				throw new WeaverException("InVertex.Id cannot be null.");
+			}
+
+			const string outV = "_OUTV";
+			const string inV = "_INV";
+
+			return FinishEdgeVci(pEdge, outV, inV,
+				outV+"=g.v("+Path.Query.AddStringParam(pOutVertex.Id)+");"+
+				inV+"=g.v("+Path.Query.AddStringParam(pInVertex.Id)+");"+
+				"g.addEdge("+outV+","+inV+","
+			);
+		}
+
+		/*--------------------------------------------------------------------------------------------*/
+		public IWeaverQuery AddEdgeVci<TEdge>(IWeaverVarAlias pOutVertexVar, TEdge pEdge,
+											IWeaverVarAlias pInVertexVar) where TEdge : IWeaverEdge {
+			if ( !pEdge.IsValidOutVertexType(pOutVertexVar.VarType) ) {
+				throw new WeaverException("Invalid Out VarType: '"+pOutVertexVar.VarType.Name+
+					"', expected '"+pEdge.OutVertexType.Name+"'.");
+			}
+
+			if ( !pEdge.IsValidInVertexType(pInVertexVar.VarType) ) {
+				throw new WeaverException("Invalid In VarType: '"+pInVertexVar.VarType.Name+
+					"', expected '"+pEdge.InVertexType.Name+"'.");
+			}
+
+			return FinishEdgeVci(pEdge, pOutVertexVar.Name, pInVertexVar.Name,
+				"g.addEdge("+pOutVertexVar.Name+","+pInVertexVar.Name+",");
+		}
+
+		/*--------------------------------------------------------------------------------------------*/
+		private IWeaverQuery FinishEdgeVci<TEdge>(TEdge pEdge, string pOutV, string pInV,
+															string pScript) where TEdge : IWeaverEdge {
+			Type et = typeof(TEdge);
+			var e = GetAndVerifyElementAttribute<WeaverTitanEdgeAttribute>(et);
+
+			string labelParam = Path.Query.AddStringParam(e.DbName);
+			string propList = WeaverUtil.BuildPropList(Path.Config, Path.Query, pEdge);
+			var sb = new StringBuilder(propList);
+
+
+			AppendEdgeVciProps(sb, pOutV, et, WeaverUtil.GetElementPropertyAttributes(e.OutVertex));
+			AppendEdgeVciProps(sb, pInV, et, WeaverUtil.GetElementPropertyAttributes(e.InVertex));
+
+			Path.Query.FinalizeQuery(pScript+labelParam+(sb.Length > 0 ? ",["+sb+"]" : "")+")");
+			return Path.Query;
+		}
+
+
+		/*--------------------------------------------------------------------------------------------*/
+		private void AppendEdgeVciProps(StringBuilder pStr, string pAlias, Type pEdgeType,
+																IEnumerable<WeaverPropPair> pProps) {
+			foreach ( WeaverPropPair wpp in pProps ) {
+				WeaverTitanPropertyAttribute att = GetAndVerifyTitanPropertyAttribute(wpp, true);
+
+				if ( att == null || !att.HasTitanVertexCentricIndex(pEdgeType) ) {
+					continue;
+				}
+
+				pStr.Append((pStr.Length > 0 ? "," : "")+att.DbName+":"+pAlias+"."+att.DbName);
+			}
 		}
 
 
