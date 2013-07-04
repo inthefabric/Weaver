@@ -142,9 +142,7 @@ namespace Weaver.Test.WeavTitan.Graph {
 
 			IWeaverQuery q = vGraph.AddEdgeVci(mockOutVar.Object, ehe, mockInVar.Object);
 
-			const string expect = 
-				"_PROP=[:];"+
-				"g.addEdge("+outVarName+","+inVarName+",_P0,_PROP);";
+			const string expect = "g.addEdge("+outVarName+","+inVarName+",_P0);";
 
 			Assert.True(q.IsFinalized, "Incorrect IsFinalized.");
 			Assert.NotNull(q.Script, "Script should be filled.");
@@ -193,8 +191,7 @@ namespace Weaver.Test.WeavTitan.Graph {
 			const string expect = 
 				"_A=g.v(_P0);"+
 				"_B=g.v(_P1);"+
-				"_PROP=[:];"+
-				"g.addEdge(_A,_B,_P2,_PROP);";
+				"g.addEdge(_A,_B,_P2);";
 
 			Assert.True(q.IsFinalized, "Incorrect IsFinalized.");
 			Assert.NotNull(q.Script, "Script should be filled.");

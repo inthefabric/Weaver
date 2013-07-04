@@ -82,13 +82,17 @@ namespace Weaver.Titan.Graph {
 			var sb = new StringBuilder();
 			AppendEdgeVciProps(sb, pOutV, et, WeaverUtil.GetElementPropertyAttributes(e.OutVertex));
 			AppendEdgeVciProps(sb, pInV, et, WeaverUtil.GetElementPropertyAttributes(e.InVertex));
-
+			
+			const string tryLoop = "_TRY.each{k,v->if((z=v.getProperty(k))){_PROP.put(k,z)}};";
+			bool showTry = (sb.Length > 0);
+			string propLine = (propList.Length > 0 || showTry ?
+				"_PROP="+(propList.Length > 0 ? "["+propList+"];" : "[:];") : "");
+			
 			Path.Query.FinalizeQuery(
 				pScript+
-				"_PROP="+(propList.Length > 0 ? "["+propList+"]" : "[:]")+";"+
-				(sb.Length > 0 ? 
-					"_TRY=["+sb+"];_TRY.each{k,v->if((z=v.getProperty(k))){_PROP.put(k,z)}};" : "")+
-				"g.addEdge("+pOutV+","+pInV+","+labelParam+",_PROP)"
+				propLine+
+				(showTry ? "_TRY=["+sb+"];"+tryLoop : "")+
+				"g.addEdge("+pOutV+","+pInV+","+labelParam+(propLine.Length > 0 ? ",_PROP" : "")+")"
 			);
 
 			return Path.Query;
