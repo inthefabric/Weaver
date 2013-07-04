@@ -87,7 +87,7 @@ namespace Weaver.Titan.Graph {
 				pScript+
 				"_PROP="+(propList.Length > 0 ? "["+propList+"]" : "[:]")+";"+
 				(sb.Length > 0 ? 
-					"_TRY=["+sb+"];_TRY.each{k,v->if((z=v.getProperty(k))){p.put(k,z)}};" : "")+
+					"_TRY=["+sb+"];_TRY.each{k,v->if((z=v.getProperty(k))){_PROP.put(k,z)}};" : "")+
 				"g.addEdge("+pOutV+","+pInV+","+labelParam+",_PROP)"
 			);
 

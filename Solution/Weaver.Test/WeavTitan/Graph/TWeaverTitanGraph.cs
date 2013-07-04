@@ -20,7 +20,7 @@ namespace Weaver.Test.WeavTitan.Graph {
 	[TestFixture]
 	public class TWeaverTitanGraph : WeaverTestBase {
 
-		private const string TryEachScript = "_TRY.each{k,v->if((z=v.getProperty(k))){p.put(k,z)}};";
+		private const string TryScript = "_TRY.each{k,v->if((z=v.getProperty(k))){_PROP.put(k,z)}};";
 
 		private WeaverTitanGraph vGraph;
 		private Mock<IWeaverPath> vMockPath;
@@ -105,7 +105,7 @@ namespace Weaver.Test.WeavTitan.Graph {
 				"_B=g.v(_P1);"+
 				"_PROP=[First:_P3,Second:_P4];"+
 				"_TRY=[OA:_A,OD:_A,TB:_B,TC:_B,TD:_B];"+
-				TryEachScript+
+				TryScript+
 				"g.addEdge(_A,_B,_P2,_PROP);";
 
 			Assert.True(q.IsFinalized, "Incorrect IsFinalized.");
