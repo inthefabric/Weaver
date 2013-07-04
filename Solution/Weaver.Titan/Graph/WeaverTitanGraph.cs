@@ -45,13 +45,12 @@ namespace Weaver.Titan.Graph {
 				throw new WeaverException("InVertex.Id cannot be null.");
 			}
 
-			const string outV = "_OUTV";
-			const string inV = "_INV";
+			const string outV = "_A";
+			const string inV = "_B";
 
 			return FinishEdgeVci(pEdge, outV, inV,
 				outV+"=g.v("+Path.Query.AddStringParam(pOutVertex.Id)+");"+
-				inV+"=g.v("+Path.Query.AddStringParam(pInVertex.Id)+");"+
-				"g.addEdge("+outV+","+inV+","
+				inV+"=g.v("+Path.Query.AddStringParam(pInVertex.Id)+");"
 			);
 		}
 
@@ -68,8 +67,7 @@ namespace Weaver.Titan.Graph {
 					"', expected '"+pEdge.InVertexType.Name+"'.");
 			}
 
-			return FinishEdgeVci(pEdge, pOutVertexVar.Name, pInVertexVar.Name,
-				"g.addEdge("+pOutVertexVar.Name+","+pInVertexVar.Name+",");
+			return FinishEdgeVci(pEdge, pOutVertexVar.Name, pInVertexVar.Name, "");
 		}
 
 		/*--------------------------------------------------------------------------------------------*/
@@ -80,13 +78,19 @@ namespace Weaver.Titan.Graph {
 
 			string labelParam = Path.Query.AddStringParam(e.DbName);
 			string propList = WeaverUtil.BuildPropList(Path.Config, Path.Query, pEdge);
-			var sb = new StringBuilder(propList);
 
-
+			var sb = new StringBuilder();
 			AppendEdgeVciProps(sb, pOutV, et, WeaverUtil.GetElementPropertyAttributes(e.OutVertex));
 			AppendEdgeVciProps(sb, pInV, et, WeaverUtil.GetElementPropertyAttributes(e.InVertex));
 
-			Path.Query.FinalizeQuery(pScript+labelParam+(sb.Length > 0 ? ",["+sb+"]" : "")+")");
+			Path.Query.FinalizeQuery(
+				pScript+
+				"_PROP="+(propList.Length > 0 ? "["+propList+"]" : "[:]")+";"+
+				(sb.Length > 0 ? 
+					"_TRY=["+sb+"];_TRY.each{k,v->if((z=v.getProperty(k))){p.put(k,z)}};" : "")+
+				"g.addEdge("+pOutV+","+pInV+","+labelParam+",_PROP)"
+			);
+
 			return Path.Query;
 		}
 
@@ -101,7 +105,7 @@ namespace Weaver.Titan.Graph {
 					continue;
 				}
 
-				pStr.Append((pStr.Length > 0 ? "," : "")+att.DbName+":"+pAlias+"."+att.DbName);
+				pStr.Append((pStr.Length > 0 ? "," : "")+att.DbName+":"+pAlias);
 			}
 		}
 

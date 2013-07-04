@@ -20,6 +20,8 @@ namespace Weaver.Test.WeavTitan.Graph {
 	[TestFixture]
 	public class TWeaverTitanGraph : WeaverTestBase {
 
+		private const string TryEachScript = "_TRY.each{k,v->if((z=v.getProperty(k))){p.put(k,z)}};";
+
 		private WeaverTitanGraph vGraph;
 		private Mock<IWeaverPath> vMockPath;
 		private IList<IWeaverPathItem> vPathItems;
@@ -98,28 +100,19 @@ namespace Weaver.Test.WeavTitan.Graph {
 			IWeaverQuery q = vGraph.AddEdgeVci(one, okt, two);
 			Console.WriteLine(q.Script);
 
-			int bracketI = q.Script.IndexOf('[');
-			int bracketIClose = q.Script.LastIndexOf(']');
+			const string expect = 
+				"_A=g.v(_P0);"+
+				"_B=g.v(_P1);"+
+				"_PROP=[First:_P3,Second:_P4];"+
+				"_TRY=[OA:_A,OD:_A,TB:_B,TC:_B,TD:_B];"+
+				TryEachScript+
+				"g.addEdge(_A,_B,_P2,_PROP);";
 
 			Assert.True(q.IsFinalized, "Incorrect IsFinalized.");
 			Assert.NotNull(q.Script, "Script should be filled.");
-			Assert.AreEqual("_OUTV=g.v(_P0);_INV=g.v(_P1);g.addEdge(_OUTV,_INV,_P2,[",
-				q.Script.Substring(0, bracketI+1), "Incorrect starting code.");
-			Assert.AreEqual("]);", q.Script.Substring(bracketIClose), "Incorrect ending code.");
+			Assert.AreEqual(expect, q.Script, "Incorrect starting code.");
 
 			////
-
-			string vals = q.Script.Substring(bracketI+1, bracketIClose-bracketI-1);
-			Dictionary<string, string> pairMap = WeaverTestUtil.GetPropListDictionary(vals);
-
-			Assert.AreEqual(7, pairMap.Keys.Count, "Incorrect Key count.");
-			Assert.True(pairMap.ContainsKey("First"), "Missing OneKnowsTwo.FirstProp key.");
-			Assert.True(pairMap.ContainsKey("Second"), "Missing OneKnowsTwo.SecondProp key.");
-			Assert.True(pairMap.ContainsKey("OA"), "Missing One.A key.");
-			Assert.True(pairMap.ContainsKey("OD"), "Missing One.D key.");
-			Assert.True(pairMap.ContainsKey("TB"), "Missing Two.B key.");
-			Assert.True(pairMap.ContainsKey("TC"), "Missing Two.C key.");
-			Assert.True(pairMap.ContainsKey("TD"), "Missing Two.D key.");
 
 			var expectParams = new Dictionary<string, IWeaverQueryVal>();
 			expectParams.Add("_P0", new WeaverQueryVal(one.Id));
@@ -149,10 +142,13 @@ namespace Weaver.Test.WeavTitan.Graph {
 
 			IWeaverQuery q = vGraph.AddEdgeVci(mockOutVar.Object, ehe, mockInVar.Object);
 
+			const string expect = 
+				"_PROP=[:];"+
+				"g.addEdge("+outVarName+","+inVarName+",_P0,_PROP);";
+
 			Assert.True(q.IsFinalized, "Incorrect IsFinalized.");
 			Assert.NotNull(q.Script, "Script should be filled.");
-			Assert.AreEqual(q.Script, "g.addEdge("+outVarName+","+inVarName+",_P0);",
-				"Incorrect Script.");
+			Assert.AreEqual(expect, q.Script, "Incorrect Script.");
 
 			var expectParams = new Dictionary<string, IWeaverQueryVal>();
 			expectParams.Add("_P0", new WeaverQueryVal("EHE"));
@@ -194,10 +190,15 @@ namespace Weaver.Test.WeavTitan.Graph {
 
 			IWeaverQuery q = vGraph.AddEdgeVci(e1, ehe, e2);
 
+			const string expect = 
+				"_A=g.v(_P0);"+
+				"_B=g.v(_P1);"+
+				"_PROP=[:];"+
+				"g.addEdge(_A,_B,_P2,_PROP);";
+
 			Assert.True(q.IsFinalized, "Incorrect IsFinalized.");
 			Assert.NotNull(q.Script, "Script should be filled.");
-			Assert.AreEqual("_OUTV=g.v(_P0);_INV=g.v(_P1);g.addEdge(_OUTV,_INV,_P2);",
-				q.Script, "Incorrect Script.");
+			Assert.AreEqual(expect, q.Script, "Incorrect Script.");
 
 			var expectParams = new Dictionary<string, IWeaverQueryVal>();
 			expectParams.Add("_P0", new WeaverQueryVal(e1.Id));
