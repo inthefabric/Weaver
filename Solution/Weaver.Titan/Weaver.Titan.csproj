@@ -50,6 +50,8 @@
     <Compile Include="Steps\Parameters\WeaverParamElastic.cs" />
     <Compile Include="Steps\WeaverStepElasticIndex.cs" />
     <Compile Include="WeaverTitanInstanceExt.cs" />
+    <Compile Include="Pipe\WeaverTitanPathPipe.cs" />
+    <Compile Include="Util\WeaverTitanUtil.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Weaver.Core\Weaver.Core.csproj">
@@ -65,4 +67,8 @@
   <Target Name="AfterBuild">
   </Target>
   -->
+  <ItemGroup>
+    <Folder Include="Pipe\" />
+    <Folder Include="Util\" />
+  </ItemGroup>
 </Project>

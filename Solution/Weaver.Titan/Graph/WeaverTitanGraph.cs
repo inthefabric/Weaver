@@ -74,7 +74,7 @@ namespace Weaver.Titan.Graph {
 		private IWeaverQuery FinishEdgeVci<TEdge>(TEdge pEdge, string pOutV, string pInV,
 															string pScript) where TEdge : IWeaverEdge {
 			Type et = typeof(TEdge);
-			var e = GetAndVerifyElementAttribute<WeaverTitanEdgeAttribute>(et);
+			var e = WeaverTitanUtil.GetAndVerifyElementAttribute<WeaverTitanEdgeAttribute>(et);
 
 			string labelParam = Path.Query.AddStringParam(e.DbName);
 			string propList = WeaverUtil.BuildPropList(Path.Config, Path.Query, pEdge);
@@ -103,7 +103,8 @@ namespace Weaver.Titan.Graph {
 		private void AppendEdgeVciProps(StringBuilder pStr, string pAlias, Type pEdgeType,
 																IEnumerable<WeaverPropPair> pProps) {
 			foreach ( WeaverPropPair wpp in pProps ) {
-				WeaverTitanPropertyAttribute att = GetAndVerifyTitanPropertyAttribute(wpp, true);
+				WeaverTitanPropertyAttribute att = 
+					WeaverTitanUtil.GetAndVerifyTitanPropertyAttribute(wpp, true);
 
 				if ( att == null || !att.HasTitanVertexCentricIndex(pEdgeType) ) {
 					continue;
@@ -121,7 +122,7 @@ namespace Weaver.Titan.Graph {
 				throw new WeaverException("Group ID must be greater than 1.");
 			}
 
-			GetAndVerifyElementAttribute<WeaverVertexAttribute>(typeof(T));
+			WeaverTitanUtil.GetAndVerifyElementAttribute<WeaverVertexAttribute>(typeof(T));
 			var q = new WeaverQuery();
 
 			q.FinalizeQuery(
@@ -135,14 +136,14 @@ namespace Weaver.Titan.Graph {
 		/*--------------------------------------------------------------------------------------------*/
 		public IWeaverPathPipeEnd MakeVertexPropertyKey<T>(Expression<Func<T, object>> pProperty,
 											IWeaverVarAlias pGroupVar=null) where T : IWeaverVertex {
-			GetAndVerifyElementAttribute<WeaverTitanVertexAttribute>(typeof(T));
+			WeaverTitanUtil.GetAndVerifyElementAttribute<WeaverTitanVertexAttribute>(typeof(T));
 			return MakePropertyKey("Vertex", pProperty, pGroupVar);
 		}
 
 		/*--------------------------------------------------------------------------------------------*/
 		public IWeaverPathPipeEnd MakeEdgePropertyKey<T>(Expression<Func<T, object>> pProperty,
 												IWeaverVarAlias pGroupVar=null) where T : IWeaverEdge {
-			GetAndVerifyElementAttribute<WeaverTitanEdgeAttribute>(typeof(T));
+			WeaverTitanUtil.GetAndVerifyElementAttribute<WeaverTitanEdgeAttribute>(typeof(T));
 			return MakePropertyKey("Edge", pProperty, pGroupVar);
 		}
 
@@ -150,7 +151,7 @@ namespace Weaver.Titan.Graph {
 		private IWeaverPathPipeEnd MakePropertyKey<T>(string pElement, Expression<Func<T,object>> pProp,
 											IWeaverVarAlias pGroupVar=null) where T : IWeaverElement {
 			WeaverPropPair wpp = WeaverUtil.GetPropertyAttribute(pProp);
-			WeaverTitanPropertyAttribute att = GetAndVerifyTitanPropertyAttribute(wpp);
+			WeaverTitanPropertyAttribute att = WeaverTitanUtil.GetAndVerifyTitanPropertyAttribute(wpp);
 			Type pt = wpp.Info.PropertyType;
 
 			AddCustom("makeType()");
@@ -177,7 +178,7 @@ namespace Weaver.Titan.Graph {
 		public IWeaverPathPipeEnd BuildEdgeLabel<T>(
 						Func<string, IWeaverVarAlias> pGetPropVarAliasByDbName) where T : IWeaverEdge {
 			Type et = typeof(T);
-			var e = GetAndVerifyElementAttribute<WeaverTitanEdgeAttribute>(et);
+			var e = WeaverTitanUtil.GetAndVerifyElementAttribute<WeaverTitanEdgeAttribute>(et);
 			var ivc = e.InConn;
 			var ovc = e.OutConn;
 
@@ -189,7 +190,8 @@ namespace Weaver.Titan.Graph {
 			var sigs = new HashSet<string>();
 
 			foreach ( WeaverPropPair wpp in props ) {
-				WeaverTitanPropertyAttribute att = GetAndVerifyTitanPropertyAttribute(wpp, true);
+				WeaverTitanPropertyAttribute att = 
+					WeaverTitanUtil.GetAndVerifyTitanPropertyAttribute(wpp, true);
 
 				if ( att == null ) {
 					continue;
@@ -240,30 +242,6 @@ namespace Weaver.Titan.Graph {
 			var sc = new WeaverStepCustom(pScript);
 			Path.AddItem(sc);
 			return sc;
-		}
-
-		/*--------------------------------------------------------------------------------------------*/
-		private T GetAndVerifyElementAttribute<T>(Type pType) where T : WeaverElementAttribute {
-			T att = WeaverUtil.GetElementAttribute<T>(pType);
-
-			if ( att == null ) {
-				throw new WeaverException("Type '"+pType.Name+"' must have a "+typeof(T).Name+".");
-			}
-
-			return att;
-		}
-
-		/*--------------------------------------------------------------------------------------------*/
-		private WeaverTitanPropertyAttribute GetAndVerifyTitanPropertyAttribute(
-													WeaverPropPair pPair, bool pIgnoreNonTitan=false) {
-			WeaverTitanPropertyAttribute a = (pPair.Attrib as WeaverTitanPropertyAttribute);
-
-			if ( !pIgnoreNonTitan && a == null ) {
-				throw new WeaverException("Type '"+pPair.Info.Name+"' must have a "+
-					typeof(WeaverTitanPropertyAttribute).Name+".");
-			}
-
-			return a;
 		}
 
 	}
