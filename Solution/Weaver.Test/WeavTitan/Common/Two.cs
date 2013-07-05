@@ -1,4 +1,5 @@
 ﻿using Weaver.Titan.Elements;
+using Weaver.Core.Elements;
 
 namespace Weaver.Test.WeavTitan.Common {
 
@@ -21,6 +22,13 @@ namespace Weaver.Test.WeavTitan.Common {
 		[WeaverTitanProperty("TE")]
 		public int E { get; set; }
 
+		
+		////////////////////////////////////////////////////////////////////////////////////////////////
+		/*--------------------------------------------------------------------------------------------*/
+		public OneKnowsTwo InOneKnows {
+			get { return NewEdge<OneKnowsTwo>(WeaverEdgeConn.InZeroOrMore); }
+		}
+		
 	}
 
 }

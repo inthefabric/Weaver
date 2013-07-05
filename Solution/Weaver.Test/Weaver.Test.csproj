@@ -97,6 +97,7 @@
     <Compile Include="WeavTitan\Graph\TWeaverTitanGraphQuery.cs" />
     <Compile Include="WeavTitan\TWeaverTitanInstanceExt.cs" />
     <Compile Include="WeavExamples\TTraversals.cs" />
+    <Compile Include="WeavTitan\Pipe\TWeaverTitanPathPipe.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Weaver.Core\Weaver.Core.csproj">

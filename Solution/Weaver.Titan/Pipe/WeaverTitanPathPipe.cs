@@ -17,39 +17,50 @@ namespace Weaver.Core.Pipe {
 
 		////////////////////////////////////////////////////////////////////////////////////////////////
 		/*--------------------------------------------------------------------------------------------*/
-		public static TVert HasVci<TEdge, TVert>(this TEdge pEdge, 
-							Expression<Func<TVert, object>> pProperty, WeaverStepHasOp pOperation,
-							object pValue) where TEdge : IWeaverEdge where TVert : IWeaverVertex, new() {
-			ConfirmVciState<TEdge, TVert>(pProperty);
-			return (new TVert()).Has(pProperty, pOperation, pValue);
-		}
-
-		/*--------------------------------------------------------------------------------------------*/
-		public static TVert HasVci<TEdge, TVert>(this TEdge pEdge, 
-										Expression<Func<TVert, object>> pProperty) 
-										where TEdge : IWeaverEdge where TVert : IWeaverVertex, new() {
-			ConfirmVciState<TEdge, TVert>(pProperty);
-			return (new TVert()).Has(pProperty);
-		}
-
-		/*--------------------------------------------------------------------------------------------*/
-		public static TVert HasNotVci<TEdge, TVert>(this TEdge pEdge,
+		public static TEdge HasVci<TEdge, TVert>(this TEdge pEdge, 
 						Expression<Func<TVert, object>> pProperty, WeaverStepHasOp pOperation,
 						object pValue) where TEdge : IWeaverEdge where TVert : IWeaverVertex, new() {
 			ConfirmVciState<TEdge, TVert>(pProperty);
-			return (new TVert()).HasNot(pProperty, pOperation, pValue);
+			NewVert<TVert>(pEdge).Has(pProperty, pOperation, pValue);
+			return pEdge;
 		}
 
 		/*--------------------------------------------------------------------------------------------*/
-		public static TVert HasNotVci<TEdge, TVert>(this TEdge pEdge,
+		public static TEdge HasVci<TEdge, TVert>(this TEdge pEdge, 
 										Expression<Func<TVert, object>> pProperty) 
 										where TEdge : IWeaverEdge where TVert : IWeaverVertex, new() {
 			ConfirmVciState<TEdge, TVert>(pProperty);
-			return (new TVert()).HasNot(pProperty);
+			NewVert<TVert>(pEdge).Has(pProperty);
+			return pEdge;
+		}
+
+		/*--------------------------------------------------------------------------------------------*/
+		public static TEdge HasNotVci<TEdge, TVert>(this TEdge pEdge,
+						Expression<Func<TVert, object>> pProperty, WeaverStepHasOp pOperation,
+						object pValue) where TEdge : IWeaverEdge where TVert : IWeaverVertex, new() {
+			ConfirmVciState<TEdge, TVert>(pProperty);
+			NewVert<TVert>(pEdge).HasNot(pProperty, pOperation, pValue);
+			return pEdge;
+		}
+
+		/*--------------------------------------------------------------------------------------------*/
+		public static TEdge HasNotVci<TEdge, TVert>(this TEdge pEdge,
+										Expression<Func<TVert, object>> pProperty) 
+										where TEdge : IWeaverEdge where TVert : IWeaverVertex, new() {
+			ConfirmVciState<TEdge, TVert>(pProperty);
+			NewVert<TVert>(pEdge).HasNot(pProperty);
+			return pEdge;
 		}
 		
 		
 		////////////////////////////////////////////////////////////////////////////////////////////////
+		/*--------------------------------------------------------------------------------------------*/
+		private static TVert NewVert<TVert>(IWeaverEdge pEdge) where TVert : IWeaverVertex, new() {
+			TVert v = new TVert();
+			v.Path = pEdge.Path;
+			return v;
+		}
+		
 		/*--------------------------------------------------------------------------------------------*/
 		private static void ConfirmVciState<TEdge, TVert>(Expression<Func<TVert, object>> pProperty)
 				                             	where TEdge : IWeaverEdge where TVert : IWeaverVertex {
@@ -59,12 +70,17 @@ namespace Weaver.Core.Pipe {
 			WeaverTitanUtil.GetAndVerifyElementAttribute<WeaverTitanEdgeAttribute>(et);
 			WeaverTitanUtil.GetAndVerifyElementAttribute<WeaverTitanVertexAttribute>(vt);
 			
+			//TODO: vertify that TVert is valid for TEdge
+			//TODO: or, create step that enters "vci" state for the specific vertex type, like:
+			//	twoVert.InKnowsOne.StartVci.Has(x => x.A).ExitVci.ToVertex
+			//where (StartVci implicity == StartVci<One>), and (ExitVci == ExitVci<InKnowsOne>)
+			
 			WeaverPropPair wpp = WeaverUtil.GetPropertyAttribute(pProperty);
 			WeaverTitanPropertyAttribute att = WeaverTitanUtil.GetAndVerifyTitanPropertyAttribute(wpp);
 			
 			if ( !att.HasTitanVertexCentricIndex(et) ) {
-				throw new WeaverException("Property '"+wpp.Info.Name+"' does not have a vertex-"+
-					"centric index for edge '"+et.Name+"' and vertex '"+vt.Name+"'.");
+				throw new WeaverException("Property '"+vt.Name+"."+wpp.Info.Name+"' does not have a "+
+					"vertex-centric index for edge '"+et.Name+"'.");
 			}
 		}
 
