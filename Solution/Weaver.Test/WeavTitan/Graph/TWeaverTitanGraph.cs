@@ -305,7 +305,7 @@ namespace Weaver.Test.WeavTitan.Graph {
 		public void MakeVertexPropertyErrType() {
 			Exception e = WeaverTestUtil.CheckThrows<WeaverException>(true,
 				() => vGraph.MakeVertexPropertyKey<NullableProp>(x => x.NonTitanAttribute));
-			Assert.AreEqual(0, e.Message.IndexOf("Type"), "Incorrect exception.");
+			Assert.AreEqual(0, e.Message.IndexOf("Property"), "Incorrect exception.");
 		}
 
 		/*--------------------------------------------------------------------------------------------*/

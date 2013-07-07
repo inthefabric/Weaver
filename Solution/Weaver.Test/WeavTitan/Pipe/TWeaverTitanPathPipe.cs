@@ -16,6 +16,7 @@ using Weaver.Core.Exceptions;
 using Weaver.Titan.Elements;
 using Weaver.Test.Common.Edges;
 using Weaver.Core;
+using Weaver.Test.Common.EdgeTypes;
 
 namespace Weaver.Test.WeavTitan.Pipe {
 
@@ -116,10 +117,24 @@ namespace Weaver.Test.WeavTitan.Pipe {
 		[TestCase(HasStepType.HasNotProp)]
 		public void HasInvalidProperty(HasStepType pStepType) {
 			Exception e = WeaverTestUtil.CheckThrows<WeaverException>(true, () =>
-				DoHasStep<OneKnowsTwo, NullableProp>(pStepType, x => x.NonTitanAttribute));
+				DoHasStep<OneKnowsThree, Three>(pStepType, x => x.B));
 			
 			bool correct = (e.Message.Contains(typeof(WeaverTitanPropertyAttribute).Name) && 
-				e.Message.Contains("NonTitanAttribute"));
+				e.Message.Contains("B"));
+			Assert.True(correct, "Incorrect exception: "+e);
+		}
+		
+		/*--------------------------------------------------------------------------------------------*/
+		[TestCase(HasStepType.HasOp)]
+		[TestCase(HasStepType.HasProp)]
+		[TestCase(HasStepType.HasNotOp)]
+		[TestCase(HasStepType.HasNotProp)]
+		public void HasInvalidVertexType(HasStepType pStepType) {
+			Exception e = WeaverTestUtil.CheckThrows<WeaverException>(true, () =>
+				DoHasStep<OneKnowsTwo, NullableProp>(pStepType, x => x.NonTitanAttribute));
+			
+			bool correct = (e.Message.Contains(typeof(NullableProp).Name) && 
+				e.Message.Contains("not valid for edge type"));
 			Assert.True(correct, "Incorrect exception: "+e);
 		}
 
@@ -161,31 +176,26 @@ namespace Weaver.Test.WeavTitan.Pipe {
 			Assert.AreEqual(expect, q.Script, "Incorrect script.");
 		}
 		
-		/*--------------------------------------------------------------------------------------------*/
-		[Test]
-		[Category(Integration)]
-		public void HasVciScriptNew() {
-			var wi = new WeaverInstance(
-				new [] { typeof(One), typeof(Two) }, new [] { typeof(OneKnowsTwo) });
-			
-			IWeaverQuery q = wi.Graph
-				.V.ExactIndex<Two>(x => x.Id, 10)
-					.InOneKnows
-					.BeginVci(x => x.OutVertex)
-						.HasNotVci2(x => x.A)
-					.EndVci()
-					.OutVertex
-					.KnowsTwo
-					.BeginVci(x => x.InVertex)
-						.HasVci2(x => x.C, WeaverStepHasOp.GreaterThanOrEqualTo, 2)
-					.EndVci()
-					.OutVertex
-					.ToQuery();
-			
-			string expect = "g.V('id',_P0).inE('OKT').hasNot('OA').outV"+
-				".outE('OKT').has('TC',Tokens.T.gte,_P1).outV;";
-			Assert.AreEqual(expect, q.Script, "Incorrect script.");
-		}
+	}
+	
+	
+	/*================================================================================================*/
+	[WeaverTitanVertex]
+	public class Three : TitanBase {
+		
+		[WeaverTitanProperty("TA", EdgesForVertexCentricIndexing = new [] { typeof(OneKnowsTwo) })]
+		public int A { get; set; }
+		
+		[WeaverProperty("TB")]
+		public int B { get; set; }
+		
+	}
+	
+	
+	/*================================================================================================*/
+	[WeaverTitanEdge("OKT", WeaverEdgeConn.OutZeroOrOne, typeof(One),
+		WeaverEdgeConn.InOne, typeof(Three))]
+	public class OneKnowsThree : WeaverEdge<One, Knows, Three> {
 		
 	}
 

@@ -27,7 +27,7 @@ namespace Weaver.Core.Util {
 			WeaverTitanPropertyAttribute a = (pPair.Attrib as WeaverTitanPropertyAttribute);
 			
 			if ( !pIgnoreNonTitan && a == null ) {
-				throw new WeaverException("Type '"+pPair.Info.Name+"' must have a "+
+				throw new WeaverException("Property '"+pPair.Info.Name+"' must have a "+
 					typeof(WeaverTitanPropertyAttribute).Name+".");
 			}
 			

@@ -52,8 +52,6 @@
     <Compile Include="WeaverTitanInstanceExt.cs" />
     <Compile Include="Pipe\WeaverTitanPathPipe.cs" />
     <Compile Include="Util\WeaverTitanUtil.cs" />
-    <Compile Include="Pipe\WeaverTitanVciPipe.cs" />
-    <Compile Include="Pipe\IWeaverTitanVciPipe.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Weaver.Core\Weaver.Core.csproj">
