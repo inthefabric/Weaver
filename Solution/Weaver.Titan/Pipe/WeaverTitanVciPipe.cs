@@ -7,9 +7,9 @@ using Weaver.Titan.Elements;
 namespace Weaver.Core.Pipe {
 	
 	/*================================================================================================*/
-	public class WeaverTitanVciPipe<TEdge, TVertex, TOutV, TInV> : WeaverPathItem,
-				IWeaverTitanVciPipe<TEdge, TVertex, TOutV, TInV> where TEdge : IWeaverEdge<TOutV, TInV>
-				where TVertex : IWeaverVertex where TOutV : IWeaverVertex where TInV : IWeaverVertex {
+	public class WeaverTitanVciPipe<TEdge, TVertex> : WeaverPathItem, 
+										IWeaverTitanVciPipe<TEdge, TVertex> where TEdge : IWeaverEdge
+										where TVertex : IWeaverVertex {
 		
 		public TEdge Edge { get; private set; }
 		public TVertex Vertex { get; private set; }

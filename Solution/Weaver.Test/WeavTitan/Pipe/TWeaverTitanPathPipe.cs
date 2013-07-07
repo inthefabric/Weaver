@@ -161,6 +161,32 @@ namespace Weaver.Test.WeavTitan.Pipe {
 			Assert.AreEqual(expect, q.Script, "Incorrect script.");
 		}
 		
+		/*--------------------------------------------------------------------------------------------*/
+		[Test]
+		[Category(Integration)]
+		public void HasVciScriptNew() {
+			var wi = new WeaverInstance(
+				new [] { typeof(One), typeof(Two) }, new [] { typeof(OneKnowsTwo) });
+			
+			IWeaverQuery q = wi.Graph
+				.V.ExactIndex<Two>(x => x.Id, 10)
+					.InOneKnows
+					.BeginVci(x => x.OutVertex)
+						.HasNotVci2(x => x.A)
+					.EndVci()
+					.OutVertex
+					.KnowsTwo
+					.BeginVci(x => x.InVertex)
+						.HasVci2(x => x.C, WeaverStepHasOp.GreaterThanOrEqualTo, 2)
+					.EndVci()
+					.OutVertex
+					.ToQuery();
+			
+			string expect = "g.V('id',_P0).inE('OKT').hasNot('OA').outV"+
+				".outE('OKT').has('TC',Tokens.T.gte,_P1).outV;";
+			Assert.AreEqual(expect, q.Script, "Incorrect script.");
+		}
+		
 	}
 
 }

@@ -4,9 +4,8 @@ using Weaver.Core.Path;
 namespace Weaver.Core.Pipe {
 	
 	/*================================================================================================*/
-	public interface IWeaverTitanVciPipe<TEdge, TVertex, TOutV, TInV> : IWeaverPathItem
-								where TEdge : IWeaverEdge<TOutV, TInV> where TVertex : IWeaverVertex
-								where TOutV : IWeaverVertex where TInV : IWeaverVertex {
+	public interface IWeaverTitanVciPipe<TEdge, TVertex> : IWeaverPathItem
+											where TEdge : IWeaverEdge where TVertex : IWeaverVertex {
 		
 		TEdge Edge { get; }
 		TVertex Vertex { get; }

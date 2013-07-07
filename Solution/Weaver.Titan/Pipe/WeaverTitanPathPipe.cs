@@ -17,68 +17,54 @@ namespace Weaver.Core.Pipe {
 		
 		////////////////////////////////////////////////////////////////////////////////////////////////
 		/*--------------------------------------------------------------------------------------------*/
-		public static IWeaverTitanVciPipe<TEdge, TOutV, TOutV, TInV> BeginOutVci<TEdge, TOutV, TInV>(
-										this TEdge pEdge) where TEdge : IWeaverEdge<TOutV, TInV>
-										where TOutV : IWeaverVertex where TInV : IWeaverVertex {
-			return new WeaverTitanVciPipe<TEdge, TOutV, TOutV, TInV>(pEdge, pEdge.OutVertex);
+		public static IWeaverTitanVciPipe<TEdge, TVertex> BeginVci<TEdge, TVertex>(this TEdge pEdge,
+				Func<TEdge, TVertex> pVertex) where TEdge : IWeaverEdge where TVertex : IWeaverVertex {
+			return new WeaverTitanVciPipe<TEdge, TVertex>(pEdge, pVertex(pEdge));
 		}
 		
 		/*--------------------------------------------------------------------------------------------*/
-		public static IWeaverTitanVciPipe<TEdge, TInV, TOutV, TInV> BeginInVci<TEdge, TOutV, TInV>(
-										this TEdge pEdge) where TEdge : IWeaverEdge<TOutV, TInV>
-										where TOutV : IWeaverVertex where TInV : IWeaverVertex {
-			return new WeaverTitanVciPipe<TEdge, TInV, TOutV, TInV>(pEdge, pEdge.InVertex);
-		}
-		
-		/*--------------------------------------------------------------------------------------------*/
-		public static TEdge EndVci<TEdge, TVertex, TOutV, TInV>(
-								this IWeaverTitanVciPipe<TEdge, TVertex, TOutV, TInV> pVci)
-								where TEdge : IWeaverEdge<TOutV, TInV> where TVertex : IWeaverVertex 
-								where TOutV : IWeaverVertex where TInV : IWeaverVertex {
+		public static TEdge EndVci<TEdge, TVertex>(this IWeaverTitanVciPipe<TEdge, TVertex> pVci)
+											where TEdge : IWeaverEdge where TVertex : IWeaverVertex {
 			return pVci.Edge;
 		}
 		
 		
 		////////////////////////////////////////////////////////////////////////////////////////////////
 		/*--------------------------------------------------------------------------------------------*/
-		public static IWeaverTitanVciPipe<TEdge, TVert, TOutV, TInV> HasVci<TEdge, TVert, TOutV, TInV>(
-					this IWeaverTitanVciPipe<TEdge, TVert, TOutV, TInV> pVci, 
+		public static IWeaverTitanVciPipe<TEdge, TVert> HasVci2<TEdge, TVert>(
+					this IWeaverTitanVciPipe<TEdge, TVert> pVci, 
 					Expression<Func<TVert, object>> pProperty, WeaverStepHasOp pOperation,
-					object pValue) where TEdge : IWeaverEdge<TOutV, TInV> where TVert : IWeaverVertex 
-					where TOutV : IWeaverVertex where TInV : IWeaverVertex {
+					object pValue) where TEdge : IWeaverEdge where TVert : IWeaverVertex {
 			ConfirmVciProp<TEdge, TVert>(pProperty);
 			pVci.Vertex.Has(pProperty, pOperation, pValue);
 			return pVci;
 		}
 		
 		/*--------------------------------------------------------------------------------------------*/
-		public static IWeaverTitanVciPipe<TEdge, TVert, TOutV, TInV> HasVci<TEdge, TVert, TOutV, TInV>(
-									this IWeaverTitanVciPipe<TEdge, TVert, TOutV, TInV> pVci, 
+		public static IWeaverTitanVciPipe<TEdge, TVert> HasVci2<TEdge, TVert>(
+									this IWeaverTitanVciPipe<TEdge, TVert> pVci, 
 									Expression<Func<TVert, object>> pProperty)
-									where TEdge : IWeaverEdge<TOutV, TInV> where TVert : IWeaverVertex 
-									where TOutV : IWeaverVertex where TInV : IWeaverVertex {
+									where TEdge : IWeaverEdge where TVert : IWeaverVertex {
 			ConfirmVciProp<TEdge, TVert>(pProperty);
 			pVci.Vertex.Has(pProperty);
 			return pVci;
 		}
 		
 		/*--------------------------------------------------------------------------------------------*/
-		public static IWeaverTitanVciPipe<TEdge, TVert, TOutV, TInV> HasNotVci<TEdge, TVert,TOutV,TInV>(
-					this IWeaverTitanVciPipe<TEdge, TVert, TOutV, TInV> pVci, 
+		public static IWeaverTitanVciPipe<TEdge, TVert> HasNotVci2<TEdge, TVert>(
+					this IWeaverTitanVciPipe<TEdge, TVert> pVci, 
 					Expression<Func<TVert, object>> pProperty, WeaverStepHasOp pOperation,
-					object pValue) where TEdge : IWeaverEdge<TOutV, TInV> where TVert : IWeaverVertex 
-					where TOutV : IWeaverVertex where TInV : IWeaverVertex {
+					object pValue) where TEdge : IWeaverEdge where TVert : IWeaverVertex {
 			ConfirmVciProp<TEdge, TVert>(pProperty);
 			pVci.Vertex.HasNot(pProperty, pOperation, pValue);
 			return pVci;
 		}
 		
 		/*--------------------------------------------------------------------------------------------*/
-		public static IWeaverTitanVciPipe<TEdge, TVert, TOutV, TInV> HasNotVci<TEdge, TVert,TOutV,TInV>(
-									this IWeaverTitanVciPipe<TEdge, TVert, TOutV, TInV> pVci, 
+		public static IWeaverTitanVciPipe<TEdge, TVert> HasNotVci2<TEdge, TVert>(
+									this IWeaverTitanVciPipe<TEdge, TVert> pVci, 
 									Expression<Func<TVert, object>> pProperty)
-									where TEdge : IWeaverEdge<TOutV, TInV> where TVert : IWeaverVertex 
-									where TOutV : IWeaverVertex where TInV : IWeaverVertex {
+									where TEdge : IWeaverEdge where TVert : IWeaverVertex {
 			ConfirmVciProp<TEdge, TVert>(pProperty);
 			pVci.Vertex.HasNot(pProperty);
 			return pVci;
