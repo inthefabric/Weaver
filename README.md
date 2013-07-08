@@ -30,7 +30,7 @@ g.V('U_Na','Zach')
 
 The Gremlin script can also be parameterized (enabled by default) to achieve more efficient query compilation on the database side.
 
-#### Fabric
+#### Fabric Usage Example
 
 Weaver was built to support the [Fabric](https://github.com/inthefabric/Fabric) project, which provides several [useful examples](https://github.com/inthefabric/Fabric/blob/master/Solution/Fabric.Api.Modify/Tasks/ModifyTasks.cs) of Weaver configuration, setup, and usage. 
 
@@ -54,6 +54,18 @@ IWeaverQuery q = myWeaverObj.Graph
 
 SendGremlinRequest(q.Script, q.Params);
 ```
+
+#### Titan-Specific Functionality
+
+As of build 0.5.2, `Weaver.Titan` project provides a variety of functionality that is specific to Titan. This includes:
+- Extended [Property](https://github.com/inthefabric/Weaver/blob/master/Solution/Weaver.Titan/Elements/WeaverTitanPropertyAttribute.cs) attribute to support standard, elastic, and vertex-centric indexing
+- Extended [Edge](https://github.com/inthefabric/Weaver/blob/master/Solution/Weaver.Titan/Elements/WeaverTitanEdgeAttribute.cs) attribute to support IN- and OUT-uniqueness
+- Creating [Type Groups](https://github.com/inthefabric/Weaver/blob/master/Solution/Weaver.Titan/Graph/WeaverTitanGraph.cs#L120)
+- Creating [Property Keys](https://github.com/inthefabric/Weaver/blob/master/Solution/Weaver.Titan/Graph/WeaverTitanGraph.cs#L137) using data from Property attributes
+- Creating [Edge Labels](https://github.com/inthefabric/Weaver/blob/master/Solution/Weaver.Titan/Graph/WeaverTitanGraph.cs#L178) using data from Property and Edge attributes
+- Automatic inclusion of vertex-centric index properties when [adding new edges](https://github.com/inthefabric/Weaver/blob/master/Solution/Weaver.Titan/Graph/WeaverTitanGraph.cs#L38), using data from Property and Edge attributes
+- Forming queries using [ElasticSearch indexes](https://github.com/inthefabric/Weaver/blob/master/Solution/Weaver.Titan/Graph/WeaverTitanGraphQuery.cs#L23)
+- Performing strongly-typed ["Has" queries](https://github.com/inthefabric/Weaver/blob/master/Solution/Weaver.Titan/Pipe/WeaverTitanPathPipe.cs#L20) against vertex-centric edge properties
 
 #### Graph of the Gods
 
