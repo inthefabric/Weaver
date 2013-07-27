@@ -10,14 +10,14 @@ namespace Weaver.Core.Query {
 		public string Script { get; set; }
 		public Dictionary<string, IWeaverQueryVal> Params { get; set; }
 
-		private readonly List<IWeaverQuery> vQueries;
+		public IList<IWeaverQuery> Queries { get; private set; }
 		private int vVarCount;
 
 
 		////////////////////////////////////////////////////////////////////////////////////////////////
 		/*--------------------------------------------------------------------------------------------*/
 		public WeaverTransaction() {
-			vQueries = new List<IWeaverQuery>();
+			Queries = new List<IWeaverQuery>();
 			vVarCount = -1;
 		}
 
@@ -29,7 +29,7 @@ namespace Weaver.Core.Query {
 				throw new WeaverException("Cannot add a null query to transaction.");
 			}
 
-			vQueries.Add(pQuery);
+			Queries.Add(pQuery);
 			return pQuery;
 		}
 
@@ -47,7 +47,7 @@ namespace Weaver.Core.Query {
 			
 			const string end = @"(?=$|[^\d])";
 
-			foreach ( IWeaverQuery wq in vQueries ) {
+			foreach ( IWeaverQuery wq in Queries ) {
 				string s = wq.Script + "";
 				Dictionary<string, IWeaverQueryVal> pars = wq.Params;
 

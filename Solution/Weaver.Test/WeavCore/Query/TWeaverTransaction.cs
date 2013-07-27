@@ -10,7 +10,16 @@ namespace Weaver.Test.WeavCore.Query {
 	/*================================================================================================*/
 	[TestFixture]
 	public class TWeaverTransaction : WeaverTestBase {
-
+		
+		
+		////////////////////////////////////////////////////////////////////////////////////////////////
+		/*--------------------------------------------------------------------------------------------*/
+		[Test]
+		public void New() {
+			var tx = new WeaverTransaction();
+			Assert.NotNull(tx.Queries, "Queries should not be null.");
+			Assert.AreEqual(0, tx.Queries.Count, "Incorrect Queries.Count.");
+		}
 
 		////////////////////////////////////////////////////////////////////////////////////////////////
 		/*--------------------------------------------------------------------------------------------*/
@@ -110,6 +119,24 @@ namespace Weaver.Test.WeavCore.Query {
 		
 		
 		////////////////////////////////////////////////////////////////////////////////////////////////
+		/*--------------------------------------------------------------------------------------------*/
+		[TestCase(1)]
+		[TestCase(2)]
+		[TestCase(99)]
+		public void AddQuery(int pCount) {
+			var tx = new WeaverTransaction();
+			var list = new List<IWeaverQuery>();
+			
+			for ( int i = 0 ; i < pCount ; ++i ) {
+				var q = new WeaverQuery();
+				list.Add(q);
+				tx.AddQuery(q);
+			}
+			
+			Assert.AreEqual(pCount, tx.Queries.Count, "Incorrect Queries.Count.");
+			Assert.AreEqual(list, tx.Queries, "Incorrect Query list.");
+		}
+		
 		/*--------------------------------------------------------------------------------------------*/
 		[Test]
 		public void AddQueryNull() {

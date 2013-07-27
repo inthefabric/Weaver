@@ -1,8 +1,12 @@
-﻿namespace Weaver.Core.Query {
+﻿using System.Collections.Generic;
+
+namespace Weaver.Core.Query {
 
 	/*================================================================================================*/
 	public interface IWeaverTransaction : IWeaverScript {
 	
+		IList<IWeaverQuery> Queries { get; }
+		
 		
 		////////////////////////////////////////////////////////////////////////////////////////////////
 		/*--------------------------------------------------------------------------------------------*/
