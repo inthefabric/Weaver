@@ -123,25 +123,37 @@ namespace Weaver.Test.WeavExecRexConn {
 
 		////////////////////////////////////////////////////////////////////////////////////////////////
 		/*--------------------------------------------------------------------------------------------*/
-		[TestCase(true)]
-		[TestCase(false)]
-		public void AddQueries(bool pAsSession) {
-			var list = new List<IWeaverScript>();
+		[TestCase(true, true)]
+		[TestCase(true, false)]
+		[TestCase(false, true)]
+		[TestCase(false, false)]
+		public void AddQueries(bool pAsTransaction, bool pAsSession) {
+			var list = new List<IWeaverQuery>();
 
-			var mockScr = new Mock<IWeaverScript>();
+			var mockScr = new Mock<IWeaverQuery>();
 			mockScr.SetupGet(x => x.Script).Returns("x");
 			list.Add(mockScr.Object);
 
-			mockScr = new Mock<IWeaverScript>();
+			mockScr = new Mock<IWeaverQuery>();
 			mockScr.SetupGet(x => x.Script).Returns("y");
 			list.Add(mockScr.Object);
 
-			mockScr = new Mock<IWeaverScript>();
+			mockScr = new Mock<IWeaverQuery>();
 			mockScr.SetupGet(x => x.Script).Returns("z");
 			list.Add(mockScr.Object);
 
 			var r = new WeaverRequest();
-			IList<RequestCmd> cmd = r.AddQueries(list, pAsSession);
+			IList<RequestCmd> cmd;
+			
+			 if ( pAsTransaction ) {
+				var mockTx = new Mock<IWeaverTransaction>();
+				mockTx.SetupGet(x => x.Queries).Returns(list);
+				
+				cmd = r.AddQueries(mockTx.Object, pAsSession);
+			 }
+			 else {
+				cmd = r.AddQueries(list, pAsSession);
+			}
 
 			AssertCmdList(r, (pAsSession ? 6 : 3));
 			int i = 0;

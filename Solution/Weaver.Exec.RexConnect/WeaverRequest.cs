@@ -61,6 +61,11 @@ namespace Weaver.Exec.RexConnect {
 
 			return list;
 		}
+		
+		/*--------------------------------------------------------------------------------------------*/
+		public IList<RequestCmd> AddQueries(IWeaverTransaction pTransaction, bool pAsSession) {
+			return AddQueries(pTransaction.Queries, pAsSession);
+		}
 
 	}
 	
