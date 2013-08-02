@@ -1,15 +1,14 @@
 ﻿using System;
 using System.Linq.Expressions;
 using Weaver.Core.Elements;
-using Weaver.Core.Path;
-using Weaver.Core.Query;
+using Weaver.Core.Exceptions;
+using Weaver.Core.Pipe;
 using Weaver.Core.Steps;
-using Weaver.Core.Steps.Statements;
 using Weaver.Core.Util;
 using Weaver.Titan.Elements;
-using Weaver.Core.Exceptions;
+using Weaver.Titan.Util;
 
-namespace Weaver.Core.Pipe {
+namespace Weaver.Titan.Pipe {
 	
 	/*================================================================================================*/
 	public static class WeaverTitanPathPipeExt {

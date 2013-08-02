@@ -10,6 +10,7 @@ using Weaver.Core.Query;
 using Weaver.Core.Steps;
 using Weaver.Core.Util;
 using Weaver.Titan.Elements;
+using Weaver.Titan.Util;
 
 namespace Weaver.Titan.Graph {
 	

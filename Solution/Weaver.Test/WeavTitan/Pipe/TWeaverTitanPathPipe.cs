@@ -17,6 +17,7 @@ using Weaver.Titan.Elements;
 using Weaver.Test.Common.Edges;
 using Weaver.Core;
 using Weaver.Test.Common.EdgeTypes;
+using Weaver.Titan.Pipe;
 
 namespace Weaver.Test.WeavTitan.Pipe {
 

@@ -1,9 +1,10 @@
 ﻿using System;
 using Weaver.Core.Elements;
 using Weaver.Core.Exceptions;
+using Weaver.Core.Util;
 using Weaver.Titan.Elements;
 
-namespace Weaver.Core.Util {
+namespace Weaver.Titan.Util {
 
 	/*================================================================================================*/
 	internal static class WeaverTitanUtil {
