@@ -9,7 +9,7 @@ namespace Weaver.Titan.Steps.Parameters {
 	/*================================================================================================*/
 	public enum WeaverParamElasticOp {
 
-		//Query.Compare (Blueprints)
+		//com.tinkerpop.blueprints.Query.Compare
 		EqualTo = 1,
 		NotEqualTo,
 		GreaterThan,
@@ -17,7 +17,7 @@ namespace Weaver.Titan.Steps.Parameters {
 		LessThan,
 		LessThanOrEqualTo,
 
-		//Text (Titan)
+		//com.thinkaurelius.titan.core.attribute.Text
 		Contains,
 		Prefix
 	};
@@ -28,18 +28,15 @@ namespace Weaver.Titan.Steps.Parameters {
 
 		internal static IDictionary<WeaverParamElasticOp, string> OpMap;
 
-		private const string Compare = "com.tinkerpop.blueprints.Query.Compare.";
-		private const string Text = "com.thinkaurelius.titan.core.attribute.Text.";
+		public const string EqualToScript = "EQUAL";
+		public const string NotEqualToScript = "NOT_EQUAL";
+		public const string GreaterThanScript = "GREATER_THAN";
+		public const string GreaterThanOrEqualToScript = "GREATER_THAN_EQUAL";
+		public const string LessThanScript = "LESS_THAN";
+		public const string LessThanOrEqualToScript = "LESS_THAN_EQUAL";
 
-		public const string EqualToScript = Compare+"EQUAL";
-		public const string NotEqualToScript = Compare+"NOT_EQUAL";
-		public const string GreaterThanScript = Compare+"GREATER_THAN";
-		public const string GreaterThanOrEqualToScript = Compare+"GREATER_THAN_EQUAL";
-		public const string LessThanScript = Compare+"LESS_THAN";
-		public const string LessThanOrEqualToScript = Compare+"LESS_THAN_EQUAL";
-
-		public const string ContainsScript = Text+"CONTAINS";
-		public const string PrefixScript = Text+"PREFIX";
+		public const string ContainsScript = "CONTAINS";
+		public const string PrefixScript = "PREFIX";
 
 
 		////////////////////////////////////////////////////////////////////////////////////////////////

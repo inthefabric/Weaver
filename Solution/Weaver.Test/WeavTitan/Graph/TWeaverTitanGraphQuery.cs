@@ -81,10 +81,8 @@ namespace Weaver.Test.WeavTitan.Graph {
 				.ToQuery();
 
 			const string expect = "g.V"+
-				".has('"+TestSchema.Person_PersonId+"',"+
-					"com.tinkerpop.blueprints.Query.Compare.LESS_THAN,_P0)"+
-				".has('"+TestSchema.Person_Age+"',"+
-					"com.tinkerpop.blueprints.Query.Compare.GREATER_THAN,_P1);";
+				".has('"+TestSchema.Person_PersonId+"',LESS_THAN,_P0)"+
+				".has('"+TestSchema.Person_Age+"',GREATER_THAN,_P1);";
 
 			Assert.AreEqual(expect, q.Script, "Incorrect script.");
 		}
