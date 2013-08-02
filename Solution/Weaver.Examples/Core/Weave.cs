@@ -1,9 +1,7 @@
-﻿using Weaver.Core.Elements;
-using Weaver.Examples.Core.EdgeTypes;
+﻿using System;
+using Weaver.Core;
 using Weaver.Examples.Core.Edges;
 using Weaver.Examples.Core.Vertices;
-using Weaver.Core;
-using System;
 
 namespace Weaver.Examples.Core {
 

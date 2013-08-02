@@ -1,22 +1,19 @@
-﻿using Moq;
+﻿using System;
+using System.Linq.Expressions;
+using Moq;
 using NUnit.Framework;
+using Weaver.Core;
+using Weaver.Core.Elements;
+using Weaver.Core.Exceptions;
 using Weaver.Core.Path;
-using Weaver.Core.Pipe;
 using Weaver.Core.Query;
 using Weaver.Core.Steps;
-using Weaver.Core.Steps.Statements;
-using Weaver.Test.Common;
-using Weaver.Test.Common.Vertices;
-using Weaver.Test.WeavTitan.Common;
-using System;
-using Weaver.Core.Elements;
-using System.Linq.Expressions;
-using Weaver.Test.Utils;
-using Weaver.Core.Exceptions;
-using Weaver.Titan.Elements;
-using Weaver.Test.Common.Edges;
-using Weaver.Core;
 using Weaver.Test.Common.EdgeTypes;
+using Weaver.Test.Common.Edges;
+using Weaver.Test.Common.Vertices;
+using Weaver.Test.Utils;
+using Weaver.Test.WeavTitan.Common;
+using Weaver.Titan.Elements;
 using Weaver.Titan.Pipe;
 
 namespace Weaver.Test.WeavTitan.Pipe {

@@ -1,9 +1,6 @@
-﻿using Weaver.Core.Elements;
-using Weaver.Examples.Core.EdgeTypes;
-using Weaver.Examples.Core.Vertices;
+﻿using Weaver.Core.Pipe;
 using Weaver.Core.Query;
-using Weaver.Core.Graph;
-using Weaver.Core.Pipe;
+using Weaver.Examples.Core.Vertices;
 
 namespace Weaver.Examples.Core {
 

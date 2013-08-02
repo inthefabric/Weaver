@@ -3,6 +3,6 @@ using System.Resources;
 
 [assembly: AssemblyTitle("Weaver.Test")]
 [assembly: AssemblyDescription("A test suite for all Weaver components.")]
-[assembly: AssemblyCompanyAttribute("Aesthetic Interactive")]
-[assembly: AssemblyProductAttribute("")]
+[assembly: AssemblyCompany("Aesthetic Interactive")]
+[assembly: AssemblyProduct("")]
 [assembly: NeutralResourcesLanguage("en")]

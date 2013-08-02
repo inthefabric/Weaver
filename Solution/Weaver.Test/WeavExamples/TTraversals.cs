@@ -1,14 +1,10 @@
-﻿using System;
+﻿using System.Collections.Generic;
 using NUnit.Framework;
-using Weaver.Core;
-using Weaver.Core.Graph;
 using Weaver.Core.Pipe;
 using Weaver.Core.Query;
-using Weaver.Core.Steps;
-using Weaver.Test.Utils;
 using Weaver.Examples.Core;
-using System.Collections.Generic;
 using Weaver.Examples.Core.Vertices;
+using Weaver.Test.Utils;
 
 namespace Weaver.Test.WeavExamples {
 
