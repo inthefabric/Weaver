@@ -58,9 +58,13 @@ namespace Weaver.Test.WeavTitan.Graph {
 
 		////////////////////////////////////////////////////////////////////////////////////////////////
 		/*--------------------------------------------------------------------------------------------*/
-		[Test]
-		public void BuildParameterizedString() {
-			Assert.AreEqual("query()", vQuery.BuildParameterizedString(), "Incorrect result.");
+		[TestCase(true, "V")]
+		[TestCase(false, "E")]
+		public void BuildParameterizedString(bool pVertMode, string pExpect) {
+			vQuery = new WeaverTitanGraphQuery(pVertMode);
+			vQuery.Path = vMockPath.Object;
+
+			Assert.AreEqual(pExpect, vQuery.BuildParameterizedString(), "Incorrect result.");
 		}
 
 
@@ -76,12 +80,11 @@ namespace Weaver.Test.WeavTitan.Graph {
 				)
 				.ToQuery();
 
-			const string expect = "g.query()"+
+			const string expect = "g.V"+
 				".has('"+TestSchema.Person_PersonId+"',"+
 					"com.tinkerpop.blueprints.Query.Compare.LESS_THAN,_P0)"+
 				".has('"+TestSchema.Person_Age+"',"+
-					"com.tinkerpop.blueprints.Query.Compare.GREATER_THAN,_P1)"+
-				".vertices();";
+					"com.tinkerpop.blueprints.Query.Compare.GREATER_THAN,_P1);";
 
 			Assert.AreEqual(expect, q.Script, "Incorrect script.");
 		}

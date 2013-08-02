@@ -33,16 +33,14 @@ namespace Weaver.Test.WeavTitan.Steps {
 		/*--------------------------------------------------------------------------------------------*/
 		[Test]
 		public void BuildParameterizedStringFail() {
-			var se = new WeaverStepElasticIndex<Person>(true);
+			var se = new WeaverStepElasticIndex<Person>();
 			WeaverTestUtil.CheckThrows<WeaverStepException>(true, () => se.BuildParameterizedString());
 		}
 		
 		/*--------------------------------------------------------------------------------------------*/
-		[TestCase(true, 1, "vertices")]
-		[TestCase(true, 4, "vertices")]
-		[TestCase(false, 1, "edges")]
-		[TestCase(false, 4, "edges")]
-		public void BuildParameterizedString(bool pVertMode, int pCount, string pEnd) {
+		[TestCase(1)]
+		[TestCase(4)]
+		public void BuildParameterizedString(int pCount) {
 			var list = new IWeaverParamElastic<Person>[pCount];
 			string expect = "";
 
@@ -57,20 +55,17 @@ namespace Weaver.Test.WeavTitan.Steps {
 				expect += (i == 0 ? "" : ".")+"has('"+TestSchema.Person_PersonId+"',"+ops+",_P"+i+")";
 			}
 
-			var ei = new WeaverStepElasticIndex<Person>(pVertMode, list);
+			var ei = new WeaverStepElasticIndex<Person>(list);
 			ei.Path = vMockPath.Object;
 
-			expect += "."+pEnd+"()";
 			Assert.AreEqual(expect, ei.BuildParameterizedString(), "Incorrect result.");
 		}
 
 		/*--------------------------------------------------------------------------------------------*/
-		[TestCase(true, "vertices", "", new [] { "" })]
-		[TestCase(false, "edges", "", new [] { "" })]
-		[TestCase(true, "vertices", "zach", new[] { "zach" })]
-		[TestCase(false, "edges", "Zach Testing Kinstner", new[] { "Zach", "Testing", "Kinstner" })]
-		public void BuildParameterizedStringText(bool pVertMode, string pEnd, string pText, 
-																					string[] pExpect) {
+		[TestCase("", new [] { "" })]
+		[TestCase("zach", new[] { "zach" })]
+		[TestCase("Zach Testing Kinstner", new[] { "Zach", "Testing", "Kinstner" })]
+		public void BuildParameterizedStringText(string pText, string[] pExpect) {
 			string expect = "";
 
 			for ( int i = 0 ; i < pExpect.Length ; ++i ) {
@@ -78,10 +73,9 @@ namespace Weaver.Test.WeavTitan.Steps {
 					WeaverParamElastic.ContainsScript+",_P"+i+")";
 			}
 
-			var ei = new WeaverStepElasticIndex<Person>(pVertMode, x => x.Name, pText);
+			var ei = new WeaverStepElasticIndex<Person>(x => x.Name, pText);
 			ei.Path = vMockPath.Object;
 
-			expect += "."+pEnd+"()";
 			Assert.AreEqual(expect, ei.BuildParameterizedString(), "Incorrect result.");
 		}
 

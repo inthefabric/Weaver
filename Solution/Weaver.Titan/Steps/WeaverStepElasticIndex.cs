@@ -13,22 +13,18 @@ namespace Weaver.Titan.Steps {
 	/*================================================================================================*/
 	public class WeaverStepElasticIndex<T> : WeaverStep where T : IWeaverElement {
 
-		private readonly bool vVertMode;
 		private readonly IWeaverParamElastic<T>[] vParams;
 
 
 		////////////////////////////////////////////////////////////////////////////////////////////////
 		/*--------------------------------------------------------------------------------------------*/
-		public WeaverStepElasticIndex(bool pVertMode, params IWeaverParamElastic<T>[] pParams) {
-			vVertMode = pVertMode;
+		public WeaverStepElasticIndex(params IWeaverParamElastic<T>[] pParams) {
 			vParams = pParams;
 		}
 
 		/*--------------------------------------------------------------------------------------------*/
-		public WeaverStepElasticIndex(bool pVertMode, Expression<Func<T, object>> pProperty,
+		public WeaverStepElasticIndex(Expression<Func<T, object>> pProperty,
 																		string pSpaceDelimitedText) {
-			vVertMode = pVertMode;
-
 			string[] tokens = pSpaceDelimitedText.Trim().Split(' ');
 			var list = new List<IWeaverParamElastic<T>>();
 
@@ -60,7 +56,7 @@ namespace Weaver.Titan.Steps {
 				);
 			}
 
-			return sb+"."+(vVertMode ? "vertices" : "edges")+"()";
+			return sb.ToString();
 		}
 
 	}

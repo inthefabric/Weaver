@@ -22,7 +22,7 @@ namespace Weaver.Titan.Graph {
 		/*--------------------------------------------------------------------------------------------*/
 		public T ElasticIndex<T>(params IWeaverParamElastic<T>[] pParams)
 																	where T : IWeaverElement, new() {
-			var ei = new WeaverStepElasticIndex<T>(VertMode, pParams);
+			var ei = new WeaverStepElasticIndex<T>(pParams);
 			Path.AddItem(ei);
 			return new T { Path = Path };
 		}
@@ -30,7 +30,7 @@ namespace Weaver.Titan.Graph {
 		/*--------------------------------------------------------------------------------------------*/
 		public T ElasticIndex<T>(Expression<Func<T, object>> pProperty, string pSpaceDelimitedText)
 																	where T : IWeaverElement, new() {
-			var ei = new WeaverStepElasticIndex<T>(VertMode, pProperty, pSpaceDelimitedText);
+			var ei = new WeaverStepElasticIndex<T>(pProperty, pSpaceDelimitedText);
 			Path.AddItem(ei);
 			return new T { Path = Path };
 		}
@@ -39,7 +39,7 @@ namespace Weaver.Titan.Graph {
 		////////////////////////////////////////////////////////////////////////////////////////////////
 		/*--------------------------------------------------------------------------------------------*/
 		public override string BuildParameterizedString() {
-			return "query()";
+			return (VertMode ? "V" : "E");
 		}
 
 	}
