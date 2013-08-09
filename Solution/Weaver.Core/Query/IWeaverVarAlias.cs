@@ -17,10 +17,4 @@ namespace Weaver.Core.Query {
 		
 	}
 
-
-	/*================================================================================================*/
-	public interface IWeaverTableVarAlias : IWeaverVarAlias {
-
-	}
-
 }

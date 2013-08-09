@@ -4,6 +4,7 @@ using Weaver.Core.Elements;
 using Weaver.Core.Path;
 using Weaver.Core.Query;
 using Weaver.Core.Steps;
+using Weaver.Core.Steps.Helpers;
 using Weaver.Core.Steps.Statements;
 
 namespace Weaver.Core.Pipe {
@@ -109,6 +110,15 @@ namespace Weaver.Core.Pipe {
 			var f = new WeaverStepProp<T>(pProperty);
 			pElem.Path.AddItem(f);
 			return f;
+		}
+
+		/*--------------------------------------------------------------------------------------------*/
+		//TEST: WeaverItemExt.Table()
+		public static T Table<T>(this T pElem, IWeaverVarAlias pAlias, WeaverTableColumns pColumns)
+																			where T : IWeaverElement {
+			var f = new WeaverStepTable(pAlias, pColumns);
+			pElem.Path.AddItem(f);
+			return pElem;
 		}
 
 

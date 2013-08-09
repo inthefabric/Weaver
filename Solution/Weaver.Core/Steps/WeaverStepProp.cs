@@ -32,6 +32,7 @@ namespace Weaver.Core.Steps {
 				return "id";
 			}
 
+			//TODO: use a parameter
 			return "property('"+PropertyName+"')";
 		}
 

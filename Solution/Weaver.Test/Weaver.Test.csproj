@@ -65,6 +65,7 @@
     <Compile Include="WeavCore\Schema\TWeaverEdgeSchema.cs" />
     <Compile Include="WeavCore\Schema\TWeaverPropSchema.cs" />
     <Compile Include="WeavCore\Schema\TWeaverVertexSchema.cs" />
+    <Compile Include="WeavCore\Steps\TWeaverStepTable.cs" />
     <Compile Include="WeavCore\Steps\Statements\TWeaverStatementRemoveProperty.cs" />
     <Compile Include="WeavCore\Steps\Statements\TWeaverStatementSetProperty.cs" />
     <Compile Include="WeavCore\Steps\TWeaverStepAs.cs" />
