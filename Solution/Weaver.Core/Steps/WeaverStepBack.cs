@@ -22,7 +22,7 @@ namespace Weaver.Core.Steps {
 			}
 
 			BackToItem = pBackToItem;
-			vLabel = "step"+i;
+			vLabel = pBackToItem.Label;
 		}
 
 		/*--------------------------------------------------------------------------------------------*/

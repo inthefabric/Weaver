@@ -24,10 +24,11 @@ namespace Weaver.Test.WeavCore.Steps {
 
 			var mockAlias = new Mock<IWeaverStepAs<Person>>();
 			mockAlias.SetupGet(x => x.PathIndex).Returns(itemI);
+			mockAlias.SetupGet(x => x.Label).Returns("Test");
 
 			var f = new WeaverStepBack<Person>(mockAlias.Object);
 
-			Assert.AreEqual("step"+itemI, f.Label, "Incorrect Label.");
+			Assert.AreEqual("Test", f.Label, "Incorrect Label.");
 			Assert.AreEqual(mockAlias.Object, f.BackToItem, "Incorrect BackToItem.");
 		}
 		
@@ -38,6 +39,7 @@ namespace Weaver.Test.WeavCore.Steps {
 
 			var mockAlias = new Mock<IWeaverStepAs<Person>>();
 			mockAlias.SetupGet(x => x.PathIndex).Returns(itemI);
+			mockAlias.SetupGet(x => x.Label).Returns("step"+itemI);
 
 			var f = new WeaverStepBack<Person>(mockAlias.Object);
 

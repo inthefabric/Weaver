@@ -70,6 +70,32 @@ namespace Weaver.Test.WeavCore.Steps {
 			Assert.AreEqual(expect, q.Script, "Incorrect query script.");
 			WeaverTestUtil.CheckQueryParamsOriginalVal(q, expectParams);
 		}
+		
+		/*--------------------------------------------------------------------------------------------*/
+		[Test]
+		[Category("Integration")]
+		public void BackAlias() {
+			IWeaverStepAsColumn<Person> alias;
+
+			IWeaverQuery q = WeavInst.Graph
+				.V.ExactIndex<Person>(x => x.PersonId, 123)
+					.AsColumn("PersObj", out alias)
+				.OutLikesCandy.InVertex
+					.Back(alias)
+				.ToQuery();
+
+			const string expect = 
+				"g.V('PerId',_P0)"+
+					".as('PersObj')"+
+				".outE('PLC').inV"+
+					".back('PersObj');";
+
+			var expectParams = new Dictionary<string, IWeaverQueryVal>();
+			expectParams.Add("_P0", new WeaverQueryVal(123));
+
+			Assert.AreEqual(expect, q.Script, "Incorrect query script.");
+			WeaverTestUtil.CheckQueryParamsOriginalVal(q, expectParams);
+		}
 
 	}
 
