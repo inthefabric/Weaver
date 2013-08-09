@@ -52,7 +52,7 @@ namespace Weaver.Core.Steps {
 				}
 				else if ( col.PropName != null ) {
 					string propParam = Path.Query.AddParam(new WeaverQueryVal(col.PropName));
-					script += "{it.property("+propParam+")"+(col.PropScript ?? "")+"}";
+					script += "{it.getProperty("+propParam+")"+(col.PropScript ?? "")+"}";
 				}
 				else {
 					script += "{it}";

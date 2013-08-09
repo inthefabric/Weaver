@@ -54,8 +54,8 @@ namespace Weaver.Test.WeavCore.Steps {
 				".table(t)"+
 					"{it}"+
 					"{}"+
-					"{it.property(_P1)}"+
-					"{it.property(_P2)"+customScript+"};";
+					"{it.getProperty(_P1)}"+
+					"{it.getProperty(_P2)"+customScript+"};";
 			
 			var expectParams = new Dictionary<string, IWeaverQueryVal>();
 			expectParams.Add("_P0", new WeaverQueryVal(123));
