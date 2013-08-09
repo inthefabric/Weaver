@@ -106,6 +106,15 @@ namespace Weaver.Core.Query {
 			return InitListVar(pName, new List<IWeaverVarAlias>(), out pVar);
 		}
 
+		/*--------------------------------------------------------------------------------------------*/
+		public static IWeaverQuery InitTableVar(string pName, out IWeaverVarAlias pVar) { //TEST: WeaverQuery.InitTableVar()
+			pVar = new WeaverVarAlias(pName);
+
+			var q = new WeaverQuery();
+			q.FinalizeQuery(pVar.Name+"=new Table()");
+			return q;
+		}
+
 	}
 
 }
