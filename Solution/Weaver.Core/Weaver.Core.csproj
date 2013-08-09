@@ -46,8 +46,8 @@
     <Compile Include="Pipe\IWeaverPathPipeEnd.cs" />
     <Compile Include="Pipe\WeaverPathPipe.cs" />
     <Compile Include="Query\WeaverTransaction.cs" />
-    <Compile Include="Steps\Helpers\WeaverTableColumn.cs" />
-    <Compile Include="Steps\Helpers\WeaverTableColumns.cs" />
+    <Compile Include="Steps\WeaverStepAsColumn.cs" />
+    <Compile Include="Steps\IWeaverStepAsColumn.cs" />
     <Compile Include="Steps\WeaverStepTable.cs" />
     <Compile Include="Steps\Parameters\IWeaverParam.cs" />
     <Compile Include="Steps\Parameters\WeaverParam.cs" />

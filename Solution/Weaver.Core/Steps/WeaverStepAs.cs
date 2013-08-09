@@ -13,10 +13,10 @@ namespace Weaver.Core.Steps {
 
 		////////////////////////////////////////////////////////////////////////////////////////////////
 		/*--------------------------------------------------------------------------------------------*/
-		public WeaverStepAs(T pItem) {
-			Item = pItem;
+		public WeaverStepAs(T pElem) {
+			Item = pElem;
 			ItemType = typeof(T);
-			Label = "step"+pItem.Path.Length;
+			Label = "step"+pElem.Path.Length;
 		}
 
 		/*--------------------------------------------------------------------------------------------*/

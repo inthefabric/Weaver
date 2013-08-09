@@ -4,7 +4,6 @@ using Weaver.Core.Elements;
 using Weaver.Core.Path;
 using Weaver.Core.Query;
 using Weaver.Core.Steps;
-using Weaver.Core.Steps.Helpers;
 using Weaver.Core.Steps.Statements;
 
 namespace Weaver.Core.Pipe {
@@ -112,12 +111,49 @@ namespace Weaver.Core.Pipe {
 			return f;
 		}
 
+
+		////////////////////////////////////////////////////////////////////////////////////////////////
+		/*--------------------------------------------------------------------------------------------*/
+		//TEST: WeaverItemExt.AsColumn(prop, out)
+		public static T AsColumn<T>(this T pElem, string pLabel, Expression<Func<T, object>> pProperty,
+										out IWeaverStepAsColumn<T> pAlias) where T : IWeaverElement {
+			pAlias = new WeaverStepAsColumn<T>(pElem, pElem.Path.Config, pLabel, pProperty);
+			pElem.Path.AddItem(pAlias);
+			return pElem;
+		}
+
+		/*--------------------------------------------------------------------------------------------*/
+		//TEST: WeaverItemExt.AsColumn(prop)
+		public static T AsColumn<T>(this T pElem, string pLabel, Expression<Func<T, object>> pProperty)
+																			where T : IWeaverElement {
+			var ac = new WeaverStepAsColumn<T>(pElem, pElem.Path.Config, pLabel, pProperty);
+			pElem.Path.AddItem(ac);
+			return pElem;
+		}
+
+		/*--------------------------------------------------------------------------------------------*/
+		//TEST: WeaverItemExt.AsColumn(out)
+		public static T AsColumn<T>(this T pElem, string pLabel, out IWeaverStepAsColumn<T> pAlias)
+																			where T : IWeaverElement {
+			pAlias = new WeaverStepAsColumn<T>(pElem, pElem.Path.Config, pLabel);
+			pElem.Path.AddItem(pAlias);
+			return pElem;
+		}
+
+		/*--------------------------------------------------------------------------------------------*/
+		//TEST: WeaverItemExt.AsColumn()
+		public static T AsColumn<T>(this T pElem, string pLabel) where T : IWeaverElement {
+			var ac = new WeaverStepAsColumn<T>(pElem, pElem.Path.Config, pLabel);
+			pElem.Path.AddItem(ac);
+			return pElem;
+		}
+
 		/*--------------------------------------------------------------------------------------------*/
 		//TEST: WeaverItemExt.Table()
-		public static T Table<T>(this T pElem, IWeaverVarAlias pAlias, WeaverTableColumns pColumns)
-																			where T : IWeaverElement {
-			var f = new WeaverStepTable(pAlias, pColumns);
-			pElem.Path.AddItem(f);
+		public static T Table<T>(this T pElem, out IWeaverVarAlias pAlias) where T : IWeaverElement {
+			var t = new WeaverStepTable();
+			pElem.Path.AddItem(t);
+			pAlias = t.BuildAlias();
 			return pElem;
 		}
 
