@@ -114,7 +114,6 @@ namespace Weaver.Core.Pipe {
 
 		////////////////////////////////////////////////////////////////////////////////////////////////
 		/*--------------------------------------------------------------------------------------------*/
-		//TEST: WeaverItemExt.AsColumn(prop, out)
 		public static T AsColumn<T>(this T pElem, string pLabel, Expression<Func<T, object>> pProperty,
 										out IWeaverStepAsColumn<T> pAlias) where T : IWeaverElement {
 			pAlias = new WeaverStepAsColumn<T>(pElem, pElem.Path.Config, pLabel, pProperty);
@@ -123,7 +122,6 @@ namespace Weaver.Core.Pipe {
 		}
 
 		/*--------------------------------------------------------------------------------------------*/
-		//TEST: WeaverItemExt.AsColumn(prop)
 		public static T AsColumn<T>(this T pElem, string pLabel, Expression<Func<T, object>> pProperty)
 																			where T : IWeaverElement {
 			var ac = new WeaverStepAsColumn<T>(pElem, pElem.Path.Config, pLabel, pProperty);
@@ -132,7 +130,6 @@ namespace Weaver.Core.Pipe {
 		}
 
 		/*--------------------------------------------------------------------------------------------*/
-		//TEST: WeaverItemExt.AsColumn(out)
 		public static T AsColumn<T>(this T pElem, string pLabel, out IWeaverStepAsColumn<T> pAlias)
 																			where T : IWeaverElement {
 			pAlias = new WeaverStepAsColumn<T>(pElem, pElem.Path.Config, pLabel);
@@ -141,7 +138,6 @@ namespace Weaver.Core.Pipe {
 		}
 
 		/*--------------------------------------------------------------------------------------------*/
-		//TEST: WeaverItemExt.AsColumn()
 		public static T AsColumn<T>(this T pElem, string pLabel) where T : IWeaverElement {
 			var ac = new WeaverStepAsColumn<T>(pElem, pElem.Path.Config, pLabel);
 			pElem.Path.AddItem(ac);

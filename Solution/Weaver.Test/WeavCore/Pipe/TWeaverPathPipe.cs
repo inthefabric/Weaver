@@ -7,6 +7,9 @@ using Weaver.Core.Steps;
 using Weaver.Core.Steps.Statements;
 using Weaver.Test.Common;
 using Weaver.Test.Common.Vertices;
+using Weaver.Core;
+using System.Linq.Expressions;
+using System;
 
 namespace Weaver.Test.WeavCore.Pipe {
 
@@ -144,6 +147,64 @@ namespace Weaver.Test.WeavCore.Pipe {
 			Assert.NotNull((result as WeaverStepProp<TestElement>), "Incorrect result.");
 			vElem.MockPath.Verify(x => x.AddItem(It.IsAny<WeaverStepProp<TestElement>>()),Times.Once());
 		}
+		
+		
+		////////////////////////////////////////////////////////////////////////////////////////////////
+		/*--------------------------------------------------------------------------------------------*/
+		[TestCase(true)]
+		[TestCase(false)]
+		public void AsColumnObject(bool pGetAlias) {
+			const string label = "test";
+			IWeaverStepAsColumn<TestElement> alias;
+			TestElement result;
+			
+			if ( pGetAlias ) {
+				result = vElem.AsColumn(label, out alias);
+				Assert.NotNull(alias, "Alias should be filled.");
+				Assert.AreEqual(label, alias.Label, "Incorrect Alias.Label.");
+				Assert.AreEqual(vElem, alias.Item, "Incorrect Alias.Item.");
+				Assert.Null(alias.PropName, "PropName should be null.");
+			}
+			else {
+				result = vElem.AsColumn(label);
+			}
+			
+			Assert.AreEqual(vElem, result, "Incorrect result.");
+			VerifyFirstPathItem<WeaverStepAs<TestElement>>(vElem);
+		}
+		
+		
+		////////////////////////////////////////////////////////////////////////////////////////////////
+		/*--------------------------------------------------------------------------------------------*/
+		[TestCase(true)]
+		[TestCase(false)]
+		public void AsColumnProperty(bool pGetAlias) {
+			const string label = "test";
+			IWeaverStepAsColumn<TestElement> alias;
+			TestElement result;
+			
+			Expression<Func<TestElement, object>> propExp = ((TestElement x) => x.Value);
+			
+			var mockCfg = new Mock<IWeaverConfig>();
+			mockCfg.Setup(x => x.GetPropertyDbName(propExp)).Returns("Value");
+			
+			vElem.MockPath.SetupGet(x => x.Config).Returns(mockCfg.Object);
+			
+			if ( pGetAlias ) {
+				result = vElem.AsColumn(label, propExp, out alias);
+				Assert.NotNull(alias, "Alias should be filled.");
+				Assert.AreEqual(label, alias.Label, "Incorrect Alias.Label.");
+				Assert.AreEqual(vElem, alias.Item, "Incorrect Alias.Item.");
+				Assert.AreEqual("Value", alias.PropName, "Incorrect Alias.PropName.");
+			}
+			else {
+				result = vElem.AsColumn(label, propExp);
+			}
+			
+			Assert.AreEqual(vElem, result, "Incorrect result.");
+			VerifyFirstPathItem<WeaverStepAs<TestElement>>(vElem);
+		}
+		
 
 
 		////////////////////////////////////////////////////////////////////////////////////////////////
