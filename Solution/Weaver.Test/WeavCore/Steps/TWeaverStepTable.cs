@@ -53,7 +53,7 @@ namespace Weaver.Test.WeavCore.Steps {
 					".as('CandyCal')"+
 					".as('CandyReplace')"+
 					".as('CandyAppend')"+
-				".table(_TABLE12=new Table())"+
+				".table(_TABLE11=new Table())"+
 						"{}"+
 						"{it}"+
 						"{it.outE.inV}"+

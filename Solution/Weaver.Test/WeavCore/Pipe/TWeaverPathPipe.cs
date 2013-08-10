@@ -173,8 +173,6 @@ namespace Weaver.Test.WeavCore.Pipe {
 			VerifyFirstPathItem<WeaverStepAs<TestElement>>(vElem);
 		}
 		
-		
-		////////////////////////////////////////////////////////////////////////////////////////////////
 		/*--------------------------------------------------------------------------------------------*/
 		[TestCase(true)]
 		[TestCase(false)]
@@ -205,6 +203,22 @@ namespace Weaver.Test.WeavCore.Pipe {
 			VerifyFirstPathItem<WeaverStepAs<TestElement>>(vElem);
 		}
 		
+		/*--------------------------------------------------------------------------------------------*/
+		[Test]
+		public void Table() {
+			IWeaverVarAlias alias;
+			const int pathLen = 99;
+			vElem.MockPath.SetupGet(x => x.Length).Returns(pathLen);
+			Console.WriteLine("PATH: "+vElem.Path);
+			Console.WriteLine("LEN: "+vElem.Path.Length);
+			
+			TestElement result = vElem.Table(out alias);
+			
+			Assert.AreEqual(vElem, result, "Incorrect result.");
+			Assert.NotNull(alias, "Alias should be filled.");
+			Assert.AreEqual("_TABLE"+pathLen,  alias.Name, "Incorrect Alias.Name.");
+			VerifyFirstPathItem<WeaverStepTable>(vElem);
+		}
 
 
 		////////////////////////////////////////////////////////////////////////////////////////////////

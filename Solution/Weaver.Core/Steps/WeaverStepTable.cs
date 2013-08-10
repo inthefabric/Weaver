@@ -2,6 +2,7 @@
 using System.Text;
 using Weaver.Core.Path;
 using Weaver.Core.Query;
+using Weaver.Core.Elements;
 
 namespace Weaver.Core.Steps {
 
@@ -13,9 +14,8 @@ namespace Weaver.Core.Steps {
 
 		////////////////////////////////////////////////////////////////////////////////////////////////
 		/*--------------------------------------------------------------------------------------------*/
-		public IWeaverVarAlias BuildAlias() {
-			Alias = new WeaverVarAlias("_TABLE"+Path.Length);
-			return Alias;
+		public WeaverStepTable(IWeaverElement pElem, out IWeaverVarAlias pAlias) {
+			Alias = pAlias = new WeaverVarAlias("_TABLE"+pElem.Path.Length);
 		}
 
 		/*--------------------------------------------------------------------------------------------*/

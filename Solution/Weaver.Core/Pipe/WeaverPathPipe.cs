@@ -147,9 +147,8 @@ namespace Weaver.Core.Pipe {
 		/*--------------------------------------------------------------------------------------------*/
 		//TEST: WeaverItemExt.Table()
 		public static T Table<T>(this T pElem, out IWeaverVarAlias pAlias) where T : IWeaverElement {
-			var t = new WeaverStepTable();
+			var t = new WeaverStepTable(pElem, out pAlias);
 			pElem.Path.AddItem(t);
-			pAlias = t.BuildAlias();
 			return pElem;
 		}
 
