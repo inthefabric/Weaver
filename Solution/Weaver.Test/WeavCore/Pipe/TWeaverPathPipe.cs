@@ -62,6 +62,40 @@ namespace Weaver.Test.WeavCore.Pipe {
 			Assert.AreEqual(q, result, "Incorrect result.");
 		}
 
+		/*--------------------------------------------------------------------------------------------*/
+		[Test]
+		public void ToQueryAsVar() {
+			IWeaverVarAlias alias;
+
+			var q = new WeaverQuery();
+			vElem.MockPath.SetupGet(x => x.Query).Returns(q);
+			vElem.MockPath.Setup(x => x.BuildParameterizedScript()).Returns("g.v(4)");
+
+			IWeaverQuery result = vElem.ToQueryAsVar("test", out alias);
+
+			Assert.NotNull(result, "Result should be filled.");
+			Assert.AreEqual("test=g.v(4);", result.Script, "Incorrect Script.");
+			Assert.NotNull(alias, "Alias should be filled.");
+			Assert.AreEqual("test", alias.Name, "Incorrect Alias.Name.");
+		}
+
+		/*--------------------------------------------------------------------------------------------*/
+		[Test]
+		public void ToQueryAsVarT() {
+			IWeaverVarAlias<TestElement> alias;
+
+			var q = new WeaverQuery();
+			vElem.MockPath.SetupGet(x => x.Query).Returns(q);
+			vElem.MockPath.Setup(x => x.BuildParameterizedScript()).Returns("g.v(4)");
+
+			IWeaverQuery result = vElem.ToQueryAsVar("test", out alias);
+
+			Assert.NotNull(result, "Result should be filled.");
+			Assert.AreEqual("test=g.v(4);", result.Script, "Incorrect Script.");
+			Assert.NotNull(alias, "Alias should be filled.");
+			Assert.AreEqual("test", alias.Name, "Incorrect Alias.Name.");
+		}
+
 
 		////////////////////////////////////////////////////////////////////////////////////////////////
 		/*--------------------------------------------------------------------------------------------*/

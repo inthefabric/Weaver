@@ -40,6 +40,19 @@ namespace Weaver.Core.Pipe {
 			return Path.Query;
 		}
 
+		/*--------------------------------------------------------------------------------------------*/
+		public IWeaverQuery ToQueryAsVar(string pName, out IWeaverVarAlias pVar) {
+			Path.Query.FinalizeQuery(Path.BuildParameterizedScript());
+			return WeaverQuery.StoreResultAsVar(pName, Path.Query, out pVar);
+		}
+
+		/*--------------------------------------------------------------------------------------------*/
+		public IWeaverQuery ToQueryAsVar<T>(string pName, out IWeaverVarAlias<T> pVar)
+																			where T : IWeaverElement {
+			Path.Query.FinalizeQuery(Path.BuildParameterizedScript());
+			return WeaverQuery.StoreResultAsVar(pName, Path.Query, out pVar);
+		}
+
 	}
 
 
