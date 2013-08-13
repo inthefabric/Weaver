@@ -99,6 +99,7 @@ namespace Weaver.Core.Elements {
 		////////////////////////////////////////////////////////////////////////////////////////////////
 		/*--------------------------------------------------------------------------------------------*/
 		public override string BuildParameterizedString() {
+			//TODO: WeaverEdge: use query parameter
 			return (IsOutgoing ? "out" : "in")+"E('"+Path.Config.GetEdgeDbName(this)+"')";
 		}
 

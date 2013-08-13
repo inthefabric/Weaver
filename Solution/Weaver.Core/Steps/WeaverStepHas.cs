@@ -83,6 +83,8 @@ namespace Weaver.Core.Steps {
 			var qv = new WeaverQueryVal(Value);
 			string func = "has"+(Mode == WeaverStepHasMode.Has ? "" : "Not");
 
+			//TODO: WeaverStepHas: use query parameter (for PropertyName)
+
 			if ( Operation == null ) {
 				return func+"('"+PropertyName+"')";
 			}

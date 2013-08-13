@@ -19,6 +19,7 @@ namespace Weaver.Core.Steps.Statements {
 
 		/*--------------------------------------------------------------------------------------------*/
 		public override string BuildParameterizedString(IWeaverPath pPath) {
+			//TODO: WeaverStatementRemoveProperty: use query parameter
 			var propName = WrapException(() => pPath.Config.GetPropertyDbName(vProp));
 			return "it.removeProperty('"+propName+"')";
 		}

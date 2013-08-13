@@ -49,7 +49,9 @@ namespace Weaver.Titan.Steps {
 				var prop = pe.Property;
 				string propName = WrapException(() => Path.Config.GetPropertyDbName(prop));
 				string valParam = Path.Query.AddParam(new WeaverQueryVal(pe.Value));
-				
+
+				//TODO: WeaverStepElasticIndex: use query parameter (for PropertyName);
+
 				sb.Append(
 					(sb.Length > 0 ? "." : "")+
 					"has('"+propName+"',"+pe.GetOperationScript()+","+valParam+")"

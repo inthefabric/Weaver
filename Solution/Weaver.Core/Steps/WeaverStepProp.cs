@@ -32,7 +32,7 @@ namespace Weaver.Core.Steps {
 				return "id";
 			}
 
-			//TODO: use a parameter
+			//TODO: WeaverStepProp: use query parameter
 			return "property('"+PropertyName+"')";
 		}
 

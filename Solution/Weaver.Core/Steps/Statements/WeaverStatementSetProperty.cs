@@ -22,6 +22,7 @@ namespace Weaver.Core.Steps.Statements {
 
 		/*--------------------------------------------------------------------------------------------*/
 		public override string BuildParameterizedString(IWeaverPath pPath) {
+			//TODO: WeaverStatementSetProperty: use query parameter
 			var propName = WrapException(() => pPath.Config.GetPropertyDbName(vProp));
 			var valParam = pPath.Query.AddParam(new WeaverQueryVal(vValue));
 			return "it.setProperty('"+propName+"',"+valParam+")";

@@ -44,6 +44,7 @@ namespace Weaver.Core.Steps {
 		/*--------------------------------------------------------------------------------------------*/
 		public override string BuildParameterizedString() {
 			var qvVal = new WeaverQueryVal(Value);
+			//TODO: WeaverStepExactIndex: use query parameter (for IndexName)
 			return "('"+IndexName+"',"+Path.Query.AddParam(qvVal)+")";
 		}
 

@@ -21,6 +21,7 @@ namespace Weaver.Core.Steps {
 
 		/*--------------------------------------------------------------------------------------------*/
 		public override string BuildParameterizedString() {
+			//TODO: WeaverStepAs: use query parameter
 			return "as('"+Label+"')";
 		}
 
