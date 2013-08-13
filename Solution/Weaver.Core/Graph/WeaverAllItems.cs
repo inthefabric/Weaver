@@ -17,7 +17,7 @@ namespace Weaver.Core.Graph {
 		/*--------------------------------------------------------------------------------------------*/
 		public T IdInner<T>(string pId) where T : IWeaverElement, new() {
 			ForSpecificId = true;
-			var idParam = Path.Query.AddParam(new WeaverQueryVal(pId));
+			var idParam = Path.Query.AddParam(new WeaverQueryVal(pId)); //replace this (and others) with AddStringParam
 
 			var sc = new WeaverStepCustom("("+idParam+")", true);
 			Path.AddItem(sc);

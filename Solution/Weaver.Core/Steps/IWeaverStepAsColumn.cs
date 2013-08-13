@@ -3,7 +3,7 @@
 namespace Weaver.Core.Steps {
 
 	/*================================================================================================*/
-	public interface IWeaverStepAsColumn : IWeaverStep {
+	public interface IWeaverStepAsColumn : IWeaverStepAs {
 
 		string PropName { get; }
 		string AppendScript { get; set; }

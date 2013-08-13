@@ -1,13 +1,13 @@
 ﻿using System.Collections.Generic;
 using System.Text;
+using Weaver.Core.Elements;
 using Weaver.Core.Path;
 using Weaver.Core.Query;
-using Weaver.Core.Elements;
 
 namespace Weaver.Core.Steps {
 
 	/*================================================================================================*/
-	public class WeaverStepTable : WeaverStep { //TEST: WeaverStepTable
+	public class WeaverStepTable : WeaverStep {
 
 		public IWeaverVarAlias Alias { get; private set; }
 
@@ -66,7 +66,7 @@ namespace Weaver.Core.Steps {
 				}
 				
 				if ( col.PropName != null ) {
-					string p = Path.Query.AddParam(new WeaverQueryVal(col.PropName));
+					string p = Path.Query.AddStringParam(col.PropName);
 					sb.Append("{it.getProperty("+p+")"+col.AppendScript+"}");
 					continue;
 				}
