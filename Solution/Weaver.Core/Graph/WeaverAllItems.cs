@@ -2,7 +2,6 @@
 using System.Linq.Expressions;
 using Weaver.Core.Elements;
 using Weaver.Core.Path;
-using Weaver.Core.Query;
 using Weaver.Core.Steps;
 
 namespace Weaver.Core.Graph {
@@ -17,7 +16,7 @@ namespace Weaver.Core.Graph {
 		/*--------------------------------------------------------------------------------------------*/
 		public T IdInner<T>(string pId) where T : IWeaverElement, new() {
 			ForSpecificId = true;
-			var idParam = Path.Query.AddParam(new WeaverQueryVal(pId)); //replace this (and others) with AddStringParam
+			var idParam = Path.Query.AddStringParam(pId);
 
 			var sc = new WeaverStepCustom("("+idParam+")", true);
 			Path.AddItem(sc);
