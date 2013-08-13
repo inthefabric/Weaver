@@ -19,7 +19,7 @@ PM> Install-Package Weaver.Titan
 #### Basic Usage
 
 Weaver converts C# code:
-```cs
+```c#
 myWeaverObj.Graph.V.ExactIndex<User>(x => x.Name, "Zach")
 ```
 
@@ -35,7 +35,7 @@ The Gremlin script can also be parameterized (enabled by default) to achieve mor
 Weaver was built to support the [Fabric](https://github.com/inthefabric/Fabric) project, which provides several [useful examples](https://github.com/inthefabric/Fabric/blob/master/Solution/Fabric.Api.Modify/Tasks/ModifyTasks.cs) of Weaver configuration, setup, and usage. 
 
 A slightly-modified example from Fabric [code](https://github.com/inthefabric/Fabric/blob/master/Solution/Fabric.Api.Modify/Tasks/ModifyTasks.cs#L50):
-```cs
+```c#
 IWeaverFuncAs<Member> memAlias;
 
 IWeaverQuery q = myWeaverObj.Graph
@@ -58,6 +58,8 @@ SendGremlinRequest(q.Script, q.Params);
 #### Gremlin Table Support
 
 Weaver provides support for the Gremlin `table` step. Table columns are defined using Weaver's `AsColumn()` step, which support property-selection and customized scripts. Weaver's `Table()` step automatically builds the column clousures using the information provided in the `AsColumn()` steps.
+
+For more details, see the [Weaver Table Support](https://github.com/inthefabric/Weaver/wiki/Weaver-Table-Support) wiki page.
 
 #### Titan-Specific Functionality
 
