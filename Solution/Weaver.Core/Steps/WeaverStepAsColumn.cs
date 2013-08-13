@@ -5,7 +5,6 @@ using Weaver.Core.Elements;
 namespace Weaver.Core.Steps {
 
 	/*================================================================================================*/
-	//TEST: WeaverStepAsColumn
 	public class WeaverStepAsColumn<T> : WeaverStepAs<T>, IWeaverStepAsColumn<T>
 																			where T : IWeaverElement {
 		
