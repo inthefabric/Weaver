@@ -55,6 +55,10 @@ IWeaverQuery q = myWeaverObj.Graph
 SendGremlinRequest(q.Script, q.Params);
 ```
 
+#### Gremlin Table Support
+
+Weaver provides support for the Gremlin `table` step. Table columns are defined using Weaver's `AsColumn()` step, which support property-selection and customized scripts. Weaver's `Table()` step automatically builds the column clousures using the information provided in the `AsColumn()` steps.
+
 #### Titan-Specific Functionality
 
 As of build 0.5.2, `Weaver.Titan` project provides a variety of functionality that is specific to Titan. This includes:
