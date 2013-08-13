@@ -1,4 +1,4 @@
 ﻿using System.Reflection;
 
-[assembly: AssemblyVersion("0.5.3.0")]
-[assembly: AssemblyInformationalVersion("0.5.3.7f0a4f8")]
+[assembly: AssemblyVersion("0.5.4")]
+[assembly: AssemblyInformationalVersion("0.5.4.641d6a7")]
