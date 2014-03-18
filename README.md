@@ -78,4 +78,4 @@ As of build 0.5.2, `Weaver.Titan` project provides a variety of functionality th
 In the `Weaver.Examples` project, the "[Graph of the Gods](https://github.com/thinkaurelius/titan/wiki/Getting-Started)" graph schema is implemented using Weaver's attributes, and some basic traversals are demonstrated. [View the code](https://github.com/inthefabric/Weaver/tree/master/Solution/Weaver.Examples/Core).
 
 
-[![githalytics.com alpha](https://cruel-carlota.pagodabox.com/9caca4070a7a2601105b67a6840644c2 "githalytics.com")](http://githalytics.com/inthefabric/Weaver)
+[![githalytics.com alpha](https://cruel-carlota.gopagoda.com/9caca4070a7a2601105b67a6840644c2 "githalytics.com")](http://githalytics.com/inthefabric/Weaver)
